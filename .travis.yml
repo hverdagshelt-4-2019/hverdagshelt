@@ -1,0 +1,20 @@
+language: node_js
+
+stages:
+    - test
+
+jobs:
+    include:
+        - stage: test
+          name: test_server
+          before_script:
+            - cd server; npm install
+          script:
+            - npm test
+
+        - stage: test
+          name: test_client
+          before_script:
+            - cd client; npm install
+          script:
+            - npm test
