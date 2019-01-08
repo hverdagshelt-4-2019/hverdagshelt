@@ -1,43 +1,27 @@
-//@flow
-import reload from 'reload';
-import fs from 'fs';
-let express = require("express");
-let mysql = require("mysql2");
-let path = require('path');
-let app = express();
-let fileUpload = require("express-fileupload");
-app.use(fileUpload());//lar oss bruke express sin filopplaster
-let bodyParser = require("body-parser");
-app.use(bodyParser.json({limit: '50mb'})); // for å tolke JSON i body og sette større limit
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));//for å sette større limit for filer
-let pool = mysql.createPool({//database pool til mysql database
-    connectionLimit: 2,
-    host: "mysql.stud.iie.ntnu.no",
-    user: "mariufri",
-    password: "7aBJIJ6U",
-    database: "mariufri",
-    debug: false,
-    dateStrings: true
-});
+import mysql from 'mysql'
+import express from 'express'
+let app = express()
 
-type Request = express$Request;
-type Response = express$Response;
-//test
-const public_path = path.join(__dirname, '/../../client/public');
-app.use(express.static(public_path));
+/*
+get 1 user
+get 1 ticket
+get all tickets
+get all tickets with filter
+get ticket categories
+get event categories
+get 1 event
+get events by filter
 
-// Hot reload application when not in production environment
-if (process.env.NODE_ENV !== 'production') {
-    let reloadServer = reload(app);
-    fs.watch(public_path, () => reloadServer.reload());
-  }
-  
-  // The listen promise can be used to wait for the web server to start (for instance in your tests)
-  export let listen = new Promise<void>((resolve, reject) => {
-    app.listen(8080, error => {
-      if (error) reject(error.message);
-      console.log('Server started');
-      resolve();
-    });
-  });
+post ticket
+post event
+post user
+post comment
 
+put ticket
+put user
+put event
+
+delete ticket
+delete user
+delete event
+*/
