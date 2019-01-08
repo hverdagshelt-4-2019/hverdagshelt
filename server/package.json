@@ -1,7 +1,33 @@
 {
-  "name": "hverdagshelt-server",
-  "version": "0.0.1",
+  "name": "serviceServer",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "nodemon --exec babel-node src/server.js",
+    "start-prod": "cross-env NODE_ENV=production babel-node src/server.js",
+    "test": "jest --forceExit"
+  },
+  "jest": {
+    "testRegex": "./tests/.+Test\\.js$",
+    "testURL": "http://localhost"
+  },
   "dependencies": {
-    
+    "express": "^4.16.4",
+    "mysql2": "^1.6.1",
+    "reload": "^2.3.1",
+    "express-fileupload": "^1.0.0-alpha.1",
+    "json5": "^2.1.0",
+    "sequelize": "^4.41.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-flow": "^7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "cross-env": "^5.2.0",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.4"
   }
 }
