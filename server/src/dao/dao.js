@@ -1,4 +1,4 @@
-module.exports = class Dao {
+export default class Dao {
     constructor(pool) {
         // Dependency Injection
         this.pool = pool;
