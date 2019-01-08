@@ -1,6 +1,6 @@
 import Dao from "./dao.js";
 
-module.exports = class CategoryDao extends Dao {
+export default class CategoryDao extends Dao {
     getAllTicket(callback) {
         super.query("SELECT * FROM ticket_category",[], callback);
     };

@@ -1,6 +1,6 @@
 import Dao from "./dao.js";
 
-module.exports = class UserDao extends Dao {
+export default class UserDao extends Dao {
     getOne(email, callback) {
         console.log("Getting user")
         super.query("SELECT * FROM email WHERE email=?", [email], callback);

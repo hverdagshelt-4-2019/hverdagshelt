@@ -1,13 +1,16 @@
 import Dao from "./dao.js";
 
-module.exports = class EventDao extends Dao {
-    getAll(categories,callback){
-        super.query("SELECT * FROM happening WHERE category_id IN (?)", [categories], callback);
+export default class EventDao extends Dao {
+    getAll(communes,callback){
+        super.query("SELECT * FROM happening WHERE commune_name IN (?)", [communes], callback);
     };
 
-    getOne(id : number, callback: Function) {
-        console.log("Get on article")
-        super.query("SELECT * FROM article WHERE articleId=?", [id], callback);
+    getAllCategoryFilter(communes, categories, callback){
+        super.query("SELECT * FROM happening WHERE commune_name IN (?) AND category IN (?)", [communes],[categories], callback);
+    };
+
+    getOne(id, callback) {
+        super.query("SELECT * FROM happening WHERE id = ?", [id], callback);
     };
 
     createOne(json: Object, callback: Function) {
