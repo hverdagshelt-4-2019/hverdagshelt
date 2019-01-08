@@ -7,19 +7,23 @@ module.exports = class UserDao extends Dao {
     };
 
     createOne(json, callback) {
-        var val = [json.email, json.salt, json.password];
-        super.query("INSERT INTO person (email, salt, password) VALUES (?,?,?)",
+        var val = [json.email, json.password];
+        super.query("INSERT INTO person (email, password) VALUES (?,?)",
             val,
             callback
         );
     }
 
     updateOne(email, json, callback) {
-        var val = [json.email, json.salt, json.password, email];
-        super.query("UPDATE person SET email = ?, salt = ?, password = ? WHERE email=?",
+        var val = [json.email, json.password, email];
+        super.query("UPDATE person SET email = ?, password = ? WHERE email=?",
             val,
             callback
         );
+    }
+
+    deleteOne(email, callback){
+        super.query("DELETE FROM person WHERE email = ?", [email], callback);
     }
 
 };
