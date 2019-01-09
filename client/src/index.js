@@ -7,6 +7,7 @@ import { HashRouter, Route, NavLink } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import { Alert, Menu, Footer, Info } from './widgets';
 import { Navbar_person } from './Components/Navbars/Navbar_person';
+import { Ticket } from './Components/Ticket/Ticket';
 
 const root = document.getElementById('root');
 if (root)
