@@ -13,28 +13,24 @@ export default class EventDao extends Dao {
         super.query("SELECT * FROM happening WHERE id = ?", [id], callback);
     };
 
-    createOne(json: Object, callback: Function) {
-        var val = [json.title, json.content, json.picture, json.category, json.priority];
-        super.query("INSERT INTO article (title,content, picture, category, priority) VALUES (?,?,?,?,?)",
+    createOne(json, callback) {
+        var val = [json.submitter_id, json.commune_name, json.category, json.title, json.description, json.picture, json.happening_time];
+        super.query("INSERT INTO happening (submitter_id,commune_name, category, title, description, picture, happening_time) VALUES (?,?,?,?,?,?,?)",
             val,
             callback
         );
     }
 
-    updateOne(id: number, json: Object, callback: Function) {
-        var val = [json.title, json.content, json.picture, json.category, json.priority, id];
-        super.query("UPDATE article SET title = ?, content = ?, picture = ?, category = ?, priority = ? WHERE articleId=?",
+    updateOne(id, json, callback) {
+        var val = [json.commune_name, json.category, json.title, json.description, json.picture, json.happening_time];
+        super.query("UPDATE happening SET commune_name = ?, category = ?, title = ?, description = ?, picture = ?, happening_time = ? WHERE id=?",
             val,
             callback
         );
     }
 
-    deleteOne(id: number, callback : Function){
-        super.query("DELETE FROM article WHERE articleId = ?", [id], callback);
-    }
-
-    getLive(callback : Function){
-        super.query("SELECT * FROM article ORDER BY dateUpload DESC LIMIT 10",[], callback);
+    deleteOne(id, callback){
+        super.query("DELETE FROM happening WHERE id = ?", [id], callback);
     }
 
 };
