@@ -130,6 +130,7 @@ export function create_app(pool) {
                     isadmin: (data[0].isAdmin != null),
                     publicworkercommune: (data[0].commune_name != null ? data[0].commune_name : false)    // Null if not a publicworker
                 }
+                console.log(JSON.stringify(user))
                 jwt.sign({user}, 'key',{expiresIn: '30m'}, (err, token) => {
                     res.status(status);
                     res.json({
