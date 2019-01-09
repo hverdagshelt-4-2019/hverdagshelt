@@ -10,20 +10,22 @@ let app = express();
 //To be removed
 var pool = mysql.createPool({
    connectionLimit: 2,
-   host: "localhost",
+   host: 'localhost',
    user: 'root',
    password: 'qwerty',
    database: 'hverdagshelt_dev',
    debug: false
 });
 
+
 const categorydao = new CategoryDao(pool);
+const userdao = new UserDao(pool);
+
+app.use(express.json());
 
 /*
 Get-functions
  */
-
-app.use(express.json());
 
 app.get("/user/:id")
 
@@ -70,7 +72,8 @@ app.post("/comment");
 app.post("/eventcat");
 
 app.post("/ticketcat", (req, res) =>{
-    categorydao.createOneTicket(req.body, (status, data) =>{
+    console.log(req.body.name)
+    categorydao.createOneTicket(req.body.name, (status, data) =>{
         res.status(status);
         res.json(data);
         console.log('Added')
