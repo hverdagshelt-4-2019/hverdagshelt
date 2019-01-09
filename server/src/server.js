@@ -1,5 +1,6 @@
 import mysql from 'mysql2'
 import express from 'express'
+import jwt from 'jsonwebtoken'
 import UserDao from './dao/userDao'
 import TicketDao from './dao/ticketDao.js'
 import CategoryDao from './dao/categoryDao.js'
@@ -53,9 +54,32 @@ export function create_app(pool) {
     Post-functions
      */
 
-    app.post("/login")
 
-    app.post("/ticket", (req, res) =>{});
+    app.post("/login", (req, res) => {
+        const user = {
+            email : 'test',
+            id : 1
+        }
+        jwt.sign({user}, 'key',{expiresIn: '30m'}, (err, token) => {
+            res.json({
+                token
+            })
+        });
+    });
+
+    app.post("/ticket", verifyToken, (req,res) => {
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err){
+                res.sendStatus(403);
+            }else {
+                res.json({
+                    message: 'Posted',
+                    authData
+                });
+            }
+        });
+
+    });
 
     app.post("/event", (req, res) =>{});
 
@@ -94,6 +118,21 @@ export function create_app(pool) {
     app.delete("/user/:id", (req, res) =>{});
 
     app.delete("/event/:id", (req, res) =>{});
+
+    
+// Verify token
+    function verifyToken(req, res, next) {
+        const bearerHeader = req.headers['authorization'];
+
+         if(typeof bearerHeader !== 'undefined') {
+            const bearer = bearerHeader.split(' ');
+            const bearerToken = bearer[1];
+            req.token = bearerToken;
+            next();
+        }else {
+            res.sendStatus(403);
+        }
+    }
 
 
     return app;
