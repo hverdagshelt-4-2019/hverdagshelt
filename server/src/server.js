@@ -6,6 +6,7 @@ import TicketDao from './dao/ticketDao.js'
 import CategoryDao from './dao/categoryDao.js'
 import EventDao from './dao/eventDao.js'
 import CommuneDao from './dao/communeDao'
+import path from 'path';
 
 export function create_app(pool) {
     let app = express();
@@ -17,6 +18,11 @@ export function create_app(pool) {
     const communedao = new CommuneDao(pool);
 
     app.use(express.json());
+
+
+    const client_public = path.join(__dirname,'..','..','client','public');
+    /*const public_path = path.join(__dirname, '/../../client/public');
+    app.use(express.static(public_path));*/
 
     /*
     Get-functions
@@ -165,6 +171,18 @@ export function create_app(pool) {
     app.delete("/user/:id", (req, res) =>{});
 
     app.delete("/event/:id", (req, res) =>{});
+
+    app.get("*", (req,res, next) =>{
+        let options = {};
+        let file = 'index.html';
+        if(req.url.includes('.')){
+            file = req.url.split('/').pop();
+        }
+        console.log(req);
+        res.sendFile(path.join(client_public, file), options, (err)=>{
+            if(err) next();
+        });
+    });
 
     
 // Verify token
