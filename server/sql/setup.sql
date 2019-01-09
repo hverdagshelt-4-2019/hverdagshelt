@@ -21,7 +21,7 @@ CREATE TABLE person(
 );
 
 CREATE TABLE admin(
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
 
   FOREIGN KEY (id) REFERENCES person(id) ON DELETE CASCADE
 );
@@ -55,7 +55,7 @@ CREATE TABLE ticket_category(
 );
 
 CREATE TABLE ticket(
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   submitter_id INT NOT NULL,
   responsible_commune VARCHAR(64) NOT NULL,
   responsible_company_id INT DEFAULT NULL,

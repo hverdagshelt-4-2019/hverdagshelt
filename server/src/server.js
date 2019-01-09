@@ -5,6 +5,7 @@ import UserDao from './dao/userDao'
 import TicketDao from './dao/ticketDao.js'
 import CategoryDao from './dao/categoryDao.js'
 import EventDao from './dao/eventDao.js'
+import CommuneDao from './dao/communeDao'
 
 export function create_app(pool) {
     let app = express();
@@ -13,6 +14,7 @@ export function create_app(pool) {
     const userdao = new UserDao(pool);
     const ticketdao = new TicketDao(pool);
     const eventdao = new EventDao(pool);
+    const communedao = new CommuneDao(pool);
 
     app.use(express.json());
 
@@ -21,34 +23,79 @@ export function create_app(pool) {
      */
 
     app.get("/user/:id", (req, res) =>{
-        userdao.getOne()
-    });
-
-    app.get("/ticket/:id", (req, res) =>{});
-
-    app.get("/tickets", (req, res) =>{});
-
-    app.get("/tickets/category", (req, res) =>{});
-
-    app.get("/event/:id", (req, res) =>{});
-
-    app.get("/events", (req, res) =>{});
-
-    app.get("/events/category", (req, res) =>{});
-
-    app.get("/eventcat", (req, res) =>{});
-
-    app.get("/ticketcat", (req, res) => {
-        categorydao.getAllTicket((status, data) => {
+        userdao.getOne(req.params.id, (status, data) =>{
+            console.log(data);
             res.status(status);
             res.json(data);
-            console.log(data)
         });
     });
 
-    app.get("/commune/:commune", (req, res) =>{});
+    app.get("/ticket/:id", (req, res) =>{
+        ticketdao.getATicket(req.params.id, (status, data) =>{
+            console.log(data);
+            res.status(status);
+            res.json(data);
+        });
+    });
 
-    app.get("/communes", (req, res) =>{});
+    app.get("/tickets", (req, res) =>{
+        console.log(req.body)
+        ticketdao.getTicketsByCommune(req.body.communes, (status, data) =>{
+            console.log("test")
+        });
+    });
+
+    app.get("/tickets/category", (req, res) =>{
+        console.log(req.body);
+        ticketdao.getTicketsByCategory()
+    });
+
+    app.get("/event/:id", (req, res) =>{
+        console.log(req.body);
+        eventdao.getOne(req.body.communes, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/events", (req, res) =>{
+        console.log(req.body);
+        eventdao.getAll(req.body.communes, (status, res) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/events/category", (req, res) =>{
+        console.log(req.body);
+        eventdao.getAllCategoryFilter(req.body.communes, req.body.categories, (status, res) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/eventcat", (req, res) =>{
+        categorydao.getAllEvent((status, data) =>{
+            console.log('data:' + data);
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/ticketcat", (req, res) => {
+        categorydao.getAllTicket((status, data) => {
+            console.log(data)
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/communes", (req, res) =>{
+        communedao.getAll((status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
 
     /*
     Post-functions
