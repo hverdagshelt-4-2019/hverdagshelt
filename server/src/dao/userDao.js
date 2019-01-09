@@ -1,9 +1,9 @@
 import Dao from "./dao.js";
 
 export default class UserDao extends Dao {
-    getOne(email, callback) {
+    getOne(id, callback) {
         console.log("Getting user")
-        super.query("SELECT * FROM person WHERE email=?", [email], callback);
+        super.query("SELECT * FROM person WHERE id=?", [id], callback);
     };
 
     createOne(json, callback) {
@@ -50,8 +50,8 @@ export default class UserDao extends Dao {
         }
     }
 
-    deleteOne(email, callback){
-        super.query("DELETE FROM person WHERE email = ?", [email], callback);
+    deleteOne(id, callback){
+        super.query("DELETE FROM person WHERE id = ?", [id], callback);
     }
 
     login(json, callback){
