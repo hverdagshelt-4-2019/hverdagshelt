@@ -5,97 +5,92 @@ import TicketDao from './dao/ticketDao.js'
 import CategoryDao from './dao/categoryDao.js'
 import EventDao from './dao/eventDao.js'
 
-let app = express();
+export function create_app(pool) {
+    let app = express();
 
-//To be removed
-var pool = mysql.createPool({
-   connectionLimit: 2,
-   host: "localhost",
-   user: 'root',
-   password: 'qwerty',
-   database: 'hverdagshelt_dev',
-   debug: false
-});
+    const categorydao = new CategoryDao(pool);
+    const userdao = new UserDao(pool);
 
-const categorydao = new CategoryDao(pool);
+    app.use(express.json());
 
-/*
-Get-functions
- */
+    /*
+    Get-functions
+     */
 
-app.use(express.json());
+    app.get("/user/:id")
 
-app.get("/user/:id")
+    app.get("/ticket/:id")
 
-app.get("/ticket/:id")
+    app.get("/tickets")
 
-app.get("/tickets")
+    app.get("/tickets/category")
 
-app.get("/tickets/category")
+    app.get("/event/:id")
 
-app.get("/event/:id")
+    app.get("/events")
 
-app.get("/events")
+    app.get("/events/category")
 
-app.get("/events/category")
+    app.get("/eventcat")
 
-app.get("/eventcat")
-
-app.get("/ticketcat", (req, res) =>{
-    categorydao.getAllTicket((status, data) =>{
-        res.status(status);
-        res.json(data);
-        console.log(data)
+    app.get("/ticketcat", (req, res) => {
+        categorydao.getAllTicket((status, data) => {
+            res.status(status);
+            res.json(data);
+            console.log(data)
+        });
     });
-});
 
-app.get("/commune/:commune")
+    app.get("/commune/:commune")
 
-app.get("/communes")
+    app.get("/communes")
 
-/*
-Post-functions
- */
+    /*
+    Post-functions
+     */
 
-app.post("/login")
+    app.post("/login")
 
-app.post("/ticket");
+    app.post("/ticket");
 
-app.post("/event");
+    app.post("/event");
 
-app.post("/user");
+    app.post("/user");
 
-app.post("/comment");
+    app.post("/comment");
 
-app.post("/eventcat");
+    app.post("/eventcat");
 
-app.post("/ticketcat", (req, res) =>{
-    categorydao.createOneTicket(req.body, (status, data) =>{
-        res.status(status);
-        res.json(data);
-        console.log('Added')
+    app.post("/ticketcat", (req, res) => {
+        console.log(req.body.name)
+        categorydao.createOneTicket(req.body.name, (status, data) => {
+            res.status(status);
+            res.json(data);
+            console.log('Added')
+        });
     });
-});
 
-/*
-Put-functions
- */
+    /*
+    Put-functions
+     */
 
-app.put("/ticket/:id")
+    app.put("/ticket/:id")
 
-app.put("/user/:id")
+    app.put("/user/:id")
 
-app.put("/event/:id")
+    app.put("/event/:id")
 
 
-/*
-Delete-functions
- */
+    /*
+    Delete-functions
+     */
 
-app.delete("/ticket/:id")
+    app.delete("/ticket/:id")
 
-app.delete("/user/:id")
+    app.delete("/user/:id")
 
-app.delete("/event/:id")
+    app.delete("/event/:id")
 
-let server = app.listen(3000);
+
+    return app;
+}

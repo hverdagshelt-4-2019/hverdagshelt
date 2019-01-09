@@ -6,8 +6,8 @@ export default class CategoryDao extends Dao {
     };
 
     createOneTicket(name, callback) {
-        super.query("INSERT INTO ticket_category (name) VALUES (name)",
-            val,
+        super.query("INSERT INTO ticket_category (name) VALUES (?)",
+            name,
             callback
         );
     }
