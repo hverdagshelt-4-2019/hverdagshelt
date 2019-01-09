@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 import { Alert, Menu, Footer, Info } from './widgets';
 import { Navbar_person } from './Components/Navbars/Navbar_person';
 import { Ticket } from './Components/Ticket/Ticket';
+import { Login } from './Components/Login/Login.js';
 
 const root = document.getElementById('root');
 if (root)
@@ -15,6 +16,7 @@ if (root)
     <HashRouter>
       <div>
         <Navbar_person />
+        <Route exact path="/" component={Login} />
       </div>
     </HashRouter>,
     root
