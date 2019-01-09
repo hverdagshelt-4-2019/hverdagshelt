@@ -2,7 +2,7 @@
   "name": "hverdagshelt-server",
   "version": "0.0.1",
   "scripts": {
-    "start": "nodemon --exec babel-node src/server.js",
+    "start": "nodemon --exec babel-node src/index.js",
     "start-prod": "cross-env NODE_ENV=production babel-node src/index.js",
     "test": "jest --forceExit"
   },
