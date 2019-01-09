@@ -12,7 +12,7 @@ export class Login extends Component {
             email: "",
             password: ""
         }
-        this.login = this.login.bind(this);
+        //this.login = this.login.bind(this);
         this.onChange = this.onChange.bind(this);
     }
 
@@ -24,6 +24,7 @@ export class Login extends Component {
             });
         }
     }
+    
 
     onChange(e) {
         this.setState({[e.target.name]: e.target.value});
