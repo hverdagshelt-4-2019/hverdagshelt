@@ -104,3 +104,4 @@ CREATE TABLE happening(
   FOREIGN KEY (commune_name) REFERENCES commune(name),
   FOREIGN KEY (category) REFERENCES happening_category(name)
 );
+
