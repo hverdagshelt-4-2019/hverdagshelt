@@ -2,7 +2,7 @@
   "name": "hverdagshelt-server",
   "version": "0.0.1",
   "scripts": {
-    "start": "nodemon --exec babel-node src/server.js",
+    "start": "nodemon --exec babel-node src/index.js",
     "start-prod": "cross-env NODE_ENV=production babel-node src/index.js",
     "test": "jest --forceExit"
   },
@@ -11,13 +11,13 @@
     "testURL": "http://localhost"
   },
   "dependencies": {
-    "argon2": "^0.20.0",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "express-fileupload": "^1.0.0-alpha.1",
     "json5": "^2.1.0",
     "jsonwebtoken": "^8.4.0",
     "mysql2": "^1.6.1",
+    "path": "^0.12.7",
     "reload": "^2.3.1",
     "sequelize": "^4.41.0"
   },

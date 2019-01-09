@@ -1,18 +1,18 @@
 // @flow
 import axios from 'axios';
 axios.interceptors.response.use(response => response.data);
-let url = "http://localhost:8080/";
+let url = "http://localhost:3000";
 
 class User {
-    email: string;
-    password: string;
+    email;
+    password;
 }
 
 class LoginService {
 
     loginUser(
-        email: string,
-        password: string
+        email,
+        password
     ): Promise<void> {
         let user = new User();
         user.email = email;

@@ -19,8 +19,8 @@ export class Login extends Component {
     login() {
         if(this.state.email && this.state.password) {
             loginService.loginUser(this.state).then((result) => {
-                let responseJSON = result;
-                if(responseJSON)
+                if(result !== null) localStorage.setItem('authToken', result.token)
+                console.log(localStorage.getItem('authToken'));
             });
         }
     }
