@@ -40,26 +40,39 @@ export function create_app(pool) {
 
     app.get("/tickets", (req, res) =>{
         console.log(req.body)
-        ticketdao.getTicketsByCommune(req.query.communes, (status, data) =>{
+        ticketdao.getTicketsByCommune(req.body.communes, (status, data) =>{
             console.log("test")
         });
     });
 
     app.get("/tickets/category", (req, res) =>{
-
+        console.log(req.body);
+        ticketdao.getTicketsByCategory()
     });
 
     app.get("/event/:id", (req, res) =>{
+        console.log(req.body);
         eventdao.getOne(req.body.communes, (status, data) =>{
-            console.log(data);
             res.status(status);
             res.json(data);
         });
     });
 
-    app.get("/events", (req, res) =>{});
+    app.get("/events", (req, res) =>{
+        console.log(req.body);
+        eventdao.getAll(req.body.communes, (status, res) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
 
-    app.get("/events/category", (req, res) =>{});
+    app.get("/events/category", (req, res) =>{
+        console.log(req.body);
+        eventdao.getAllCategoryFilter(req.body.communes, req.body.categories, (status, res) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
 
     app.get("/eventcat", (req, res) =>{
         categorydao.getAllEvent((status, data) =>{
