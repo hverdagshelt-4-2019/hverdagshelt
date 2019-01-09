@@ -1,6 +1,5 @@
 //@flow
 
-import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
@@ -60,7 +59,7 @@ export class Navbar_person extends Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/">
+                <NavLink to="/login">
                   <span className="glyphicon glyphicon-log-out" /> Log ut
                 </NavLink>
               </li>
