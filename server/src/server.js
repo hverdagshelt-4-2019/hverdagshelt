@@ -1,5 +1,6 @@
 import mysql from 'mysql2'
 import express from 'express'
+import jwt from 'jsonwebtoken'
 import UserDao from './dao/userDao'
 import TicketDao from './dao/ticketDao.js'
 import CategoryDao from './dao/categoryDao.js'
@@ -57,7 +58,11 @@ app.get("/communes")
 Post-functions
  */
 
-app.post("/login")
+app.get("/login", (req, res) => {
+    res.json({
+        message: 'Login'
+    });
+});
 
 app.post("/ticket");
 
