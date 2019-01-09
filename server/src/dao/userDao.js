@@ -3,7 +3,7 @@ import Dao from "./dao.js";
 export default class UserDao extends Dao {
     getOne(id, callback) {
         console.log("Getting user")
-        super.query("SELECT * FROM person WHERE id=?", [id], callback);
+        super.query("SELECT id, email FROM person WHERE id=?", [id], callback);
     };
 
     createOne(json, callback) {
@@ -55,11 +55,15 @@ export default class UserDao extends Dao {
     }
 
     login(json, callback){
-        super.query("SELECT password FROM person WHERE id = ?", json.id, password => {
-            validate_password(json.password, password).then( okay => {
-                if(okay) callback(200, {});
-                else callback(401, {error: "password not correct"})
-            })
+        super.query("SELECT id, password FROM person WHERE email = ?", json.email, (status, data) => {
+            console.log(data[0].password)
+            validate_password(json.password, data[0].password).then( okay => {
+                if(okay) callback(200, data);
+                else callback(401, {error: "password not correct"});
+            }).catch(err =>{
+                console.log(err);
+                callback(500, {error:"Somethings went wrong."});
+            });
         });
     }
 };

@@ -105,3 +105,5 @@ CREATE TABLE happening(
   FOREIGN KEY (category) REFERENCES happening_category(name)
 );
 
+CREATE TRIGGER tickettime BEFORE INSERT ON ticket
+    FOR EACH ROW SET NEW.submitted_time=now()
