@@ -7,6 +7,9 @@ import CategoryDao from './dao/categoryDao.js'
 import EventDao from './dao/eventDao.js'
 import CommuneDao from './dao/communeDao'
 import CommentDao from './dao/commentDao.js'
+import AdminDao from './dao/adminDao.js'
+import CompanyDao from './dao/companyDao.js'
+import PublicWorkerDao from './dao/publicworkerDao.js'
 
 export function create_app(pool) {
     let app = express();
@@ -17,6 +20,9 @@ export function create_app(pool) {
     const eventdao = new EventDao(pool);
     const communedao = new CommuneDao(pool);
     const commentdao = new CommentDao(pool);
+    const admindao = new AdminDao(pool);
+    const conpanydao = new CompanyDao(pool);
+    const publicworkerdao = new PublicWorkerDao(pool);
 
     app.use(express.json());
 
@@ -108,14 +114,22 @@ export function create_app(pool) {
     Post-functions
      */
 
+    app.post("/user", (req, res) =>{
+        userdao.createOne(req.body, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
 
     app.post("/login", (req, res) => {
         userdao.login(req.body, (status, data) =>{
-            const user = {
-                email: req.body.email,
-                id: data[0].id
-            }
             if(status == 200) {
+                const user = {
+                    email: req.body.email,
+                    id: data[0].id,
+                    isadmin: (data[0].isAdmin != null),
+                    publicworkercommune: (data[0].commune_name != null ? data[0].commune_name : false)    // Null if not a publicworker
+                }
                 jwt.sign({user}, 'key',{expiresIn: '30m'}, (err, token) => {
                     res.status(status);
                     res.json({
@@ -131,7 +145,6 @@ export function create_app(pool) {
 
     app.post("/ticket", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData) =>{
-            console.log(JSON.stringify(authData))
             if(err){
                 res.sendStatus(403);
             }else {
@@ -156,26 +169,24 @@ export function create_app(pool) {
 
     app.post("/event", (req, res) =>{});
 
-    app.post("/user", (req, res) =>{
-        console.log(req.body);
-        userdao.createOne(req.body, (status, data) =>{
-            res.status(status);
-            res.json(data);
-        });
-    });
-
     app.post("/comment", (req, res) =>{});
 
     app.post("/eventcat", (req, res) =>{});
 
     app.post("/ticketcat", (req, res) => {
-        console.log(req.body.name)
         categorydao.createOneTicket(req.body.name, (status, data) => {
             res.status(status);
             res.json(data);
             console.log('Added')
         });
     });
+
+    app.post("/admin", (req, res) =>{});
+
+    app.post("/company", (req, res) =>{});
+
+    app.post("/publicworker", (req, res) =>{});
+
 
     /*
     Put-functions
