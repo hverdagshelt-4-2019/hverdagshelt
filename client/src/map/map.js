@@ -168,7 +168,7 @@ export default class SimpleMap extends Component {
                 </div>
                 <div className = "map" style={{ height: '75vh'}}>
                     <GoogleMapReact
-                    bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
+                    
                     center={this.props.center}
                     zoom={this.props.zoom}
                     hoverDistance={K_SIZE / 2}
