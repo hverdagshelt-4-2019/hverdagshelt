@@ -211,7 +211,15 @@ export function create_app(pool) {
         });
     });
 
-    app.post("/comment", (req, res) =>{});
+    app.post("/comment", (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                res.sendStatus(500);
+            } else {
+
+            }
+        });
+    });
 
     app.post("/eventcat", (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
