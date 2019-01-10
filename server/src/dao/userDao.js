@@ -58,14 +58,17 @@ export default class UserDao extends Dao {
         super.query("SELECT person.id, admin.id as isAdmin, commune_name, password FROM person LEFT JOIN admin on person.id = admin.id LEFT JOIN public_worker on public_worker.id = person.id WHERE email = ?",
             json.email,
             (status, data) => {
-            console.log(data);
-            validate_password(json.password, data[0].password).then( okay => {
-                if(okay) callback(200, data);
-                else callback(401, {error: "password not correct"});
-            }).catch(err =>{
-                console.log(err);
-                callback(500, {error:"Somethings went wrong."});
-            });
+            if(data.length == 1) {
+                validate_password(json.password, data[0].password).then(okay => {
+                    if (okay) callback(200, data);
+                    else callback(401, {error: "Invalid username password combination"});
+                }).catch(err => {
+                    console.log(err);
+                    callback(500, {error: "Somethings went wrong."});
+                });
+            } else {
+                callback(401, {error: "Invalid username password combination"})
+            }
         });
     }
 };
