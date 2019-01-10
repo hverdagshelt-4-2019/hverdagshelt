@@ -6,11 +6,12 @@ stages:
 - test
 jobs:
   include:
-
   - stage: test
     name: test_server
     before_script:
-    - "cd server; echo \"export default {mysql: {password: '\"$SINDRTHO_MYSQL_PASS\"'}}\" > private.config.js; npm install"
+    - 'cd server; echo "export default {mysql: {password: ''"$SINDRTHO_MYSQL_PASS"''},
+      test: {mysql: {password: ''"$ALEKSJOH_MYSQL_PASS"''}}}" > private.config.js;
+      npm install'
     script:
     - npm test
   - stage: test
@@ -21,4 +22,5 @@ jobs:
     - npm test
 env:
   global:
-  - secure: LPkQo4ve8Be+cla4wsCJJmysaUXLLFN7bJEtkzN4IoH5zG7MBP0KGyKdwG5d7j/ncv3b317oCjbJ1D4HtUrqSRzGxpOllS4A5JclRGg0IUOlRm+aY5IyhppjcI+V9RCoZyviHnK7v1wwvyYJKk4TP0GNalcKTPeXDcypdohAjqDousGOR9Rj1s/K/LvcP+0zKrXkPkrRmYebTDKzbPUGRtGwj+Sv+47oU0tE1DhB57ztR5OEXWMrJX6o/dFbnzteVKl/vBxcxzea/JiUYQGtrLcuppKeeQv8mcLIfHPzqhuoT7CN1uxF7dQ1bw0Pavj90ZfCu7zdCjy1X9Bvvtp4bsf7oPqF9ghq47OlIh+2WSFa2AdkS2IKASyfBMBaiCSmijE5TACLcGuORtYjVRAVk6hp0858IH75le1P41zuRxr7mMsqnViA1NOg2Vc3fVkk4TDDuFVd7Egwal/IFnxIXeK9T92IwSaQ7f5bb+F8QU2c76i7U1AXP69jL8TiE6rIuo3hoS7he1GPtBbjxR3MHpCXSvfeOv/+CyYG67xh7N7fy2KBok7CffLquAHQXEmfZYeDYciF0BrWg7nKNn+6S5AfrC9Z/vcRvjUcXRWvJjspirhjFGR521CGd83EWprGTP4iXkAVKdh4m1rLCCw8svq2YSsBpY/3iJ2g1MvCpic=
+  - secure: Y9UkNXWIFqiQwWeJdwrT0hiswk4a6razSeQLT3UgGPRAki6YUlQdxdDgsnQ8sgX8z1KwHevz48s3W1jy5/OYewtYySLLfLrN/NOi1tWJTkfwcBjBSvMvgKOWpbDKXBG5Suw0Lze4try3eBr9X4uSQvxVup8Bdl+KswA4MKo+WvNvI1ml0uRYFZC0m3eGqS1M8G4h8t6DLn9K1bCb2pRawPgnENIISrmvI0GeK/2Vn3NAHzZRJXCbdxi0WTB3q94+i5+zir1Nuu6Aj6nqBaasHoe5Spw7cmiYyvvmo5VjOccW0VRoTGOeRc88qMziIU9CRzBWS5gnPGQhUIqvMbsgu6oBbRy7oMopIjQ8GLU2tosPuaFh+4kdbP6iQ7nu6yZ+Ghif3WSa1qAGg02gvJNP5JaackUDj/Hcvy5MMLlkht0nHgABcgwBm89t/QNI32SpsWKlLYIxQU7Xpbting50nuhKHI5mUoXu6LTEHhJ3QKUcXsCz+Ozk/e584CmP+4cL5I10/2iHfd2bYaFaobv3F5+e65bWxWGL4PvouhdAapYcavPzn4G4434piN1zUQvJBNMkjEfrMiZnuBl6m29o1DxCxPmOMUnaEctwX+bIXm397I36hm9JzLhhL95Xdhb0Z6lMymMgskrYRaFPyWHkj3OqN8lLAsuaN0nVkw47sFE=
+  - secure: rKDziYqAU5jp/xwHzwcQOv2ScHqDqZxrlDA3o8MzV0I5bijpCZ1MMujcAjwx9zr9KV0Mg8aL/1v2Y0pR4Vgo4nXaGXFM2gQgUqRdLO/8s433pCuDIcq5cItCf5bebUmONhzuJ3z39zp3yYWnAosOWj1tmWPc8yO6Sw/CDEUOSjFpMFEpdfGI8Cf8U3qo188H02CGgWZNrpCZwh2XYMMwO4TsYj9wc09ycg8banm2gxsi+6DJ+P9cbgQf3I02NkPeCegfAc+KP8b37gUvKOv0Yhf/nj7jyqDOnjXJ4GHsTS9gf80mxVF4jBnQQZi10JpcL8IS6Wp+Cqb9lcR1KSNAioZJ1jgpAMQS2fNZgqu1eTwa2D7DdQDYTassGVGQDkEstegrjsOdSLYhK3Yq9GjVtgzFwh6aEKeXkeN7zJr8rl5fn5QKFPFUtyrZzdh64wru9YRcj0TJRrhfBLK4/MaPmxv5VgDbtGA9mcgHkEpHtvrvmYzTq6npiaR0fMrilNViLqIRXHF5iQnb5Pm5bbsGly0gvfgPZeS7U2NR+n3W/opycpphwEB2RCpGE2ATkaGJCEMA1M2KIOrnRB44W6P8FAHhmQceomzYmRmD/ImKhw+u+CjUAnCWBmUS7W2gK9ewSq0tXtqs/XK42xjkU1ipZtk5pz8qrkgOZ099thQhDys=
