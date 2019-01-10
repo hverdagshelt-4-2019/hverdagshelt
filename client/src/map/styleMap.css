@@ -1,10 +1,39 @@
 .leftSide {
+    position: relative;
     float: left;
     width: 20%;
     box-shadow: 0px 2px 3px #555;
 }
+
 .map {
     width: 80%;
     float: right;
     box-shadow: 0px 2px 4px #555;
+}
+
+.ticketImg{
+    box-shadow: 0px 3px 6px #555;
+}
+
+.header {
+    color: white;
+    font-family: italic, cursive;
+}
+
+hr {
+    border-color: white;
+}
+
+.aroundButton {
+    height: 40px;
+    width: 100%;
+    position: absolute;
+    bottom: 3px;
+}
+.voteB {
+    float: right;
+    margin: 5px;
+}
+.fa-thumbs-up{
+    margin: 3px;
 }

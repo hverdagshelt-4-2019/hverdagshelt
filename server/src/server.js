@@ -1,43 +1,204 @@
-//@flow
-import reload from 'reload';
-import fs from 'fs';
-let express = require("express");
-let mysql = require("mysql2");
-let path = require('path');
-let app = express();
-let fileUpload = require("express-fileupload");
-app.use(fileUpload());//lar oss bruke express sin filopplaster
-let bodyParser = require("body-parser");
-app.use(bodyParser.json({limit: '50mb'})); // for å tolke JSON i body og sette større limit
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));//for å sette større limit for filer
-let pool = mysql.createPool({//database pool til mysql database
-    connectionLimit: 2,
-    host: "mysql.stud.iie.ntnu.no",
-    user: "mariufri",
-    password: "7aBJIJ6U",
-    database: "mariufri",
-    debug: false,
-    dateStrings: true
-});
+import mysql from 'mysql2'
+import express from 'express'
+import jwt from 'jsonwebtoken'
+import UserDao from './dao/userDao'
+import TicketDao from './dao/ticketDao.js'
+import CategoryDao from './dao/categoryDao.js'
+import EventDao from './dao/eventDao.js'
+import CommuneDao from './dao/communeDao'
+import path from 'path';
 
-type Request = express$Request;
-type Response = express$Response;
-//test
-const public_path = path.join(__dirname, '/../../client/public');
-app.use(express.static(public_path));
+export function create_app(pool) {
+    let app = express();
 
-// Hot reload application when not in production environment
-if (process.env.NODE_ENV !== 'production') {
-    let reloadServer = reload(app);
-    fs.watch(public_path, () => reloadServer.reload());
-  }
-  
-  // The listen promise can be used to wait for the web server to start (for instance in your tests)
-  export let listen = new Promise<void>((resolve, reject) => {
-    app.listen(8080, error => {
-      if (error) reject(error.message);
-      console.log('Server started');
-      resolve();
+    const categorydao = new CategoryDao(pool);
+    const userdao = new UserDao(pool);
+    const ticketdao = new TicketDao(pool);
+    const eventdao = new EventDao(pool);
+    const communedao = new CommuneDao(pool);
+
+    app.use(express.json());
+
+
+    const client_public = path.join(__dirname,'..','..','client','public');
+    /*const public_path = path.join(__dirname, '/../../client/public');
+    app.use(express.static(public_path));*/
+
+    /*
+    Get-functions
+     */
+
+    app.get("/user/:id", (req, res) =>{
+        userdao.getOne(req.params.id, (status, data) =>{
+            console.log(data);
+            res.status(status);
+            res.json(data);
+        });
     });
-  });
 
+    app.get("/ticket/:id", (req, res) =>{
+        ticketdao.getATicket(req.params.id, (status, data) =>{
+            console.log(data);
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/tickets", (req, res) =>{
+        console.log(req.body)
+        ticketdao.getTicketsByCommune(req.body.communes, (status, data) =>{
+            console.log("test")
+        });
+    });
+
+    app.get("/tickets/category", (req, res) =>{
+        console.log(req.body);
+        ticketdao.getTicketsByCategory()
+    });
+
+    app.get("/event/:id", (req, res) =>{
+        console.log(req.body);
+        eventdao.getOne(req.body.communes, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/events", (req, res) =>{
+        console.log(req.body);
+        eventdao.getAll(req.body.communes, (status, res) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/events/category", (req, res) =>{
+        console.log(req.body);
+        eventdao.getAllCategoryFilter(req.body.communes, req.body.categories, (status, res) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/eventcat", (req, res) =>{
+        categorydao.getAllEvent((status, data) =>{
+            console.log('data:' + data);
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/ticketcat", (req, res) => {
+        categorydao.getAllTicket((status, data) => {
+            console.log(data)
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/communes", (req, res) =>{
+        communedao.getAll((status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    /*
+    Post-functions
+     */
+
+
+    app.post("/login", (req, res) => {
+        const user = {
+            email : 'test',
+            id : 1
+        }
+        jwt.sign({user}, 'key',{expiresIn: '30m'}, (err, token) => {
+            res.json({
+                token
+            })
+        });
+    });
+
+    app.post("/ticket", verifyToken, (req,res) => {
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err){
+                res.sendStatus(403);
+            }else {
+                res.json({
+                    message: 'Posted',
+                    authData
+                });
+            }
+        });
+
+    });
+
+    app.post("/event", (req, res) =>{});
+
+    app.post("/user", (req, res) =>{});
+
+    app.post("/comment", (req, res) =>{});
+
+    app.post("/eventcat", (req, res) =>{});
+
+    app.post("/ticketcat", (req, res) => {
+        console.log(req.body.name)
+        categorydao.createOneTicket(req.body.name, (status, data) => {
+            res.status(status);
+            res.json(data);
+            console.log('Added')
+        });
+    });
+
+    /*
+    Put-functions
+     */
+
+    app.put("/ticket/:id", (req, res) =>{});
+
+    app.put("/user/:id", (req, res) =>{});
+
+    app.put("/event/:id", (req, res) =>{});
+
+
+    /*
+    Delete-functions
+     */
+
+    app.delete("/ticket/:id", (req, res) =>{});
+
+    app.delete("/user/:id", (req, res) =>{});
+
+    app.delete("/event/:id", (req, res) =>{});
+
+    app.get("*", (req,res, next) =>{
+        let options = {};
+        let file = 'index.html';
+        if(req.url.includes('.')){
+            file = req.url.split('/').pop();
+        }
+        console.log(req);
+        res.sendFile(path.join(client_public, file), options, (err)=>{
+            if(err) next();
+        });
+    });
+
+    
+// Verify token
+    function verifyToken(req, res, next) {
+        const bearerHeader = req.headers['authorization'];
+
+         if(typeof bearerHeader !== 'undefined') {
+            const bearer = bearerHeader.split(' ');
+            const bearerToken = bearer[1];
+            req.token = bearerToken;
+            next();
+        }else {
+            res.sendStatus(403);
+        }
+    }
+
+
+    return app;
+}

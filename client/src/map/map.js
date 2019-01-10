@@ -23,8 +23,9 @@ class ticket {
     votes: number;
     lat: number;
     lng: number;
+    pic: string;
 
-    constructor(i: string, h: string, t: string, c: string, v: number, la: number, lo: number){
+    constructor(i: string, h: string, t: string, c: string, v: number, la: number, lo: number, p: string){
         this.id = i;
         this.heading = h;
         this.text = t;
@@ -32,17 +33,19 @@ class ticket {
         this.votes = v;
         this.lat = la;
         this.lng = lo;
+        this.pic = p;
     }
 }
 let ta = [];
-ta.push(new ticket('1',"Det har hvert hull i denne veien for flere år", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna.", 
-"veiproblemer", 8, 63.42, 10.38));
-ta.push(new ticket('2', "Nå har lyset gått", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna."
-, "lysproblemer", 2, 63.425, 10.386));
-ta.push(new ticket('3', "Test", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna."
-, "testproblemer", 0, 63.41, 10.3723));
+ta.push(new ticket('0',"Det har hvert hull i denne veien for flere år", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna.", 
+"veiproblemer", 8, 63.42, 10.38, "temp.jpg"));
+ta.push(new ticket('1', "Nå har lyset gått", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna."
+, "lysproblemer", 2, 63.425, 10.386, "temp.jpg"));
+ta.push(new ticket('2', "Test", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna."
+, "testproblemer", 0, 63.41, 10.3723, "temp.jpg"));
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
+
 export default class SimpleMap extends Component {
 
     static propTypes = {
@@ -85,9 +88,20 @@ export default class SimpleMap extends Component {
 
     _onChildClick = (key, childProps) => {
         this.props.onCenterChange([childProps.lat, childProps.lng]);
-        let id = childProps.id;
-        console.log(childProps);
-        console.log(ta[1]);
+        console.log(childProps.text);
+        console.log(ta[childProps.text]);
+        let localTicket = ta[childProps.text];
+        let picture = document.getElementById("picture");
+        picture.setAttribute("src", localTicket.pic);
+        let header = document.getElementById("header");
+        header.innerHTML = localTicket.heading;
+        let category = document.getElementById("category");
+        category.innerHTML = localTicket.category;
+        let para = document.createElement("i");
+        para.setAttribute("class", "fas fa-thumbs-up")
+        let vote = document.getElementById("vote");
+        vote.innerHTML = localTicket.votes;
+        vote.appendChild(para);
     }
 
     _onChildMouseEnter = (key /*, childProps */) => {
@@ -115,8 +129,17 @@ export default class SimpleMap extends Component {
         return (
             <div style={{ height: '100%', width: '100%', paddingBottom: '300px'}}>
                 <div style={{height: '100px'}}></div>
-                <div className = "leftSide" style={{height: '75vh'}}>
-                    <div className = "bg-primary" style={{height: '20vh'}}></div>
+                <div className = "leftSide bg-primary" style={{height: '75vh'}}>
+                    <img id="picture" src="logo.png" className="img-fluid ticketImg" alt="Responsive image"/>
+                    <br/>
+                    <br/>
+                    <h5 id="header" className="header">Velkommen til hverdagshelt</h5>
+                    <hr/>
+                    <p id="category" style={{color: 'white', fontSize: 'small'}}></p>
+                    <hr/>
+                    <div className = "aroundButton">
+                        <button id="vote" type="button" className="btn btn-light voteB"><i className="fas fa-thumbs-up"></i></button>
+                    </div>
                 </div>
                 <div className = "map" style={{ height: '75vh'}}>
                     <GoogleMapReact
