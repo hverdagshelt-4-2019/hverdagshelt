@@ -148,7 +148,6 @@ export function create_app(pool) {
                 res.json(data);
             }
         });
-    });
 
     app.post("/ticket", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData) =>{

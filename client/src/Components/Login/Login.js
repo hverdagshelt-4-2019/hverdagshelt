@@ -19,8 +19,10 @@ export class Login extends Component {
     login() {
         if(this.state.email && this.state.password) {
             loginService.loginUser(this.state).then((result) => {
+                jwt.verify(result.token, 'key', (err, authData) => {
+                  console.log(authData)
+                });
                 if(result !== null) localStorage.setItem('authToken', result.token)
-                console.log(localStorage.getItem('authToken'));
             });
         }
     }
