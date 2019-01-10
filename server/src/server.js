@@ -153,8 +153,9 @@ export function create_app(pool) {
     app.post("/ticket", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err){
-                res.sendStatus(403);
-            }else {
+                console.log(err);
+                res.sendStatus(500);
+            } else {
                 let newTicket = {
                     userid: authData.user.id,
                     commune: req.body.commune,
@@ -169,12 +170,46 @@ export function create_app(pool) {
                     res.status(status);
                     res.json(data);
                 });
+                console.log("ok")
             }
         });
 
     });
 
-    app.post("/event", (req, res) =>{});
+    app.post("/event", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                console.log(err);
+                res.sendStatus(500);
+            } else {
+                if(authData.user.isadmin) {
+                    console.log("admin");
+                    let newEvent = {
+                        "submitter_id": ,
+                        "commune_name": ,
+                        "category": ,
+                        "title": ,
+                        "description": ,
+                        "picture": ,
+                        "happening_time":
+                    }
+                } else if(authData.user.publicworkercommune) {
+                    console.log("public worker");
+                    let newEvent = {
+                        "submitter_id": ,
+                        "commune_name": ,
+                        "category": ,
+                        "title": ,
+                        "description": ,
+                        "picture": (req.body.picture != null ? req.body.picture),
+                        "happening_time":
+                    }
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        });
+    });
 
     app.post("/comment", (req, res) =>{});
 
