@@ -44,7 +44,7 @@ CREATE TABLE public_worker(
 );
 
 CREATE TABLE company(
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(256) NOT NULL,
 
   FOREIGN KEY (id) REFERENCES person(id) ON DELETE CASCADE
@@ -95,7 +95,7 @@ CREATE TABLE happening(
   submitter_id INT,
   commune_name VARCHAR(64) NOT NULL,
   category VARCHAR(64) NOT NULL,
-  title VARCHAR(64) NOT NULL,
+  title VARCHAR(128) NOT NULL,
   description VARCHAR(512) NOT NULL,
   picture VARCHAR(128) DEFAULT NULL,
   happening_time DATETIME NOT NULL,
@@ -105,3 +105,5 @@ CREATE TABLE happening(
   FOREIGN KEY (category) REFERENCES happening_category(name)
 );
 
+CREATE TRIGGER tickettime BEFORE INSERT ON ticket
+    FOR EACH ROW SET NEW.submitted_time=now()

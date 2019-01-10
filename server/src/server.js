@@ -6,6 +6,11 @@ import TicketDao from './dao/ticketDao.js'
 import CategoryDao from './dao/categoryDao.js'
 import EventDao from './dao/eventDao.js'
 import CommuneDao from './dao/communeDao'
+import CommentDao from './dao/commentDao.js'
+import AdminDao from './dao/adminDao.js'
+import CompanyDao from './dao/companyDao.js'
+import PublicWorkerDao from './dao/publicworkerDao.js'
+import path from 'path';
 
 export function create_app(pool) {
     let app = express();
@@ -15,8 +20,17 @@ export function create_app(pool) {
     const ticketdao = new TicketDao(pool);
     const eventdao = new EventDao(pool);
     const communedao = new CommuneDao(pool);
+    const commentdao = new CommentDao(pool);
+    const admindao = new AdminDao(pool);
+    const conpanydao = new CompanyDao(pool);
+    const publicworkerdao = new PublicWorkerDao(pool);
 
     app.use(express.json());
+
+
+    const client_public = path.join(__dirname,'..','..','client','public');
+    /*const public_path = path.join(__dirname, '/../../client/public');
+    app.use(express.static(public_path));*/
 
     /*
     Get-functions
@@ -24,7 +38,7 @@ export function create_app(pool) {
 
     app.get("/user/:id", (req, res) =>{
         userdao.getOne(req.params.id, (status, data) =>{
-            console.log(data);
+            console.log('data' + JSON.stringify(data));
             res.status(status);
             res.json(data);
         });
@@ -32,7 +46,7 @@ export function create_app(pool) {
 
     app.get("/ticket/:id", (req, res) =>{
         ticketdao.getATicket(req.params.id, (status, data) =>{
-            console.log(data);
+            console.log('data' + data);
             res.status(status);
             res.json(data);
         });
@@ -41,13 +55,17 @@ export function create_app(pool) {
     app.get("/tickets", (req, res) =>{
         console.log(req.body)
         ticketdao.getTicketsByCommune(req.body.communes, (status, data) =>{
-            console.log("test")
+            res.status(status);
+            res.json(data);
         });
     });
 
     app.get("/tickets/category", (req, res) =>{
         console.log(req.body);
-        ticketdao.getTicketsByCategory()
+        ticketdao.getTicketsByCategory(req.body.communes, req.body.categories, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
     });
 
     app.get("/event/:id", (req, res) =>{
@@ -84,7 +102,7 @@ export function create_app(pool) {
 
     app.get("/ticketcat", (req, res) => {
         categorydao.getAllTicket((status, data) => {
-            console.log(data)
+            console.log('data:' + data)
             res.status(status);
             res.json(data);
         });
@@ -92,6 +110,7 @@ export function create_app(pool) {
 
     app.get("/communes", (req, res) =>{
         communedao.getAll((status, data) =>{
+            console.log('data' + data);
             res.status(status);
             res.json(data);
         });
@@ -101,27 +120,54 @@ export function create_app(pool) {
     Post-functions
      */
 
-
-    app.post("/login", (req, res) => {
-        const user = {
-            email : 'test',
-            id : 1
-        }
-        jwt.sign({user}, 'key',{expiresIn: '30m'}, (err, token) => {
-            res.json({
-                token
-            })
+    app.post("/user", (req, res) =>{
+        userdao.createOne(req.body, (status, data) =>{
+            res.status(status);
+            res.json(data);
         });
     });
 
-    app.post("/ticket", verifyToken, (req,res) => {
+    app.post("/login", (req, res) => {
+        userdao.login(req.body, (status, data) =>{
+            if(status == 200) {
+                const user = {
+                    email: req.body.email,
+                    id: data[0].id,
+                    isadmin: (data[0].isAdmin != null),
+                    publicworkercommune: (data[0].commune_name != null ? data[0].commune_name : false)    // Null if not a publicworker
+                }
+                console.log(JSON.stringify(user))
+                jwt.sign({user}, 'key',{expiresIn: '30m'}, (err, token) => {
+                    res.status(status);
+                    res.json({
+                        token
+                    });
+                });
+            } else {
+                res.status(status);
+                res.json(data);
+            }
+        });
+    });
+
+    app.post("/ticket", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err){
                 res.sendStatus(403);
             }else {
-                res.json({
-                    message: 'Posted',
-                    authData
+                let newTicket = {
+                    userid: authData.user.id,
+                    commune: req.body.commune,
+                    title: req.body.title,
+                    category: req.body.category,
+                    description: req.body.description,
+                    picture: req.body.picture,
+                    lat: req.body.lat,
+                    long: req.body.long
+                }
+                ticketdao.addTicket(newTicket, (status, data) =>{
+                    res.status(status);
+                    res.json(data);
                 });
             }
         });
@@ -130,20 +176,24 @@ export function create_app(pool) {
 
     app.post("/event", (req, res) =>{});
 
-    app.post("/user", (req, res) =>{});
-
     app.post("/comment", (req, res) =>{});
 
     app.post("/eventcat", (req, res) =>{});
 
     app.post("/ticketcat", (req, res) => {
-        console.log(req.body.name)
         categorydao.createOneTicket(req.body.name, (status, data) => {
             res.status(status);
             res.json(data);
             console.log('Added')
         });
     });
+
+    app.post("/admin", (req, res) =>{});
+
+    app.post("/company", (req, res) =>{});
+
+    app.post("/publicworker", (req, res) =>{});
+
 
     /*
     Put-functions
@@ -165,6 +215,18 @@ export function create_app(pool) {
     app.delete("/user/:id", (req, res) =>{});
 
     app.delete("/event/:id", (req, res) =>{});
+
+    app.get("*", (req,res, next) =>{
+        let options = {};
+        let file = 'index.html';
+        if(req.url.includes('.')){
+            file = req.url.split('/').pop();
+        }
+        console.log(req);
+        res.sendFile(path.join(client_public, file), options, (err)=>{
+            if(err) next();
+        });
+    });
 
     
 // Verify token

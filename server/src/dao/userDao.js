@@ -3,10 +3,10 @@ import Dao from "./dao.js";
 export default class UserDao extends Dao {
     getOne(id, callback) {
         console.log("Getting user")
-        super.query("SELECT * FROM person WHERE id=?", [id], callback);
+        super.query("SELECT id, email FROM person WHERE id=?", [id], callback);
     };
 
-    createOne(json, callback) {
+    /*createOne(json, callback) {
         if(json.password.length < 8){
             callback(400, {error: "Password"});
         } else {
@@ -18,7 +18,7 @@ export default class UserDao extends Dao {
                 );
             });
         }
-    }
+    }*/
 
     updateEmail(json, callback) {
         super.query("UPDATE person SET email = ? WHERE id = ?",
@@ -26,7 +26,7 @@ export default class UserDao extends Dao {
             callback)
     }
 
-    updatePassword(json, callback) {
+   /* updatePassword(json, callback) {
         if(json.newPassword.length < 8) {
             callback(400, {error: "Password"});
         } else {
@@ -48,23 +48,29 @@ export default class UserDao extends Dao {
                 }
             });
         }
-    }
+    }*/
 
     deleteOne(id, callback){
         super.query("DELETE FROM person WHERE id = ?", [id], callback);
     }
 
     login(json, callback){
-        super.query("SELECT password FROM person WHERE id = ?", json.id, password => {
-            validate_password(json.password, password).then( okay => {
-                if(okay) callback(200, {});
-                else callback(401, {error: "password not correct"})
-            })
+        super.query("SELECT person.id, admin.id as isAdmin, commune_name, password FROM person LEFT JOIN admin on person.id = admin.id LEFT JOIN public_worker on public_worker.id = person.id WHERE email = ?",
+            json.email,
+            (status, data) => {
+            console.log(data);
+            validate_password(json.password, data[0].password).then( okay => {
+                if(okay) callback(200, data);
+                else callback(401, {error: "password not correct"});
+            }).catch(err =>{
+                console.log(err);
+                callback(500, {error:"Somethings went wrong."});
+            });
         });
     }
 };
 
-import argon2 from "argon2"
+/*import argon2 from "argon2"
 
 function create_password(password: string){
     return argon2.hash(password, {
@@ -79,4 +85,4 @@ function create_password(password: string){
 
 function validate_password(password: string, hash: string){
     return argon2.verify(hash, password)
-}
+}*/
