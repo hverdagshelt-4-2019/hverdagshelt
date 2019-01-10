@@ -10,7 +10,7 @@ jobs:
   - stage: test
     name: test_server
     before_script:
-    - "cd server; echo \"export default {mysql: {password: '\"$SINDRTHO_MYSQL_PASS\"'}}\" > server/private.config.js; npm install"
+    - "cd server; echo \"export default {mysql: {password: '\"$SINDRTHO_MYSQL_PASS\"'}}\" > private.config.js; npm install"
     script:
     - npm test
   - stage: test
