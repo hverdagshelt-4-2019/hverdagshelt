@@ -4,7 +4,7 @@
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
     "start-prod": "cross-env NODE_ENV=production babel-node src/index.js",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles --forceExit"
   },
   "jest": {
     "transform": {
@@ -26,7 +26,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-flow": "^7.0.0",
-    "argon2": "^0.20.0",
+    "argon2": "^0.19.3",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "express-fileupload": "^1.0.0-alpha.1",
