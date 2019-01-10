@@ -5,7 +5,7 @@ import { Component } from 'react-simplified';
 import { ticketService } from '../../Services/TicketService';
 import { Alert} from '../../widgets';
 
-export class Ticket_commune extends Component<{ match: { params: { id: number } } }> {
+export class Ticket_your extends Component<{ match: { params: { id: number } } }> {
   ticket = '';
 
   render() {
@@ -35,15 +35,7 @@ export class Ticket_commune extends Component<{ match: { params: { id: number } 
                 <b>Kommune:</b> Trondheim
               </span>
               <span id="company">
-                <b>Bedrift:</b> {' '}
-              <select>
-              <option>Ingen</option>
-                <option>Murerfirma</option>
-                <option>Statens Vegvesen</option>
-              </select>{' '}
-              <button type="button" className="btn btn-primary btn-sm">
-                Lagre
-              </button>
+                <b>Bedrift:</b> Ingen
               </span>
             </div>
             <div className="col-md-2" />
@@ -53,15 +45,7 @@ export class Ticket_commune extends Component<{ match: { params: { id: number } 
             <div className="col-md-2" />
             <div className="col-md-8" id="borderUp">
               <span id="commune">
-              <b>Status:</b>{' '}
-              <select>
-                <option>Avventer svar</option>
-                <option>Under behandling</option>
-                <option>Ferdig</option>
-              </select>{' '}
-              <button type="button" className="btn btn-primary btn-sm">
-                Lagre
-              </button>
+              <b>Status:</b> Avventer svar
               </span>
               <span id="company">
                 <b>Kategori:</b> Hærverk
@@ -88,7 +72,17 @@ export class Ticket_commune extends Component<{ match: { params: { id: number } 
 
           <div className="row">
             <div className="col-md-2" />
-            <div className="col-md-8" id="borderUp">Map</div>
+            <div className="col-md-8" id="borderDown">
+            <button type="button" class="btn btn-success" onClick={this.endre}>Endre</button>
+            {' '}
+            <button type="button" class="btn btn-danger" onClick={this.delete}>Slett</button>
+            </div>
+            <div className="col-md-2" />
+          </div>
+
+          <div className="row">
+            <div className="col-md-2" />
+            <div className="col-md-8" id="borderSide">Map</div>
             <div className="col-md-2" />
           </div>
 
@@ -111,5 +105,15 @@ export class Ticket_commune extends Component<{ match: { params: { id: number } 
       .getTicket(this.props.match.params.id)
       .then(ticket => (this.ticket = ticket[0]))
       .catch((error: Error) => Alert.danger(error.message));
+  }
+  endre() {
+    history.push('/ticket/edit/' + this.ticket.id);
+  }
+
+  delete() {
+    ticketService
+    .deleteTicket(this.ticket.id)
+    .catch((error: Error) => Alert.danger(error.message));
+    history.push('/home');
   }
 }

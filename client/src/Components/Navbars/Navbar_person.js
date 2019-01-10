@@ -14,15 +14,15 @@ export class Navbar_person extends Component {
               <span className="icon-bar" />
               <span className="icon-bar" />
               <span className="icon-bar" />
-            </button>
-            <NavLink className="navbar-brand" exact to="/">
+            </button> 
+            <NavLink className="navbar-brand" exact to="/home">
               HverdagsHelt
             </NavLink>
           </div>
           <div className="collapse navbar-collapse" id="myNavbar">
             <ul className="nav navbar-nav">
               <li className="active">
-                <NavLink to="/">
+                <NavLink to="/home">
                   <span className="glyphicon glyphicon-home" /> Hjem
                 </NavLink>
               </li>
@@ -59,7 +59,7 @@ export class Navbar_person extends Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/login">
+                <NavLink to="/">
                   <span className="glyphicon glyphicon-log-out" /> Log ut
                 </NavLink>
               </li>

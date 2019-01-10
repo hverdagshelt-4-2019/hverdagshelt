@@ -6,17 +6,6 @@ import { Component } from 'react-simplified';
 import { loginService } from '../../services/LoginService';
 
 export class Login extends Component {
-<<<<<<< HEAD
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: "",
-            password: ""
-        }
-        //this.login = this.login.bind(this);
-        this.onChange = this.onChange.bind(this);
-    }
-=======
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +15,6 @@ export class Login extends Component {
     this.login = this.login.bind(this);
     this.onChange = this.onChange.bind(this);
   }
->>>>>>> 7bf9917deb850f0dea1ca40acfef556c83236976
 
   login() {
     if (this.state.email && this.state.password) {
@@ -35,11 +23,7 @@ export class Login extends Component {
         console.log(localStorage.getItem('authToken'));
       });
     }
-<<<<<<< HEAD
-    
-=======
   }
->>>>>>> 7bf9917deb850f0dea1ca40acfef556c83236976
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
