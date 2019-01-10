@@ -3,12 +3,13 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { ticketService } from '../../Services/TicketService';
+import { Navbar_person } from '../Navbars/Navbar_person';
 
 export class AddTicket {
   render() {
     return (
-      <ul>
         <div className="container-fluid">
+        <Navbar_person />
           <div className="row">
             <div className="col-md-2" />
             <div className="col-md-8">
@@ -70,7 +71,6 @@ export class AddTicket {
             <div className="col-md-2" />
           </div>
         </div>
-      </ul>
     );
   }
 }

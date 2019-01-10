@@ -15,14 +15,14 @@ export class Navbar_commune extends Component {
               <span className="icon-bar" />
               <span className="icon-bar" />
             </button>
-            <NavLink className="navbar-brand" exact to="/home">
-              HverdagsHelt
+            <NavLink className="navbar-brand" exact to="/hjem">
+              <p>HverdagsHelt<img src="Skjermbilde.PNG" width="20" height="17" /></p>
             </NavLink>
           </div>
           <div className="collapse navbar-collapse" id="myNavbar">
             <ul className="nav navbar-nav">
               <li className="active">
-                <NavLink to="/home">
+                <NavLink to="/hjem">
                   <span className="glyphicon glyphicon-home" /> Hjem
                 </NavLink>
               </li>

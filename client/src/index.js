@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 import { Alert} from './widgets';
 import { Navbar_person } from './Components/Navbars/Navbar_person';
 import { Ticket_commune } from './Components/Ticket/Ticket_commune';
+import { TicketTest } from './Components/Ticket/TicketTest';
 import { AddTicket } from './Components/Ticket/AddTicket';
 import { Login } from './Components/Login/Login.js';
 import { Register } from './Components/Login/register.js';
@@ -18,7 +19,6 @@ if (root)
   ReactDOM.render(
     <HashRouter>
       <div>
-        <Navbar_person />
         <Route exact path="/" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/ticketlist" component={TicketList} />

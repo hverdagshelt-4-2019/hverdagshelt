@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { HashRouter, Route, NavLink } from 'react-router-dom';
 import { ticketService } from '../../services/TicketService';
+import { Navbar_person } from '../Navbars/Navbar_person';
 
 export class TicketList extends Component {
   communeIds = [];
@@ -12,6 +13,7 @@ export class TicketList extends Component {
   render() {
     return (
       <div className="container">
+      <Navbar_person />
         <br />
         <div className="row justify-content-between">
           <div
