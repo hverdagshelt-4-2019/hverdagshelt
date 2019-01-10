@@ -2,8 +2,10 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
+import { ticketService } from '../../Services/TicketService';
+import { Alert} from '../../widgets';
 
-export class Ticket_commune extends Component {
+export class Ticket_commune extends Component<{ match: { params: { id: number } } }> {
   ticket = '';
 
   render() {
@@ -12,28 +14,36 @@ export class Ticket_commune extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-2" />
-            <div className="col-md-8">
-              <img src="rhyme.jpg" />
+            <div className="col-md-8" id="borderUp">
+            <img src="rhyme.jpg" className="img-responsive" />
             </div>
             <div className="col-md-2" />
           </div>
 
           <div className="row">
             <div className="col-md-2" />
-            <div className="col-md-8">
-              <h1>Graffiti på vegg</h1>
+            <div className="col-md-8" id="borderUp">
+              <h1>Grafiti</h1>
             </div>
             <div className="col-md-2" />
           </div>
 
           <div className="row">
             <div className="col-md-2" />
-            <div className="col-md-8">
-              <span className="commune">
+            <div className="col-md-8" id="borderUp">
+              <span id="commune">
                 <b>Kommune:</b> Trondheim
               </span>
-              <span className="category">
-                <b>Kategori:</b> Hærverk
+              <span id="company">
+                <b>Bedrift:</b> {' '}
+              <select>
+              <option>Ingen</option>
+                <option>Murerfirma</option>
+                <option>Statens Vegvesen</option>
+              </select>{' '}
+              <button type="button" className="btn btn-primary btn-sm">
+                Lagre
+              </button>
               </span>
             </div>
             <div className="col-md-2" />
@@ -41,7 +51,8 @@ export class Ticket_commune extends Component {
 
           <div className="row">
             <div className="col-md-2" />
-            <div className="col-md-8">
+            <div className="col-md-8" id="borderUp">
+              <span id="commune">
               <b>Status:</b>{' '}
               <select>
                 <option>Avventer svar</option>
@@ -51,35 +62,39 @@ export class Ticket_commune extends Component {
               <button type="button" className="btn btn-primary btn-sm">
                 Lagre
               </button>
+              </span>
+              <span id="company">
+                <b>Kategori:</b> Hærverk
+              </span>
             </div>
             <div className="col-md-2" />
           </div>
 
           <div className="row">
             <div className="col-md-2" />
-            <div className="col-md-8">Maaaaaaaaaassssee tekst</div>
-            <div className="col-md-2" />
-          </div>
-
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8">Map</div>
-            <div className="col-md-2" />
-          </div>
-
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8">
-              <h4>Svar fra kommune:</h4>
-              <textarea rows="10" cols="100" />
-              <button className="button">Send</button>
+            <div className="col-md-8" id="borderUp">
+              <b>Innsendt:</b> 09:31 10.01.2019
             </div>
             <div className="col-md-2" />
           </div>
 
           <div className="row">
             <div className="col-md-2" />
-            <div className="col-md-8">
+            <div className="col-md-8" id="borderUp">
+            Dayo dayo dayo
+            </div>
+            <div className="col-md-2" />
+          </div>
+
+          <div className="row">
+            <div className="col-md-2" />
+            <div className="col-md-8" id="borderUp">Map</div>
+            <div className="col-md-2" />
+          </div>
+
+          <div className="row">
+            <div className="col-md-2" />
+            <div className="col-md-8" id="border">
               <h4>Skriv melding:</h4>
               <textarea rows="10" cols="100" />
               <button className="button">Send</button>
@@ -89,5 +104,12 @@ export class Ticket_commune extends Component {
         </div>
       </ul>
     );
+  }
+
+  mounted() {
+    ticketService
+      .getTicket(this.props.match.params.id)
+      .then(ticket => (this.ticket = ticket[0]))
+      .catch((error: Error) => Alert.danger(error.message));
   }
 }

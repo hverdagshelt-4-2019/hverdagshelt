@@ -1,10 +1,31 @@
-.col-md-8 {
+
+#border {
     border-style: solid;
     padding: 20px;
 }
 
-.col-md-8 .commune { float:left }
-.col-md-8 .category { float:right }
+#borderUp {
+    border-top-style: solid;
+  border-right-style: solid;
+  border-left-style: solid;
+  padding: 20px;
+}
+
+#borderDown {
+    border-bottom-style: solid;
+    border-right-style: solid;
+    border-left-style: solid;
+    padding: 20px;
+}
+
+#borderSide {
+    border-right-style: solid;
+    border-left-style: solid;
+    padding: 20px;
+}
+
+#commune { float:left }
+#company { float:right }
 
 .button {
     background-color: white;
