@@ -6,7 +6,8 @@ import TicketDao from './dao/ticketDao.js'
 import CategoryDao from './dao/categoryDao.js'
 import EventDao from './dao/eventDao.js'
 import CommuneDao from './dao/communeDao'
-import path from 'path';
+import path from 'path'
+import fileUpload from 'express-fileupload';
 
 export function create_app(pool) {
     let app = express();
@@ -132,6 +133,46 @@ export function create_app(pool) {
             }
         });
 
+    });
+
+    /* Upload image with the ticetkId for the ticket that the image
+    is connected to.*/ 
+    app.put("/image/:ticketId", (req, res) => {
+        console.log("Got PUT-request from client");
+        const { ticketId } = req.params;
+        if (!req.files) {
+            console.log("no files were uploaded");
+            return res.status(400).send("No files were uploaded.");
+        }
+
+        console.log("files where uploaded");
+        let file = req.files.uploaded_image;
+        let img_name = file.name;
+
+        if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
+            console.log("Correct type of image");
+            file.mv('src/images/' + img_name, function (err) {
+
+                if (err) {
+                    return res.status(500).send(err);
+                }
+                /*
+                Here you have to add how the path will be saved in database. Some example code under
+                let val = [img_name, ticketId];
+                ticketDao.updateImage(val, (status, data) => {
+                    res.status(status);
+                    res.json(data);
+                });*/
+            });
+        }
+    });
+
+    //get image from server side and send to frontend
+    app.get("/image/:fileid", (req, res) => {
+        const { fileid } = req.params;
+        let fileN = '/images/'+fileid;
+        console.log(fileN);
+        res.sendFile(fileN, {root: __dirname});//sending the file that is in the foldier with root from the server
     });
 
     app.post("/event", (req, res) =>{});
