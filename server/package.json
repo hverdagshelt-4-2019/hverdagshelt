@@ -4,7 +4,7 @@
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
     "start-prod": "cross-env NODE_ENV=production babel-node src/index.js",
-    "test": "jest --forceExit"
+    "test": "jest --detectOpenHandles"
   },
   "jest": {
     "transform": {
@@ -39,6 +39,7 @@
     "sequelize": "^4.41.0"
   },
   "devDependencies": {
+    "node-fetch": "^2.3.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-7-jest": "^21.3.3",
     "cross-env": "^5.2.0",
