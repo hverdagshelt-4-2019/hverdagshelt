@@ -6,7 +6,7 @@ export default class UserDao extends Dao {
         super.query("SELECT id, email FROM person WHERE id=?", [id], callback);
     };
 
-    createOne(json, callback) {
+    /*createOne(json, callback) {
         if(json.password.length < 8){
             callback(400, {error: "Password"});
         } else {
@@ -18,7 +18,7 @@ export default class UserDao extends Dao {
                 );
             });
         }
-    }
+    }*/
 
     updateEmail(json, callback) {
         super.query("UPDATE person SET email = ? WHERE id = ?",
@@ -26,7 +26,7 @@ export default class UserDao extends Dao {
             callback)
     }
 
-    updatePassword(json, callback) {
+   /* updatePassword(json, callback) {
         if(json.newPassword.length < 8) {
             callback(400, {error: "Password"});
         } else {
@@ -48,7 +48,7 @@ export default class UserDao extends Dao {
                 }
             });
         }
-    }
+    }*/
 
     deleteOne(id, callback){
         super.query("DELETE FROM person WHERE id = ?", [id], callback);
@@ -70,7 +70,7 @@ export default class UserDao extends Dao {
     }
 };
 
-import argon2 from "argon2"
+/*import argon2 from "argon2"
 
 function create_password(password: string){
     return argon2.hash(password, {
@@ -85,4 +85,4 @@ function create_password(password: string){
 
 function validate_password(password: string, hash: string){
     return argon2.verify(hash, password)
-}
+}*/
