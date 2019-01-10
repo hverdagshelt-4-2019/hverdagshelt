@@ -268,22 +268,134 @@ export function create_app(pool) {
     Put-functions
      */
 
-    app.put("/ticket/:id", (req, res) =>{});
+    app.put("/ticket/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(req.body.submitterid === authData.id) {
+                    ticketdao.editTicket(req.params.id, req.body, (status, data) => {
+                       console.log("Edited ticket");
+                       res.status(status);
+                       res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        })
+    });
 
-    app.put("/user/:id", (req, res) =>{});
+    app.put("/usermail/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(req.params.id === authData.id) {
+                    userdao.updateEmail(req.params.id, req.body, (status, data) => {
+                       console.log("Edited username");
+                       res.status(status);
+                       res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        })
+    });
 
-    app.put("/event/:id", (req, res) =>{});
+    app.put("/userpass/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(req.params.id === authData.id) {
+                    userdao.updatePassword(req.params.id, req.body, (status, data) => {
+                        console.log("Edited password");
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        })
+    });
+
+    app.put("/event/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(authData.isadmin || authData.publicworkercommune) {
+                    eventdao.updateOne(req.params.id, req.body, (status, data) => {
+                       console.log("Edited event");
+                       res.status(status);
+                       res.json(data);
+                    });
+                } else {
+                    res.status(403);
+                }
+            }
+        });
+    });
 
 
     /*
     Delete-functions
      */
 
-    app.delete("/ticket/:id", (req, res) =>{});
+    app.delete("/ticket/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(req.body.submitterid === authData.id) {
+                    ticketdao.deleteTicket(req.params.id, (status, data) => {
+                        console.log("Deleted ticket");
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        })
+    });
 
-    app.delete("/user/:id", (req, res) =>{});
+    app.delete("/user/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(req.params.id === authData.id) {
+                    userdao.deleteOne(req.params.id, (status, data) => {
+                        console.log("Deleted user");
+                        res.status(status);
+                        res.json(data);
+                    })
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        })
+    });
 
-    app.delete("/event/:id", (req, res) =>{});
+    app.delete("/event/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(authData.isadmin || authData.publicworkercommune) {
+                    console.log("Deleted event");
+                    res.status(status);
+                    res.json(data);
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        })
+    });
 
     app.get("*", (req,res, next) =>{
         let options = {};
