@@ -5,7 +5,10 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { HashRouter, Route, NavLink } from 'react-router-dom';
 import {registerService} from '../../services/RegisterService';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4309d26db8a4a9358836c1c62f0539a8f8363cd5
 
 //Need route to login site.
 export class Register extends Component {
@@ -50,5 +53,9 @@ export class Register extends Component {
             this.warning = "Passordene du skrev inn stemmer ikke overens.";
         }
     }
+<<<<<<< HEAD
 }
 
+=======
+  }
+>>>>>>> 4309d26db8a4a9358836c1c62f0539a8f8363cd5
