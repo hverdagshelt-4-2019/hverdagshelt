@@ -2,7 +2,7 @@ import {create_app} from './server.js'
 import mysql from "mysql2";
 import config from "../config"
 
-var pool = mysql.createPool(config.mysql);
+let pool = mysql.createPool(config.mysql);
 
 let app = create_app(pool);
 

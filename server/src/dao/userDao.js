@@ -20,9 +20,9 @@ export default class UserDao extends Dao {
         }
     }
 
-    updateEmail(json, callback) {
+    updateEmail(id, json, callback) {
         super.query("UPDATE person SET email = ? WHERE id = ?",
-            [json.email, json.id],
+            [json.email, id],
             callback)
     }
 
@@ -30,13 +30,13 @@ export default class UserDao extends Dao {
         if(json.newPassword.length < 8) {
             callback(400, {error: "Password"});
         } else {
-            super.query("SELECT password FROM person WHERE id = ?", json.id, (code, rows) => {
+            super.query("SELECT password FROM person WHERE id = ?", id, (code, rows) => {
                 if (code === 200) {
                     validate_password(json.oldPassword, rows.password).then(okay => {
                         if (okay) {
                             create_password(json.newPassword).then(password => {
                                 super.query("UPDATE person SET password = ? WHERE id = ?",
-                                    [password, json.id],
+                                    [password, id],
                                     callback)
                             });
                         } else {

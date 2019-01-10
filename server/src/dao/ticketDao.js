@@ -4,7 +4,7 @@ export default class TicketDao extends Dao {
     getATicket(id, callback) {
         super.query("SELECT t.id, email as submitter_email, responsible_commune, c2.name as company_name, category, " +
             "title, description, picture, submitted_time, finished_time, status, lat, lng FROM ticket t JOIN person p " +
-            "ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id WHERE ticket.id = ?;",
+            "ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id WHERE t.id = ?;",
             [id],
             callback)
     }
@@ -33,8 +33,8 @@ export default class TicketDao extends Dao {
             callback)
     }
     
-    editTicket(json, callback) {
-        let params = [json.companyid, json.category, json.title, json.description, json.picture, json.status, json.lat, json.long, json.ticketid]
+    editTicket(id, json, callback) {
+        let params = [json.companyid, json.category, json.title, json.description, json.picture, json.status, json.lat, json.long, id]
         super.query(
             "UPDATE TABLE ticket SET responsible_company_id = ?, category = ?, title = ?, description = ?, picture = ?, ticket.status = ?, lat = ?, lng = ? WHERE id = ?;",
             params,

@@ -22,15 +22,13 @@ export function create_app(pool) {
     const communedao = new CommuneDao(pool);
     const commentdao = new CommentDao(pool);
     const admindao = new AdminDao(pool);
-    const conpanydao = new CompanyDao(pool);
+    const companydao = new CompanyDao(pool);
     const publicworkerdao = new PublicWorkerDao(pool);
 
     app.use(express.json());
 
 
     const client_public = path.join(__dirname,'..','..','client','public');
-    /*const public_path = path.join(__dirname, '/../../client/public');
-    app.use(express.static(public_path));*/
 
     /*
     Get-functions
@@ -116,6 +114,34 @@ export function create_app(pool) {
         });
     });
 
+    app.get("/users", (req, res) =>{
+        userdao.getAll((status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/companies", (req, res) => {
+        companydao.getAll((status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/admins", (req, res) =>{
+        admindao.getAll((status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/publicworkers", (req, res) =>{
+        publicworkerdao.getAll((status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
     /*
     Post-functions
      */
@@ -163,7 +189,7 @@ export function create_app(pool) {
                     title: req.body.title,
                     category: req.body.category,
                     description: req.body.description,
-                    picture: req.body.picture,
+                    picture: (req.body.picture != null ? req.body.picture : "./logo.PNG"),
                     lat: req.body.lat,
                     long: req.body.long
                 }
@@ -188,13 +214,17 @@ export function create_app(pool) {
                     console.log("admin");
                     let newEvent = {
                         "submitter_id": authData.user.id,
-                        "commune_name": authData.body.commune,
+                        "commune_name": req.body.commune_name,
                         "category": req.body.category,
                         "title": req.body.title,
                         "description": req.body.description,
-                        "picture": (req.body.picture != null ? req.body.picture : "server/resources/logo.PNG"),
+                        "picture": (req.body.picture != null ? req.body.picture : "./logo.PNG"),
                         "happening_time": req.body.time
                     }
+                    eventdao.createOne(newEvent, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
                 } else if(authData.user.publicworkercommune) {
                     console.log("public worker");
                     let newEvent = {
@@ -203,9 +233,13 @@ export function create_app(pool) {
                         "category": req.body.category,
                         "title": req.body.title,
                         "description": req.body.description,
-                        "picture": (req.body.picture != null ? req.body.picture : "server/resources/logo.PNG"),
+                        "picture": (req.body.picture != null ? req.body.picture : "./logo.PNG"),
                         "happening_time": req.body.time
                     }
+                    eventdao.createOne(newEvent, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
                 } else {
                     res.sendStatus(403);
                 }
@@ -213,17 +247,26 @@ export function create_app(pool) {
         });
     });
 
-    app.post("/comment", (req, res) =>{
+    app.post("/comment", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 res.sendStatus(500);
             } else {
-
+                let newComment = {
+                    "ticket_id": req.body.ticketid,
+                    "description": req.body.description,
+                    "submitter_id": authData.user.id
+                }
+                commentdao.addComment(newComment, (status, data) =>{
+                    console.log('data:' + data);
+                    res.status(status);
+                    res.json(data);
+                });
             }
         });
     });
 
-    app.post("/eventcat", (req, res) =>{
+    app.post("/eventcat", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 res.sendStatus(500);
@@ -241,7 +284,7 @@ export function create_app(pool) {
         });
     });
 
-    app.post("/ticketcat", (req, res) => {
+    app.post("/ticketcat", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 res.sendStatus(500);
@@ -259,33 +302,190 @@ export function create_app(pool) {
         });
     });
 
-    app.post("/admin", (req, res) =>{});
+    app.post("/admin", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(authData.user.isadmin) {
+                    admindao.createAdmin(req.body, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        });
+    });
 
-    app.post("/company", (req, res) =>{});
+    app.post("/company", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(authData.user.isadmin || authData.user.publicworkercommune) {
+                    companydao.createCompany(req.body, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        });
+    });
 
-    app.post("/publicworker", (req, res) =>{});
+    app.post("/publicworker", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(authData.user.isadmin) {
+                    publicworkerdao.createPublicworker(req.body, (stauts, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        });
+    });
 
 
     /*
     Put-functions
      */
 
-    app.put("/ticket/:id", (req, res) =>{});
+    app.put("/ticket/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(req.body.submitterid == authData.user.id) {
+                    ticketdao.editTicket(req.params.id, req.body, (status, data) => {
+                       console.log("Edited ticket");
+                       res.status(status);
+                       res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        })
+    });
 
-    app.put("/user/:id", (req, res) =>{});
+    app.put("/usermail/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(req.params.id == authData.user.id) {
+                    userdao.updateEmail(req.params.id, req.body, (status, data) => {
+                       console.log("Edited username");
+                       res.status(status);
+                       res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        })
+    });
 
-    app.put("/event/:id", (req, res) =>{});
+    app.put("/userpass/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(req.params.id == authData.user.id) {
+                    userdao.updatePassword(req.params.id, req.body, (status, data) => {
+                        console.log("Edited password");
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        })
+    });
+
+    app.put("/event/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(authData.user.isadmin || authData.user.publicworkercommune) {
+                    eventdao.updateOne(req.params.id, req.body, (status, data) => {
+                       console.log("Edited event");
+                       res.status(status);
+                       res.json(data);
+                    });
+                } else {
+                    res.status(403);
+                }
+            }
+        });
+    });
 
 
     /*
     Delete-functions
      */
 
-    app.delete("/ticket/:id", (req, res) =>{});
+    app.delete("/ticket/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(req.body.submitterid == authData.user.id) {
+                    ticketdao.deleteTicket(req.params.id, (status, data) => {
+                        console.log("Deleted ticket");
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        })
+    });
 
-    app.delete("/user/:id", (req, res) =>{});
+    app.delete("/user/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(req.params.id == authData.user.id) {
+                    userdao.deleteOne(req.params.id, (status, data) => {
+                        console.log("Deleted user");
+                        res.status(status);
+                        res.json(data);
+                    })
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        })
+    });
 
-    app.delete("/event/:id", (req, res) =>{});
+    app.delete("/event/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(authData.user.isadmin || authData.user.publicworkercommune) {
+                    console.log("Deleted event");
+                    res.status(status);
+                    res.json(data);
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        })
+    });
 
     app.get("*", (req,res, next) =>{
         let options = {};
@@ -293,7 +493,7 @@ export function create_app(pool) {
         if(req.url.includes('.')){
             file = req.url.split('/').pop();
         }
-        //console.log(req);
+
         res.sendFile(path.join(client_public, file), options, (err)=>{
             if(err) next();
         });

@@ -138,6 +138,15 @@ INSERT INTO happening_category VALUES
 ("Brannøvelse"),
 ("Sirenetesting");
 
+-- Random admins
+
+INSERT INTO admin VALUES
+(17),
+(872),
+(276),
+(1024),
+(1298);
+
 -- Random happenings
 
 INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES
