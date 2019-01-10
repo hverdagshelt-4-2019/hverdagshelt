@@ -361,7 +361,9 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(500);
             } else {
-                if(req.body.submitterid == authData.user.id) {
+                console.log(req.body.submitter_id);
+                console.log(authData.user.id);
+                if(req.body.submitter_id == authData.user.id) {
                     ticketdao.editTicket(req.params.id, req.body, (status, data) => {
                        console.log("Edited ticket");
                        res.status(status);
@@ -372,6 +374,23 @@ export function create_app(pool) {
                 }
             }
         })
+    });
+
+    app.put("/ticketstatus/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(authData.user.isadmin || authData.user.publicworkercommune == req.body.commune) {
+                    ticketdao.editTicket(req.params.id, req.body, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        });
     });
 
     app.put("/usermail/:id", verifyToken, (req, res) =>{
@@ -438,7 +457,7 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(500);
             } else {
-                if(req.body.submitterid == authData.user.id) {
+                if(req.body.submitter_id == authData.user.id) {
                     ticketdao.deleteTicket(req.params.id, (status, data) => {
                         console.log("Deleted ticket");
                         res.status(status);
