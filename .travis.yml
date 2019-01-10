@@ -1,23 +1,24 @@
+dist: xenial
 language: node_js
-
 node_js:
-  - "11"
-
+- '11'
 stages:
-    - test
-
+- test
 jobs:
-    include:
-        - stage: test
-          name: test_server
-          before_script:
-            - cd server; npm install
-          script:
-            - npm test
+  include:
 
-        - stage: test
-          name: test_client
-          before_script:
-            - cd client; npm install
-          script:
-            - npm test
+  - stage: test
+    name: test_server
+    before_script:
+    - "cd server; echo \"export default {mysql: {password: '\"$SINDRTHO_MYSQL_PASS\"'}}\" > private.config.js; npm install"
+    script:
+    - npm test
+  - stage: test
+    name: test_client
+    before_script:
+    - cd client; npm install
+    script:
+    - npm test
+env:
+  global:
+  - secure: LPkQo4ve8Be+cla4wsCJJmysaUXLLFN7bJEtkzN4IoH5zG7MBP0KGyKdwG5d7j/ncv3b317oCjbJ1D4HtUrqSRzGxpOllS4A5JclRGg0IUOlRm+aY5IyhppjcI+V9RCoZyviHnK7v1wwvyYJKk4TP0GNalcKTPeXDcypdohAjqDousGOR9Rj1s/K/LvcP+0zKrXkPkrRmYebTDKzbPUGRtGwj+Sv+47oU0tE1DhB57ztR5OEXWMrJX6o/dFbnzteVKl/vBxcxzea/JiUYQGtrLcuppKeeQv8mcLIfHPzqhuoT7CN1uxF7dQ1bw0Pavj90ZfCu7zdCjy1X9Bvvtp4bsf7oPqF9ghq47OlIh+2WSFa2AdkS2IKASyfBMBaiCSmijE5TACLcGuORtYjVRAVk6hp0858IH75le1P41zuRxr7mMsqnViA1NOg2Vc3fVkk4TDDuFVd7Egwal/IFnxIXeK9T92IwSaQ7f5bb+F8QU2c76i7U1AXP69jL8TiE6rIuo3hoS7he1GPtBbjxR3MHpCXSvfeOv/+CyYG67xh7N7fy2KBok7CffLquAHQXEmfZYeDYciF0BrWg7nKNn+6S5AfrC9Z/vcRvjUcXRWvJjspirhjFGR521CGd83EWprGTP4iXkAVKdh4m1rLCCw8svq2YSsBpY/3iJ2g1MvCpic=
