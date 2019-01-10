@@ -361,7 +361,7 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(500);
             } else {
-                if(req.body.submitterid === authData.id) {
+                if(req.body.submitterid == authData.user.id) {
                     ticketdao.editTicket(req.params.id, req.body, (status, data) => {
                        console.log("Edited ticket");
                        res.status(status);
