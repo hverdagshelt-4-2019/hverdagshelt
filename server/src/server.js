@@ -188,7 +188,7 @@ export function create_app(pool) {
                     title: req.body.title,
                     category: req.body.category,
                     description: req.body.description,
-                    picture: req.body.picture,
+                    picture: (req.body.picture != null ? req.body.picture : "./logo.PNG"),
                     lat: req.body.lat,
                     long: req.body.long
                 }
@@ -212,13 +212,17 @@ export function create_app(pool) {
                     console.log("admin");
                     let newEvent = {
                         "submitter_id": authData.user.id,
-                        "commune_name": authData.body.commune,
+                        "commune_name": req.body.commune_name,
                         "category": req.body.category,
                         "title": req.body.title,
                         "description": req.body.description,
-                        "picture": (req.body.picture != null ? req.body.picture : "server/resources/logo.PNG"),
+                        "picture": (req.body.picture != null ? req.body.picture : "./logo.PNG"),
                         "happening_time": req.body.time
                     }
+                    eventdao.createOne(newEvent, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
                 } else if(authData.user.publicworkercommune) {
                     console.log("public worker");
                     let newEvent = {
@@ -227,9 +231,13 @@ export function create_app(pool) {
                         "category": req.body.category,
                         "title": req.body.title,
                         "description": req.body.description,
-                        "picture": (req.body.picture != null ? req.body.picture : "server/resources/logo.PNG"),
+                        "picture": (req.body.picture != null ? req.body.picture : "./logo.PNG"),
                         "happening_time": req.body.time
                     }
+                    eventdao.createOne(newEvent, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
                 } else {
                     res.sendStatus(403);
                 }
@@ -298,7 +306,10 @@ export function create_app(pool) {
                 res.sendStatus(500);
             } else {
                 if(authData.user.isadmin) {
-                    admindao.createAdmin(req.body);
+                    admindao.createAdmin(req.body, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
                 } else {
                     res.sendStatus(403);
                 }
@@ -350,7 +361,7 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(500);
             } else {
-                if(req.body.submitterid === authData.id) {
+                if(req.body.submitterid == authData.user.id) {
                     ticketdao.editTicket(req.params.id, req.body, (status, data) => {
                        console.log("Edited ticket");
                        res.status(status);
@@ -368,7 +379,7 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(500);
             } else {
-                if(req.params.id === authData.id) {
+                if(req.params.id == authData.user.id) {
                     userdao.updateEmail(req.params.id, req.body, (status, data) => {
                        console.log("Edited username");
                        res.status(status);
@@ -386,7 +397,7 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(500);
             } else {
-                if(req.params.id === authData.id) {
+                if(req.params.id == authData.user.id) {
                     userdao.updatePassword(req.params.id, req.body, (status, data) => {
                         console.log("Edited password");
                         res.status(status);
@@ -404,7 +415,7 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(500);
             } else {
-                if(authData.isadmin || authData.publicworkercommune) {
+                if(authData.user.isadmin || authData.user.publicworkercommune) {
                     eventdao.updateOne(req.params.id, req.body, (status, data) => {
                        console.log("Edited event");
                        res.status(status);
@@ -427,7 +438,7 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(500);
             } else {
-                if(req.body.submitterid === authData.id) {
+                if(req.body.submitterid == authData.user.id) {
                     ticketdao.deleteTicket(req.params.id, (status, data) => {
                         console.log("Deleted ticket");
                         res.status(status);
@@ -445,7 +456,7 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(500);
             } else {
-                if(req.params.id === authData.id) {
+                if(req.params.id == authData.user.id) {
                     userdao.deleteOne(req.params.id, (status, data) => {
                         console.log("Deleted user");
                         res.status(status);
@@ -463,7 +474,7 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(500);
             } else {
-                if(authData.isadmin || authData.publicworkercommune) {
+                if(authData.user.isadmin || authData.user.publicworkercommune) {
                     console.log("Deleted event");
                     res.status(status);
                     res.json(data);
