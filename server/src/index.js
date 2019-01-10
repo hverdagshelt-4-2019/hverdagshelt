@@ -1,5 +1,6 @@
 import {create_app} from './server.js'
 import mysql from "mysql2";
+let bodyParser = require("body-parser");
 
 var pool = mysql.createPool({
     connectionLimit: 2,

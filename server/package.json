@@ -11,9 +11,10 @@
     "testURL": "http://localhost"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
-    "express-fileupload": "^1.0.0",
+    "express-fileupload": "^1.0.0-alpha.1",
     "json5": "^2.1.0",
     "jsonwebtoken": "^8.4.0",
     "mysql2": "^1.6.1",
