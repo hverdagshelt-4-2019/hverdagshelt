@@ -29,8 +29,6 @@ export function create_app(pool) {
 
 
     const client_public = path.join(__dirname,'..','..','client','public');
-    /*const public_path = path.join(__dirname, '/../../client/public');
-    app.use(express.static(public_path));*/
 
     /*
     Get-functions
@@ -291,7 +289,6 @@ export function create_app(pool) {
         if(req.url.includes('.')){
             file = req.url.split('/').pop();
         }
-        console.log(req);
         res.sendFile(path.join(client_public, file), options, (err)=>{
             if(err) next();
         });
