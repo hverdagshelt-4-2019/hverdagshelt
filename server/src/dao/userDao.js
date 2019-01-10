@@ -70,7 +70,7 @@ export default class UserDao extends Dao {
     }
 };
 
-/*import argon2 from "argon2"
+import argon2 from "argon2"
 
 function create_password(password: string){
     return argon2.hash(password, {
@@ -85,4 +85,4 @@ function create_password(password: string){
 
 function validate_password(password: string, hash: string){
     return argon2.verify(hash, password)
-}*/
+}
