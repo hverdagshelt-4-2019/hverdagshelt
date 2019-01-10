@@ -22,7 +22,7 @@ export function create_app(pool) {
     const communedao = new CommuneDao(pool);
     const commentdao = new CommentDao(pool);
     const admindao = new AdminDao(pool);
-    const conpanydao = new CompanyDao(pool);
+    const companydao = new CompanyDao(pool);
     const publicworkerdao = new PublicWorkerDao(pool);
 
     app.use(express.json());
@@ -109,6 +109,34 @@ export function create_app(pool) {
     app.get("/communes", (req, res) =>{
         communedao.getAll((status, data) =>{
             console.log('data' + data);
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/users", (req, res) =>{
+        userdao.getAll((status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/companies", (req, res) {
+        companydao.getAll((status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/admins", (req, res) =>{
+        admindao.getAll((status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/publicworkers", (req, res) =>{
+        publicworkerdao.getAll((status, data) =>{
             res.status(status);
             res.json(data);
         });
@@ -209,17 +237,26 @@ export function create_app(pool) {
         });
     });
 
-    app.post("/comment", (req, res) =>{
+    app.post("/comment", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 res.sendStatus(500);
             } else {
-
+                let newComment = {
+                    "ticket_id": req.body.ticketid,
+                    "description": req.body.description,
+                    "submitter_id": authData.user.id
+                }
+                commentdao.addComment(newComment, (status, data) =>{
+                    console.log('data:' + data);
+                    res.status(status);
+                    res.json(data);
+                });
             }
         });
     });
 
-    app.post("/eventcat", (req, res) =>{
+    app.post("/eventcat", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 res.sendStatus(500);
@@ -237,7 +274,7 @@ export function create_app(pool) {
         });
     });
 
-    app.post("/ticketcat", (req, res) => {
+    app.post("/ticketcat", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 res.sendStatus(500);
@@ -255,11 +292,53 @@ export function create_app(pool) {
         });
     });
 
-    app.post("/admin", (req, res) =>{});
+    app.post("/admin", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(authData.user.isadmin) {
+                    admindao.createAdmin(req.body);
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        });
+    });
 
-    app.post("/company", (req, res) =>{});
+    app.post("/company", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(authData.user.isadmin || authData.user.publicworkercommune) {
+                    companydao.createCompany(req.body, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        });
+    });
 
-    app.post("/publicworker", (req, res) =>{});
+    app.post("/publicworker", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(authData.user.isadmin) {
+                    publicworkerdao.createPublicworker(req.body, (stauts, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        });
+    });
 
 
     /*
