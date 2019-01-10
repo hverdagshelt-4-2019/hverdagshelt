@@ -6,7 +6,11 @@ export default class UserDao extends Dao {
         super.query("SELECT id, email FROM person WHERE id=?", [id], callback);
     };
 
-    /*createOne(json, callback) {
+    getAll(callback) {
+        super.query("SELECT id, email FROM person WHERE id NOT IN (SELECT id FROM admin UNION (SELECT id FROM public_worker) UNION (SELECT id FROM company))", [], callback);
+    }
+
+    createOne(json, callback) {
         if(json.password.length < 8){
             callback(400, {error: "Password"});
         } else {
@@ -18,7 +22,7 @@ export default class UserDao extends Dao {
                 );
             });
         }
-    }*/
+    }
 
     updateEmail(json, callback) {
         super.query("UPDATE person SET email = ? WHERE id = ?",
@@ -26,7 +30,7 @@ export default class UserDao extends Dao {
             callback)
     }
 
-   /* updatePassword(json, callback) {
+   updatePassword(json, callback) {
         if(json.newPassword.length < 8) {
             callback(400, {error: "Password"});
         } else {
@@ -48,7 +52,7 @@ export default class UserDao extends Dao {
                 }
             });
         }
-    }*/
+    }
 
     deleteOne(id, callback){
         super.query("DELETE FROM person WHERE id = ?", [id], callback);
