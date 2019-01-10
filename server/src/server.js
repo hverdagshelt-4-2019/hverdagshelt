@@ -128,16 +128,17 @@ export function create_app(pool) {
     });
 
     app.post("/login", (req, res) => {
-        userdao.login(req.body, (status, data) =>{
-            if(status == 200) {
+        console.log("login request");
+        userdao.login(req.body, (status, data) => {
+            if (status == 200) {
                 const user = {
                     email: req.body.email,
                     id: data[0].id,
                     isadmin: (data[0].isAdmin != null),
                     publicworkercommune: (data[0].commune_name != null ? data[0].commune_name : false)    // Null if not a publicworker
                 }
-                console.log(JSON.stringify(user))
-                jwt.sign({user}, 'key',{expiresIn: '30m'}, (err, token) => {
+                console.log(JSON.stringify(user));
+                jwt.sign({user}, 'key', {expiresIn: '30d'}, (err, token) => {
                     res.status(status);
                     res.json({
                         token
@@ -148,6 +149,7 @@ export function create_app(pool) {
                 res.json(data);
             }
         });
+    });
 
     app.post("/ticket", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData) =>{
@@ -175,7 +177,8 @@ export function create_app(pool) {
 
     });
 
-    app.post("/event", verifyToken, (req, res) =>{
+    app.post("/event", (req, res) =>{
+
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 console.log(err);
@@ -290,7 +293,7 @@ export function create_app(pool) {
         if(req.url.includes('.')){
             file = req.url.split('/').pop();
         }
-        console.log(req);
+        //console.log(req);
         res.sendFile(path.join(client_public, file), options, (err)=>{
             if(err) next();
         });
@@ -298,10 +301,11 @@ export function create_app(pool) {
 
     
 // Verify token
+// Verify token
     function verifyToken(req, res, next) {
         const bearerHeader = req.headers['authorization'];
 
-         if(typeof bearerHeader !== 'undefined') {
+        if(typeof bearerHeader !== 'undefined') {
             const bearer = bearerHeader.split(' ');
             const bearerToken = bearer[1];
             req.token = bearerToken;

@@ -55,6 +55,7 @@ export default class UserDao extends Dao {
     }
 
     login(json, callback){
+        console.log("logging in dao");
         super.query("SELECT person.id, admin.id as isAdmin, commune_name, password FROM person LEFT JOIN admin on person.id = admin.id LEFT JOIN public_worker on public_worker.id = person.id WHERE email = ?",
             json.email,
             (status, data) => {
