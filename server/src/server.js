@@ -184,24 +184,24 @@ export function create_app(pool) {
                 if(authData.user.isadmin) {
                     console.log("admin");
                     let newEvent = {
-                        "submitter_id": ,
-                        "commune_name": ,
-                        "category": ,
-                        "title": ,
-                        "description": ,
-                        "picture": ,
-                        "happening_time":
+                        "submitter_id": authData.user.id,
+                        "commune_name": authData.body.commune,
+                        "category": req.body.category,
+                        "title": req.body.title,
+                        "description": req.body.description,
+                        "picture": (req.body.picture != null ? req.body.picture : "server/resources/logo.PNG"),
+                        "happening_time": req.body.time
                     }
                 } else if(authData.user.publicworkercommune) {
                     console.log("public worker");
                     let newEvent = {
-                        "submitter_id": ,
-                        "commune_name": ,
-                        "category": ,
-                        "title": ,
-                        "description": ,
-                        "picture": (req.body.picture != null ? req.body.picture),
-                        "happening_time":
+                        "submitter_id": authData.user.id,
+                        "commune_name": authData.user.publicworkercommune,
+                        "category": req.body.category,
+                        "title": req.body.title,
+                        "description": req.body.description,
+                        "picture": (req.body.picture != null ? req.body.picture : "server/resources/logo.PNG"),
+                        "happening_time": req.body.time
                     }
                 } else {
                     res.sendStatus(403);
@@ -212,13 +212,39 @@ export function create_app(pool) {
 
     app.post("/comment", (req, res) =>{});
 
-    app.post("/eventcat", (req, res) =>{});
+    app.post("/eventcat", (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(authData.user.isadmin || authData.user.publicworkercommune) {
+                    categorydao.createOneEvent(req.body.name, (status, data) => {
+                        console.log('Added');
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        });
+    });
 
     app.post("/ticketcat", (req, res) => {
-        categorydao.createOneTicket(req.body.name, (status, data) => {
-            res.status(status);
-            res.json(data);
-            console.log('Added')
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(authData.user.isadmin || authData.user.publicworkercommune) {
+                    categorydao.createOneTicket(req.body.name, (status, data) => {
+                        console.log('Added');
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
         });
     });
 
