@@ -4,7 +4,7 @@ env:
 - CXX=g++-6
 
 node_js:
-  - 10
+  - "11"
 
 stages:
     - test
