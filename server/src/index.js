@@ -1,15 +1,11 @@
 import {create_app} from './server.js'
 import mysql from "mysql2";
+import config from "../config"
 
-var pool = mysql.createPool({
-    connectionLimit: 2,
-    host: 'localhost',
-    user: 'root',
-    password: 'qwerty',
-    database: 'hverdagshelt_dev',
-    debug: false
-});
+var pool = mysql.createPool(config.mysql);
 
 let app = create_app(pool);
 
-let server = app.listen(3000);
+let server = app.listen(config.port);
+
+console.log("Listening on port", config.port);
