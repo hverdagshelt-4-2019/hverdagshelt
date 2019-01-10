@@ -1,10 +1,8 @@
-//@flow
-
-import {ReactDOM} from 'react-dom';
+import { ReactDOM } from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { HashRouter, Route, NavLink } from 'react-router-dom';
-import {registerService} from '../../services/RegisterService';
+import { registerService } from '../../services/RegisterService';
 
 //Need route to login site.
 export class Register extends Component {
