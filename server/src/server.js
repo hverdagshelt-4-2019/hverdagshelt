@@ -121,7 +121,7 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/companies", (req, res) =>{
+    app.get("/companies", (req, res) => {
         companydao.getAll((status, data) =>{
             res.status(status);
             res.json(data);
