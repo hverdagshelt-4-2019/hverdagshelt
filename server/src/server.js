@@ -216,7 +216,7 @@ export function create_app(pool) {
                         "category": req.body.category,
                         "title": req.body.title,
                         "description": req.body.description,
-                        "picture": (req.body.picture != null ? req.body.picture : "server/resources/logo.PNG"),
+                        "picture": (req.body.picture != null ? req.body.picture : "./logo.PNG"),
                         "happening_time": req.body.time
                     }
                 } else if(authData.user.publicworkercommune) {
@@ -227,7 +227,7 @@ export function create_app(pool) {
                         "category": req.body.category,
                         "title": req.body.title,
                         "description": req.body.description,
-                        "picture": (req.body.picture != null ? req.body.picture : "server/resources/logo.PNG"),
+                        "picture": (req.body.picture != null ? req.body.picture : "./logo.PNG"),
                         "happening_time": req.body.time
                     }
                 } else {
