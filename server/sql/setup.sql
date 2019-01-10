@@ -100,7 +100,7 @@ CREATE TABLE happening(
   picture VARCHAR(128) DEFAULT NULL,
   happening_time DATETIME NOT NULL,
 
-  FOREIGN KEY (submitter_id) REFERENCES public_worker(id) ON DELETE SET NULL,
+  FOREIGN KEY (submitter_id) REFERENCES person(id) ON DELETE SET NULL,
   FOREIGN KEY (commune_name) REFERENCES commune(name),
   FOREIGN KEY (category) REFERENCES happening_category(name)
 );
