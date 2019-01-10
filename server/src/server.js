@@ -10,6 +10,8 @@ import CommentDao from './dao/commentDao.js'
 import AdminDao from './dao/adminDao.js'
 import CompanyDao from './dao/companyDao.js'
 import PublicWorkerDao from './dao/publicworkerDao.js'
+import path from 'path';
+
 
 export function create_app(pool) {
     let app = express();
@@ -25,6 +27,11 @@ export function create_app(pool) {
     const publicworkerdao = new PublicWorkerDao(pool);
 
     app.use(express.json());
+
+
+    const client_public = path.join(__dirname,'..','..','client','public');
+    /*const public_path = path.join(__dirname, '/../../client/public');
+    app.use(express.static(public_path));*/
 
     /*
     Get-functions
@@ -209,6 +216,18 @@ export function create_app(pool) {
     app.delete("/user/:id", (req, res) =>{});
 
     app.delete("/event/:id", (req, res) =>{});
+
+    app.get("*", (req,res, next) =>{
+        let options = {};
+        let file = 'index.html';
+        if(req.url.includes('.')){
+            file = req.url.split('/').pop();
+        }
+        console.log(req);
+        res.sendFile(path.join(client_public, file), options, (err)=>{
+            if(err) next();
+        });
+    });
 
     
 // Verify token
