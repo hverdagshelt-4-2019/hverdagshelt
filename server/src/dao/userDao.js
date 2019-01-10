@@ -55,8 +55,10 @@ export default class UserDao extends Dao {
     }
 
     login(json, callback){
-        super.query("SELECT id, password FROM person WHERE email = ?", json.email, (status, data) => {
-            console.log(data[0].password)
+        super.query("SELECT person.id, admin.id as isAdmin, commune_name, password FROM person LEFT JOIN admin on person.id = admin.id LEFT JOIN public_worker on public_worker.id = person.id WHERE email = ?",
+            json.email,
+            (status, data) => {
+            console.log(data);
             validate_password(json.password, data[0].password).then( okay => {
                 if(okay) callback(200, data);
                 else callback(401, {error: "password not correct"});

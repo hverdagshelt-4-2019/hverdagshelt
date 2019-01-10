@@ -1,15 +1,15 @@
 -- Random users.
 
-INSERT INTO person(email, password) VALUES('Idella@hotmail.com', '');   
-INSERT INTO person(email, password) VALUES('isobel@hotmail.com', '');
-INSERT INTO person(email, password) VALUES('JanetMckenney23@hotmail.com', '');
-INSERT INTO person(email, password) VALUES('ArdelleSetzer34@hotmail.com', '');
-INSERT INTO person(email, password) VALUES('Clara26@hotmail.com', '');
-INSERT INTO person(email, password) VALUES('adrian@hotmail.com', '');
-INSERT INTO person(email, password) VALUES('Shannon1960@hotmail.com', '');
-INSERT INTO person(email, password) VALUES('Lenorebenz@hotmail.com', '');
-INSERT INTO person(email, password) VALUES('KaraSiller1981@hotmail.com', '');
-INSERT INTO person(email, password) VALUES('Wynona1992@hotmail.com', '');
+INSERT INTO person(email, password) VALUES('Idella@hotmail.com', '$argon2id$v=19$m=4096,t=1,p=1$1UCGoxEw7AxGcBlNJg+/6aXwJGEdUpGoLgj8OlMabTV/G4Vh6U8eByjEu1nVCpf5VIXaj6EEg2LhkAVwMZ2A9g$+CWrbFcPauE7KiIwsePmFGYC/fCprZZdbmAlqXkWT6F4tebi3rMuOH25y5O0RTjChItZRY377GWCK23fwd3cRA');   
+INSERT INTO person(email, password) VALUES('isobel@hotmail.com', '$argon2id$v=19$m=4096,t=1,p=1$UhZxHFeBR1RFlx1ayEFgED7/FMapk6dFYla4/FWJxPAi+bVGnNP6DQWfTlen7nt+ZHZS5IFoVfPDHa9xxccMRg$Rv82m1CyboDnHOYPOAX62f+DanYW0L65sO6Wd18tDr4Rlu/ESUQZu6yYKsfyrv0ux7EFiNGIrQn9UpWa0IsoNg');
+INSERT INTO person(email, password) VALUES('JanetMckenney23@hotmail.com', '$argon2id$v=19$m=4096,t=1,p=1$ZzSHnqIyJnD+VRxPB4asBYpvwrUYaeQKPIgWOR6x+9e9HQxImO4Bd5kfh4xNBA4QTwMqVEWGolxKx7Xr3q+c/w$2Mmv/srhvecZgtknEwgxFWqSF0qq2z0rdEFpezbonM2ionz5wdgF8C3Zl0LfIh212EmwMNHsSC2WwKFsVzBaNw');
+INSERT INTO person(email, password) VALUES('ArdelleSetzer34@hotmail.com', '$argon2id$v=19$m=4096,t=1,p=1$aHw/MTQxeNuYv3EBI6b7/8T8LG5Lk8/5kubIrh4w96SEssVRha1/hC+vuasxhnqUHR+DkZ/I03gxKBSKeo7P0A$JYaklCZoCkhg5m+9OI/RmtOVfARTeO0O656LgPLK/cXlFgLETxygApPcES5cde/7JCOw4+8yFvz28FOMWUqmLg');
+INSERT INTO person(email, password) VALUES('Clara26@hotmail.com', '$argon2id$v=19$m=4096,t=1,p=1$XuTS8/GCEUg+ZwknqDnu3cQ2rBz2xYfr4d5re1+aaexNms3kpnFQiVNXd7HWJ5Xplu4FJFE70TvdZJAm8DJzoQ$GKta1XIvKxlJVeBziKm1GGbK/db69hJa6UlVUOJMsvr4vw8tTmnjEUaPL6eRT4cwqYhiUqkf/Bt8zHaGya3kVg');
+INSERT INTO person(email, password) VALUES('adrian@hotmail.com', '$argon2id$v=19$m=4096,t=1,p=1$Q2HSp+TMt30vwDnPn0kuFvViz+DZyrcYVmyRTjW6oL6aRA5UiDsKhTPBdNyEHBXXvS+9RBUQIW8PGu9A4BLEzg$o3kxgzIZ4QMRmiDdxFSqRVy6k6HbR9jsWuk4F0HLbfZXsrvsEHytrTcMP/BVGJQ/1YEPOhDusS5PhRb9HpYU1g');
+INSERT INTO person(email, password) VALUES('Shannon1960@hotmail.com', '$argon2id$v=19$m=4096,t=1,p=1$olnKNOkPot9r+2LN/rbuaO9cHqQEmIWFX/SdlPAPEZ0LP9w7kFMvviMbipPC9ufELDj1PbW3IXoPUbiqUvnDBg$XE+IekyIIJmphjb1qYZFBenQoeZxInwwBYfLkvgYwcJnMWUNeLpU4S/0DQvWuKHBie0mXcsWXn8A0KykNX6PPw');
+INSERT INTO person(email, password) VALUES('Lenorebenz@hotmail.com', '$argon2id$v=19$m=4096,t=1,p=1$Dh832fK5KpFUVwMFz0TM1BWt+4HUF9A8xH/7FJdxfsizzW4Ovl5dSImVwfxvhsxMlbXJXDqI7Zhcurvh+IE3mQ$L8SpWxQKkhr+ifW/KXaae5chrPQU0eCRMBiq+7xS7Xvbnew4fGG7qxPfWp5vx3drK6BqnTlNoYya4fszewkKig');
+INSERT INTO person(email, password) VALUES('KaraSiller1981@hotmail.com', '$argon2id$v=19$m=4096,t=1,p=1$y339mPq9+xquQv1m9jkM0maXSj7yaylYWbBNUQaXwfuaFK04DH8SYQ3MdZxBsMlgg1s2Jsk5qSX8Im7uJuruYQ$qETbdKMfTVtDejhNyaaj1lKm6Zv9YpKB/3RjkpojZzFGuEGMUuuSXIARSowd8h4XjqGwxtRhdGcofpQPhiCaFw');
+INSERT INTO person(email, password) VALUES('Wynona1992@hotmail.com', '$argon2id$v=19$m=4096,t=1,p=1$y0+YoaDZaPulK4pX9Hl15Re31oNu+uAdD3X8QH3sY8bj63sozaIYe3PcesyIJTB1nwtea1wiRBi+CEMkTPYb1w$LGChPAiVvmASmQhcNI9xNJ5/NbEHRk/aU8S6PH4Zq6CwbK2LAwaOWCzGAXJoEfSLsKwDqvOje9BEGBc/vevwrw');
 
 
 -- Random categories.
@@ -96,3 +96,57 @@ INSERT INTO ticket_comment(ticket_id, description, submitter_id) VALUES(4, 'BEST
 INSERT INTO ticket_comment(ticket_id, description, submitter_id) VALUES(3, 'Still better than ww2', 2);
 INSERT INTO ticket_comment(ticket_id, description, submitter_id) VALUES(2, 'Made by EA.', 6);
 INSERT INTO ticket_comment(ticket_id, description, submitter_id) VALUES(1, 'Look at that like-dislike ratio', 6);
+
+-- Random companies
+
+INSERT INTO company(name) VALUES("Legit A/S");
+INSERT INTO company(name) VALUES("We Fix");
+INSERT INTO company(name) VALUES("GråGubben");
+INSERT INTO company(name) VALUES("MongoSQL");
+INSERT INTO company(name) VALUES("Guugel");
+INSERT INTO company(name) VALUES("Drogas");
+
+-- Random public workers
+
+INSERT INTO public_worker VALUES(1, "Vik");
+INSERT INTO public_worker VALUES(4, "Oslo");
+INSERT INTO public_worker VALUES(7, "Trondheim");
+INSERT INTO public_worker VALUES(6, "Nittedal");
+INSERT INTO public_worker VALUES(3, "Kristiansund");
+
+-- Random connections
+
+INSERT INTO person_CROSS_commune VALUES(2, "Fredrikstad");
+INSERT INTO person_CROSS_commune VALUES(10, "Hvaler");
+INSERT INTO person_CROSS_commune VALUES(5, "Steinkjer");
+INSERT INTO person_CROSS_commune VALUES(8, "Time");
+INSERT INTO person_CROSS_commune VALUES(9, "Sørum");
+
+-- Random happening categories.
+
+INSERT INTO happening_category VALUES("Konsert");
+INSERT INTO happening_category VALUES("Karneval");
+INSERT INTO happening_category VALUES("Tivoli");
+INSERT INTO happening_category VALUES("Brannøvelse");
+INSERT INTO happening_category VALUES("Massedefenestrasjon");
+
+-- Random happenings
+
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(7, 'Aukra', 'Tivoli', 'Smoke Tree Road, Grand Senora Desert- All characters.', 'A lone Surfer sits idling on a desolate dirt road near the airfield. As the player approaches the car, a man will appear behind the player and stun him. The screen will turn black, and the player will wake up wearing only underwear over a railway line with a train approaching him quickly. Alternatively, if the player as Trevor quickly activates his special ability, the player can shoot the man, to which he will defensively claim he was "Just playing."', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(4, 'Hurum', 'Tivoli', 'RON Alternates Wind Farm - All characters.', 'The player will find a Journey parked on a dirt road in the wind farm, with a couple of male rednecks having sexual intercourse inside. If disturbed, theyll turn hostile, leave the vehicle and try to shoot the player.', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(3, 'Fedje', 'Karneval', 'Grapeseed, beside the ONeils farm - All characters.', 'The player will find a cop chasing a criminal and will have the choice of either: shooting the leg of the criminal and help the cop in capturing him, or killing the cop and helping the criminal escape.', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(1, 'Fusa', 'Massedefenestrasjon', 'Senora Freeway, RON Alternates Wind Farm, near Rexs Diner - All characters.', 'The player will find a park ranger chasing a criminal and will have the choice of either: shooting the leg of the criminal and helping the cop capture him, or killing the cop and helping the criminal escape.', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(1, 'Trysil', 'Konsert', 'At different ATMs around San Andreas - All characters.', 'A random thief will steal a pedestrians wallet, while this pedestrian is withdrawing money from an ATM. The player needs to chase down the thief and then chose to return the wallet to the victim, or keep it.', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(1, 'Elverum', 'Tivoli', 'Little Bighorn Avenue, Rancho - All characters.', 'A random thief will steal the bike of a man, the player will need to chase the thief down and return the bicycle to the owner.', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(7, 'Nordre Land', 'Tivoli', 'Bridge Street, Hawick - All characters.', 'A random thief will steal the bike of a pedestrian. The player will need to chase the thief down and return the bicycle to the owner.', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(7, 'Etnedal', 'Tivoli', 'Mount Haan Road, Grand Senora Desert - All characters.', 'A group of Rednecks will appear driving motorcycles and ambush the player, mistaking him for a foreigner. The player will need to kill all of them to complete the random event. They will yell: "Hey you, Speaky English, Passaporto asshole!"', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(4, 'Namsos', 'Karneval', 'Tataviam Mountains - All characters.', 'A group of Rednecks will appear driving motorcycles and ambush the player, mistaking him for a foreigner. The player will need to kill all of them to complete the random event. They will yell: "Hey you, Speaky English, Passaporto asshole!"', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(4, 'Vågå', 'Brannøvelse', 'Raton Canyon - All characters.', 'A group of Rednecks will appear driving motorcycles and ambush the player, mistaking him for a foreigner. The player will need to kill all of them to complete the random event. They will yell: "Hey you, Speaky English, Passaporto asshole!"', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(7, 'Eid', 'Massedefenestrasjon', 'North Point, Paleto Bay, Blaine County - All characters.', 'Two guys are trying to bury a woman alive. The player will need to kill the two men and then give the woman a lift to her destination.', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(6, 'Tjeldsund', 'Tivoli', 'Alta Street, Downtown Vinewood - All characters.', 'Its simply a tour around the city, just wait until the tour is finished to complete the random event.', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(1, 'Kongsvinger', 'Tivoli', 'Great Ocean Highway, North Chumash, near the Hookies bar - All characters.', 'A woman will have her car stolen from her. The player will need to chase down the criminal and return the car to the woman.', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(3, 'Sirdal', 'Karneval', 'Exceptionalists Way, Los Santos International Airport - All characters.', 'A woman will have her car stolen from her. The player will need to chase down the criminal and return the car to the woman.', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(6, 'Åmot', 'Brannøvelse', 'Hawick Avenue, Hawick - All characters.', 'This group of Lost members will steal the takings of a store next to SubUrban and make their escape in a van. The player will need to kill them and choose to return the takings to the shopkeeper, or keep it for themselves.', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(6, 'Tysfjord', 'Tivoli', 'San Andreas Avenue, Textile City - All characters.', 'This group of Lost members will steal the wallet of a pedestrian and escape on motorcycles. The player will need to kill them and choose to return the wallet to the pedestrian, or keep it.', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(1, 'Åfjord', 'Brannøvelse', 'Grapeseed Main Street, Grapeseed - All characters.', 'This group of Lost members will steal the wallet of a pedestrian and escape in a van. The player will need to kill them, and choose to return the wallet to the pedestrian, or keep it.', 'https://imgur.com/a/mayoSTu', NOW());
+INSERT INTO happening(submitter_id, commune_name, category, title, description, picture, happening_time) VALUES(1, 'Skjåk', 'Tivoli', 'Route 68, Grand Senora Desert, near the Checkout! store - All characters.', 'This group of Lost members will steal the wallet of a pedestrian and escape in a van. The player will need to kill them and choose to return the wallet to the pedestrian, or keep it.', 'https://imgur.com/a/mayoSTu', NOW());
