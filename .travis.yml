@@ -3,6 +3,16 @@ language: node_js
 env:
 - CXX=g++-6
 
+os:
+    - osx
+    - linux
+    - windows
+
+node_js:
+  - 10
+  - 11
+  - node
+
 stages:
     - test
 
