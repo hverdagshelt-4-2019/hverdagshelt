@@ -8,8 +8,8 @@ import { Navbar_person } from '../Navbars/Navbar_person';
 export class AddTicket extends Component {
   render() {
     return (
-              <div>
-                <Navbar_person />
+        <div>
+            <Navbar_person />
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-8">
@@ -43,10 +43,12 @@ export class AddTicket extends Component {
 
                             <button type="button" class="btn btn-primary">Send</button>
 
-                        </div>
+                            <br />
+                            <br />
                     </div>
                 </div>
             </div>
+        </div>
     );
   }
 }

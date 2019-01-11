@@ -22,7 +22,8 @@ if (root)
   ReactDOM.render(
     <HashRouter>
       <div>
-        <Route exact path="/" component={Login} />
+      <AddTicket />
+        <Route exact path="/login" component={Login} />
         <Route path="/registrerdeg" component={Register} />
         <Route path="/sakliste" component={TicketList} />
         <Route path="/leggtil" component={AddPage}/>
