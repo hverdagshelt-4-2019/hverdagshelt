@@ -15,7 +15,7 @@ let config =
 
     email: {
         user: "hverdagsheltene4@hotmail.com",
-        password: "set password in private.config.js"
+        pass: "set password in private.config.js"
     },
 
     test: {
@@ -31,9 +31,9 @@ let config =
 
         port: 3001,
 
-        mail: {
-            email: "hverdagsheltene4@hotmail.com",
-            password: "set password in private.config.js"
+        email: {
+            user: "hverdagsheltene4@hotmail.com",
+            pass: "set password in private.config.js"
         },
 
     }
