@@ -107,3 +107,4 @@ CREATE TABLE happening(
 
 CREATE TRIGGER tickettime BEFORE INSERT ON ticket
     FOR EACH ROW SET NEW.submitted_time=now()
+;
