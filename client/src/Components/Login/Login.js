@@ -63,7 +63,6 @@ export class Login extends Component {
         }
       });
     }
-  }
 
 <<<<<<< HEAD
     onChange(e) {

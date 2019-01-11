@@ -6,10 +6,13 @@ import { ticketService } from '../../Services/TicketService';
 import { Navbar_person } from '../Navbars/Navbar_person';
 
 export class AddTicket extends Component {
+title = '';
+description = '';
+
   render() {
     return (
-              <div>
-                <Navbar_person />
+        <div>
+            <Navbar_person />
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-8">
@@ -18,10 +21,12 @@ export class AddTicket extends Component {
                             <hr />
 
                             <h4>Tittel:</h4>
-                            <input className="form-control"/>
+                            <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.title = event.target.value)}/>
 
                              <h4>Beskrivelse:</h4>
-                            <textarea className="form-control" style={{width:"100%"}} />
+                            <textarea className="form-control" style={{width:"100%"}} 
+                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.description = event.target.value)}
+                            />
 
                             <h4>Kategori:</h4>
                             <select>
@@ -34,19 +39,25 @@ export class AddTicket extends Component {
                             <label htmlFor="InputFile">Last opp bilde</label>
                             <input type="file" className="form-control-file" id="InputFile"/>
                             <small id="fileHelp" className="form-text text-muted"></small>
-
+                            {/* needs to be added function to listen to changes */}
                             <hr />
 
                             Map here
 
                             <hr />
 
-                            <button type="button" class="btn btn-primary">Send</button>
+                            <button type="button" class="btn btn-primary" onClick={this.save}>Send</button>
 
-                        </div>
+                            <br />
+                            <br />
                     </div>
                 </div>
             </div>
+        </div>
     );
+  }
+
+  save() {
+      
   }
 }
