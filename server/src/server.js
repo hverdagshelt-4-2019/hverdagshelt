@@ -31,10 +31,7 @@ export function create_app(pool) {
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
-        auth: {
-            user: 'hverdagsheltene4@gmail.com',
-            pass: 'thisbepassword123'
-        }
+        auth: config.mail
     });
 
     app.use(express.json());
