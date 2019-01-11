@@ -1,12 +1,21 @@
-import Dao from "./dao.js";
+import Dao from './dao.js';
 
 export default class UserDao extends Dao {
+<<<<<<< HEAD
     getOne(id, callback) {
         console.log("Getting user")
         super.query("SELECT id, email FROM person WHERE id=?", [id], callback);
     };
 
     createOne(json, callback) {
+=======
+  getOne(id, callback) {
+    console.log('Getting user');
+    super.query('SELECT * FROM person WHERE id=?', [id], callback);
+  }
+
+  /*createOne(json, callback) {
+>>>>>>> login
         if(json.password.length < 8){
             callback(400, {error: "Password"});
         } else {
@@ -24,6 +33,7 @@ export default class UserDao extends Dao {
         super.query("SELECT id, email FROM person WHERE id NOT IN (SELECT id FROM admin UNION (SELECT id FROM public_worker) UNION (SELECT id FROM company))", [], callback);
     }
 
+<<<<<<< HEAD
     updateEmail(id, json, callback) {
         super.query("UPDATE person SET email = ? WHERE id = ?",
             [json.email, id],
@@ -31,6 +41,13 @@ export default class UserDao extends Dao {
     }
 
    updatePassword(id, json, callback) {
+=======
+  updateEmail(json, callback) {
+    super.query('UPDATE person SET email = ? WHERE id = ?', [json.email, json.id], callback);
+  }
+
+  /* updatePassword(json, callback) {
+>>>>>>> login
         if(json.newPassword.length < 8) {
             callback(400, {error: "Password"});
         } else {
@@ -57,6 +74,7 @@ export default class UserDao extends Dao {
         }
     }
 
+<<<<<<< HEAD
     deleteOne(email, callback){
         super.query("DELETE FROM person WHERE email = ?", [email], callback);
     }
@@ -80,6 +98,21 @@ export default class UserDao extends Dao {
         });
     }
 };
+=======
+  deleteOne(id, callback) {
+    super.query('DELETE FROM person WHERE id = ?', [id], callback);
+  }
+
+  /*login(json, callback){
+        super.query("SELECT password FROM person WHERE id = ?", json.id, password => {
+            validate_password(json.password, password).then( okay => {
+                if(okay) callback(200, {});
+                else callback(401, {error: "password not correct"})
+            })
+        });
+    }*/
+}
+>>>>>>> login
 
 import argon2 from "argon2"
 

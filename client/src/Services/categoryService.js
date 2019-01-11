@@ -1,9 +1,12 @@
-import axios from 'axios';
-axios.interceptors.response.use(response => response.data);
-let url = "http://localhost:3000";
+//@flow 
 
-class Category {
-        name;
+import axios from 'axios';
+let url = 'http://localhost:8080';
+axios.interceptors.response.use(response => response.data);
+
+class Category{
+    id : number;
+    name : string; 
 }
 
 let config = {
@@ -42,3 +45,4 @@ class CategoryService {
 }
 
 export let categoryService = new CategoryService;
+
