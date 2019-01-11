@@ -57,8 +57,8 @@ export default class UserDao extends Dao {
         }
     }
 
-    deleteOne(id, callback){
-        super.query("DELETE FROM person WHERE id = ?", [id], callback);
+    deleteOne(email, callback){
+        super.query("DELETE FROM person WHERE email = ?", [email], callback);
     }
 
     login(json, callback){
