@@ -13,6 +13,10 @@ let config =
 
     port: 3000,
 
+    mail: {
+        email: "hverdagsheltene4@hotmail.com",
+        password: "set password in private.config.js"
+    },
 
     test: {
         mysql: {
@@ -25,7 +29,13 @@ let config =
             debug: false
         },
 
-        port: 3001
+        port: 3001,
+
+        mail: {
+            email: "hverdagsheltene4@hotmail.com",
+            password: "set password in private.config.js"
+        },
+
     }
 
 };
