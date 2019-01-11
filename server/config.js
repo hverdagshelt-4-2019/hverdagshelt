@@ -14,7 +14,7 @@ let config =
     port: 3000,
 
     email: {
-        user: "hverdagsheltene4@hotmail.com",
+        user: "hverdagsheltene4@gmail.com",
         pass: "set password in private.config.js"
     },
 
@@ -32,7 +32,7 @@ let config =
         port: 3001,
 
         email: {
-            user: "hverdagsheltene4@hotmail.com",
+            user: "hverdagsheltene4@gmail.com",
             pass: "set password in private.config.js"
         },
 
