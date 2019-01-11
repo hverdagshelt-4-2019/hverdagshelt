@@ -1,26 +1,2 @@
-.col-md-8 {
-    border-style: solid;
-    padding: 20px;
-}
-
-.col-md-8 .commune { float:left }
-.col-md-8 .category { float:right }
-
-.button {
-    background-color: white;
-    color: black;
-    border: 2px solid #008CBA;
-    padding: 13px 27px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    transition-duration: 0.4s;
-    cursor: pointer;
-}
-
-.button:hover {
-    background-color: #008CBA;
-    color: white;
-}
+#left { float:left }
+#right { float:right }

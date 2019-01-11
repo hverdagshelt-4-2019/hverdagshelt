@@ -4,29 +4,22 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { ticketService } from '../../Services/TicketService';
 import { Alert} from '../../widgets';
+import { Navbar_person } from '../Navbars/Navbar_person';
 
-export class Ticket_commune extends Component<{ match: { params: { id: number } } }> {
+export class Ticket_your extends Component<{ match: { params: { id: number } } }> {
   ticket = '';
 
   render() {
     return (
-      <div>
-        <Navbar_person />
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-8">
-                <h1>Hull i veien</h1>
-                <p className="lead">
-                  Status: {' '}
-                  <select>
-                    <option>Avventer svar</option>
-                    <option>Under behandling</option>
-                    <option>Ferdig</option>
-                  </select>{' '}
-                  <button type="button" className="btn btn-primary btn-sm">
-                    Lagre
-                  </button>
-                </p>
+        <div>
+                <Navbar_person />
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-8">
+                            <h1>Hull i veien</h1>
+                            <p className="lead">
+                                 Status: Avventer svar <span class="glyphicon glyphicon-time"></span>
+                            </p>
 
                             <hr />
 
@@ -34,18 +27,13 @@ export class Ticket_commune extends Component<{ match: { params: { id: number } 
 
                             <p><b>Kommune:</b> Trondheim</p>
 
-                            <p><b>Bedrift:</b> {' '}
-              <select>
-              <option>Ingen</option>
-                <option>Murerfirma</option>
-                <option>Statens Vegvesen</option>
-              </select>{' '}
-              <button type="button" className="btn btn-primary btn-sm">
-                Lagre
-              </button>
-              </p>
+                            <p><b>Bedrift:</b> Statens Vegvesen</p>
 
                             <p><b>Kategori:</b> Veiproblem</p>
+
+                            <button type="button" class="btn btn-success" onClick={this.endre}>Endre</button>
+                            {' '}
+                            <button type="button" class="btn btn-danger" onClick={this.delete}>Slett</button>
 
                             <hr />
 
@@ -92,5 +80,15 @@ export class Ticket_commune extends Component<{ match: { params: { id: number } 
       .getTicket(this.props.match.params.id)
       .then(ticket => (this.ticket = ticket[0]))
       .catch((error: Error) => Alert.danger(error.message));
+  }
+  endre() {
+    history.push('/sak/endre/' + this.ticket.id);
+  }
+
+  delete() {
+    ticketService
+    .deleteTicket(this.ticket.id)
+    .catch((error: Error) => Alert.danger(error.message));
+    history.push('/hjem');
   }
 }

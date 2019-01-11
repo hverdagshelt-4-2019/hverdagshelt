@@ -15,14 +15,14 @@ export class Navbar_admin extends Component {
               <span className="icon-bar" />
               <span className="icon-bar" />
             </button>
-            <NavLink className="navbar-brand" exact to="/">
-              HverdagsHelt
+            <NavLink className="navbar-brand" exact to="/hjem">
+              <p>HverdagsHelt<img src="Skjermbilde.PNG" width="20" height="17" /></p>
             </NavLink>
           </div>
           <div className="collapse navbar-collapse" id="myNavbar">
             <ul className="nav navbar-nav">
               <li className="active">
-                <NavLink to="/">
+                <NavLink to="/hjem">
                   <span className="glyphicon glyphicon-home" /> Hjem
                 </NavLink>
               </li>
@@ -82,7 +82,7 @@ export class Navbar_admin extends Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/login">
+                <NavLink to="/">
                   <span className="glyphicon glyphicon-log-out" /> Log ut
                 </NavLink>
               </li>

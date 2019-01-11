@@ -1,14 +1,14 @@
-//@flow 
+//@flow
 
 import axios from 'axios';
 let url = 'http://localhost:8080';
 axios.interceptors.response.use(response => response.data);
 
-class Person{
-    id;
-    email;
-    salt;
-    password;
+class Person {
+  id;
+  email;
+  salt;
+  password;
 }
 
 class RegisterService{
