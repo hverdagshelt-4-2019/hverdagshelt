@@ -6,6 +6,6 @@ export default class CompanyDao extends Dao {
     }
 
     createCompany(json, callback) {
-        super.query("INSERT INTO company VALUES (?, ?)", [json.userId, json.companyName], callback);
+        super.query("INSERT INTO company VALUES ((SELECT id FROM person WHERE email = ?), ?)", [json.email, json.companyName], callback);
     }
 }
