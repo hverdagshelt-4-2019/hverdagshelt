@@ -193,7 +193,39 @@ it("can log in and change a users email", done => {
     });
 });
 
-it("registers a user, and can then log in as them", done => {
+
+it("can log in and change a users password", done => {
+    let token;
+    let user = {
+        email: "person1@mail.no",
+        password: "password1"
+    };
+    let newPassword = "password1new";
+    fetch(fetch_url+'login', {
+        method: 'POST',
+        headers: HEADERS,
+        body: JSON.stringify(user)
+    })
+    .then(res => res.json())
+    .then(res => {
+        token = res.token;
+        fetch(fetch_url+'userpass/', {
+            method: 'PUT',
+            headers: {
+                ...HEADERS,
+                Authorization: "Bearer "+token
+            },
+            body: JSON.stringify({newPassword, oldPassword: user.password})
+        })
+        .then(res => {
+            expect(res.status).toBe(200);
+            user.password = newPassword;
+            done();
+        });
+    });
+});
+
+it("registers a user, and can then log in them", done => {
     let user = {
         email: "testUser@mail.com",
         password: "testpassword96"
