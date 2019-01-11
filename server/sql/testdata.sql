@@ -142,10 +142,10 @@ INSERT INTO happening_category VALUES
 
 INSERT INTO admin VALUES
 (17),
-(872),
+(72),
 (276),
-(1024),
-(1298);
+(24),
+(298);
 
 -- Random happenings
 

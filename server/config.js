@@ -17,6 +17,7 @@ let config =
     test: {
         mysql: {
             connectionLimit: 2,
+            multipleStatements: true,
             host: 'mysql.stud.iie.ntnu.no',
             user: 'aleksjoh',
             password: 'set password in private.config.js',
