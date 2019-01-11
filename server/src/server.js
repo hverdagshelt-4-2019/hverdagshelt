@@ -229,7 +229,7 @@ export function create_app(pool) {
                     res.status(status);
                     res.json(data);
                 });
-                console.log("ok")
+                console.log("ok");
             }
         });
 
