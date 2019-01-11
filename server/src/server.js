@@ -145,7 +145,7 @@ export function create_app(pool) {
     app.get("/followedCommunes", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
-                res.sendStatus(418);
+                res.sendStatus(401);
             } else {
                 communedao.getFollowed(authData.user.id, (status, data) => {
                     res.status(status);
@@ -207,7 +207,7 @@ export function create_app(pool) {
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err){
                 console.log(err);
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 let newTicket = {
                     userid: authData.user.id,
@@ -234,7 +234,7 @@ export function create_app(pool) {
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 console.log(err);
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 if(authData.user.isadmin) {
                     console.log("admin");
@@ -276,7 +276,7 @@ export function create_app(pool) {
     app.post("/comment", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 let newComment = {
                     "ticket_id": req.body.ticketid,
@@ -295,7 +295,7 @@ export function create_app(pool) {
     app.post("/eventcat", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
                     categorydao.createOneEvent(req.body.name, (status, data) => {
@@ -313,7 +313,7 @@ export function create_app(pool) {
     app.post("/ticketcat", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
                     categorydao.createOneTicket(req.body.name, (status, data) => {
@@ -331,7 +331,7 @@ export function create_app(pool) {
     app.post("/admin", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 if(authData.user.isadmin) {
                     admindao.createAdmin(req.body, (status, data) =>{
@@ -348,7 +348,7 @@ export function create_app(pool) {
     app.post("/company", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
                     companydao.createCompany(req.body, (status, data) =>{
@@ -365,7 +365,7 @@ export function create_app(pool) {
     app.post("/publicworker", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 if(authData.user.isadmin) {
                     publicworkerdao.createPublicworker(req.body, (stauts, data) =>{
@@ -383,7 +383,7 @@ export function create_app(pool) {
     app.post("/followCommune/:commune", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 communedao.followCommune(authData.user.id, req.params.commune, (status, data) => {
                     res.status(200);
@@ -400,7 +400,7 @@ export function create_app(pool) {
     app.put("/ticket/:id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 console.log(req.body.submitter_id);
                 console.log(authData.user.id);
@@ -420,7 +420,7 @@ export function create_app(pool) {
     app.put("/ticketstatus/:id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune == req.body.commune) {
                     ticketdao.editTicket(req.params.id, req.body, (status, data) =>{
@@ -437,7 +437,7 @@ export function create_app(pool) {
     app.put("/usermail/:id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 if(req.params.id == authData.user.id) {
                     userdao.updateEmail(req.params.id, req.body, (status, data) => {
@@ -455,7 +455,7 @@ export function create_app(pool) {
     app.put("/userpass/:id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 if(req.params.id == authData.user.id) {
                     userdao.updatePassword(req.params.id, req.body, (status, data) => {
@@ -474,7 +474,7 @@ export function create_app(pool) {
         console.log("WTF!")
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
                     console.log('DATA!' + JSON.stringify(req.body));
@@ -499,7 +499,7 @@ export function create_app(pool) {
     app.delete("/unfollowCommune/:commune", verifyToken, (req, res) => {
        jwt.verify(req.token, 'key', (err, authData) => {
            if(err) {
-               res.sendStatus(500);
+               res.sendStatus(401);
            } else {
                communedao.unfollowCommune(authData.user.id, req.params.commune, (status, data) => {
                   res.status(status);
@@ -512,7 +512,7 @@ export function create_app(pool) {
     app.delete("/ticket/:id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 if(req.body.submitter_id == authData.user.id) {
                     ticketdao.deleteTicket(req.params.id, (status, data) => {
@@ -530,7 +530,7 @@ export function create_app(pool) {
     app.delete("/user/:email", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 if (req.params.email == authData.user.email || authData.user.isadmin) {
                     userdao.deleteOne(req.params.email, (status, data) => {
@@ -548,7 +548,7 @@ export function create_app(pool) {
     app.delete("/event/:id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
-                res.sendStatus(500);
+                res.sendStatus(401);
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
                     console.log("Deleted event");
