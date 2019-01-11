@@ -3,7 +3,9 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { HashRouter, Route, NavLink } from 'react-router-dom';
 import {ExistingUser} from './ExistingUser';
-import { registerService} from '../../Services/RegisterService';
+import { adminService} from '../../Services/adminService';
+
+//TODO: Fix so you can enter email and promote user to admin
 
 export class AddPage extends Component{
     email = '';
@@ -92,19 +94,6 @@ export class AddPage extends Component{
                 </div> 
             </div>
         )
-    }
-
-    addNew(){
-        if(this.password1 == this.password2) {
-            registerService.postUser(this.email, this.password1);
-            if(typeNew == 1){
-                registerService.postAdmin(this.email, this.password); //verifytoken? //Need to catch errors
-            }
-            else if(typeNew == 2){
-                registerService.postPublicUser(this.email, this.password); //veifytoken? //Need to catch errors
-            }
-        }
-        else{alert("Passordene stemmer ikke overens.");}
     }
 
     updateExisting(){
