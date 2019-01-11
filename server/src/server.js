@@ -14,6 +14,7 @@ import PublicWorkerDao from './dao/publicworkerDao.js'
 import path from 'path';
 import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
+import nodemailer from 'nodemailer';
 
 export function create_app(pool) {
     let app = express();
@@ -27,6 +28,11 @@ export function create_app(pool) {
     const admindao = new AdminDao(pool);
     const companydao = new CompanyDao(pool);
     const publicworkerdao = new PublicWorkerDao(pool);
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: config.mail
+    });
 
     app.use(express.json());
     app.use(fileUpload());
@@ -180,6 +186,13 @@ export function create_app(pool) {
 
     app.post("/user", (req, res) =>{
         userdao.createOne(req.body, (status, data) =>{
+            let mailoptions = {
+                from: 'Hverdagsheltene',
+                to: req.body.email,
+                subject: 'Registrering',
+                text: 'Du er nå registrert i vårt system.\nBrukernavn: ' + req.body.email + '\nPassord: ' + req.body.password
+            };
+            sendEmail(transporter, mailoptions);
             res.status(status);
             res.json(data);
         });
@@ -421,6 +434,21 @@ export function create_app(pool) {
                 }
             }
         })
+    });
+
+    app.put("/forgotPassword/:email", (req, res) =>{
+        let newPass = genRandPass();
+        userdao.getNewPass(req.body.email, newPass, (status, data) =>{
+            let mailOptions = {
+                from: 'Hverdagsheltene',
+                to: req.params.email,
+                subject: 'Nytt Passord',
+                text: 'Ditt nye passord er: ' + newPass
+            };
+            sendEmail(transporter, mailOptions);
+            res.status(status);
+            res.json(data);
+        });
     });
 
     app.put("/ticketstatus/:id", verifyToken, (req, res) =>{
@@ -678,7 +706,25 @@ export function create_app(pool) {
         res.sendFile(fileN, {root: __dirname});//sending the file that is in the foldier with root from the server
     });
 
-
-
     return app;
+
+}
+
+function sendEmail(transport, mailOptions) {
+    transport.sendMail(mailOptions, function(err, info) {
+        if(err) {
+            console.log(err)
+        } else {
+            console.log("Info: " + info.response);
+        }
+    });
+}
+
+function genRandPass() {
+    let validChars = 'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let newPass = '';
+    while(newPass.length < 12) {
+        newPass += validChars[Math.floor(Math.random() * validChars.length)];
+    }
+    return newPass;
 }
