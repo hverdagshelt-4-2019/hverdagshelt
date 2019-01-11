@@ -4,6 +4,8 @@ import mysql from "mysql2"
 import fetch from "node-fetch"
 import setup_database from "./setup_database"
 
+jest.setTimeout(10000);
+
 let fetch_url = `http://localhost:${config.test.port}/`;
 let HEADERS = {
     "Content-Type": "application/json; charset=utf-8"

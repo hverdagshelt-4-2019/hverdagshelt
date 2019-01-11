@@ -4,6 +4,8 @@ import mysql from 'mysql2';
 import config from '../config';
 import { create_app } from '../src/server';
 
+jest.setTimeout(10000);
+
 let fetch_url = `http://localhost:${config.test.port}/`;
 let HEADERS = {
     "Content-Type": "application/json; charset=utf-8"
