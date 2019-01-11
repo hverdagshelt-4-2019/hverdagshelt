@@ -142,6 +142,8 @@ export function create_app(pool) {
         });
     });
 
+    app.get("/followedCommunes/:id");
+
     /*
     Post-functions
      */
@@ -354,6 +356,8 @@ export function create_app(pool) {
     });
 
 
+    app.post("followCommune/:id/:commune")
+
     /*
     Put-functions
      */
@@ -452,10 +456,12 @@ export function create_app(pool) {
         });
     });
 
-
     /*
     Delete-functions
      */
+
+
+    app.delete("unfollowCommune/:id/:commune")
 
     app.delete("/ticket/:id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) => {
