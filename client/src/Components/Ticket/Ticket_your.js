@@ -82,13 +82,13 @@ export class Ticket_your extends Component<{ match: { params: { id: number } } }
       .catch((error: Error) => Alert.danger(error.message));
   }
   endre() {
-    history.push('/ticket/edit/' + this.ticket.id);
+    history.push('/sak/endre/' + this.ticket.id);
   }
 
   delete() {
     ticketService
     .deleteTicket(this.ticket.id)
     .catch((error: Error) => Alert.danger(error.message));
-    history.push('/home');
+    history.push('/hjem');
   }
 }

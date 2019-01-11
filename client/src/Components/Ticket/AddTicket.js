@@ -5,7 +5,7 @@ import { Component } from 'react-simplified';
 import { ticketService } from '../../Services/TicketService';
 import { Navbar_person } from '../Navbars/Navbar_person';
 
-export class AddTicket {
+export class AddTicket extends Component {
   render() {
     return (
               <div>
@@ -38,6 +38,10 @@ export class AddTicket {
                             <hr />
 
                             Map here
+
+                            <hr />
+
+                            <button type="button" class="btn btn-primary">Send</button>
 
                         </div>
                     </div>

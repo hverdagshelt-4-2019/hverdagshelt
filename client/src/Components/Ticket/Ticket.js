@@ -16,7 +16,7 @@ export class Ticket extends Component<{ match: { params: { id: number } } }> {
             <div className="container">
                 <div className="row">
                     <div className="col-lg-8">
-                        <h1>Hull i veien</h1>
+                        <h1>this.ticket.title</h1>
                         <p className="lead">
                              Status: Avventer svar <span class="glyphicon glyphicon-time"></span>
                         </p>

@@ -2,9 +2,10 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
+import { ticketService } from '../../Services/TicketService';
 import { Navbar_person } from '../Navbars/Navbar_person';
 
-export class TicketTest extends Component {
+export class EditTicket extends Component {
   render() {
     return (
             <div>
@@ -39,7 +40,7 @@ export class TicketTest extends Component {
 
                             Map here
 
-                             <hr />
+                            <hr />
 
                             <button type="button" class="btn btn-primary">Lagre</button>
 
