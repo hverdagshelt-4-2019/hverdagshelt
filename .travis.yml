@@ -9,7 +9,8 @@ jobs:
   - stage: test
     name: test_server
     before_script:
-    - 'cd server; echo "export default
+    - 'cd server; echo "
+        export default
         {
             mysql: {
                 password: ''"$SINDRTHO_MYSQL_PASS"''
@@ -22,7 +23,7 @@ jobs:
                 mysql: {
                     password: ''"$ALEKSJOH_MYSQL_PASS"''
                 },
-                mail: {
+                email: {
                     password: ''"$MAIL_TEST_PASSWORD"''
                 }
             }
