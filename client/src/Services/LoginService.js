@@ -17,7 +17,8 @@ class LoginService {
         let user = new User();
         user.email = email;
         user.password = password;
-        return axios.post(url + '/login/', user);
+        console.log("okay2");
+        return axios.post(url + '/login', user);
     }
 }
 

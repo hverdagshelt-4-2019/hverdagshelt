@@ -6,10 +6,6 @@ export default class UserDao extends Dao {
         super.query("SELECT id, email FROM person WHERE id=?", [id], callback);
     };
 
-    getAll(callback) {
-        super.query("SELECT id, email FROM person WHERE id NOT IN (SELECT id FROM admin UNION (SELECT id FROM public_worker) UNION (SELECT id FROM company))", [], callback);
-    }
-
     createOne(json, callback) {
         if(json.password.length < 8){
             callback(400, {error: "Password"});
@@ -30,7 +26,7 @@ export default class UserDao extends Dao {
             callback)
     }
 
-    updatePassword(id, json, callback) {
+   updatePassword(json, callback) {
         if(json.newPassword.length < 8) {
             callback(400, {error: "Password"});
         } else {
@@ -59,6 +55,7 @@ export default class UserDao extends Dao {
     }
 
     login(json, callback){
+        console.log("logging in dao");
         super.query("SELECT person.id, admin.id as isAdmin, commune_name, password FROM person LEFT JOIN admin on person.id = admin.id LEFT JOIN public_worker on public_worker.id = person.id WHERE email = ?",
             json.email,
             (status, data) => {

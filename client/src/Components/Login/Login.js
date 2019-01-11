@@ -4,6 +4,7 @@ import { ReactDOM } from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import {loginService} from '../../services/LoginService';
+import {ticketService} from '../../services/TicketService';
 
 export class Login extends Component {
     constructor(props) {
@@ -18,16 +19,19 @@ export class Login extends Component {
 
     login() {
         if(this.state.email && this.state.password) {
-            loginService.loginUser(this.state).then((result) => {
-                if(result !== null) localStorage.setItem('authToken', result.token)
-                console.log(localStorage.getItem('authToken'));
-            });
+            /*loginService.loginUser(this.state.email,this.state.password).then((result) => {
+                console.log("okay");
+                console.log(result.token);
+               if(result !== null) localStorage.setItem('authToken', result.token)
+            });*/
+            console.log("post")
+            //ticketService.postTicket();
+
         }
     }
 
     onChange(e) {
         this.setState({[e.target.name]: e.target.value});
-        console.log(this.state); //Remove this
     }
 
     render() {
@@ -44,8 +48,8 @@ export class Login extends Component {
                         <input type="password" placeholder="Passord" className="form-control" name="password" onChange={this.onChange} />
                         <a href="">Registrer deg som bruker</a>
                     </div>
-                    <button type="submit" className="btn btn-primary" onClick={this.login}>Logg inn </button>
                 </form>
+                <button type="submit" className="btn btn-primary" onClick={this.login}>Logg inn </button>
             </div>
         );
     }

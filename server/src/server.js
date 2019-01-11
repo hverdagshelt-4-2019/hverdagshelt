@@ -51,7 +51,7 @@ export function create_app(pool) {
     });
 
     app.get("/tickets", (req, res) =>{
-        console.log(req.body)
+        console.log(req.body);
         ticketdao.getTicketsByCommune(req.body.communes, (status, data) =>{
             res.status(status);
             res.json(data);
@@ -154,16 +154,17 @@ export function create_app(pool) {
     });
 
     app.post("/login", (req, res) => {
-        userdao.login(req.body, (status, data) =>{
-            if(status == 200) {
+        console.log("login request");
+        userdao.login(req.body, (status, data) => {
+            if (status == 200) {
                 const user = {
                     email: req.body.email,
                     id: data[0].id,
                     isadmin: (data[0].isAdmin != null),
                     publicworkercommune: (data[0].commune_name != null ? data[0].commune_name : false)    // Null if not a publicworker
                 }
-                console.log(JSON.stringify(user))
-                jwt.sign({user}, 'key',{expiresIn: '30m'}, (err, token) => {
+                console.log(JSON.stringify(user));
+                jwt.sign({user}, 'key', {expiresIn: '30d'}, (err, token) => {
                     res.status(status);
                     res.json({
                         token
@@ -202,7 +203,8 @@ export function create_app(pool) {
 
     });
 
-    app.post("/event", verifyToken, (req, res) =>{
+    app.post("/event", (req, res) =>{
+
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 console.log(err);
@@ -361,7 +363,9 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(500);
             } else {
-                if(req.body.submitterid == authData.user.id) {
+                console.log(req.body.submitter_id);
+                console.log(authData.user.id);
+                if(req.body.submitter_id == authData.user.id) {
                     ticketdao.editTicket(req.params.id, req.body, (status, data) => {
                        console.log("Edited ticket");
                        res.status(status);
@@ -372,6 +376,23 @@ export function create_app(pool) {
                 }
             }
         })
+    });
+
+    app.put("/ticketstatus/:id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(authData.user.isadmin || authData.user.publicworkercommune == req.body.commune) {
+                    ticketdao.editTicket(req.params.id, req.body, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        });
     });
 
     app.put("/usermail/:id", verifyToken, (req, res) =>{
@@ -411,11 +432,14 @@ export function create_app(pool) {
     });
 
     app.put("/event/:id", verifyToken, (req, res) =>{
+        console.log("WTF!")
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
                 res.sendStatus(500);
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
+                    console.log('DATA!' + JSON.stringify(req.body));
+                    console.log(req.params.id);
                     eventdao.updateOne(req.params.id, req.body, (status, data) => {
                        console.log("Edited event");
                        res.status(status);
@@ -438,7 +462,7 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(500);
             } else {
-                if(req.body.submitterid == authData.user.id) {
+                if(req.body.submitter_id == authData.user.id) {
                     ticketdao.deleteTicket(req.params.id, (status, data) => {
                         console.log("Deleted ticket");
                         res.status(status);
@@ -491,6 +515,7 @@ export function create_app(pool) {
         if(req.url.includes('.')){
             file = req.url.split('/').pop();
         }
+
         res.sendFile(path.join(client_public, file), options, (err)=>{
             if(err) next();
         });
@@ -498,10 +523,11 @@ export function create_app(pool) {
 
     
 // Verify token
+// Verify token
     function verifyToken(req, res, next) {
         const bearerHeader = req.headers['authorization'];
 
-         if(typeof bearerHeader !== 'undefined') {
+        if(typeof bearerHeader !== 'undefined') {
             const bearer = bearerHeader.split(' ');
             const bearerToken = bearer[1];
             req.token = bearerToken;

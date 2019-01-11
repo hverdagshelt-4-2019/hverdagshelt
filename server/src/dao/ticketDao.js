@@ -34,11 +34,16 @@ export default class TicketDao extends Dao {
     }
     
     editTicket(id, json, callback) {
-        let params = [json.companyid, json.category, json.title, json.description, json.picture, json.status, json.lat, json.long, id]
+        let params = [json.category, json.title, json.description, json.picture, json.lat, json.long, id]
         super.query(
-            "UPDATE TABLE ticket SET responsible_company_id = ?, category = ?, title = ?, description = ?, picture = ?, ticket.status = ?, lat = ?, lng = ? WHERE id = ?;",
+            "UPDATE ticket SET category = ?, title = ?, description = ?, picture = ?, lat = ?, lng = ? WHERE id = ?;",
             params,
             callback)
+    }
+
+    setStatus(id, json, callback) {
+        let params = [json.companyid, json.status, id];
+        super.query("UPDATE ticket SET responsible_company_id = ?, status = ? WHERE id = ?", params, callback);
     }
     
     deleteTicket(id, callback) {
