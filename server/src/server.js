@@ -1,4 +1,5 @@
 import mysql from 'mysql2'
+import fs from 'fs'
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import UserDao from './dao/userDao'
@@ -11,6 +12,8 @@ import AdminDao from './dao/adminDao.js'
 import CompanyDao from './dao/companyDao.js'
 import PublicWorkerDao from './dao/publicworkerDao.js'
 import path from 'path';
+import fileUpload from 'express-fileupload';
+import bodyParser from 'body-parser';
 
 export function create_app(pool) {
     let app = express();
@@ -26,6 +29,9 @@ export function create_app(pool) {
     const publicworkerdao = new PublicWorkerDao(pool);
 
     app.use(express.json());
+    app.use(fileUpload());
+    app.use(bodyParser.json({limit: '50mb'})); // to read JSON in body and set bigger limit
+    app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));//to set bigger limit for files
 
 
     const client_public = path.join(__dirname,'..','..','client','public');
@@ -586,6 +592,89 @@ export function create_app(pool) {
             res.sendStatus(403);
         }
     }
+
+    /* Upload image with the ticetkId for the ticket that the image
+    is connected to. This is to upload Image*/ 
+    let iNumber = 0;
+    app.post("/ticketI", (req, res) => {
+        console.log("Got POST-request from client");
+        console.log(req.body.overskrift);//temp delete
+        console.log(req.files);//temp delete
+
+        if (!req.files) {
+            console.log("no files were uploaded");
+            return res.status(400).send("No files were uploaded.");
+        }
+
+        console.log("files where uploaded");
+        let file = req.files.uploaded_image;
+        let img_name = iNumber+file.name;
+        iNumber++;
+
+        if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
+            console.log("Correct type of image");
+            file.mv('src/images/' + img_name, function (err) {
+
+                if (err) {
+                    console.log("Something went wrong");
+                    return res.status(500).send(err);
+                }
+
+                /*
+                Here you have to add how the path will be saved in database. Some example code under
+                let val = [overskrift, innhold, kategori, viktighet, img_name];
+                caseDao.createOne(val, (status, data) => {
+                    res.status(status);
+                    res.json(data);
+                });*/
+            });
+        }else{
+            console.log("Wrong type if image");
+            return res.status(400).send();
+        }
+    });
+
+    /* Upload image with the ticetkId for the ticket that the image
+    is connected to. This is to edit Image*/ 
+    app.put("/image/:ticketId", (req, res) => {
+        console.log("Got PUT-request from client");
+        const { ticketId } = req.params;
+        if (!req.files) {
+            console.log("no files were uploaded");
+            return res.status(400).send("No files were uploaded.");
+        }
+
+        console.log("files where uploaded");
+        let file = req.files.uploaded_image;
+        let img_name = iNumber+file.name;
+        iNumber++;
+
+        if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
+            console.log("Correct type of image");
+            file.mv('src/images/' + img_name, function (err) {
+
+                if (err) {
+                    return res.status(500).send(err);
+                }
+                /*
+                Here you have to add how the path will be saved in database. Some example code under
+                let val = [img_name, ticketId];
+                ticketDao.updateImage(val, (status, data) => {
+                    res.status(status);
+                    res.json(data);
+                });*/
+            });
+        }
+    });
+
+    //get image from server side and send to frontend
+    app.get("/image/:fileid", (req, res) => {
+        const { fileid } = req.params;
+        let fileN = '/images/'+fileid;
+        console.log(fileN);
+        res.sendFile(fileN, {root: __dirname});//sending the file that is in the foldier with root from the server
+    });
+
 
 
     return app;

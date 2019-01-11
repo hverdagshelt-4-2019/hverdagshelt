@@ -9,6 +9,7 @@ import shouldPureComponentUpdate from 'react-pure-render/function';
 import controllable from 'react-controllables';
 import css from './styleMap.css';
 import ControllableHover from './controllable_hover.js';
+import axios from 'axios';
 
 import {K_SIZE} from './controllable_hover_styles.js';
 import createHashHistory from 'history/createHashHistory';
@@ -91,17 +92,21 @@ export default class SimpleMap extends Component {
         console.log(childProps.text);
         console.log(ta[childProps.text]);
         let localTicket = ta[childProps.text];
-        let picture = document.getElementById("picture");
-        picture.setAttribute("src", localTicket.pic);
+
+        this.getImage(localTicket.pic)
+
         let header = document.getElementById("header");
         header.innerHTML = localTicket.heading;
+
         let category = document.getElementById("category");
         category.innerHTML = localTicket.category;
+
         let para = document.createElement("i");
         para.setAttribute("class", "fas fa-thumbs-up")
         let vote = document.getElementById("vote");
         vote.innerHTML = localTicket.votes;
         vote.appendChild(para);
+
     }
 
     _onChildMouseEnter = (key /*, childProps */) => {
@@ -111,6 +116,26 @@ export default class SimpleMap extends Component {
     _onChildMouseLeave = (/* key, childProps */) => {
         this.props.onHoverKeyChange(null);
     }
+
+    getImage(i: String){
+        let url = "http://localhost:3000/image/";
+        let imageLink = "";
+        axios.get(url+i,
+        {
+            responseType: 'blob'
+        })
+        .then(response => response)
+        .then(image => {
+        //creating local url for image
+        imageLink = URL.createObjectURL(image);
+        let picture = document.getElementById("picture");
+        picture.setAttribute("src", imageLink);
+        })
+        .catch(error => {
+            console.log("Something went wrong with getting the image" + error.toString())
+        });
+    }
+
 
     render() {
         const places = this.props.greatPlaces
