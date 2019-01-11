@@ -2,16 +2,8 @@ import axios from 'axios';
 axios.interceptors.response.use(response => response.data);
 let url = "http://localhost:3000";
 
-class Ticket {
-    id;
-    submitter_id;
-    commune;
-    category;
-    title;
-    description;
-    picture;
-    lat;
-    long;
+class Category {
+        name;
 }
 
 let config = {

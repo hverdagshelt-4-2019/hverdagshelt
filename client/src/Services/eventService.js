@@ -2,14 +2,15 @@ import axios from 'axios';
 axios.interceptors.response.use(response => response.data);
 let url = "http://localhost:3000";
 
-class Ticket {
-    commune;
+class Event {
+    id;
+    submitter_id;
+    commune_name;
     category;
     title;
     description;
     picture;
-    lat;
-    long;
+    happening_time;
 }
 
 let config = {
@@ -18,23 +19,23 @@ let config = {
     }
 }
 
-class TicketService {
+class EventService {
 
-    postEvent(ticket): Promise<Object> {
+    postEvent(event): Promise<Object> {
         console.log(config)
-        return axios.post(url + '/event', ticket, config);
+        return axios.post(url + '/event', event, config);
     }
 
-    getEvent(ticketID): Promise<Ticket>{
+    getEvent(eventID): Promise<Event>{
         return axios.get(url + '/event/' + eventID);
     }
 
-    getAllEvents(): Promise<Ticket[]>{
+    getAllEvents(): Promise<Event[]>{
         return axios.get(url + '/events');
     }
 
-    editEvent(ticketID, ticket): Promise<Object> {
-        return axios.put(url + '/event/' + eventID, ticket, config);
+    editEvent(eventID, event): Promise<Object> {
+        return axios.put(url + '/event/' + eventID, event, config);
     }
 
     deleteEvent(eventID): Promise<Object> {
@@ -42,4 +43,4 @@ class TicketService {
     }
 }
 
-export let ticketService = new TicketService;
+export let eventService = new EventService;

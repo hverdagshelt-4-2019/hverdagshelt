@@ -210,7 +210,7 @@ export function create_app(pool) {
                     id: data[0].id,
                     isadmin: (data[0].isAdmin != null),
                     publicworkercommune: (data[0].commune_name != null ? data[0].commune_name : false)    // Null if not a publicworker
-                }
+                };
                 console.log(JSON.stringify(user));
                 jwt.sign({user}, 'key', {expiresIn: '30d'}, (err, token) => {
                     res.status(status);
@@ -460,38 +460,41 @@ export function create_app(pool) {
         });
     });
 
-    app.put("/usermail/:id", verifyToken, (req, res) =>{
+    app.put("/usermail/:email", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
                 res.sendStatus(401);
             } else {
-                if(req.params.id == authData.user.id) {
-                    userdao.updateEmail(req.params.id, req.body, (status, data) => {
-                       console.log("Edited username");
-                       res.status(status);
-                       res.json(data);
-                    });
-                } else {
-                    res.sendStatus(403);
-                }
+                userdao.updateEmail(authData.user.id, req.body, (status, data) => {
+                    console.log("Edited email");
+                    res.status(status);
+                    let user = authData.user;
+                    user.email = req.body.email;
+
+                    if(status == 200) {
+                        jwt.sign({ user }, 'key', { expiresIn: '30d' }, (err, token) => {
+                            res.status(status);
+                            data.token = token;
+                            res.json(data);
+                        });
+                    } else {
+                        res.json(data);
+                    }
+                });
             }
         })
     });
 
-    app.put("/userpass/:id", verifyToken, (req, res) =>{
+    app.put("/userpass", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
                 res.sendStatus(401);
             } else {
-                if(req.params.id == authData.user.id) {
-                    userdao.updatePassword(req.params.id, req.body, (status, data) => {
-                        console.log("Edited password");
-                        res.status(status);
-                        res.json(data);
-                    });
-                } else {
-                    res.sendStatus(403);
-                }
+                userdao.updatePassword(authData.user.id, req.body, (status, data) => {
+                    console.log("Edited password");
+                    res.status(status);
+                    res.json(data);
+                });
             }
         })
     });
@@ -609,7 +612,7 @@ export function create_app(pool) {
             req.token = bearerToken;
             next();
         }else {
-            res.sendStatus(403);
+            res.sendStatus(401);
         }
     }
 

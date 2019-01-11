@@ -8,6 +8,8 @@ class User {
     password;
 }
 
+
+
 class UserService {
 
     loginUser(
@@ -28,12 +30,13 @@ class UserService {
         return axios.post(url + '/user');
     }
 
-    createAdmin(email, password): Promise<Object>{
-        let admin = new User();
-        admin.email = email;
-        admin.password = password;
-        return axios.post(url + '/admin');
-    }
+   updatePassword(password): Promise<Object>{
+       return axios.post(url + '/userpass', {password});
+   }
+
+   updateEmail(email): Promise<Object>{
+        return axios.post(url + '/usermail', {email});
+   }
 }
 
 export let userService = new UserService;
