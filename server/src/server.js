@@ -368,7 +368,23 @@ export function create_app(pool) {
     });
 
 
-    app.post("followCommune/:id/:commune")
+    app.post("followCommune/:id/:commune", verifyToken, (req, res) => {
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(500);
+            } else {
+                if(req.params.id == authData.user.id) {
+                    communedao.followCommune(req.params.id, req.params.commune, (status, data) => {
+                        res.status(200);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                    res.json({"message" : "Look at you, being in places you shouldn't be."});
+                }
+            }
+        })
+    })
 
     /*
     Put-functions
@@ -473,7 +489,23 @@ export function create_app(pool) {
      */
 
 
-    app.delete("unfollowCommune/:id/:commune")
+    app.delete("unfollowCommune/:id/:commune", verifyToken, (req, res) => {
+       jwt.verify(req.token, 'key', (err, authData) => {
+           if(err) {
+               res.sendStatus(500);
+           } else {
+               if(req.params.id == authData.user.id) {
+                   communedao.unfollowCommune(req.params.id, req.params.commune, (status, data) => {
+                      res.status(status);
+                      res.json(data);
+                   });
+               } else {
+                   res.sendStatus(403);
+                   res.json({"message" : "Look at you, being in places you shouldn't be"});
+               }
+           }
+       })
+    });
 
     app.delete("/ticket/:id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) => {
