@@ -9,40 +9,31 @@ class Category{
     name : string; 
 }
 
-let config = {
-    headers: {
-        Authorization: "Bearer " + localStorage.getItem('authToken'),
+class CategoryService{
+    getAllCategories() : Promise<Category[]>{
+        console.log("Getting all categories...");
+        //return axios.get(url + "/categories"); //Need endpoint to get all distinct categories 
+    }
+
+    deleteTicketCategory(id) : Promise<void>{
+        return axios.delete(url + "/ticketcat/" + id)
+    }
+
+    deleteEventCategory(id) : Promise<void>{
+        return axios.delete(url + "/eventcat/" + id)
+    }
+
+    addTicketCategory(name) : Promise<void>{
+        category = new Category;
+        category.name = name; 
+        //return axios.post(url + "/ticketcat", category); //Need verifytoken
+    }
+
+    addTicketCategory(name) : Promise<void>{
+        category = new Category;
+        category.name = name; 
+        //return axios.post(url + "/eventcat", category); //Need verifytoken
     }
 }
 
-class CategoryService {
-
-    postTicketCategory(category): Promise<Object> {
-        console.log(config)
-        return axios.post(url + '/ticketcat', category, config);
-    }
-
-    getAllTicketCategory(): Promise<Category[]>{
-        return axios.get(url + '/ticketcat');
-    }
-
-    deleteTicketCategory(ticketCategoryID): Promise<Object> {
-        return axios.delete(url + '/ticketcat/' + ticketCategoryID,);
-    }
-
-    postEventCategory(category): Promise<Object> {
-        console.log(config)
-        return axios.post(url + '/eventcat', {category}, config);
-    }
-
-    getAllEventCategory(): Promise<Category[]>{
-        return axios.get(url + '/eventcat');
-    }
-
-    deleteTicketCategory(eventCategoryID): Promise<Object> {
-        return axios.delete(url + '/eventcat/' + eventCategoryID,);
-    }
-}
-
-export let categoryService = new CategoryService;
-
+export let categoryService = new CategoryService();
