@@ -32,6 +32,14 @@ class TicketService {
     getAllTickets(): Promise<Ticket[]>{
         return axios.get(url + '/tickets');
     }
+
+    editTicket(ticketID, ticket): Promise<Object> {
+        return axios.put(url + '/ticket/' + ticketID, ticket, config);
+    }
+
+    deleteTicket(ticketID): Promise<Object> {
+        return axios.delete(url + '/ticket/' + ticketID, config);
+    }
 }
 
 export let ticketService = new TicketService;
