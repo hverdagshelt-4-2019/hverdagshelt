@@ -5,13 +5,10 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { HashRouter, Route, NavLink } from 'react-router-dom';
 import ReactDOM from 'react-dom';
-<<<<<<< HEAD
 import  SimpleMap  from './map/map';// Gets map component
 import UploadImage from './temp/uploadImage'
 import { Alert, Info } from './widgets';
-=======
-import { Alert} from './widgets';
->>>>>>> login
+
 import { Login } from './Components/Login/Login.js';
 import { Register } from './Components/Login/register.js';
 import { Ticket } from './Components/Ticket/Ticket';
