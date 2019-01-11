@@ -15,6 +15,9 @@ import path from 'path';
 import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
 import nodemailer from 'nodemailer';
+import config from '../config';
+
+console.log(config.email);
 
 export function create_app(pool) {
     let app = express();
