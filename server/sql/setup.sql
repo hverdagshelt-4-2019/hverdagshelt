@@ -30,7 +30,7 @@ CREATE TABLE person_CROSS_commune(
   person_id INT,
   commune_name VARCHAR(64),
 
-  PRIMARY KEY (person_id, commune_id),
+  PRIMARY KEY (person_id, commune_name),
   FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE,
   FOREIGN KEY (commune_name) REFERENCES commune(name) ON DELETE CASCADE
 );
