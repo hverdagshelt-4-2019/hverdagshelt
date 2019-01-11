@@ -26,13 +26,13 @@ export default class UserDao extends Dao {
             callback)
     }
 
-   updatePassword(json, callback) {
+   updatePassword(id, json, callback) {
         if(json.newPassword.length < 8) {
             callback(400, {error: "Password"});
         } else {
             super.query("SELECT password FROM person WHERE id = ?", id, (code, rows) => {
                 if (code === 200) {
-                    validate_password(json.oldPassword, rows.password).then(okay => {
+                    validate_password(json.oldPassword, rows[0].password).then(okay => {
                         if (okay) {
                             create_password(json.newPassword).then(password => {
                                 super.query("UPDATE person SET password = ? WHERE id = ?",
@@ -42,7 +42,10 @@ export default class UserDao extends Dao {
                         } else {
                             callback(401, { error: "Old password not valid" })
                         }
-                    });
+                    })
+                        .catch(err =>{
+                            callback(500, {error: "Oopsy woopsy, we did a fucky wucky. Our code monkeys are working WEWWY HARD TO FIX THIS. ^.^"});
+                        });
                 } else {
                     callback(500, { error: "Something went wrong in the database" })
                 }

@@ -142,7 +142,19 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/followedCommunes/:id");
+    app.get("/followedCommunes/:id", (req, res) =>{
+        communedao.getFollowed(req.params.id, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/unfollowedCommunes/:id", (req, res) =>{
+        communedao.getNotFollowed(req.params.id, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
 
     /*
     Post-functions
