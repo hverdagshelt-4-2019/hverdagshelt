@@ -380,8 +380,7 @@ export function create_app(pool) {
     });
 
 
-    app.post("followCommune/:commune", verifyToken, (req, res) => {
-        console.log("asdiubfsdag");
+    app.post("/followCommune/:commune", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
                 res.sendStatus(500);
@@ -497,7 +496,7 @@ export function create_app(pool) {
      */
 
 
-    app.delete("unfollowCommune/:commune", verifyToken, (req, res) => {
+    app.delete("/unfollowCommune/:commune", verifyToken, (req, res) => {
        jwt.verify(req.token, 'key', (err, authData) => {
            if(err) {
                res.sendStatus(500);
