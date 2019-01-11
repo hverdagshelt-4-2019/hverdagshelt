@@ -6,6 +6,6 @@ export default class AdminDao extends Dao {
     }
 
     createAdmin(json, callback) {
-        super.query("INSERT INTO admin VALUES (?)", [json.userId], callback);
+        super.query("INSERT INTO admin VALUES ((SELECT id FROM person WHERE email = ?))", [json.email], callback);
     }
 }

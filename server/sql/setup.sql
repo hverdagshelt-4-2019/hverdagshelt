@@ -28,11 +28,11 @@ CREATE TABLE admin(
 
 CREATE TABLE person_CROSS_commune(
   person_id INT,
-  commune_id VARCHAR(64),
+  commune_name VARCHAR(64),
 
-  PRIMARY KEY (person_id, commune_id),
+  PRIMARY KEY (person_id, commune_name),
   FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE,
-  FOREIGN KEY (commune_id) REFERENCES commune(name) ON DELETE CASCADE
+  FOREIGN KEY (commune_name) REFERENCES commune(name) ON DELETE CASCADE
 );
 
 CREATE TABLE public_worker(
@@ -107,3 +107,4 @@ CREATE TABLE happening(
 
 CREATE TRIGGER tickettime BEFORE INSERT ON ticket
     FOR EACH ROW SET NEW.submitted_time=now()
+;

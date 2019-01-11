@@ -20,19 +20,23 @@ export default class UserDao extends Dao {
         }
     }
 
+    getAll(callback) {
+        super.query("SELECT id, email FROM person WHERE id NOT IN (SELECT id FROM admin UNION (SELECT id FROM public_worker) UNION (SELECT id FROM company))", [], callback);
+    }
+
     updateEmail(id, json, callback) {
         super.query("UPDATE person SET email = ? WHERE id = ?",
             [json.email, id],
             callback)
     }
 
-   updatePassword(json, callback) {
+   updatePassword(id, json, callback) {
         if(json.newPassword.length < 8) {
             callback(400, {error: "Password"});
         } else {
             super.query("SELECT password FROM person WHERE id = ?", id, (code, rows) => {
                 if (code === 200) {
-                    validate_password(json.oldPassword, rows.password).then(okay => {
+                    validate_password(json.oldPassword, rows[0].password).then(okay => {
                         if (okay) {
                             create_password(json.newPassword).then(password => {
                                 super.query("UPDATE person SET password = ? WHERE id = ?",
@@ -42,7 +46,10 @@ export default class UserDao extends Dao {
                         } else {
                             callback(401, { error: "Old password not valid" })
                         }
-                    });
+                    })
+                        .catch(err =>{
+                            callback(500, {error: "Oopsy woopsy, we did a fucky wucky. Our code monkeys are working WEWWY HARD TO FIX THIS. ^.^"});
+                        });
                 } else {
                     callback(500, { error: "Something went wrong in the database" })
                 }
@@ -50,8 +57,8 @@ export default class UserDao extends Dao {
         }
     }
 
-    deleteOne(id, callback){
-        super.query("DELETE FROM person WHERE id = ?", [id], callback);
+    deleteOne(email, callback){
+        super.query("DELETE FROM person WHERE email = ?", [email], callback);
     }
 
     login(json, callback){
