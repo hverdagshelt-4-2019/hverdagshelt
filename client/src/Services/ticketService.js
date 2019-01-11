@@ -12,15 +12,26 @@ class Ticket {
     long;
 }
 
-class TicketService {
-
-    postTicket(ticket): Promise<Object> {
-        return axios.post(url + '/login/', ticket,{headers: { "Authorization": localStorage.getItem('authToken') }});
-    }
-
-    getTicket(ticketID): Promise<Ticket>{
-        return axios.get('/ticket/' + ticketID);
+let config = {
+    headers: {
+        Authorization: "Bearer " + localStorage.getItem('authToken'),
     }
 }
 
-export let loginService = new LoginService;
+class TicketService {
+
+    postTicket(ticket): Promise<Object> {
+        console.log(config)
+        return axios.post(url + '/ticket', ticket, config);
+    }
+
+    getTicket(ticketID): Promise<Ticket>{
+        return axios.get(url + '/ticket/' + ticketID);
+    }
+
+    getAllTickets(): Promise<Ticket[]>{
+        return axios.get(url + '/tickets');
+    }
+}
+
+export let ticketService = new TicketService;
