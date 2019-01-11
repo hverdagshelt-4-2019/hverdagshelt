@@ -22,8 +22,8 @@ export default class EventDao extends Dao {
     }
 
     updateOne(id, json, callback) {
-        var val = [json.commune_name, json.category, json.title, json.description, json.picture, json.happening_time];
-        super.query("UPDATE happening SET commune_name = ?, category = ?, title = ?, description = ?, picture = ?, happening_time = ? WHERE id=?",
+        var val = [json.commune_name, json.category, json.title, json.description, json.picture, json.happening_time, id];
+        super.query("UPDATE happening SET commune_name = ?, category = ?, title = ?, description = ?, picture = ?, happening_time = ? WHERE id = ?",
             val,
             callback
         );
