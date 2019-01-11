@@ -10,32 +10,31 @@ export class Ticket_commune extends Component<{ match: { params: { id: number } 
 
   render() {
     return (
-      <ul>
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8" id="borderUp">
-            <img src="rhyme.jpg" className="img-responsive" />
-            </div>
-            <div className="col-md-2" />
-          </div>
+      <div>
+        <Navbar_person />
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-8">
+                <h1>Hull i veien</h1>
+                <p className="lead">
+                  Status: {' '}
+                  <select>
+                    <option>Avventer svar</option>
+                    <option>Under behandling</option>
+                    <option>Ferdig</option>
+                  </select>{' '}
+                  <button type="button" className="btn btn-primary btn-sm">
+                    Lagre
+                  </button>
+                </p>
 
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8" id="borderUp">
-              <h1>Grafiti</h1>
-            </div>
-            <div className="col-md-2" />
-          </div>
+                            <hr />
 
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8" id="borderUp">
-              <span id="commune">
-                <b>Kommune:</b> Trondheim
-              </span>
-              <span id="company">
-                <b>Bedrift:</b> {' '}
+                            <p>January 1, 2018 12:00</p>
+
+                            <p><b>Kommune:</b> Trondheim</p>
+
+                            <p><b>Bedrift:</b> {' '}
               <select>
               <option>Ingen</option>
                 <option>Murerfirma</option>
@@ -44,65 +43,47 @@ export class Ticket_commune extends Component<{ match: { params: { id: number } 
               <button type="button" className="btn btn-primary btn-sm">
                 Lagre
               </button>
-              </span>
-            </div>
-            <div className="col-md-2" />
-          </div>
+              </p>
 
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8" id="borderUp">
-              <span id="commune">
-              <b>Status:</b>{' '}
-              <select>
-                <option>Avventer svar</option>
-                <option>Under behandling</option>
-                <option>Ferdig</option>
-              </select>{' '}
-              <button type="button" className="btn btn-primary btn-sm">
-                Lagre
-              </button>
-              </span>
-              <span id="company">
-                <b>Kategori:</b> Hærverk
-              </span>
-            </div>
-            <div className="col-md-2" />
-          </div>
+                            <p><b>Kategori:</b> Veiproblem</p>
 
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8" id="borderUp">
-              <b>Innsendt:</b> 09:31 10.01.2019
-            </div>
-            <div className="col-md-2" />
-          </div>
+                            <hr />
 
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8" id="borderUp">
-            Dayo dayo dayo
-            </div>
-            <div className="col-md-2" />
-          </div>
+                            <img src="http://placehold.it/900x300" alt="" />
 
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8" id="borderUp">Map</div>
-            <div className="col-md-2" />
-          </div>
+                            <hr />
 
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8" id="border">
-              <h4>Skriv melding:</h4>
-              <textarea rows="10" cols="100" />
-              <button className="button">Send</button>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
+
+                            <hr />
+
+                            Map here
+
+                            <hr />
+
+                            <div>
+                                <h5 className="card-header">Kommenter:</h5>
+                                <div className="card-body">
+                                    <form>
+                                        <div className="form-group">
+                                            <textarea className="form-control" rows="3"></textarea>
+                                        </div>
+                                        <button type="submit" className="btn btn-primary">Send</button>
+                                    </form>
+                                </div>
+                            </div>
+
+        
+                            <div className="media mb-4">
+                                <div className="media-body">
+                                    <h5 className="mt-0">Commenter Name</h5>
+                                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="col-md-2" />
-          </div>
-        </div>
-      </ul>
     );
   }
 

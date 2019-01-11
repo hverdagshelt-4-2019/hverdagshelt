@@ -8,69 +8,41 @@ import { Navbar_person } from '../Navbars/Navbar_person';
 export class AddTicket {
   render() {
     return (
-        <div className="container-fluid">
-        <Navbar_person />
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8">
-            <h2>Raporter en ny sak:</h2>
-            </div>
-            <div className="col-md-2" />
-          </div>
+              <div>
+                <Navbar_person />
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-8">
+                            <h1>Raporter en ny sak:</h1>
 
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8">
-          <h4>Tittel:</h4>
-          <input />
-            </div>
-            <div className="col-md-2" />
-          </div>
+                            <hr />
 
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8">
-          <h4>Beskrivelse:</h4>
-          <textarea
-            rows="10"
-            cols="100"
-          />
-            </div>
-            <div className="col-md-2" />
-          </div>
+                            <h4>Tittel:</h4>
+                            <input className="form-control"/>
 
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8">
-            <h4>Kategori:</h4>
-         <select>
-              <option>Hærverk</option>
-                <option>Søppel</option>
-                <option>Strøing</option>
-              </select>{' '}
-            </div>
-            <div className="col-md-2" />
-          </div>
+                             <h4>Beskrivelse:</h4>
+                            <textarea className="form-control" style={{width:"100%"}} />
 
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8">
-            <h4>Bilde:</h4>
-            <label htmlFor="InputFile">Last opp bilde</label>
-           <input type="file" className="form-control-file" id="InputFile"/>
-           <small id="fileHelp" className="form-text text-muted"></small>
-            </div>
-            <div className="col-md-2" />
-          </div>
+                            <h4>Kategori:</h4>
+                            <select>
+                                <option>Hærverk</option>
+                                <option>Søppel</option>
+                                <option>Strøing</option>
+                            </select>
 
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8">
-            <h4>Plassering:</h4>
+                            <h4>Bilde:</h4>
+                            <label htmlFor="InputFile">Last opp bilde</label>
+                            <input type="file" className="form-control-file" id="InputFile"/>
+                            <small id="fileHelp" className="form-text text-muted"></small>
+
+                            <hr />
+
+                            Map here
+
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="col-md-2" />
-          </div>
-        </div>
     );
   }
 }
