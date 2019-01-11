@@ -16,7 +16,7 @@ let config =
 
     test: {
         mysql: {
-            connectionLimit: 2,
+            connectionLimit: 20,
             multipleStatements: true,
             host: 'mysql.stud.iie.ntnu.no',
             user: 'aleksjoh',

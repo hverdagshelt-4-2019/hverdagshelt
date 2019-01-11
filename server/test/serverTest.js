@@ -14,11 +14,24 @@ let fetch_get = {
     headers: HEADERS
 };
 
-let pool, app, server;
-beforeEach( done => {
-    pool = mysql.createPool(config.test.mysql);
-    app = create_app(pool);
-    server = app.listen(config.test.port);
+let pool, app, server, socketMap;
+pool = mysql.createPool(config.test.mysql);
+app = create_app(pool);
+server = app.listen(config.test.port);
+let lastSocketKey = 0;
+socketMap = {};
+server.on('connection', (socket) => {
+    // generate a new, unique socket-key
+    let socketKey = ++lastSocketKey;
+    // add socket when it is connected
+    socketMap[socketKey] = socket;
+    socket.on('close', () => {
+        // remove socket when it is closed
+        delete socketMap[socketKey];
+    });
+});
+
+beforeAll( done => {
     setup_database(pool, done);
 });
 
@@ -35,57 +48,17 @@ test("create app", done => {
     });
 });
 
-describe("person API", ()=>{
-    it("gets person", (done) => {
-        fetch(fetch_url+'users', fetch_get)
-        .then(res => {
-            expect(res.status).toBe(200);
-            return res.json()
-        })
-        .then(res => {
-            expect(res.length).toBeGreaterThan(5);
-            expect(res[0].email).toContain('@');
-            done();
+afterAll((done) => {
+    server.close(async () => {
+        let promises = Object.keys(socketMap).map((key) => {
+            return new Promise(async (resolve) => {
+                socketMap[key].on('close', resolve);
+                socketMap[key].destroy();
+            })
         });
+        await Promise.all(promises);
+        pool.end();
+        done()
     });
 
-    it("registers a user, and can then log in as them", done => {
-        let user = {
-            email: "testUser@mail.com",
-            password: "testpassword96"
-        };
-
-        fetch(fetch_url+'user', {
-            method: 'POST',
-            headers: HEADERS,
-            body: JSON.stringify(user)
-        })
-        .then(res => {
-            expect(res.status).toBe(200);
-            return res.json();
-        })
-        .then(res => {
-            expect(res.affectedRows).toBe(1);
-
-            fetch(fetch_url+'login', {
-                method: 'POST',
-                headers: HEADERS,
-                body: JSON.stringify(user)
-            })
-            .then(res => {
-                expect(res.status).toBe(200);
-                expect(res.token).not.toBeNull()
-            })
-            .then(res => {
-                console.log(res);
-                done();
-            })
-        })
-    });
-});
-
-
-afterEach((done) => {
-    server.close();
-    done();
 });

@@ -1,3 +1,4 @@
+start transaction;
 DROP TABLE IF EXISTS happening;
 DROP TABLE IF EXISTS happening_category;
 DROP TABLE IF EXISTS ticket_comment;
@@ -56,7 +57,7 @@ CREATE TABLE ticket_category(
 
 CREATE TABLE ticket(
   id INT PRIMARY KEY AUTO_INCREMENT,
-  submitter_id INT NOT NULL,
+  submitter_id INT,
   responsible_commune VARCHAR(64) NOT NULL,
   responsible_company_id INT DEFAULT NULL,
   category VARCHAR(64) NOT NULL,
@@ -70,9 +71,9 @@ CREATE TABLE ticket(
   lng DOUBLE DEFAULT NULL,
 
 
-  FOREIGN KEY (submitter_id) REFERENCES person(id),
-  FOREIGN KEY (responsible_commune) REFERENCES commune(name),
-  FOREIGN KEY (responsible_company_id) REFERENCES company(id),
+  FOREIGN KEY (submitter_id) REFERENCES person(id) ON DELETE SET NULL,
+  FOREIGN KEY (responsible_commune) REFERENCES commune(name) ON DELETE CASCADE,
+  FOREIGN KEY (responsible_company_id) REFERENCES company(id) ON DELETE SET NULL,
   FOREIGN KEY (category) REFERENCES ticket_category(name)
 );
 
@@ -80,10 +81,10 @@ CREATE TABLE ticket_comment(
   id INT PRIMARY KEY AUTO_INCREMENT,
   ticket_id INT NOT NULL,
   description VARCHAR(256) NOT NULL,
-  submitter_id INT NOT NULL,
+  submitter_id INT,
 
-  FOREIGN KEY (submitter_id) REFERENCES person(id),
-  FOREIGN KEY (ticket_id) REFERENCES ticket(id)
+  FOREIGN KEY (submitter_id) REFERENCES person(id) ON DELETE SET NULL,
+  FOREIGN KEY (ticket_id) REFERENCES ticket(id) ON DELETE CASCADE
 );
 
 CREATE TABLE happening_category(
@@ -108,3 +109,4 @@ CREATE TABLE happening(
 CREATE TRIGGER tickettime BEFORE INSERT ON ticket
     FOR EACH ROW SET NEW.submitted_time=now()
 ;
+commit;
