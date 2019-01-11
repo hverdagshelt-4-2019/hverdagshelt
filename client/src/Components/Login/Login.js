@@ -23,6 +23,7 @@ export class Login extends Component {
         console.log(localStorage.getItem('authToken'));
       });
     }
+  }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });

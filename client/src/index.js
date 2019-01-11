@@ -11,6 +11,9 @@ import { Ticket } from './Components/Ticket/Ticket';
 import { Login } from './Components/Login/Login.js';
 import { Register } from './Components/Login/Register.js';
 import { TicketList } from './Components/TicketList/TicketList.js';
+import { CategoryCreation } from './Components/CategoryCreation/CategoryCreation.js';
+import { AddPage } from './Components/AdminAdd/AddPage.js';
+
 
 const root = document.getElementById('root');
 if (root)
@@ -19,8 +22,10 @@ if (root)
       <div>
         <Navbar_person />
         <Route exact path="/" component={Login} />
-        <Route path="/register" component={Register} />
-        <Route path="/ticketlist" component={TicketList} />
+        <Route path="/registrerdeg" component={Register} />
+        <Route path="/sakliste" component={TicketList} />
+        <Route path="/leggtil" component={AddPage}/>
+        <Route path="/kategorier" component={CategoryCreation} />
       </div>
     </HashRouter>,
     root

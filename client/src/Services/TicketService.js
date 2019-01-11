@@ -22,9 +22,17 @@ class Ticket{
 }
 
 class TicketService{
+    //Possibly not use this? Probably not 
+    /*
     getAllCommuneTickets(communeIds){
         console.log("Get tickets from these communes: " + communeIds);
         return axios.get(url + "/communeTickets/" + communeIds); //Temporary endpoint name. 
+    }
+    */
+
+    getTicketsByCommuneAndCategory(communeId, categories){
+        console.log("Getting tickets from the commune: " + communeId + " by categories: " + categories);
+        //return axios.get(url + "/tickets/bycategory", ) //Temporary
     }
 }
 
