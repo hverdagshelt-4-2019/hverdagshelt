@@ -1,3 +1,4 @@
+
 import mysql from 'mysql2'
 import fs from 'fs'
 import express from 'express'
@@ -11,6 +12,7 @@ import CommentDao from './dao/commentDao.js'
 import AdminDao from './dao/adminDao.js'
 import CompanyDao from './dao/companyDao.js'
 import PublicWorkerDao from './dao/publicworkerDao.js'
+
 import path from 'path';
 import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
@@ -20,7 +22,8 @@ import config from '../config';
 console.log(config.email);
 
 export function create_app(pool) {
-    let app = express();
+  let app = express();
+
 
     const categorydao = new CategoryDao(pool);
     const userdao = new UserDao(pool);
@@ -45,9 +48,11 @@ export function create_app(pool) {
 
     const client_public = path.join(__dirname,'..','..','client','public');
 
-    /*
+
+  /*
     Get-functions
      */
+
 
     app.get("/user/:id", (req, res) =>{
         userdao.getOne(req.params.id, (status, data) =>{
@@ -115,11 +120,13 @@ export function create_app(pool) {
 
     app.get("/ticketcat", (req, res) => {
         categorydao.getAllTicket((status, data) => {
-            console.log('data:' + data)
+            console.log('data:' + data);
             res.status(status);
             res.json(data);
         });
+
     });
+
 
     app.get("/communes", (req, res) =>{
         communedao.getAll((status, data) =>{
@@ -183,9 +190,11 @@ export function create_app(pool) {
         });
     });
 
-    /*
+
+  /*
     Post-functions
      */
+
 
     app.post("/user", (req, res) =>{
         userdao.createOne(req.body, (status, data) =>{
@@ -245,11 +254,11 @@ export function create_app(pool) {
                     res.status(status);
                     res.json(data);
                 });
-                console.log("ok")
+                console.log("ok");
             }
-        });
 
-    });
+        });
+      });
 
     app.post("/event", (req, res) =>{
 
@@ -413,9 +422,10 @@ export function create_app(pool) {
                 });
             }
         });
+
     });
 
-    /*
+  /*
     Put-functions
      */
 
@@ -529,7 +539,7 @@ export function create_app(pool) {
         });
     });
 
-    /*
+  /*
     Delete-functions
      */
 
@@ -626,6 +636,7 @@ export function create_app(pool) {
             res.sendStatus(401);
         }
     }
+
 
     /* Upload image with the ticetkId for the ticket that the image
     is connected to. This is to upload Image*/ 
@@ -730,4 +741,5 @@ function genRandPass() {
         newPass += validChars[Math.floor(Math.random() * validChars.length)];
     }
     return newPass;
+
 }

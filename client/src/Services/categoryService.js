@@ -1,39 +1,39 @@
+//@flow 
+
 import axios from 'axios';
+let url = 'http://localhost:8080';
 axios.interceptors.response.use(response => response.data);
-let url = "http://localhost:3000";
 
-class Category {
-        name;
+class Category{
+    id : number;
+    name : string; 
 }
 
-let config = {
-    headers: {
-        Authorization: "Bearer " + localStorage.getItem('authToken'),
-    }
-}
-
-class TicketService {
-
-    postTicket(ticket): Promise<Object> {
-        console.log(config)
-        return axios.post(url + '/ticket', ticket, config);
+class CategoryService{
+    getAllCategories() : Promise<Category[]>{
+        console.log("Getting all categories...");
+        //return axios.get(url + "/categories"); //Need endpoint to get all distinct categories 
     }
 
-    getTicket(ticketID): Promise<Ticket>{
-        return axios.get(url + '/ticket/' + ticketID);
+    deleteTicketCategory(id) : Promise<void>{
+        return axios.delete(url + "/ticketcat/" + id)
     }
 
-    getAllTickets(): Promise<Ticket[]>{
-        return axios.get(url + '/tickets');
+    deleteEventCategory(id) : Promise<void>{
+        return axios.delete(url + "/eventcat/" + id)
     }
 
-    editTicket(ticketID, ticket): Promise<Object> {
-        return axios.put(url + '/ticket/' + ticketID, ticket, config);
+    addTicketCategory(name) : Promise<void>{
+        category = new Category;
+        category.name = name; 
+        //return axios.post(url + "/ticketcat", category); //Need verifytoken
     }
 
-    deleteTicket(ticketID): Promise<Object> {
-        return axios.delete(url + '/ticket/' + ticketID, config);
+    addTicketCategory(name) : Promise<void>{
+        category = new Category;
+        category.name = name; 
+        //return axios.post(url + "/eventcat", category); //Need verifytoken
     }
 }
 
-export let ticketService = new TicketService;
+export let categoryService = new CategoryService();
