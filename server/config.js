@@ -13,8 +13,8 @@ let config =
 
     port: 3000,
 
-    mail: {
-        email: "hverdagsheltene4@hotmail.com",
+    email: {
+        user: "hverdagsheltene4@hotmail.com",
         password: "set password in private.config.js"
     },
 
