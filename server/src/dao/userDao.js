@@ -57,6 +57,14 @@ export default class UserDao extends Dao {
         }
     }
 
+    getNewPass(email, newPass, callback) {
+        create_password(newPass).then(password =>{
+            super.query("UPDATE person SET password = ? WHERE email = ?",
+                [password, email],
+                callback);
+        })
+    }
+
     deleteOne(email, callback){
         super.query("DELETE FROM person WHERE email = ?", [email], callback);
     }

@@ -441,6 +441,17 @@ export function create_app(pool) {
 
     app.put("/forgotPassword/:email", (req, res) =>{
         let newPass = genRandPass();
+        userdao.getNewPass(req.body.email, newPass, (status, data) =>{
+            let mailOptions = {
+                from: 'Hverdagsheltene',
+                to: req.params.email,
+                subject: 'Nytt Passord',
+                text: 'Ditt nye passord er: ' + newPass
+            };
+            sendEmail(transporter, mailOptions);
+            res.status(status);
+            res.json(data);
+        });
     });
 
     app.put("/ticketstatus/:id", verifyToken, (req, res) =>{
