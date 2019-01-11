@@ -12,28 +12,33 @@ let config = {
     }
 }
 
-class TicketService {
+class CategoryService {
 
-    postTicket(ticket): Promise<Object> {
+    postTicketCategory(category): Promise<Object> {
         console.log(config)
-        return axios.post(url + '/ticket', ticket, config);
+        return axios.post(url + '/ticketcat', category, config);
     }
 
-    getTicket(ticketID): Promise<Ticket>{
-        return axios.get(url + '/ticket/' + ticketID);
+    getAllTicketCategory(): Promise<Category[]>{
+        return axios.get(url + '/ticketcat');
     }
 
-    getAllTickets(): Promise<Ticket[]>{
-        return axios.get(url + '/tickets');
+    deleteTicketCategory(ticketCategoryID): Promise<Object> {
+        return axios.delete(url + '/ticketcat/' + ticketCategoryID,);
     }
 
-    editTicket(ticketID, ticket): Promise<Object> {
-        return axios.put(url + '/ticket/' + ticketID, ticket, config);
+    postEventCategory(category): Promise<Object> {
+        console.log(config)
+        return axios.post(url + '/eventcat', {category}, config);
     }
 
-    deleteTicket(ticketID): Promise<Object> {
-        return axios.delete(url + '/ticket/' + ticketID, config);
+    getAllEventCategory(): Promise<Category[]>{
+        return axios.get(url + '/eventcat');
+    }
+
+    deleteTicketCategory(eventCategoryID): Promise<Object> {
+        return axios.delete(url + '/eventcat/' + eventCategoryID,);
     }
 }
 
-export let ticketService = new TicketService;
+export let categoryService = new CategoryService;
