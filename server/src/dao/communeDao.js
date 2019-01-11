@@ -6,11 +6,11 @@ export default class CommuneDao extends Dao{
     }
 
     getFollowed(id, callback) {
-        super.query("SELECT commune.name FROM commune NATURAL JOIN person_CROSS_commune WHERE person_id = ?", [id], callback);
+        super.query("SELECT commune.name FROM commune JOIN person_CROSS_commune pc ON commune.name = pc.commune_name WHERE person_id = ?", [id], callback);
     }
 
     getNotFollowed(id, callback) {
-        super.query("SELECT commune.name FROM commune WHERE commune.name NOT IN (SELECT name FROM commune NATURAL JOIN person_CROSS_commune WHERE person_id = ?)", [id], callback);
+        super.query("SELECT commune.name FROM commune WHERE commune.name NOT IN (SELECT name FROM commune JOIN person_CROSS_commune pc ON commune.name = pc.commune_name WHERE person_id = ?)", [id], callback);
     }
 
     followCommune(user_id, commune_name, callback) {

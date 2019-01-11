@@ -3,10 +3,15 @@
 import { ReactDOM } from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import {loginService} from '../../services/LoginService';
+import {userService} from '../../Services/userService';
 import {ticketService} from '../../services/TicketService';
 
 export class Login extends Component {
+    ticket = null;
+    render() {
+        if (!this.ticket) return null;
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -18,6 +23,7 @@ export class Login extends Component {
     }
 
     login() {
+        ticketService.getTicket(3);
         if(this.state.email && this.state.password) {
             /*loginService.loginUser(this.state.email,this.state.password).then((result) => {
                 console.log("okay");
