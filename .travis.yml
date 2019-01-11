@@ -9,8 +9,25 @@ jobs:
   - stage: test
     name: test_server
     before_script:
-    - 'cd server; echo "export default {mysql: {password: ''"$SINDRTHO_MYSQL_PASS"''},
-      test: {mysql: {password: ''"$ALEKSJOH_MYSQL_PASS"''}}}" > private.config.js;
+    - 'cd server; echo "export default
+        {
+            mysql: {
+                password: ''"$SINDRTHO_MYSQL_PASS"''
+            },
+            mail: {
+                password: ''"$MAIL_PASSWORD"''
+            },
+            test:
+                {
+                mysql: {
+                    password: ''"$ALEKSJOH_MYSQL_PASS"''
+                },
+                mail: {
+                    password: ''"$MAIL_TEST_PASSWORD"''
+                }
+            }
+        }
+      " > private.config.js;
       npm install'
     script:
     - npm test
@@ -24,3 +41,5 @@ env:
   global:
   - secure: Y9UkNXWIFqiQwWeJdwrT0hiswk4a6razSeQLT3UgGPRAki6YUlQdxdDgsnQ8sgX8z1KwHevz48s3W1jy5/OYewtYySLLfLrN/NOi1tWJTkfwcBjBSvMvgKOWpbDKXBG5Suw0Lze4try3eBr9X4uSQvxVup8Bdl+KswA4MKo+WvNvI1ml0uRYFZC0m3eGqS1M8G4h8t6DLn9K1bCb2pRawPgnENIISrmvI0GeK/2Vn3NAHzZRJXCbdxi0WTB3q94+i5+zir1Nuu6Aj6nqBaasHoe5Spw7cmiYyvvmo5VjOccW0VRoTGOeRc88qMziIU9CRzBWS5gnPGQhUIqvMbsgu6oBbRy7oMopIjQ8GLU2tosPuaFh+4kdbP6iQ7nu6yZ+Ghif3WSa1qAGg02gvJNP5JaackUDj/Hcvy5MMLlkht0nHgABcgwBm89t/QNI32SpsWKlLYIxQU7Xpbting50nuhKHI5mUoXu6LTEHhJ3QKUcXsCz+Ozk/e584CmP+4cL5I10/2iHfd2bYaFaobv3F5+e65bWxWGL4PvouhdAapYcavPzn4G4434piN1zUQvJBNMkjEfrMiZnuBl6m29o1DxCxPmOMUnaEctwX+bIXm397I36hm9JzLhhL95Xdhb0Z6lMymMgskrYRaFPyWHkj3OqN8lLAsuaN0nVkw47sFE=
   - secure: rKDziYqAU5jp/xwHzwcQOv2ScHqDqZxrlDA3o8MzV0I5bijpCZ1MMujcAjwx9zr9KV0Mg8aL/1v2Y0pR4Vgo4nXaGXFM2gQgUqRdLO/8s433pCuDIcq5cItCf5bebUmONhzuJ3z39zp3yYWnAosOWj1tmWPc8yO6Sw/CDEUOSjFpMFEpdfGI8Cf8U3qo188H02CGgWZNrpCZwh2XYMMwO4TsYj9wc09ycg8banm2gxsi+6DJ+P9cbgQf3I02NkPeCegfAc+KP8b37gUvKOv0Yhf/nj7jyqDOnjXJ4GHsTS9gf80mxVF4jBnQQZi10JpcL8IS6Wp+Cqb9lcR1KSNAioZJ1jgpAMQS2fNZgqu1eTwa2D7DdQDYTassGVGQDkEstegrjsOdSLYhK3Yq9GjVtgzFwh6aEKeXkeN7zJr8rl5fn5QKFPFUtyrZzdh64wru9YRcj0TJRrhfBLK4/MaPmxv5VgDbtGA9mcgHkEpHtvrvmYzTq6npiaR0fMrilNViLqIRXHF5iQnb5Pm5bbsGly0gvfgPZeS7U2NR+n3W/opycpphwEB2RCpGE2ATkaGJCEMA1M2KIOrnRB44W6P8FAHhmQceomzYmRmD/ImKhw+u+CjUAnCWBmUS7W2gK9ewSq0tXtqs/XK42xjkU1ipZtk5pz8qrkgOZ099thQhDys=
+  - secure: 0Lif4p9zJwJwzlpCiLJS6bL2rW63APl7VUDePZjbkRq4JbYguxd9yi9YuF1H4DbII3uNx9HodbzsjvZ8RoHP7hbl1ZTGAnDwAYg2plotLhPUgyjbVangQojflZGT+xLQD0D3o7pELLazO/V0pI5YMoYWeUAo1cV/uuaK/0pNINz2JiVoxo0mKB1ajBrWU16Uza06EDfRuawEqCpfPrcspngo7n2NFRml+jeoMeL1rlQlEW/QT+jLX+xNvJIgUImhZ9PHYx89V81Xva8MCIYmQFJbXnUvM5i8m6jn43MwllUbVhMGvkYXzL/G8i1D6ymTTwPccJyI5NeF0pxDix1gtB7xW4pTTFNjrOP9GxyHxaivLfzUxsWn1fQratwc3yKRSSquzXLodqI+tpHJrF8YUQoclNarQtBMGDTgAbaQKNgOMEOefsljCs70xx+Ad6qrWWlgSWlaHu9io+9M2quNjO9JuUnTgdfy5hwtAvPoMFaP2rTp8xKEB2rDtY1QY7gm2ZoqGkzGUH8mVhv3PXxq/ulovyE3O7+NaMrVBGrKeEBksAE9cB32X5gIuWmJ3yQe9z7dQI4g9NHf1LyYkBtW+d+FvpAcNuDiFKyqc0HWJsX2bj4SaF3nXKjiMC8f1k9wq59kRPmnUCFyTdyyhZxkxYTaZRnQoWps2dYmMjP7qBA=
+  - secure: KNsctbdYupG4+RfyJXTEsp1/8JwSj6uNzjo4Ydikn3lRcJc0cruRJx8MdKVdsEJyf+L5vi3QI4t/R5epYnVT5sZBHSftP1kewsnUmzj9N/lu+sOiDtazJUKOov4P58+OgtgvKrIb2ra5tCXucFS4TuOvl52nA5wSA+vkMpiw2uhKdSKAw2vdu8V2i1GkySxEbrHV52eUwiHYaBx0N9sl329s6iLNftGhmyqBqP0y2JAc9FaOG2UVn4KtFNCX5LKHExV/OXNx7dRUnQHEkddOEhMNlENxj4kN/9dQDQkHcob5GTbojVCYAnfO7nLLSxIAfRgiVkeryS9RuxCA+cxeB/6f/tFKrYYQVG5f5HD10/gMC+PhEiK3UIz8LWRZH9vVDcdTJLg8gjIsOwL7AYzNMzUkvfWGLZB8fkqtL1+srFqluNmfXzz6HgD5sb+vTB+UHfneR1gT2AXLuiS65+6oKIwOjofAWOiXoPbSxz9ohK7g9DWXExpG7vmvxBYh6d+by89gWSItOxMnzRvUm/3r0+0BKhKDfQNK+bkoxf/a6QNJ1Hq3RiW2kERhajdwry0NzvYju6s2SBojvWhhpqoczpW5otdpUHDDQwYO4/8uhAUHnvusaU3yHx8ySp5nylggXuqzz93U3JLLigUumqU5E02varO6MWrW0GdwK0qkRTw=
