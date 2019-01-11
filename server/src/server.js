@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import mysql from 'mysql2'
 import fs from 'fs'
 import express from 'express'
@@ -11,13 +12,23 @@ import CommentDao from './dao/commentDao.js'
 import AdminDao from './dao/adminDao.js'
 import CompanyDao from './dao/companyDao.js'
 import PublicWorkerDao from './dao/publicworkerDao.js'
+=======
+import mysql from 'mysql2';
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import UserDao from './dao/userDao';
+import TicketDao from './dao/ticketDao.js';
+import CategoryDao from './dao/categoryDao.js';
+import EventDao from './dao/eventDao.js';
+>>>>>>> login
 import path from 'path';
 import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
 
 export function create_app(pool) {
-    let app = express();
+  let app = express();
 
+<<<<<<< HEAD
     const categorydao = new CategoryDao(pool);
     const userdao = new UserDao(pool);
     const ticketdao = new TicketDao(pool);
@@ -35,11 +46,24 @@ export function create_app(pool) {
 
 
     const client_public = path.join(__dirname,'..','..','client','public');
+=======
+  const categorydao = new CategoryDao(pool);
+  const userdao = new UserDao(pool);
+  const ticketdao = new TicketDao(pool);
+  const eventdao = new EventDao(pool);
 
-    /*
+  app.use(express.json());
+
+  const client_public = path.join(__dirname, '..', '..', 'client', 'public');
+  /*const public_path = path.join(__dirname, '/../../client/public');
+    app.use(express.static(public_path));*/
+>>>>>>> login
+
+  /*
     Get-functions
      */
 
+<<<<<<< HEAD
     app.get("/user/:id", (req, res) =>{
         userdao.getOne(req.params.id, (status, data) =>{
             console.log('data' + JSON.stringify(data));
@@ -110,8 +134,35 @@ export function create_app(pool) {
             res.status(status);
             res.json(data);
         });
-    });
+=======
+  app.get('/user/:id', (req, res) => {
+    userdao.getOne();
+  });
 
+  app.get('/ticket/:id', (req, res) => {});
+
+  app.get('/tickets', (req, res) => {});
+
+  app.get('/tickets/category', (req, res) => {});
+
+  app.get('/event/:id', (req, res) => {});
+
+  app.get('/events', (req, res) => {});
+
+  app.get('/events/category', (req, res) => {});
+
+  app.get('/eventcat', (req, res) => {});
+
+  app.get('/ticketcat', (req, res) => {
+    categorydao.getAllTicket((status, data) => {
+      res.status(status);
+      res.json(data);
+      console.log(data);
+>>>>>>> login
+    });
+  });
+
+<<<<<<< HEAD
     app.get("/communes", (req, res) =>{
         communedao.getAll((status, data) =>{
             console.log('data' + data);
@@ -173,11 +224,17 @@ export function create_app(pool) {
             }
         });
     });
+=======
+  app.get('/commune/:commune', (req, res) => {});
 
-    /*
+  app.get('/communes', (req, res) => {});
+>>>>>>> login
+
+  /*
     Post-functions
      */
 
+<<<<<<< HEAD
     app.post("/user", (req, res) =>{
         userdao.createOne(req.body, (status, data) =>{
             res.status(status);
@@ -231,10 +288,34 @@ export function create_app(pool) {
                 });
                 console.log("ok")
             }
-        });
-
+=======
+  app.post('/login', (req, res) => {
+    const user = {
+      email: 'test',
+      id: 1
+    };
+    jwt.sign({ user }, 'key', { expiresIn: '30m' }, (err, token) => {
+      res.json({
+        token
+      });
     });
+  });
 
+  app.post('/ticket', verifyToken, (req, res) => {
+    jwt.verify(req.token, 'key', (err, authData) => {
+      if (err) {
+        res.sendStatus(403);
+      } else {
+        res.json({
+          message: 'Posted',
+          authData
+>>>>>>> login
+        });
+      }
+    });
+  });
+
+<<<<<<< HEAD
     app.post("/event", (req, res) =>{
 
         jwt.verify(req.token, 'key', (err, authData) =>{
@@ -397,12 +478,30 @@ export function create_app(pool) {
                 });
             }
         });
-    });
+=======
+  app.post('/event', (req, res) => {});
 
-    /*
+  app.post('/user', (req, res) => {});
+
+  app.post('/comment', (req, res) => {});
+
+  app.post('/eventcat', (req, res) => {});
+
+  app.post('/ticketcat', (req, res) => {
+    console.log(req.body.name);
+    categorydao.createOneTicket(req.body.name, (status, data) => {
+      res.status(status);
+      res.json(data);
+      console.log('Added');
+>>>>>>> login
+    });
+  });
+
+  /*
     Put-functions
      */
 
+<<<<<<< HEAD
     app.put("/ticket/:id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
@@ -494,11 +593,19 @@ export function create_app(pool) {
             }
         });
     });
+=======
+  app.put('/ticket/:id', (req, res) => {});
 
-    /*
+  app.put('/user/:id', (req, res) => {});
+
+  app.put('/event/:id', (req, res) => {});
+>>>>>>> login
+
+  /*
     Delete-functions
      */
 
+<<<<<<< HEAD
 
     app.delete("/unfollowCommune/:commune", verifyToken, (req, res) => {
        jwt.verify(req.token, 'key', (err, authData) => {
@@ -591,8 +698,41 @@ export function create_app(pool) {
         }else {
             res.sendStatus(403);
         }
-    }
+=======
+  app.delete('/ticket/:id', (req, res) => {});
 
+  app.delete('/user/:id', (req, res) => {});
+
+  app.delete('/event/:id', (req, res) => {});
+
+  app.get('*', (req, res, next) => {
+    let options = {};
+    let file = 'index.html';
+    if (req.url.includes('.')) {
+      file = req.url.split('/').pop();
+    }
+    console.log(req);
+    res.sendFile(path.join(client_public, file), options, err => {
+      if (err) next();
+    });
+  });
+
+  // Verify token
+  function verifyToken(req, res, next) {
+    const bearerHeader = req.headers['authorization'];
+
+    if (typeof bearerHeader !== 'undefined') {
+      const bearer = bearerHeader.split(' ');
+      const bearerToken = bearer[1];
+      req.token = bearerToken;
+      next();
+    } else {
+      res.sendStatus(403);
+>>>>>>> login
+    }
+  }
+
+<<<<<<< HEAD
     /* Upload image with the ticetkId for the ticket that the image
     is connected to. This is to upload Image*/ 
     let iNumber = 0;
@@ -678,4 +818,7 @@ export function create_app(pool) {
 
 
     return app;
+=======
+  return app;
+>>>>>>> login
 }
