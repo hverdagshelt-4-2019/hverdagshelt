@@ -5,7 +5,9 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { HashRouter, Route, NavLink } from 'react-router-dom';
 import ReactDOM from 'react-dom';
-import { Alert} from './widgets';
+import  SimpleMap  from './map/map';// Gets map component
+import UploadImage from './temp/uploadImage'
+import { Alert, Info } from './widgets';
 import { Login } from './Components/Login/Login.js';
 import { Register } from './Components/Login/register.js';
 import { Ticket } from './Components/Ticket/Ticket';
@@ -22,8 +24,9 @@ if (root)
   ReactDOM.render(
     <HashRouter>
       <div>
-      <AddTicket />
-        <Route exact path="/login" component={Login} />
+        <Route exact path="/uploadImage" component={UploadImage} />
+        <Route exact path="/map" component={SimpleMap} />
+        <Route exact path="/" component={Login} />
         <Route path="/registrerdeg" component={Register} />
         <Route path="/sakliste" component={TicketList} />
         <Route path="/leggtil" component={AddPage}/>

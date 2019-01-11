@@ -35,6 +35,15 @@ export default class EventDao extends Dao {
     );
   }
 
+<<<<<<< HEAD
+    updateOne(id, json, callback) {
+        var val = [json.commune_name, json.category, json.title, json.description, json.picture, json.happening_time, id];
+        super.query("UPDATE happening SET commune_name = ?, category = ?, title = ?, description = ?, picture = ?, happening_time = ? WHERE id = ?",
+            val,
+            callback
+        );
+    }
+=======
   updateOne(id, json, callback) {
     var val = [json.commune_name, json.category, json.title, json.description, json.picture, json.happening_time];
     super.query(
@@ -43,6 +52,7 @@ export default class EventDao extends Dao {
       callback
     );
   }
+>>>>>>> login
 
   deleteOne(id, callback) {
     super.query('DELETE FROM happening WHERE id = ?', [id], callback);

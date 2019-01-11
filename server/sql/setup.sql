@@ -21,18 +21,18 @@ CREATE TABLE person(
 );
 
 CREATE TABLE admin(
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
 
   FOREIGN KEY (id) REFERENCES person(id) ON DELETE CASCADE
 );
 
 CREATE TABLE person_CROSS_commune(
   person_id INT,
-  commune_id VARCHAR(64),
+  commune_name VARCHAR(64),
 
-  PRIMARY KEY (person_id, commune_id),
+  PRIMARY KEY (person_id, commune_name),
   FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE,
-  FOREIGN KEY (commune_id) REFERENCES commune(name) ON DELETE CASCADE
+  FOREIGN KEY (commune_name) REFERENCES commune(name) ON DELETE CASCADE
 );
 
 CREATE TABLE public_worker(
@@ -44,7 +44,7 @@ CREATE TABLE public_worker(
 );
 
 CREATE TABLE company(
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(256) NOT NULL,
 
   FOREIGN KEY (id) REFERENCES person(id) ON DELETE CASCADE
@@ -55,7 +55,7 @@ CREATE TABLE ticket_category(
 );
 
 CREATE TABLE ticket(
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   submitter_id INT NOT NULL,
   responsible_commune VARCHAR(64) NOT NULL,
   responsible_company_id INT DEFAULT NULL,
@@ -95,13 +95,16 @@ CREATE TABLE happening(
   submitter_id INT,
   commune_name VARCHAR(64) NOT NULL,
   category VARCHAR(64) NOT NULL,
-  title VARCHAR(64) NOT NULL,
+  title VARCHAR(128) NOT NULL,
   description VARCHAR(512) NOT NULL,
   picture VARCHAR(128) DEFAULT NULL,
   happening_time DATETIME NOT NULL,
 
-  FOREIGN KEY (submitter_id) REFERENCES public_worker(id) ON DELETE SET NULL,
+  FOREIGN KEY (submitter_id) REFERENCES person(id) ON DELETE SET NULL,
   FOREIGN KEY (commune_name) REFERENCES commune(name),
   FOREIGN KEY (category) REFERENCES happening_category(name)
 );
 
+CREATE TRIGGER tickettime BEFORE INSERT ON ticket
+    FOR EACH ROW SET NEW.submitted_time=now()
+;

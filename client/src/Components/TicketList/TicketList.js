@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { HashRouter, Route, NavLink } from 'react-router-dom';
 import {ticketService} from '../../services/TicketService';
-import {categoryService} from '../../services/CategoryService'
+import {categoryService} from '../../Services/categoryService'
 
 //---This class is not finished. No filter created. ---
 export class TicketList extends Component{ 
