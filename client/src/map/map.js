@@ -154,6 +154,7 @@ export default class SimpleMap extends Component {
         return (
             <div style={{ height: '100%', width: '100%', paddingBottom: '300px'}}>
                 <div style={{height: '100px'}}></div>
+                <button type="button" className="btn btn-primary" style={{width: '100%'}}>Legg til sak</button>
                 <div className = "leftSide bg-primary" style={{height: '75vh'}}>
                     <img id="picture" src="logo.png" className="img-fluid ticketImg" alt="Responsive image"/>
                     <br/>
