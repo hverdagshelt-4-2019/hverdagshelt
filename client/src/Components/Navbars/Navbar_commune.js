@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 
-export class Navbar_commune extends Component {
+export default class Navbar_commune extends Component {
   render() {
     return (
       <nav className="navbar navbar-light bg-light">

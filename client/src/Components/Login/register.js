@@ -20,30 +20,44 @@ export default class Register extends Component {
                     <form>
                         <div className="form-group">
                             <input className="form-control" placeholder="Email" onChange={(evt) => {this.email = evt.target.value}}></input>
-                            <input className="form-control" placeholder="Passord" onChange={(evt) => {this.password1 = evt.target.value}}></input>
-                            <input className="form-control" placeholder="Gjenta passord" onChange={(evt) => {this.password2 = evt.target.value}}></input>
+                            <input type="password" className="form-control" placeholder="Passord" onChange={(evt) => {this.password1 = evt.target.value}}></input>
+                            <input type="password" className="form-control" placeholder="Gjenta passord" onChange={(evt) => {this.password2 = evt.target.value}}></input>
                         </div>
                     </form>
                     <button className="btn btn-primary" onClick={this.register}>Opprett</button>
                     <br/>
                     <br/>
-                    <label>{this.warning}</label>
+                    {this.warning &&
+                        <div className="test">
+                            <label>{this.warning}</label>
+                        </div>
+                    }
                     <br/>
                     <label>Har du allerede en bruker?</label>{' '}
                     <NavLink exact to={'/'}>Logg inn her!</NavLink>
-                </div> 
+                </div>
             </div>
         )
     }
 
     register(){
         if(this.password1 == this.password2) {
+            if(!this.checkFields()) return;
             console.log("Registrerer...");
-            userService.postNewUser(this.email, this.password1) //OK
-            .catch(error => console.log("Noe gikk galt."));
+            userService.createUser(this.email, this.password1)
+                .then(data => console.log(data))//OK
+                .catch(err => console.log(err));
         }
         else{
             this.warning = "Passordene du skrev inn stemmer ikke overens.";
         }
     }
-  }
+
+    checkFields(){
+        if(this.email === null || this.password1 === null || this.password2 === null) {
+            this.warning = "Du må fylle ut alle feltene for å opprette en bruker";
+            return false;
+        }
+        return true;
+    }
+}

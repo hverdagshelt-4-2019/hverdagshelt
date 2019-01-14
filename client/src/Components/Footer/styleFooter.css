@@ -1,0 +1,74 @@
+/*i {
+    color: white;
+}
+.footer {
+    background-color: #019ad2;
+}*/
+/*footer*/
+.footer { width:100%;
+    background-color:#019ad2;
+    min-height:25px; 
+    padding:10px 0px 25px 0px ;
+    position: absolute;
+    bottom: 0px;
+    margin-top: 10px;
+}
+
+.footer p {
+    font-size:13px;
+    color:#ffffff; padding-bottom:0px;
+    margin-bottom:8px;
+}
+
+
+.bottom_border { 
+    border-bottom:1px solid #ffffff; 
+    padding-bottom:20px;
+}
+
+.foote_bottom_ul_amrc {
+	list-style-type:none;
+	padding:0px;
+	display:table;
+	margin-top: 10px;
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-left: auto;
+}
+
+.team {
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.foote_bottom_ul_amrc li { 
+    display:inline;
+}
+.foote_bottom_ul_amrc li a { 
+    color:#ffffff; 
+    margin:0 12px;
+}
+
+.social_footer_ul { 
+    display:table; 
+    margin:15px auto 0 auto; 
+    list-style-type:none;  
+}
+
+.social_footer_ul li { 
+    padding-left:20px; 
+    padding-top:10px; 
+    float:left; 
+}
+.social_footer_ul li a { 
+    color:#ffffff; 
+    border:1px solid #ffffff; 
+    padding:8px;
+    border-radius:50%;
+}
+
+.social_footer_ul li i {  
+    width:20px; 
+    height:20px; 
+    text-align:center;
+}
