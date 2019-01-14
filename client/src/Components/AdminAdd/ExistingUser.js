@@ -2,7 +2,7 @@ import {ReactDOM} from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { HashRouter, Route, NavLink } from 'react-router-dom';
-import { registerService} from '../../Services/RegisterService'
+import { adminService} from '../../Services/adminService'
 
 export class ExistingUser extends Component{
     users=[{id:1}, {id:2}];
