@@ -33,8 +33,8 @@ if (root)
         <Route path="/leggtil" component={AddPage} />
         <Route path="/kategorier" component={CategoryCreation} />
         <Route path="/sak/:id" component={Ticket} />
-        <Route path="/sak/leggtil" component={AddTicket} />
-        <Route path="/sak/endre/:id" component={EditTicket} />
+        <Route path="/leggtilsak" component={AddTicket} />
+        <Route path="/endresak" component={EditTicket} />
         <Route path="/" component={Footer} />
       </div>
     </BrowserRouter>,

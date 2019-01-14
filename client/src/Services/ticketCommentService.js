@@ -1,6 +1,8 @@
 import axios from 'axios';
 let url = "http://localhost:3000";
 
+//TODO: Dette er feil klasse
+
 class Ticket {
     id;
     submitter_id;
