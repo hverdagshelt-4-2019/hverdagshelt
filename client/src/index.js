@@ -18,7 +18,7 @@ import { EditTicket } from './Components/Ticket/EditTicket';
 import { TicketList } from './Components/TicketList/TicketList.js';
 import { CategoryCreation } from './Components/CategoryCreation/CategoryCreation.js';
 import { AddPage } from './Components/AdminAdd/AddPage.js';
-import {NavbarPerson} from './Components/Navbars/Navbar_person.js'
+import { Navbar_person } from './Components/Navbars/Navbar_person';
 
 
 const root = document.getElementById('root');
@@ -26,7 +26,7 @@ if (root)
   ReactDOM.render(
     <HashRouter>
       <div>
-        <Route path="/" component={NavbarPerson} />
+        <Navbar_person/>
         <Route exact path="/uploadImage" component={UploadImage} />
         <Route exact path="/map" component={SimpleMap} />
         <Route exact path="/" component={Login} />
@@ -35,7 +35,7 @@ if (root)
         <Route path="/leggtil" component={AddPage}/>
         <Route path="/kategorier" component={CategoryCreation} />
         <Route path="/sak/:id" component={Ticket} />
-        <Route path="/sak/leggtil" component={AddTicket} />
+        <Route path="/leggtilsak" component={AddTicket} />
         <Route path="/sak/endre/:id" component={EditTicket} />
         <Route path="/" component={Footer} />
       </div>

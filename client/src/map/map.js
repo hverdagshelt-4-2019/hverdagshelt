@@ -119,7 +119,8 @@ export default class SimpleMap extends Component {
 
     
     getImage(i: String){
-        let imageLink="/image/"+i
+        let imageLink="/image/"+i;
+        let picture = document.getElementById("picture");
         picture.setAttribute("src", imageLink);
     }
 
@@ -140,8 +141,7 @@ export default class SimpleMap extends Component {
         });
         return (
             <div className="aroundMap">
-                <div style={{height: '100px'}}></div>
-                <button type="button" className="btn btn-primary" style={{width: '100%'}}>Legg til sak</button>
+                <button type="button" className="btn btn-primary" style={{margin: '3px', width: '100%'}}>Legg til sak</button>
                 <div className = "leftSide" style={{height: '75vh'}}>
                     <img id="picture" src="logo.png" className="img-fluid ticketImg" alt="Responsive image"/>
                     <br/>
@@ -154,6 +154,7 @@ export default class SimpleMap extends Component {
                         <button id="vote" type="button" className="btn btn-light voteB"><i className="fas fa-thumbs-up"></i></button>
                     </div>
                 </div>
+                
                 <div className = "map" style={{ height: '75vh'}}>
                     <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
