@@ -90,7 +90,7 @@ export default class UserDao extends Dao {
                         callback(500, {error: "Somethings went wrong."});
                     });
                 } else {
-                    callback(500, {error: "Invalid username password combination"})
+                    callback(401, {error: "Invalid username password combination"})
                 }
             });
     }

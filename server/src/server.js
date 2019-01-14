@@ -1,4 +1,3 @@
-
 import mysql from 'mysql2'
 import fs from 'fs'
 import express from 'express'
@@ -18,6 +17,7 @@ import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
 import nodemailer from 'nodemailer';
 import config from '../config';
+import fetch from "node-fetch";
 
 
 export function create_app(pool) {
@@ -183,6 +183,19 @@ export function create_app(pool) {
             } else {
                 communedao.getNotFollowed(authData.user.id, (status, data) => {
                     res.status(status);
+                    res.json(data);
+                });
+            }
+        });
+    });
+
+    app.get("/communeByCoordinates", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(401);
+            } else {
+                console.log(req.body.pos);
+                getCommuneByLatLong(req.body.pos, data =>{
                     res.json(data);
                 });
             }
@@ -607,19 +620,6 @@ export function create_app(pool) {
             }
         })
     });
-
-    app.get("*", (req,res, next) =>{
-        let options = {};
-        let file = 'index.html';
-        if(req.url.includes('.')){
-            file = req.url.split('/').pop();
-        }
-
-        res.sendFile(path.join(client_public, file), options, (err)=>{
-            if(err) next();
-        });
-    });
-
     
 // Verify token
 // Verify token
@@ -639,7 +639,6 @@ export function create_app(pool) {
 
     /* Upload image with the ticetkId for the ticket that the image
     is connected to. This is to upload Image*/ 
-    let iNumber = 0;
     app.post("/ticketI", (req, res) => {
         console.log("Got POST-request from client");
         console.log(req.body.overskrift);//temp delete
@@ -652,30 +651,32 @@ export function create_app(pool) {
 
         console.log("files where uploaded");
         let file = req.files.uploaded_image;
-        let img_name = iNumber+file.name;
-        iNumber++;
+        let img_name = file.name;
+        fs.readdir(path.join(client_public,'images'), (err, files) => {
+            img_name = files.length + img_name;
+            console.log(img_name);
+            if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
+                console.log("Correct type of image");
+                file.mv(path.join(client_public,'images', img_name), function (err) {
 
-        if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
-            console.log("Correct type of image");
-            file.mv('src/images/' + img_name, function (err) {
+                    if (err) {
+                        console.log("Something went wrong");
+                        return res.status(500).send(err);
+                    }
 
-                if (err) {
-                    console.log("Something went wrong");
-                    return res.status(500).send(err);
-                }
-
-                /*
-                Here you have to add how the path will be saved in database. Some example code under
-                let val = [overskrift, innhold, kategori, viktighet, img_name];
-                caseDao.createOne(val, (status, data) => {
-                    res.status(status);
-                    res.json(data);
-                });*/
-            });
-        }else{
-            console.log("Wrong type if image");
-            return res.status(400).send();
-        }
+                    /*
+                    Here you have to add how the path will be saved in database. Some example code under
+                    let val = [overskrift, innhold, kategori, viktighet, img_name];
+                    caseDao.createOne(val, (status, data) => {
+                        res.status(status);
+                        res.json(data);
+                    });*/
+                });
+            }else{
+                console.log("Wrong type if image");
+                return res.status(400).send();
+            }
+        });
     });
 
     /* Upload image with the ticetkId for the ticket that the image
@@ -690,33 +691,49 @@ export function create_app(pool) {
 
         console.log("files where uploaded");
         let file = req.files.uploaded_image;
-        let img_name = iNumber+file.name;
-        iNumber++;
+        let img_name = file.name;
+        fs.readdir(path.join(client_public,'images'), (err, files) => {
+            img_name = files.length + img_name;
+            console.log(img_name);
 
-        if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
-            console.log("Correct type of image");
-            file.mv('src/images/' + img_name, function (err) {
+            if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
+                console.log("Correct type of image");
+                file.mv(path.join(client_public,'images', img_name), function (err) {
 
-                if (err) {
-                    return res.status(500).send(err);
-                }
-                /*
-                Here you have to add how the path will be saved in database. Some example code under
-                let val = [img_name, ticketId];
-                ticketDao.updateImage(val, (status, data) => {
-                    res.status(status);
-                    res.json(data);
-                });*/
-            });
-        }
+                    if (err) {
+                        return res.status(500).send(err);
+                    }
+                    /*
+                    Here you have to add how the path will be saved in database. Some example code under
+                    let val = [img_name, ticketId];
+                    ticketDao.updateImage(val, (status, data) => {
+                        res.status(status);
+                        res.json(data);
+                    });*/
+                });
+            }
+        });
     });
 
     //get image from server side and send to frontend
     app.get("/image/:fileid", (req, res) => {
         const { fileid } = req.params;
-        let fileN = '/images/'+fileid;
-        console.log(fileN);
-        res.sendFile(fileN, {root: __dirname});//sending the file that is in the foldier with root from the server
+        //console.log(fileN);
+        res.sendFile(path.join(client_public,'images',fileid));//sending the file that is in the foldier with root from the server
+    });
+
+
+
+    app.get("*", (req,res, next) =>{
+        let options = {};
+        let file = 'index.html';
+        if(req.url.includes('.')){
+            file = req.url.split('/').pop();
+        }
+
+        res.sendFile(path.join(client_public, file), options, (err)=>{
+            if(err) next();
+        });
     });
 
     return app;
@@ -741,4 +758,27 @@ function genRandPass() {
     }
     return newPass;
 
+}
+
+function getCommuneByLatLong(latlong, callback) {
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latlong[0] + ',' + latlong[1] + '&key=AIzaSyBs-c8HN1p8wyFwGWYa_dPjCMXiMBULtRw',
+        {
+            method: 'GET',
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        })
+        .then(data => data.json())
+        .then(res => {
+            let kom = res.results.map(e => e.address_components.filter(d => d.types[0] === 'administrative_area_level_2').map(final_res => ({"Kommune" : final_res.short_name.replace(' kommune', '').replace(' Municipality', '')})));
+            let fyl = res.results.map(e => e.address_components.filter(d => d.types[0] === 'administrative_area_level_1').map(final_res => ({"Fylke" : final_res.short_name})));
+
+            if(kom.filter(i=>i.length != 0)[0][0].Kommune === 'Bø' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Herøy' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Nes' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Os' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Sande' || kom.filter(i=>i.length != 0)[0][0].Kommune ===  'Våler') {
+                kom.filter(i=>i.length != 0)[0][0].Kommune = kom.filter(i=>i.length != 0)[0][0].Kommune + '(' + fyl[0][0].Fylke + ')';
+            }
+             callback({kommune: kom.filter(i=>i.length != 0)[0][0].Kommune});
+
+
+        })
+        .catch(err => console.log(latlong[0] + ' ' + latlong[1]))
 }

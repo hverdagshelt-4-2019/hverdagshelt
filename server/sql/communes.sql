@@ -110,14 +110,17 @@ INSERT INTO commune (name) VALUES
 ('Grue'),
 ('Gulen'),
 ('Hadsel'),
-('Halden'),
+
+
+
+
 ('Halsa'),
 ('Hamar'),
 ('Hamarøy'),
 ('Hammerfest'),
 ('Haram'),
 ('Hareid'),
-('Harstad[13]'),
+('Harstad'),
 ('Hasvik'),
 ('Hattfjelldal'),
 ('Haugesund'),
@@ -284,8 +287,8 @@ INSERT INTO commune (name) VALUES
 ('Salangen'),
 ('Saltdal'),
 ('Samnanger'),
-('sande(vestfold)'),
-('sande(Møre og Romsdal)'),
+('Sande(vestfold)'),
+('Sande(Møre og Romsdal)'),
 ('Sandefjord'),
 ('Sandnes'),
 ('Sandøy'),

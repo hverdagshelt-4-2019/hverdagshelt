@@ -9,10 +9,10 @@ export default function(pool: mysql.Pool, done) {
     let testdata = fs.readFileSync(path.join(__dirname, '..', 'sql','testdata.sql'));
     pool.getConnection((err, connection) => {
         if (err) {
-            console.log("runsqlfile: error connecting");
+            console.log("setup_database: error connecting");
             console.log(err);
             done();
-        } else {
+        } else {
             connection.query(setup+communes+users+testdata, (err, rows) => {
                 connection.release();
                 if (err) {

@@ -43,7 +43,7 @@ ta.push(new ticket('0',"Det har hvert hull i denne veien for flere år", "Lorem 
 ta.push(new ticket('1', "Nå har lyset gått", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna."
 , "lysproblemer", 2, 63.425, 10.386, "temp.jpg"));
 ta.push(new ticket('2', "Test", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna."
-, "testproblemer", 0, 63.41, 10.3723, "temp.jpg"));
+, "testproblemer", 0, 63.41, 10.3723, "0kopimaskin.jpg"));
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 
@@ -93,7 +93,7 @@ export default class SimpleMap extends Component {
         console.log(ta[childProps.text]);
         let localTicket = ta[childProps.text];
 
-        this.getImage(localTicket.pic)
+        this.getImage(localTicket.pic);
 
         let header = document.getElementById("header");
         header.innerHTML = localTicket.heading;
@@ -117,23 +117,10 @@ export default class SimpleMap extends Component {
         this.props.onHoverKeyChange(null);
     }
 
+    
     getImage(i: String){
-        let url = "http://localhost:3000/image/";
-        let imageLink = "";
-        axios.get(url+i,
-        {
-            responseType: 'blob'
-        })
-        .then(response => response)
-        .then(image => {
-        //creating local url for image
-        imageLink = URL.createObjectURL(image);
-        let picture = document.getElementById("picture");
+        let imageLink="/image/"+i
         picture.setAttribute("src", imageLink);
-        })
-        .catch(error => {
-            console.log("Something went wrong with getting the image" + error.toString())
-        });
     }
 
 
@@ -152,9 +139,10 @@ export default class SimpleMap extends Component {
             );
         });
         return (
-            <div style={{ height: '100%', width: '100%', paddingBottom: '300px'}}>
+            <div className="aroundMap">
                 <div style={{height: '100px'}}></div>
-                <div className = "leftSide bg-primary" style={{height: '75vh'}}>
+                <button type="button" className="btn btn-primary" style={{width: '100%'}}>Legg til sak</button>
+                <div className = "leftSide" style={{height: '75vh'}}>
                     <img id="picture" src="logo.png" className="img-fluid ticketImg" alt="Responsive image"/>
                     <br/>
                     <br/>
@@ -168,7 +156,7 @@ export default class SimpleMap extends Component {
                 </div>
                 <div className = "map" style={{ height: '75vh'}}>
                     <GoogleMapReact
-                    
+                    bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
                     center={this.props.center}
                     zoom={this.props.zoom}
                     hoverDistance={K_SIZE / 2}

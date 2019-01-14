@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
+    "start2": "nodemon --exec babel-node test/dao/fetchtesting.js",
     "start-prod": "cross-env NODE_ENV=production babel-node src/index.js",
     "test": "jest --detectOpenHandles --forceExit --runInBand"
   },
