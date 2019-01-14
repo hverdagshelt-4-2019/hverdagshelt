@@ -29,7 +29,11 @@ export class Register extends Component {
                     <button className="btn btn-primary" onClick={this.register}>Opprett</button>
                     <br/>
                     <br/>
-                    <label>{this.warning}</label>
+                    {this.warning &&
+                        <div className="test">
+                            <label>{this.warning}</label>
+                        </div>
+                    }
                     <br/>
                     <label>Har du allerede en bruker?</label>{' '}
                     <NavLink exact to={'/'}>Logg inn her!</NavLink>
