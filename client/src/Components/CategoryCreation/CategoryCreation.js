@@ -6,9 +6,10 @@ import { Component } from 'react-simplified';
 import { HashRouter, Route, NavLink } from 'react-router-dom';
 import {categoryService} from '../../Services/categoryService';
 import {Adder} from './Adder';
+import {SpecificCategory} from './SpecificCategory';
 
 export class CategoryCreation extends Component{
-    ticketCategories = [{name: 'Kategori1'}, {name: 'Kateogri2'}, {name: "Kategori3"}];
+    ticketCategories = [{name: 'Kategori1', id:'1'}, {name: 'Kateogri2', id:'2'}, {name: "Kategori3", id:'3'}]; //Test values
     eventCategories = [];
 
     constructor(props){
@@ -24,24 +25,14 @@ export class CategoryCreation extends Component{
                         <h3>Ticket categories</h3>
                         <Adder addFunction={this.addTicketCategory.bind(this)} />
                             {this.ticketCategories.map((category, i) => (
-                                <li className="list-group-item" key={i}>
-                                    <h3 to=''>{category.name}</h3>
-                                    <div className="float-right">
-                                        <button className="float-right btn btn-danger btn-sm" onClick={this.delete}>Slett</button>
-                                    </div>
-                                </li>
+                                <SpecificCategory theCategory={category} deleteFunc={this.deleteTC.bind(this)}/>
                             ))}
                     </div>  
                     <div className="col-md-6" style={{width: '50%'}}>
                         <h3>Event categories</h3>
                         <Adder addFunction={this.addEventCategory.bind(this)} />
                             {this.eventCategories.map((category, i) => (
-                                <li className="list-group-item" key={i}>
-                                    <h3 to=''>{category.name}</h3>
-                                    <div className="float-right">
-                                        <button className="float-right btn btn-danger btn-sm" onClick={this.delete}>Slett</button>
-                                    </div>
-                                </li>
+                                <SpecificCategory theCategory={category} deleteFunc={this.deleteEC.bind(this)}/>
                             ))}
                     </div> 
                 </div>  
@@ -51,12 +42,12 @@ export class CategoryCreation extends Component{
 
     mounted(){
         categoryService.getTicketCategories()
-        //.then((categories: Array<Category>) => this.categories = categories) //Uncomment when service is OK
-        //.catch((error : Error) => console.log(error.message));
+        .then((categories: Array<Category>) => this.categories = categories) //Uncomment when service is OK
+        .catch((error : Error) => console.log(error.message));
 
         categoryService.getEventCategories()
-        //.then((categories: Array<Category>) => this.categories = categories) //Uncomment when service is OK
-        //.catch((error : Error) => console.log(error.message));
+        .then((categories: Array<Category>) => this.categories = categories) //Uncomment when service is OK
+        .catch((error : Error) => console.log(error.message));
     }
 
     changeSate(){
@@ -64,10 +55,12 @@ export class CategoryCreation extends Component{
     }
 
     addTicketCategory(name){ 
+        console.log("Navn: " + name);
         categoryService.addTicketCategory(name);
     }
 
     addEventCategory(name){
+        console.log("Navn: " + name);
         categoryService.addEventCategory(name);
     }
 

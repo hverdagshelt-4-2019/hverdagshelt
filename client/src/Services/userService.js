@@ -37,6 +37,10 @@ class UserService {
    updateEmail(email): Promise<Object>{
         return axios.post(url + '/usermail', {email});
    }
+
+   getUsers() : Promise<User[]>{
+       return axios.get(url + '/users');
+   }
 }
 
 export let userService = new UserService;

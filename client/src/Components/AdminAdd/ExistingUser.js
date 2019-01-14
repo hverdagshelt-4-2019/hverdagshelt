@@ -2,12 +2,14 @@ import {ReactDOM} from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { HashRouter, Route, NavLink } from 'react-router-dom';
-import { adminService} from '../../Services/adminService'
+import {userService} from '../../Services/userService';
+import { adminService} from '../../Services/adminService';
+import { publicWorkerService } from '../../Services/publicWorkerService';
 
 export class ExistingUser extends Component{
-    users=[{id:1}, {id:2}];
+    users=[{id:1, email:"mail"}, {id:2, email:"mail2"}]; //Test values
     existingUser = '';
-    id = '';
+    email = '';
 
     constructor(){
         super();
@@ -32,15 +34,14 @@ export class ExistingUser extends Component{
         return(
             <div>
                 <button className="btn btn-primary btn-block" onClick={this.close}>Lukk liste</button>
-                {this.users.map((user) => (
-                    <li className="list-group-item">
+                {this.users.map((user, i) => (
+                    <li key={i} className="list-group-item">
                         <input 
                             name="user" 
                             type="radio" 
                             className="form-check-input" 
-                            value={user.id} 
-                            onClick={this.setID}
-                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.id = event.target.value)}
+                            value={user.email} 
+                            onClick={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setEmail(event.target.value))}
                         />
                         {' '}{user.id}
                     </li>
@@ -50,7 +51,7 @@ export class ExistingUser extends Component{
     }
 
     getUsers(){
-        registerService.getAllUsers()  //Gets all users with no rights. //OK
+        userService.getUsers() 
         .then(users => this.users = users)
         .catch((error : Error) => console.log(error.message));
  
@@ -61,7 +62,8 @@ export class ExistingUser extends Component{
         this.setState({list:false});
     }
 
-    setID(){
-        this.props.setId(this.id);
+    setEmail(email){
+        console.log("Setter email");
+        this.props.updateFunc(email);
     }
 }

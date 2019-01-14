@@ -35,13 +35,13 @@ class CategoryService{
     }
 
     addTicketCategory(name) : Promise<void>{
-        category = new Category;
+        let category = new Category;
         category.name = name; 
         return axios.post(url + "/ticketcat", category, config); //Need verifytoken
     }
 
     addEventCategory(name) : Promise<void>{
-        category = new Category;
+        let category = new Category;
         category.name = name;
         return axios.post(url + "/eventcat", category, config); //Need verifytoken
     }
