@@ -12,9 +12,6 @@ import ControllableHover from './controllable_hover.js';
 import axios from 'axios';
 
 import {K_SIZE} from './controllable_hover_styles.js';
-import createHashHistory from 'history/createHashHistory';
-        const history = createHashHistory();
-
 
 class ticket {
     id: string;
