@@ -35,6 +35,10 @@ export default class userService {
    static updateEmail(email: string): Promise<Object>{
         return axios.post(url + '/usermail', {email});
    }
+
+   getUsers() : Promise<User[]>{
+       return axios.get(url + '/users');
+   }
 }
 
 
