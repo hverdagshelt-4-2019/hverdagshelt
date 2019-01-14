@@ -1,10 +1,9 @@
 // @flow
 import axios from 'axios';
-axios.interceptors.response.use(response => response.data);
 let url = "http://localhost:3000";
 
-class Admin {
-    email;
+export default class Admin {
+    email: string;
 }
 
 let config = {
@@ -15,14 +14,12 @@ let config = {
 
 class AdminService {
 
-    createAdmin(email): Promise<Object>{
+    static createAdmin(email): Promise<Object>{
         let admin = new Admin();
         admin.email = email;
         return axios.post(url + '/admin', config);
     }
 
 }
-
-export let adminService = new AdminService;
 
 

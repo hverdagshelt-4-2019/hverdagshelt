@@ -3,11 +3,10 @@
 import {ReactDOM} from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { HashRouter, Route, NavLink } from 'react-router-dom';
-import {categoryService} from '../../Services/categoryService';
+import categoryService from '../../Services/categoryService';
 import {Adder} from './Adder';
 
-export class CategoryCreation extends Component{
+export default class CategoryCreation extends Component{
     categories = [{name: 'Kategori1'}, {name: 'Kateogri2'}, {name: "Kategori3"}];
 
     constructor(props){

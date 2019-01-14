@@ -1,49 +1,45 @@
-//@flow
-//Must add types here later...
-
 import axios from 'axios';
-let url = 'http://localhost:3000';
-axios.interceptors.response.use(response => response.data);
+let url = "http://localhost:3000";
 
 class Ticket {
-  id;
-  submitter_id;
-  repsonsible_commune_id;
-  responsible_company_id;
-  category_id;
-  title;
-  description;
-  picture;
-  submitted_time;
-  finished_time;
-  status;
-  lat;
-  lng;
+    commune;
+    category;
+    title;
+    description;
+    picture;
+    lat;
+    long;
 }
 
-class TicketService{
-    //Possibly not use this? Probably not 
-    /*
-    getAllCommuneTickets(communeIds){
-        console.log("Get tickets from these communes: " + communeIds);
-        return axios.get(url + "/communeTickets/" + communeIds); //Temporary endpoint name. 
+let config = {
+    headers: {
+        Authorization: "Bearer " + localStorage.getItem('authToken'),
     }
-    */
+};
 
-    getTicketsByCategory(communeId, categories){
-        console.log("Getting tickets from the commune: " + communeId + " by categories: " + categories);
-        return axios.get(url + "/tickets/category", categories) 
+class TicketService {
+
+    postTicket(ticket): Promise<Object> {
+        console.log(config);
+        return axios.post(url + '/ticket', ticket, config);
     }
 
+    getTicket(ticketID): Promise<Ticket>{
+        console.log("getting");
+        console.log(axios.get(url + '/ticket/' + ticketID));
+    }
 
-  getTicket(id: number): Promise<Ticket[]> {
-    return axios.get('/ticket/' + id);
-  }
+    getAllTickets(): Promise<Ticket[]>{
+        return axios.get(url + '/tickets');
+    }
 
-  deleteTicket(id: number): Promise<void> {
-    return axios.delete('/ticket/' + id);
-  }
+    editTicket(ticketID, ticket): Promise<Object>{
+        return axios.put(url + '/ticket/' + ticketID, ticket, config);
+    }
 
+    deleteTicket(ticketID): Promise<Object>{
+        return axios.delete(url + '/ticket/' + ticketID, config);
+    }
 }
 
-export let ticketService = new TicketService();
+export let ticketService = new TicketService;

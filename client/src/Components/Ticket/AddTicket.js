@@ -7,7 +7,7 @@ import { categoryService } from '../../Services/categoryService';
 import { Navbar_person } from '../Navbars/Navbar_person';
 import { Alert } from '../../widgets';
 
-export class AddTicket extends Component {
+export default class AddTicket extends Component {
 categories = [];
 ticket = {
     category: '',

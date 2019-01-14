@@ -1,13 +1,12 @@
 //@flow
-import { ReactDOM } from 'react-dom';
+import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { HashRouter, Route, NavLink } from 'react-router-dom';
-import {ticketService} from '../../services/TicketService';
-import {categoryService} from '../../Services/categoryService'
+import {ticketService} from '../../Services/ticketService';
+import categoryService from '../../Services/categoryService'
 
 //---This class is not finished. No filter created. ---
-export class TicketList extends Component{ 
+export default class TicketList extends Component{
     communeId = null; //Should the user be able to see tickets from other communes? ATM not possible
                         //Need to get the relevant commune id somehow
     categories = [{name: 'Kategori1'}, {name: 'Kateogri2'}, {name: "Kategori3"}]; //Ticking off input box will add category to the array
