@@ -1,16 +1,14 @@
-import { ReactDOM } from 'react-dom';
+import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { HashRouter, Route, NavLink } from 'react-router-dom';
-import userService from '../../services/userService';
+import userService from '../../Services/userService';
 
 //Need route to login site.
-export class Register extends Component {
-    fullname = null;
-    email = null;
-    password1 = null;
-    password2 = null;
-    warning = null;
+export default class Register extends Component {
+  email = null;
+  password1 = null;
+  password2 = null;
+  warning = null;
 
     render(){
         return(

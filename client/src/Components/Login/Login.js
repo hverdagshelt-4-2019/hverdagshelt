@@ -6,7 +6,7 @@ import { Component } from 'react-simplified';
 import {NavLink} from "react-router-dom"
 import userService from '../../Services/userService';
 
-export class Login extends Component {
+export default class Login extends Component {
     email: string;
     password: string;
 
