@@ -183,11 +183,19 @@ it("can log in and change a users email", done => {
         })
         .then(res => {
             expect(res.status).toBe(200);
-            user.email = newmail;
             return res.json();
         })
         .then(res => {
             expect(res.token).not.toBeUndefined();
+            fetch(fetch_url+'login', {
+                method: 'POST',
+                headers: HEADERS,
+                body: JSON.stringify(user)
+            })
+            .then(res => {
+                expect(res.status).toBe(401);
+                user.email = newmail;
+            });
             done();
         })
     });
@@ -219,8 +227,30 @@ it("can log in and change a users password", done => {
         })
         .then(res => {
             expect(res.status).toBe(200);
-            user.password = newPassword;
-            done();
+
+            fetch(fetch_url+'login', {
+                method: 'POST',
+                headers: HEADERS,
+                body: JSON.stringify(user)
+            })
+            .then(res => {
+                expect(res.status).toBe(401);
+
+                user.password = newPassword;
+                fetch(fetch_url+'login', {
+                    method: 'POST',
+                    headers: HEADERS,
+                    body: JSON.stringify(user)
+                })
+                .then(res => {
+                    expect(res.status).toBe(200);
+                    return res.json();
+                })
+                .then(res => {
+                    expect(res.token).not.toBeUndefined();
+                    done();
+                });
+            });
         });
     });
 });
