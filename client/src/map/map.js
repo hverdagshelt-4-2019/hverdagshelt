@@ -118,22 +118,9 @@ export default class SimpleMap extends Component {
     }
 
     getImage(i: String){
-        let url = "http://localhost:3000/image/";
-        let imageLink = "";
-        axios.get(url+i,
-        {
-            responseType: 'blob'
-        })
-        .then(response => response)
-        .then(image => {
-        //creating local url for image
-        imageLink = URL.createObjectURL(image);
-        let picture = document.getElementById("picture");
+        let imageLink="/image/"+i;
+        let picture = document.getElementById("ID TIL IMG ELEMENTET");
         picture.setAttribute("src", imageLink);
-        })
-        .catch(error => {
-            console.log("Something went wrong with getting the image" + error.toString())
-        });
     }
 
 
