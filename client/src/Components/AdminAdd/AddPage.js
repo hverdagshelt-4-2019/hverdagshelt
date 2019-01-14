@@ -1,7 +1,7 @@
 import {ReactDOM} from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { HashRouter, Route, NavLink } from 'react-router-dom';
+import { Route, NavLink } from 'react-router-dom';
 import {ExistingUser} from './ExistingUser';
 import {userService} from '../../Services/userService';
 import { adminService} from '../../Services/adminService';
@@ -9,7 +9,7 @@ import { publicWorkerService} from '../../Services/publicWorkerService';
 
 //TODO: Fix so you can enter email and promote user to admin
 
-export class AddPage extends Component{
+export default class AddPage extends Component{
     //Common
     communes = [{id: '1', name: 'Trondheim' }, {id: '2', name: "Bergen"}]; //Test values
     

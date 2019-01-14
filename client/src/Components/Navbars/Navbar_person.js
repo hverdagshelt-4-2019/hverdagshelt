@@ -3,8 +3,9 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
+import ReactBootstrap from 'react-bootstrap';
 
-export class Navbar_person extends Component {
+export default class Navbar_person extends Component {
   render() {
     return (
       <nav className="navbar navbar-light bg-light">

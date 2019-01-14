@@ -3,12 +3,11 @@
 import {ReactDOM} from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { HashRouter, Route, NavLink } from 'react-router-dom';
-import {categoryService} from '../../Services/categoryService';
+import categoryService from '../../Services/categoryService';
 import {Adder} from './Adder';
 import {SpecificCategory} from './SpecificCategory';
 
-export class CategoryCreation extends Component{
+export default class CategoryCreation extends Component{
     ticketCategories = [{name: 'Kategori1', id:'1'}, {name: 'Kateogri2', id:'2'}, {name: "Kategori3", id:'3'}]; //Test values
     eventCategories = [];
 

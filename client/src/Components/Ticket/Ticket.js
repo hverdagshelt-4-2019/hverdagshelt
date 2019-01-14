@@ -2,12 +2,13 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { ticketService } from '../../Services/TicketService';
+import { ticketService } from '../../Services/ticketService';
 import { Alert} from '../../widgets';
 import { Navbar_person } from '../Navbars/Navbar_person';
 
-export class Ticket extends Component<{ match: { params: { id: number } } }> {
+export default class Ticket extends Component<{ match: { params: { id: number } } }> {
   ticket = '';
+  sub_date = null;
 
   render() {
     return (
@@ -16,28 +17,28 @@ export class Ticket extends Component<{ match: { params: { id: number } } }> {
             <div className="container">
                 <div className="row">
                     <div className="col-lg-8">
-                        <h1>this.ticket.title</h1>
+                        <h1>{this.ticket.title}</h1>
                         <p className="lead">
                              Status: Avventer svar <span class="glyphicon glyphicon-time"></span>
                         </p>
 
                         <hr />
 
-                        <p>January 1, 2018 12:00</p>
+                        <p> {this.sub_date} </p>
 
-                        <p><b>Kommune:</b> Trondheim</p>
+                        <p><b>Kommune:</b> {this.ticket.responsible_commune}</p>
 
-                        <p><b>Bedrift:</b> Statens Vegvesen</p>
+                        <p><b>Bedrift:</b> //TODO: Statens Vegvesen</p>
 
-                        <p><b>Kategori:</b> Veiproblem</p>
+                        <p><b>Kategori:</b> {this.ticket.category}</p>
 
                         <hr />
 
-                        <img src="http://placehold.it/900x300" alt="" />
+                        <img id="imageElement" alt="" />
                     
                         <hr />
 
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
+                        <p>{this.ticket.description}</p>
 
                         <hr />
 
@@ -61,7 +62,7 @@ export class Ticket extends Component<{ match: { params: { id: number } } }> {
                        <div className="media mb-4">
                             <div className="media-body">
                                 <h5 className="mt-0">Commenter Name</h5>
-                                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                                //TODO: Map out comments
                             </div>
                          </div>
                    </div>
@@ -71,10 +72,20 @@ export class Ticket extends Component<{ match: { params: { id: number } } }> {
     );
   }
 
+  getImage(i: String){
+      let imageLink="/image/"+i;
+      let picture = document.getElementById("imageElement");
+      picture.setAttribute("src", imageLink);
+  }
+
+  componentDidMount(){
+      {this.getImage(this.ticket.picture)}
+  }
+
   mounted() {
     ticketService
       .getTicket(this.props.match.params.id)
-      .then(ticket => (this.ticket = ticket[0]))
+      .then(ticket => {this.ticket = ticket.data[0]; this.sub_date = this.ticket.submitted_time.split("T", 1)[0] + ' ' + this.ticket.submitted_time.split("T")[1].split(".", 1); })
       .catch((error: Error) => Alert.danger(error.message));
   }
 }

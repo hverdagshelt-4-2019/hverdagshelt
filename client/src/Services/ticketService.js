@@ -1,25 +1,33 @@
 import axios from 'axios';
-axios.interceptors.response.use(response => response.data);
 let url = "http://localhost:3000";
 
-class Category {
-    name;
+class Ticket {
+    responsible_commune;
+    category;
+    title;
+    description;
+    picture;
+    status;
+    submitted_time;
+    lat;
+    lng;
 }
 
 let config = {
     headers: {
         Authorization: "Bearer " + localStorage.getItem('authToken'),
     }
-}
+};
 
 class TicketService {
 
     postTicket(ticket): Promise<Object> {
-        console.log(config)
+        console.log(config);
         return axios.post(url + '/ticket', ticket, config);
     }
 
     getTicket(ticketID): Promise<Ticket>{
+        console.log("getting ticket");
         return axios.get(url + '/ticket/' + ticketID);
     }
 
@@ -27,11 +35,11 @@ class TicketService {
         return axios.get(url + '/tickets');
     }
 
-    editTicket(ticketID, ticket): Promise<Object> {
+    editTicket(ticketID, ticket): Promise<Object>{
         return axios.put(url + '/ticket/' + ticketID, ticket, config);
     }
 
-    deleteTicket(ticketID): Promise<Object> {
+    deleteTicket(ticketID): Promise<Object>{
         return axios.delete(url + '/ticket/' + ticketID, config);
     }
 }

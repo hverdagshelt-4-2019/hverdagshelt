@@ -1,6 +1,7 @@
 import axios from 'axios';
-axios.interceptors.response.use(response => response.data);
 let url = "http://localhost:3000";
+
+//TODO: Dette er feil klasse
 
 class Ticket {
     id;
