@@ -120,7 +120,7 @@ INSERT INTO commune (name) VALUES
 ('Hammerfest'),
 ('Haram'),
 ('Hareid'),
-('Harstad[13]'),
+('Harstad'),
 ('Hasvik'),
 ('Hattfjelldal'),
 ('Haugesund'),
