@@ -10,7 +10,7 @@ let config = {
     headers: {
         Authorization: "Bearer " + localStorage.getItem('authToken'),
     }
-}
+}//
 
 class TicketService {
 
