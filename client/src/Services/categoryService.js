@@ -1,11 +1,9 @@
 //@flow 
 
 import axios from 'axios';
-let url = 'http://localhost:8080';
-axios.interceptors.response.use(response => response.data);
+let url = 'http://localhost:3000';
 
 class Category{
-    id : number;
     name : string; 
 }
 
@@ -16,7 +14,7 @@ let config = {
 }
 
 class CategoryService{
-    getTicketCategories() : Promise<Category[]>{
+    getTicketCategories(): Promise<Category[]>{
         console.log("Getting all categories...");
         return axios.get(url + "/ticketcat");
     }
