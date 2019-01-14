@@ -1,17 +1,19 @@
 //@flow 
 
 import axios from 'axios';
-let url = 'http://localhost:8080';
+let url = 'http://localhost:3000';
 
-class Category{
-    id : number;
+export class Category{
     name : string; 
 }
 
-let config = {
-    headers: {
-        Authorization: "Bearer " + localStorage.getItem('authToken'),
-    }
+function config() {
+    let wtf = "Bearer " + localStorage.getItem('authToken');
+    return (
+        headers: {
+            Authorization: wtf
+        }
+    )
 }
 
 export default class CategoryService{
@@ -25,23 +27,27 @@ export default class CategoryService{
         return axios.get(url + "/eventcat");
     }
 
-    static deleteTicketCategory(id) : Promise<void>{
-        return axios.delete(url + "/ticketcat/" + id)
+    static deleteTicketCategory(name: string) : Promise<void>{
+        let category = new Category();
+        category.name = name;
+        return axios.delete(url + "/ticketcat", category, config())
     }
 
-    static deleteEventCategory(id) : Promise<void>{
-        return axios.delete(url + "/eventcat/" + id)
+    static deleteEventCategory(name: string) : Promise<void>{
+        let category = new Category();
+        category.name = name;
+        return axios.delete(url + "/eventcat", category, config())
     }
 
-    static addTicketCategory(name) : Promise<void>{
+    static addTicketCategory(name: string) : Promise<void>{
         let category = new Category;
         category.name = name; 
-        return axios.post(url + "/ticketcat", category, config); //Need verifytoken
+        return axios.post(url + "/ticketcat", category, config()); //Need verifytoken
     }
 
-    static addEventCategory(name) : Promise<void>{
+    static addEventCategory(name: string) : Promise<void>{
         let category = new Category;
         category.name = name;
-        return axios.post(url + "/eventcat", category, config); //Need verifytoken
+        return axios.post(url + "/eventcat", category, config()); //Need verifytoken
     }
 }
