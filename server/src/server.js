@@ -1,6 +1,3 @@
-
-import mysql from 'mysql2'
-import fs from 'fs'
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import UserDao from './dao/userDao'
@@ -203,7 +200,7 @@ export function create_app(pool) {
                 subject: 'Registrering',
                 text: 'Du er nå registrert i vårt system.\nBrukernavn: ' + req.body.email + '\nPassord: ' + req.body.password
             };
-            sendEmail(transporter, mailoptions);
+            if(status == 200) sendEmail(transporter, mailoptions);
             res.status(status);
             res.json(data);
         });

@@ -2,7 +2,6 @@
 
 import axios from 'axios';
 let url = 'http://localhost:8080';
-axios.interceptors.response.use(response => response.data);
 
 class Category{
     id : number;
