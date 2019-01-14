@@ -63,8 +63,8 @@ typings/
 # editor files
 .idea
 
-<<<<<<< HEAD
 private.config.js
-=======
+
 bundle.js
->>>>>>> login
+
+fetchtesting.js
