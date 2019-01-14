@@ -1,17 +1,35 @@
 //@flow
 
-import {ReactDOM} from 'react-dom';
+import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import categoryService from '../../Services/categoryService';
 import {Adder} from './Adder';
+import Category from '../../Services/categoryService';
+
+type P = {
+
+}
+import {SpecificCategory} from './SpecificCategory';
 
 export default class CategoryCreation extends Component{
-    categories = [{name: 'Kategori1'}, {name: 'Kateogri2'}, {name: "Kategori3"}];
+    ticketCategories = [{name: 'Kategori1', id:'1'}, {name: 'Kateogri2', id:'2'}, {name: "Kategori3", id:'3'}]; //Test values
+    eventCategories = [];
+}
 
-    constructor(props){
+type S = {
+    adding: boolean,
+    editing: boolean
+}
+
+export default class CategoryCreation extends Component<P, S>{
+    eventCategories: Category[] = [];
+    ticketCategories: Category[] = [];
+    constructor(props: Object){
         super(props);
-        this.state = {adding: false};
+        this.state = {
+            adding: false,
+        };
     }
 
     render(){
@@ -21,56 +39,51 @@ export default class CategoryCreation extends Component{
                     <div className="col-md-6" style={{width: '50%'}}>
                         <h3>Ticket categories</h3>
                         <Adder addFunction={this.addTicketCategory.bind(this)} />
-                            {this.categories.map((category, i) => (
-                                <li className="list-group-item" key={i}>
-                                    <h3 to=''>{category.name}</h3>
-                                    <div className="float-right">
-                                        <button className="float-right btn btn-danger btn-sm" onClick={this.delete}>Slett</button>
-                                    </div>
-                                </li>
+                            {this.ticketCategories.map((category, i) => (
+                                <SpecificCategory theCategory={category} deleteFunc={this.deleteTC.bind(this)}/>
                             ))}
                     </div>  
                     <div className="col-md-6" style={{width: '50%'}}>
                         <h3>Event categories</h3>
                         <Adder addFunction={this.addEventCategory.bind(this)} />
-                            {this.categories.map((category, i) => (
-                                <li className="list-group-item" key={i}>
-                                    <h3 to=''>{category.name}</h3>
-                                    <div className="float-right">
-                                        <button className="float-right btn btn-danger btn-sm" onClick={this.delete}>Slett</button>
-                                    </div>
-                                </li>
+
+                            {this.eventCategories.map((category, i) => (
+                                <SpecificCategory theCategory={category} deleteFunc={this.deleteEC.bind(this)}/>
                             ))}
-                    </div> 
+                    </div>
                 </div>  
             </div>     
         )
     }
 
     mounted(){
-        categoryService.getAllCategories()
-        //.then((categories: Array<Category>) => this.categories = categories) //Uncomment when service is OK
-        //.catch((error : Error) => console.log(error.message));
+        categoryService.getEventCategories()
+            .then(res => this.eventCategories = res.data)
+            .catch(err => console.log(err))
+        categoryService.getTicketCategories()
+            .then(res => this.ticketCategories = res.data)
+            .catch(err => console.log(err))
+
     }
 
     changeSate(){
         this.setState({editing: true});
     }
 
-    addTicketCategory(name){ 
+    addTicketCategory(name: string){
         categoryService.addTicketCategory(name);
     }
 
-    addEventCategory(name){
+    addEventCategory(name: string){
         categoryService.addEventCategory(name);
     }
 
-    deleteTC(){
-        categoryService.deleteTicketCategory();
+    deleteTC(name: string){
+        categoryService.deleteTicketCategory(name);
     }
 
-    deleteEC(){
-        categoryService.deleteEventCategory();
+    deleteEC(name: string){
+        categoryService.deleteEventCategory(name);
     }
 }
 

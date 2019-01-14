@@ -1,4 +1,4 @@
-import {ReactDOM} from 'react-dom';
+import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 
@@ -51,6 +51,6 @@ export class Adder extends Component{
     save(){
         alert("Du la til kategorien: " + this.name);
         this.props.addFunction(this.name);
-        this.setButton();
+        this.setState({adding:false});
     }
 }
