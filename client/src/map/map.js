@@ -116,7 +116,9 @@ export default class SimpleMap extends Component {
 
     
     getImage(i: String){
-        let imageLink="/image/"+i
+
+        let imageLink="/image/"+i;
+        let picture = document.getElementById("ID TIL IMG ELEMENTET");
         picture.setAttribute("src", imageLink);
     }
 

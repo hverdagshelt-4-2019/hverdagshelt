@@ -2,13 +2,15 @@ import axios from 'axios';
 let url = "http://localhost:3000";
 
 class Ticket {
-    commune;
+    responsible_commune;
     category;
     title;
     description;
     picture;
+    status;
+    submitted_time;
     lat;
-    long;
+    lng;
 }
 
 let config = {
@@ -25,8 +27,8 @@ class TicketService {
     }
 
     getTicket(ticketID): Promise<Ticket>{
-        console.log("getting");
-        console.log(axios.get(url + '/ticket/' + ticketID));
+        console.log("getting ticket");
+        return axios.get(url + '/ticket/' + ticketID);
     }
 
     getAllTickets(): Promise<Ticket[]>{
