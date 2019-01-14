@@ -1,10 +1,9 @@
 //@flow 
 
 import axios from 'axios';
-let url = 'http://localhost:8080';
+let url = 'http://localhost:3000';
 
 class Category{
-    id : number;
     name : string; 
 }
 
