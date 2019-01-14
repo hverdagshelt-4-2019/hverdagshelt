@@ -25,7 +25,9 @@
     "react-pure-render": "^1.0.2",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.0.4",
-    "react-simplified": "^1.5.1"
+    "react-simplified": "^1.5.1",
+    "css-loader": "^2.1.0",
+    "style-loader": "^0.23.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -37,7 +39,6 @@
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
     "babel-plugin-transform-decorators-legacy": "^1.3.5",
-    "css-loader": "^2.1.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
     "jest": "^23.6.0",

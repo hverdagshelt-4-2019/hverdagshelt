@@ -2,7 +2,8 @@ import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import userService from '../../Services/userService';
-import {NavLink} from 'react-router-dom';
+import {NavLink } from 'react-router-dom';
+import styles from "./style.css";
 
 //Need route to login site.
 export default class Register extends Component {
@@ -28,7 +29,7 @@ export default class Register extends Component {
                     <button className="btn btn-primary" onClick={this.register}>Opprett</button>
                     <br/>
                     <br/>
-                    <label>{this.warning}</label>
+                    <label className="text-danger">{this.warning}</label>
                     <br/>
                     <label>Har du allerede en bruker?</label>{' '}
                     <NavLink exact to={'/'}>Logg inn her!</NavLink>

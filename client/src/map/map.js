@@ -136,22 +136,22 @@ export default class SimpleMap extends Component {
             );
         });
         return (
-            <div className="aroundMap">
+            <div className={css.aroundMap}>
                 <div style={{height: '100px'}}></div>
                 <button type="button" className="btn btn-primary" style={{width: '100%'}}>Legg til sak</button>
                 <div className = "leftSide" style={{height: '75vh'}}>
-                    <img id="picture" src="logo.png" className="img-fluid ticketImg" alt="Responsive image"/>
+                    <img id="picture" src="logo.png" className={"img-fluid "+css.ticketImg} alt="Responsive image"/>
                     <br/>
                     <br/>
-                    <h5 id="header" className="header">Velkommen til hverdagshelt</h5>
-                    <hr/>
+                    <h5 id="header" className={css.header}>Velkommen til hverdagshelt</h5>
+                    <hr className={css.hr}/>
                     <p id="category" style={{color: 'white', fontSize: 'small'}}></p>
-                    <hr/>
+                    <hr className={css.hr}/>
                     <div className = "aroundButton">
-                        <button id="vote" type="button" className="btn btn-light voteB"><i className="fas fa-thumbs-up"></i></button>
+                        <button id="vote" type="button" className="btn btn-light voteB"><i className={"fas "+css["fa-thumbs-up"]}></i></button>
                     </div>
                 </div>
-                <div className = "map" style={{ height: '75vh'}}>
+                <div className={css.map} style={{ height: '75vh'}}>
                     <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
                     center={this.props.center}
