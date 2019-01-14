@@ -2,7 +2,7 @@ import { ReactDOM } from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { HashRouter, Route, NavLink } from 'react-router-dom';
-import { userService } from '../../services/userService';
+import userService from '../../services/userService';
 
 //Need route to login site.
 export class Register extends Component {
@@ -42,8 +42,9 @@ export class Register extends Component {
     register(){
         if(this.password1 == this.password2) {
             console.log("Registrerer...");
-            userService.postNewUser(this.email, this.password1) //OK
-            .catch(error => console.log("Noe gikk galt."));
+            userService.createUser(this.email, this.password1)
+                .then(data => console.log(data))//OK
+            .catch(err => console.log(err));
         }
         else{
             this.warning = "Passordene du skrev inn stemmer ikke overens.";

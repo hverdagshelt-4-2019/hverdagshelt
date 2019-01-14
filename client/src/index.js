@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { HashRouter, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter, Route, NavLink } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import  SimpleMap  from './map/map';// Gets map component
 import  Footer  from './Components/Footer/footer';// Gets map component
@@ -24,7 +24,7 @@ import {NavbarPerson} from './Components/Navbars/Navbar_person.js'
 const root = document.getElementById('root');
 if (root)
   ReactDOM.render(
-    <HashRouter>
+    <BrowserRouter>
       <div>
         <Route path="/" component={NavbarPerson} />
         <Route exact path="/uploadImage" component={UploadImage} />
@@ -39,6 +39,6 @@ if (root)
         <Route path="/sak/endre/:id" component={EditTicket} />
         <Route path="/" component={Footer} />
       </div>
-    </HashRouter>,
+    </BrowserRouter>,
     root
   );

@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { ticketService } from '../../Services/TicketService';
+import { ticketService } from '../../Services/ticketService';
 import { Navbar_person } from '../Navbars/Navbar_person';
 
 export class EditTicket extends Component {
