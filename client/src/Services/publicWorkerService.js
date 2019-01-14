@@ -13,15 +13,11 @@ let config = {
     }
 }
 
-class PublicWorkerService {
-    createPublicWorker(email, commune): Promise<Object>{
+export default class PublicWorkerService {
+    createPublicWorker(email: string, commune: string): Promise<Object>{
         let publicWorker = new PublicWorker();
         publicWorker.email = email;
         publicWorker.commune = commune;
         return axios.post(url + '/publicworker', config);
     }
 }
-
-export let publicWorkerService = new PublicWorkerService;
-
-

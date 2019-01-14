@@ -5,7 +5,7 @@ import { Component } from 'react-simplified';
 import { ticketService } from '../../Services/ticketService';
 import { Navbar_person } from '../Navbars/Navbar_person';
 
-export class EditTicket extends Component {
+export default class EditTicket extends Component {
   render() {
     return (
             <div>

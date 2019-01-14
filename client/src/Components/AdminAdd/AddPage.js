@@ -1,13 +1,12 @@
 import {ReactDOM} from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { HashRouter, Route, NavLink } from 'react-router-dom';
-import {ExistingUser} from './ExistingUser';
-import { adminService} from '../../Services/adminService';
+import ExistingUser from './ExistingUser';
+import adminService from '../../Services/adminService';
 
 //TODO: Fix so you can enter email and promote user to admin
 
-export class AddPage extends Component{
+export default class AddPage extends Component{
     email = '';
     password1 = '';
     password2 = '';

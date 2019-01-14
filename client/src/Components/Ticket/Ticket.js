@@ -6,7 +6,7 @@ import { ticketService } from '../../Services/ticketService';
 import { Alert} from '../../widgets';
 import { Navbar_person } from '../Navbars/Navbar_person';
 
-export class Ticket extends Component<{ match: { params: { id: number } } }> {
+export default class Ticket extends Component<{ match: { params: { id: number } } }> {
   ticket = '';
 
   render() {
