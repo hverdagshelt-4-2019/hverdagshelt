@@ -13,18 +13,29 @@ let config =
 
     port: 3000,
 
+    email: {
+        user: "hverdagsheltene4@gmail.com",
+        pass: "set password in private.config.js"
+    },
 
     test: {
         mysql: {
-            connectionLimit: 2,
-            host: 'localhost',
-            user: 'test',
-            password: '',
-            database: 'hverdagshelt',
+            connectionLimit: 20,
+            multipleStatements: true,
+            host: 'mysql.stud.iie.ntnu.no',
+            user: 'aleksjoh',
+            password: 'set password in private.config.js',
+            database: 'aleksjoh',
             debug: false
         },
 
-        port: 3001
+        port: 3001,
+
+        email: {
+            user: "hverdagsheltene4@gmail.com",
+            pass: "set password in private.config.js"
+        },
+
     }
 
 };

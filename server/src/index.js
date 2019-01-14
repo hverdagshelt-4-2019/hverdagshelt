@@ -9,3 +9,4 @@ let app = create_app(pool);
 let server = app.listen(config.port);
 
 console.log("Listening on port", config.port);
+

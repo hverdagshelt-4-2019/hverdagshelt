@@ -1,22 +1,24 @@
-import Dao from './dao.js'
+import Dao from './dao.js';
 
 export default class TicketDao extends Dao {
     getATicket(id, callback) {
         super.query("SELECT t.id, email as submitter_email, responsible_commune, c2.name as company_name, category, " +
             "title, description, picture, submitted_time, finished_time, status, lat, lng FROM ticket t JOIN person p " +
-            "ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id WHERE ticket.id = ?;",
+            "ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id WHERE t.id = ?;",
             [id],
             callback)
     }
 
-    getTicketsByCommune(communes, callback) {
-        super.query("SELECT t.id, email as submitter_email, responsible_commune, c2.name as company_name, category, " +
-            "title, description, picture, submitted_time, finished_time, status, lat, lng FROM ticket t JOIN person p " +
-            "ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id WHERE responsible_commune in(?);",
-            [communes],
-            callback)
-    }
-
+  getTicketsByCommune(communes, callback) {
+    super.query(
+      'SELECT t.id, email as submitter_email, responsible_commune, c2.name as company_name, category, ' +
+        'title, description, picture, submitted_time, finished_time, status, lat, lng FROM ticket t JOIN person p ' +
+        'ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id WHERE responsible_commune in(?);',
+      [communes],
+      callback
+    );
+  }
+  
     getTicketsByCategory(communes, categories, callback) {
         super.query("SELECT t.id, email as submitter_email, responsible_commune, c2.name as company_name, category, " +
             "title, description, picture, submitted_time, finished_time, status, lat, lng FROM ticket t JOIN person p " +
@@ -34,11 +36,16 @@ export default class TicketDao extends Dao {
     }
     
     editTicket(id, json, callback) {
-        let params = [json.companyid, json.category, json.title, json.description, json.picture, json.status, json.lat, json.long, id]
+        let params = [json.category, json.title, json.description, json.picture, json.lat, json.long, id]
         super.query(
-            "UPDATE TABLE ticket SET responsible_company_id = ?, category = ?, title = ?, description = ?, picture = ?, ticket.status = ?, lat = ?, lng = ? WHERE id = ?;",
+            "UPDATE ticket SET category = ?, title = ?, description = ?, picture = ?, lat = ?, lng = ? WHERE id = ?;",
             params,
             callback)
+    }
+
+    setStatus(id, json, callback) {
+        let params = [json.companyid, json.status, id];
+        super.query("UPDATE ticket SET responsible_company_id = ?, status = ? WHERE id = ?", params, callback);
     }
     
     deleteTicket(id, callback) {
@@ -47,3 +54,4 @@ export default class TicketDao extends Dao {
             callback)
     }
 }
+

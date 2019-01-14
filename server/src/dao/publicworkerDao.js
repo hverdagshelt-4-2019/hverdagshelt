@@ -6,6 +6,6 @@ export default class PublicWorkerDao extends Dao {
     }
 
     createPublicworker(json, callback) {
-        super.query("INSERT INTO public_worker VALUES (?)", [json.userId], callback);
+        super.query("INSERT INTO public_worker VALUES (SELECT id FROM person WHERE email = ?), ?)", [json.email, json.commune], callback);
     }
 }
