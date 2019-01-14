@@ -18,6 +18,7 @@
     "jquery": "^3.3.1",
     "nomnom": "^1.8.1",
     "prop-types": "^15.6.2",
+    "react": "^16.7.0",
     "react-bootstrap": "^0.32.4",
     "react-controllables": "^0.6.0",
     "react-pure-render": "^1.0.2",
@@ -40,7 +41,8 @@
     "enzyme-adapter-react-16": "^1.6.0",
     "jest": "^23.6.0",
     "webpack": "^4.26.0",
-    "webpack-cli": "^3.1.2"
+    "webpack-cli": "^3.1.2",
+    "flow-bin": "^0.90.0"
   },
   "plugins": [
     [

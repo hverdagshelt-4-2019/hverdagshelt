@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { ticketService } from '../../Services/TicketService';
 import { Navbar_person } from '../Navbars/Navbar_person';
 
 export class AddTicket extends Component {

@@ -216,7 +216,7 @@ export function create_app(pool) {
                 subject: 'Registrering',
                 text: 'Du er nå registrert i vårt system.\nBrukernavn: ' + req.body.email + '\nPassord: ' + req.body.password
             };
-            sendEmail(transporter, mailoptions);
+            if(status == 200) sendEmail(transporter, mailoptions);
             res.status(status);
             res.json(data);
         });

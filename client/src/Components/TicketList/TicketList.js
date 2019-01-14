@@ -1,9 +1,9 @@
 //@flow
-import { ReactDOM } from 'react-dom';
+import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { HashRouter, Route, NavLink } from 'react-router-dom';
-import {ticketService} from '../../services/TicketService';
+import {ticketService} from '../../Services/ticketService';
 import {categoryService} from '../../Services/categoryService'
 
 //---This class is not finished. No filter created. ---
