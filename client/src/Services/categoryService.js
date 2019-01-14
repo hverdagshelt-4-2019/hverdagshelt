@@ -9,13 +9,21 @@ class Category{
     name : string; 
 }
 
+let config = {
+    headers: {
+        Authorization: "Bearer " + localStorage.getItem('authToken'),
+    }
+}
+
 class CategoryService{
     getTicketCategories() : Promise<Category[]>{
-        return axios.get(url + "/eventcat"); 
+        console.log("Getting all categories...");
+        return axios.get(url + "/ticketcat");
     }
 
     getEventCategories() : Promise<Category[]>{
-        return axios.get(url + "/ticketcat");
+        console.log("Getting all categories...");
+        return axios.get(url + "/eventcat");
     }
 
     deleteTicketCategory(id) : Promise<void>{
@@ -29,13 +37,13 @@ class CategoryService{
     addTicketCategory(name) : Promise<void>{
         category = new Category;
         category.name = name; 
-        //return axios.post(url + "/ticketcat", category); //Need verifytoken
+        return axios.post(url + "/ticketcat", category, config); //Need verifytoken
     }
 
-    addTicketCategory(name) : Promise<void>{
+    addEventCategory(name) : Promise<void>{
         category = new Category;
-        category.name = name; 
-        //return axios.post(url + "/eventcat", category); //Need verifytoken
+        category.name = name;
+        return axios.post(url + "/eventcat", category, config); //Need verifytoken
     }
 }
 
