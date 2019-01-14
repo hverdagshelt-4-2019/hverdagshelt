@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Navbar_person } from '../Navbars/Navbar_person';
 
-export class AddTicket extends Component {
+export default class AddTicket extends Component {
 title = '';
 description = '';
 

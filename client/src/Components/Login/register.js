@@ -1,12 +1,10 @@
-import { ReactDOM } from 'react-dom';
+import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { HashRouter, Route, NavLink } from 'react-router-dom';
-import { userService } from '../../services/userService';
+import userService from '../../Services/userService';
 
 //Need route to login site.
-export class Register extends Component {
-  fullname = null;
+export default class Register extends Component {
   email = null;
   password1 = null;
   password2 = null;
@@ -21,7 +19,6 @@ export class Register extends Component {
                     <br/>
                     <form>
                         <div className="form-group">
-                            <input className="form-control" placeholder="Fullt navn" onChange={(evt)=> {this.fullname = evt.target.value}}></input>
                             <input className="form-control" placeholder="Email" onChange={(evt) => {this.email = evt.target.value}}></input>
                             <input className="form-control" placeholder="Passord" onChange={(evt) => {this.password1 = evt.target.value}}></input>
                             <input className="form-control" placeholder="Gjenta passord" onChange={(evt) => {this.password2 = evt.target.value}}></input>
