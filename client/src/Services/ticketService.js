@@ -2,10 +2,6 @@ import axios from 'axios';
 axios.interceptors.response.use(response => response.data);
 let url = "http://localhost:3000";
 
-class Category {
-    name;
-}
-
 let config = {
     headers: {
         Authorization: "Bearer " + localStorage.getItem('authToken'),
