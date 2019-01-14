@@ -6,7 +6,7 @@ export default class CategoryDao extends Dao {
   }
 
   createOneTicket(name, callback) {
-    super.query('INSERT INTO ticket_category (name) VALUES (?)', name, callback);
+    super.query('INSERT INTO ticket_category (name) VALUES (?)', [name], callback);
   }
 
   deleteOneTicket(name, callback) {
@@ -18,7 +18,7 @@ export default class CategoryDao extends Dao {
   }
 
   createOneEvent(name, callback) {
-    super.query('INSERT INTO happening_category (name) VALUES (name)', val, callback);
+    super.query('INSERT INTO happening_category (name) VALUES (?)', [name], callback);
   }
 
   deleteOneEvent(name, callback) {

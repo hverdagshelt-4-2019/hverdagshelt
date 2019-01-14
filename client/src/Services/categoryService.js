@@ -9,11 +9,11 @@ export class Category{
 
 function config() {
     let wtf = "Bearer " + localStorage.getItem('authToken');
-    return (
+    return {
         headers: {
             Authorization: wtf
         }
-    )
+    }
 }
 
 export default class CategoryService{
@@ -27,16 +27,16 @@ export default class CategoryService{
         return axios.get(url + "/eventcat");
     }
 
-    static deleteTicketCategory(name: string) : Promise<void>{
-        let category = new Category();
+    static deleteTicketCategory(name: string) : Promise<Object>{
+        let category = new Category;
         category.name = name;
-        return axios.delete(url + "/ticketcat", category, config())
+        return axios.delete(url + "/ticketCategory", category);
     }
 
-    static deleteEventCategory(name: string) : Promise<void>{
-        let category = new Category();
+    static deleteEventCategory(name: string) : Promise<Object>{
+        let category = new Category;
         category.name = name;
-        return axios.delete(url + "/eventcat", category, config())
+        return axios.delete(url + "/happeningCategory", category, config());
     }
 
     static addTicketCategory(name: string) : Promise<void>{

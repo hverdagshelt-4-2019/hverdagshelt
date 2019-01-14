@@ -6,15 +6,10 @@ import { Component } from 'react-simplified';
 import categoryService from '../../Services/categoryService';
 import {Adder} from './Adder';
 import Category from '../../Services/categoryService';
+import {SpecificCategory} from './SpecificCategory';
 
 type P = {
 
-}
-import {SpecificCategory} from './SpecificCategory';
-
-export default class CategoryCreation extends Component{
-    ticketCategories = [{name: 'Kategori1', id:'1'}, {name: 'Kateogri2', id:'2'}, {name: "Kategori3", id:'3'}]; //Test values
-    eventCategories = [];
 }
 
 type S = {
@@ -29,7 +24,7 @@ export default class CategoryCreation extends Component<P, S>{
         super(props);
         this.state = {
             adding: false,
-        };
+        }
     }
 
     render(){
@@ -39,31 +34,34 @@ export default class CategoryCreation extends Component<P, S>{
                     <div className="col-md-6" style={{width: '50%'}}>
                         <h3>Ticket categories</h3>
                         <Adder addFunction={this.addTicketCategory.bind(this)} />
-                            {this.ticketCategories.map((category, i) => (
-                                <SpecificCategory theCategory={category} deleteFunc={this.deleteTC.bind(this)}/>
-                            ))}
-                    </div>  
+                        {this.ticketCategories.map((category, i) => (
+                            <SpecificCategory theCategory={category} deleteFunc={this.deleteTC.bind(this)}/>
+                        ))}
+                    </div>
                     <div className="col-md-6" style={{width: '50%'}}>
                         <h3>Event categories</h3>
                         <Adder addFunction={this.addEventCategory.bind(this)} />
 
-                            {this.eventCategories.map((category, i) => (
-                                <SpecificCategory theCategory={category} deleteFunc={this.deleteEC.bind(this)}/>
-                            ))}
+                        {this.eventCategories.map((category, i) => (
+                            <SpecificCategory theCategory={category} deleteFunc={this.deleteEC.bind(this)}/>
+                        ))}
                     </div>
-                </div>  
-            </div>     
-        )
+                </div>
+            </div>
+        );
     }
 
     mounted(){
+        this.help();
+    }
+
+    help() {
         categoryService.getEventCategories()
             .then(res => this.eventCategories = res.data)
             .catch(err => console.log(err))
         categoryService.getTicketCategories()
             .then(res => this.ticketCategories = res.data)
             .catch(err => console.log(err))
-
     }
 
     changeSate(){
@@ -71,19 +69,26 @@ export default class CategoryCreation extends Component<P, S>{
     }
 
     addTicketCategory(name: string){
-        categoryService.addTicketCategory(name);
+        categoryService.addTicketCategory(name[0].toUpperCase() + name.slice(1).toLowerCase())
+            .then(this.help)
     }
 
     addEventCategory(name: string){
-        categoryService.addEventCategory(name);
+        categoryService.addEventCategory(name[0].toUpperCase() + name.slice(1).toLowerCase())
+            .then(this.help)
     }
 
     deleteTC(name: string){
-        categoryService.deleteTicketCategory(name);
+        categoryService.deleteTicketCategory(name[0].toUpperCase() + name.slice(1).toLowerCase())
+            .then(this.help)
+            .catch(err => {console.log(err)})
     }
 
     deleteEC(name: string){
-        categoryService.deleteEventCategory(name);
+        categoryService.deleteEventCategory(name[0].toUpperCase() + name.slice(1).toLowerCase())
+            .then(this.help)
+            .catch(err => console.log(err))
+
     }
 }
 

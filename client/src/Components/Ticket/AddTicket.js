@@ -68,13 +68,13 @@ ticket = {
         </div>
     );
   }
-{/*}
+/*{}
     mounted() {
         categoryService.getTicketCategories().then((response) => {
             console.log(response);
         });
     }
-*/}
+}*/
     save() {
         if (!this.ticket.title || !this.ticket.description) return null;
 

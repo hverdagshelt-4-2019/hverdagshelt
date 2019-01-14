@@ -621,7 +621,7 @@ export function create_app(pool) {
         })
     });
 
-    app.delete("/ticketCategory", verifyToken, (req, res) =>{
+    app.delete("/ticketCategory", (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 console.log(err);
@@ -636,11 +636,25 @@ export function create_app(pool) {
                     res.sendStatus(403);
                 }
             }
-        })
+        });
     });
 
     app.delete("/happeningCategory", verifyToken, (req, res) =>{
-
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                console.log(err);
+                res.sendStatus(401);
+            } else {
+                if(authData.user.isadmin) {
+                    categorydao.deleteOneEvent(req.body.name, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        });
     });
     
 // Verify token
