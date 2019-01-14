@@ -8,7 +8,8 @@ import {categoryService} from '../../Services/categoryService';
 import {Adder} from './Adder';
 
 export class CategoryCreation extends Component{
-    categories = [{name: 'Kategori1'}, {name: 'Kateogri2'}, {name: "Kategori3"}];
+    ticketCategories = [{name: 'Kategori1'}, {name: 'Kateogri2'}, {name: "Kategori3"}];
+    eventCategories = [];
 
     constructor(props){
         super(props);
@@ -22,7 +23,7 @@ export class CategoryCreation extends Component{
                     <div className="col-md-6" style={{width: '50%'}}>
                         <h3>Ticket categories</h3>
                         <Adder addFunction={this.addTicketCategory.bind(this)} />
-                            {this.categories.map((category, i) => (
+                            {this.ticketCategories.map((category, i) => (
                                 <li className="list-group-item" key={i}>
                                     <h3 to=''>{category.name}</h3>
                                     <div className="float-right">
@@ -34,7 +35,7 @@ export class CategoryCreation extends Component{
                     <div className="col-md-6" style={{width: '50%'}}>
                         <h3>Event categories</h3>
                         <Adder addFunction={this.addEventCategory.bind(this)} />
-                            {this.categories.map((category, i) => (
+                            {this.eventCategories.map((category, i) => (
                                 <li className="list-group-item" key={i}>
                                     <h3 to=''>{category.name}</h3>
                                     <div className="float-right">
@@ -49,7 +50,11 @@ export class CategoryCreation extends Component{
     }
 
     mounted(){
-        categoryService.getAllCategories()
+        categoryService.getTicketCategories()
+        //.then((categories: Array<Category>) => this.categories = categories) //Uncomment when service is OK
+        //.catch((error : Error) => console.log(error.message));
+
+        categoryService.getEventCategories()
         //.then((categories: Array<Category>) => this.categories = categories) //Uncomment when service is OK
         //.catch((error : Error) => console.log(error.message));
     }

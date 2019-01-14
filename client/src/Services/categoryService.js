@@ -10,9 +10,12 @@ class Category{
 }
 
 class CategoryService{
-    getAllCategories() : Promise<Category[]>{
-        console.log("Getting all categories...");
-        //return axios.get(url + "/categories"); //Need endpoint to get all distinct categories 
+    getTicketCategories() : Promise<Category[]>{
+        return axios.get(url + "/eventcat"); 
+    }
+
+    getEventCategories() : Promise<Category[]>{
+        return axios.get(url + "/ticketcat");
     }
 
     deleteTicketCategory(id) : Promise<void>{
