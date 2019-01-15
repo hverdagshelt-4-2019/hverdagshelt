@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { ticketService } from '../../Services/ticketService';
-import { categoryService } from '../../Services/categoryService';
-import { Navbar_person } from '../Navbars/Navbar_person';
+import ticketService from '../../Services/ticketService';
+import categoryService from '../../Services/categoryService';
+import Navbar_person from '../Navbars/Navbar_person';
 import GoogleMapReact from 'google-map-react';
 import ControllableHover from './../../map/controllable_hover.js';
 import controllable from 'react-controllables';
@@ -94,7 +94,6 @@ ticket = {
 
     return (
         <div>
-            <Navbar_person />
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-8">
