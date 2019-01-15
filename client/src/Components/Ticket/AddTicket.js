@@ -64,15 +64,17 @@ static propTypes = {
        console.log(lat, lng);
         this.props.greatPlaces[0].lat=lat;
    }
-ticketCategories: Category[] = [];
-ticket = {
-    category: '',
-    title: '',
-    description: '',
-    picture: '',
-    lat: '',
-    long:''
-};
+
+
+    ticketCategories: Category[] = [];
+    ticket = {
+        category: '',
+        title: '',
+        description: '',
+        picture: '',
+        lat: '',
+        long:''
+    };
 
   render() {
     const places = this.props.greatPlaces
