@@ -13,7 +13,7 @@ import SingleTicket from './SingleTicket';
 export default class TicketList extends Component{
     communes = [];
     ticketCategories : Category[] = []; //Ticking off input box will add category to the array
-    tickets = [{title:'tittel1', category_id:'2', responsible_commune: 'Trondheim', id:'1'}]; //After fetching tickets, they will be put here, then mapped into list
+    tickets = []; 
 
     render(){
         return(
@@ -44,11 +44,13 @@ export default class TicketList extends Component{
                         border: "2px solid lightblue",
                         }}>
                         <br/>
-                        <li className="list-group-item" >
+                        <div>
                             {this.tickets.map((ticket, i) => (
-                                <SingleTicket title = {ticket.title} category = {ticket.category_id} commune={ticket.responsible_commune} id={ticket.id} />
+                                <SingleTicket 
+                                    theTicket={ticket}
+                                />
                             ))}
-                        </li>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -59,16 +61,21 @@ export default class TicketList extends Component{
         
         //Get relevant communes for the user //OK
         communeService.getFollowedCommunes()
-        .then(communes => console.log(communes.data))
         .then((communes : Commune[]) => this.communes = communes.data)
         .catch((error : Error) => console.log(error));
-
         
+
+        let kommuner = {
+            'communes':[
+                {'name':'Sel'}
+            ]
+        }
+
         //Then get all the tickets from these communes
-        ticketService.getAllTickets(this.communes) //this.communes
-        .then(tickets => console.log("Tickets: " + tickets))
+        ticketService.getAllTickets(kommuner) //this.communes
         .then((tickets : Ticket[]) => this.tickets = tickets.data)
         .catch((error : Error) => console.log("Error occured: " + error.message));
+
         
 
         //Get categories for the possibility to filter //OK
