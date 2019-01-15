@@ -139,14 +139,14 @@ export default class SimpleMap extends Component {
         return (
             <div className={css.aroundMap}>
                 <div style={{height: '10px'}}></div>
-                <button type="button" className="btn btn-primary" style={{height: '30px', width: '100%', margin: '3px'}}>Legg til sak</button>
+                <button type="button" className={"btn btn-primary "+css.btnCase}>Legg til sak</button>
                 <div className = {css.leftSide} style={{height: '75vh'}}>
                     <img id="picture" src="logo.png" className={"img-fluid "+css.ticketImg} alt="Responsive image"/>
                     <br/>
                     <br/>
                     <h5 id="header" className={css.header}>Velkommen til hverdagshelt</h5>
                     <hr className={css.hr}/>
-                    <p id="category" style={{color: 'white', fontSize: 'small'}}></p>
+                    <p id="category" style={{color: 'white', fontSize: 'small', marginLeft: '10px', marginRight: '10px'}}></p>
                     <hr className={css.hr}/>
                     <div className = {css.aroundButton}>
                         <button id="vote" type="button" className={"btn btn-light " + css.voteB}><i className={"fas "+css["fa-thumbs-up"]}></i></button>

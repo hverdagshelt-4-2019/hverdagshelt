@@ -32,7 +32,7 @@ if (root) {
                 <div>
                     <Navbar/>
                     <Route exact path="/uploadImage" component={UploadImage}/>
-                    <Route exact path="/map" component={SimpleMap}/>
+                    <Route exact path="/hjem" component={SimpleMap}/>
                     <Route exact path="/" component={Login}/>
                     <Route path="/registrerdeg" component={Register}/>
                     <Route path="/sakliste" component={TicketList}/>
