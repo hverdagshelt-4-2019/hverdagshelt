@@ -84,7 +84,9 @@ export function create_app(pool) {
 
     app.get("/tickets", (req, res) =>{
         console.log(req.body);
-        ticketdao.getTicketsByCommune(req.body.communes, (status, data) =>{
+        let communes = [];
+        req.body.communes.map(c => communes.push(c.name));
+        ticketdao.getTicketsByCommune(communes, (status, data) =>{
             res.status(status);
             res.json(data);
         });
