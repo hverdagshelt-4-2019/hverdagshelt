@@ -109,7 +109,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
 
               <hr />
 
-              <img id="imageElement" alt="" />
+              <img id="picture" src="logo.png" className={"img-fluid "} alt="Responsive image"/>
 
               <hr />
 
@@ -172,7 +172,11 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
         this.ticket = ticket.data[0];
         this.sub_date =
           this.ticket.submitted_time.split('T', 1)[0] + ' ' + this.ticket.submitted_time.split('T')[1].split('.', 1);
-        console.log(this.props.match.params.id)
+        console.log(this.props.match.params.id);
+        this.props.greatPlaces[0].lat=this.ticket.lat;
+        this.props.greatPlaces[0].lng=this.ticket.lng;
+        console.log(this.ticket.picture)
+        this.getImage(this.ticket.picture)//xss 
       })
       .catch((error: Error) => Alert.danger(error.message));
     commentService.getAllComments(this.props.match.params.id)
@@ -191,7 +195,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
 
   getImage(i: String) {
     let imageLink = '/image/' + i;
-    let picture = document.getElementById('imageElement');
+    let picture = document.getElementById('picture');
     picture.setAttribute('src', imageLink);
   }
 
