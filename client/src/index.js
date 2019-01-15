@@ -7,6 +7,8 @@ import ReactDOM from 'react-dom';
 
 import SimpleMap  from './map/map';// Gets map component
 import UploadImage from './temp/uploadImage'
+import { Alert, Info } from './widgets';
+import { TicketTest } from './Components/Ticket/TicketTest';
 import Login from './Components/Login/Login.js';
 import Register from './Components/Login/register.js';
 import Ticket from './Components/Ticket/Ticket';
@@ -24,7 +26,7 @@ if (root)
   ReactDOM.render(
     <BrowserRouter>
       <div>
-        <Route path="/" component={Navbar} />
+        <Navbar/>
         <Route exact path="/uploadImage" component={UploadImage} />
         <Route exact path="/map" component={SimpleMap} />
         <Route exact path="/" component={Login} />
@@ -34,7 +36,7 @@ if (root)
         <Route path="/kategorier" component={CategoryCreation} />
         <Route path="/sak/:id" component={Ticket} />
         <Route path="/leggtilsak" component={AddTicket} />
-        <Route path="/endresak" component={EditTicket} />
+        <Route path="/endresak/:id" component={EditTicket} />
         <Route path="/" component={Footer} />
       </div>
     </BrowserRouter>,
