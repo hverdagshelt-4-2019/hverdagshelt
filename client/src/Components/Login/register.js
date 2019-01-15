@@ -1,7 +1,8 @@
 import ReactDOM from 'react-dom';
 import * as React from 'react';
-import { Component } from 'react-simplified';
+import { Component,} from 'react-simplified';
 import userService from '../../Services/userService';
+import { NavLink,} from 'react-router-dom';
 
 //Need route to login site.
 export default class Register extends Component {
@@ -36,6 +37,7 @@ export default class Register extends Component {
                     <label>Har du allerede en bruker?</label>{' '}
                     <NavLink exact to={'/'}>Logg inn her!</NavLink>
                 </div>
+                <div style={{height: '200px'}}></div>
             </div>
         )
     }

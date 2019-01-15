@@ -36,8 +36,7 @@
 .voteB {
     float: right;
     margin: 5px;
-    color: black;
 }
-.fa-thumbs-up{
+.thumbUp{
     margin: 3px;
 }

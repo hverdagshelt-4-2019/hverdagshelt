@@ -99,7 +99,7 @@ export default class SimpleMap extends Component {
         category.innerHTML = localTicket.category;
 
         let para = document.createElement("i");
-        para.setAttribute("class", "fas fa-thumbs-up")
+        para.setAttribute("class", "fas fa-thumbs-up " +css.thumbUp)
         let vote = document.getElementById("vote");
         vote.innerHTML = localTicket.votes;
         vote.appendChild(para);
@@ -138,8 +138,8 @@ export default class SimpleMap extends Component {
         });
         return (
             <div className={css.aroundMap}>
-                <div style={{height: '100px'}}></div>
-                <button type="button" className="btn btn-primary" style={{width: '100%'}}>Legg til sak</button>
+                <div style={{height: '10px'}}></div>
+                <button type="button" className="btn btn-primary" style={{height: '30px', width: '100%', margin: '3px'}}>Legg til sak</button>
                 <div className = {css.leftSide} style={{height: '75vh'}}>
                     <img id="picture" src="logo.png" className={"img-fluid "+css.ticketImg} alt="Responsive image"/>
                     <br/>
@@ -167,6 +167,7 @@ export default class SimpleMap extends Component {
                     {places}
                     </GoogleMapReact>
                 </div>
+                <div style={{height: '85vh'}}></div>
             </div>
             );
         }
