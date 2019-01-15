@@ -10,20 +10,17 @@
     min-height:25px; 
     padding:10px 0px 25px 0px ;
     position: absolute;
-    bottom: 0px;
-    margin-top: 10px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    opacity: 0.8;
 }
 
 .footer p {
     font-size:13px;
     color:#ffffff; padding-bottom:0px;
     margin-bottom:8px;
-}
-
-
-.bottom_border { 
-    border-bottom:1px solid #ffffff; 
-    padding-bottom:20px;
 }
 
 .foote_bottom_ul_amrc {
