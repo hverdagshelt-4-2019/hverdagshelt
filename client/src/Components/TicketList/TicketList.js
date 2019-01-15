@@ -13,7 +13,7 @@ import SingleTicket from './SingleTicket';
 export default class TicketList extends Component{
     communes = [];
     ticketCategories : Category[] = []; //Ticking off input box will add category to the array
-    tickets = []; //After fetching tickets, they will be put here, then mapped into list
+    tickets = [{title:'tittel1', category_id:'2', responsible_commune: 'Trondheim', id:'1'}]; //After fetching tickets, they will be put here, then mapped into list
 
     render(){
         return(
@@ -46,7 +46,7 @@ export default class TicketList extends Component{
                         <br/>
                         <li className="list-group-item" >
                             {this.tickets.map((ticket, i) => (
-                                <SingleTicket title = {ticket.title} category = {ticket.category_id} />
+                                <SingleTicket title = {ticket.title} category = {ticket.category_id} commune={ticket.responsible_commune} id={ticket.id} />
                             ))}
                         </li>
                     </div>
@@ -65,13 +65,13 @@ export default class TicketList extends Component{
 
         
         //Then get all the tickets from these communes
-        ticketService.getAllTickets(this.communes)
+        ticketService.getAllTickets(this.communes) //this.communes
         .then(tickets => console.log("Tickets: " + tickets))
         .then((tickets : Ticket[]) => this.tickets = tickets.data)
         .catch((error : Error) => console.log("Error occured: " + error.message));
         
 
-        //Get categories for the possibility to filter
+        //Get categories for the possibility to filter //OK
         categoryService.getTicketCategories()
         .then((categories : Category[]) =>  this.ticketCategories = categories.data)
         .catch((error : Error) => console.log("Error occured: " + error.message));
