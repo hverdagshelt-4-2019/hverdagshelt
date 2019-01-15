@@ -771,22 +771,42 @@ export function create_app(pool) {
 
 
     /* Upload image with the ticetkId for the ticket that the image
-    is connected to. This is to upload Image*/ 
-    app.post("/ticketI", (req, res) => {
-        console.log("Got POST-request from client");
-        console.log(req.body.overskrift);//temp delete
-        console.log(req.files);//temp delete
+    is connected to. This is to upload Image
+    app.put("/ticket_picture/:ticket_it", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                console.log(err);
+            } else {
+                userdao.getOne(authData.user.id, (userstatus, userdata) =>{
+                    if(req.body.email == userdata[0].email) {
+                        ticketdao.setPicture(req.params.ticket_id, req.body, (status, data) =>{
+                            res.status(status);
+                            res.json(data);
+                        });
+                    } else {
+                        res.sendStatus(403);
+                    }
+                });
+            }
+        });
+    });
+    */ 
+    app.post("/image", verifyToken, (req, res) => {
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            console.log("Got POST-request from client");
+            console.log(req.headers['authorization']);
+            console.log("id: " + req.body.id);//temp delete
+            console.log(req.files);//temp delete
 
-        if (!req.files) {
-            console.log("no files were uploaded");
-            return res.status(400).send("No files were uploaded.");
-        }
+            if (!req.files) {
+                console.log("no files were uploaded");
+                return res.status(400).send("No files were uploaded.");
+            }
 
-        console.log("files where uploaded");
-        let file = req.files.uploaded_image;
-        let img_name = file.name;
-        fs.readdir(path.join(client_public,'images'), (err, files) => {
-            img_name = files.length + img_name;
+            console.log("files where uploaded");
+            let file = req.files.uploaded_image;
+            let img_name = file.name;
+            img_name = req.body.id + img_name;
             console.log(img_name);
             if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
                 console.log("Correct type of image");
@@ -797,13 +817,10 @@ export function create_app(pool) {
                         return res.status(500).send(err);
                     }
 
-                    /*
-                    Here you have to add how the path will be saved in database. Some example code under
-                    let val = [overskrift, innhold, kategori, viktighet, img_name];
-                    caseDao.createOne(val, (status, data) => {
+                    ticketdao.setPicture(req.body.id, img_name, (status, data) =>{
                         res.status(status);
                         res.json(data);
-                    });*/
+                    });
                 });
             }else{
                 console.log("Wrong type if image");
@@ -814,9 +831,11 @@ export function create_app(pool) {
 
     /* Upload image with the ticetkId for the ticket that the image
     is connected to. This is to edit Image*/ 
-    app.put("/image/:ticketId", (req, res) => {
-        console.log("Got PUT-request from client");
-        const { ticketId } = req.params;
+    app.put("/image", (req, res) => {
+        console.log("Got POST-request from client");
+        console.log("id: " + req.body.id);//temp delete
+        console.log(req.files);//temp delete
+
         if (!req.files) {
             console.log("no files were uploaded");
             return res.status(400).send("No files were uploaded.");
@@ -825,27 +844,29 @@ export function create_app(pool) {
         console.log("files where uploaded");
         let file = req.files.uploaded_image;
         let img_name = file.name;
-        fs.readdir(path.join(client_public,'images'), (err, files) => {
-            img_name = files.length + img_name;
-            console.log(img_name);
+        img_name = req.body.id + img_name;
+        console.log(img_name);
+        if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
+            console.log("Correct type of image");
+            file.mv(path.join(client_public,'images', img_name), function (err) {
 
-            if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
-                console.log("Correct type of image");
-                file.mv(path.join(client_public,'images', img_name), function (err) {
+                if (err) {
+                    console.log("Something went wrong");
+                    return res.status(500).send(err);
+                }
 
-                    if (err) {
-                        return res.status(500).send(err);
-                    }
-                    /*
-                    Here you have to add how the path will be saved in database. Some example code under
-                    let val = [img_name, ticketId];
-                    ticketDao.updateImage(val, (status, data) => {
-                        res.status(status);
-                        res.json(data);
-                    });*/
-                });
-            }
-        });
+                /*
+                Here you have to add how the path will be saved in database. Some example code under
+                let val = [overskrift, innhold, kategori, viktighet, img_name];
+                caseDao.createOne(val, (status, data) => {
+                    res.status(status);
+                    res.json(data);
+                });*/
+            });
+        }else{
+            console.log("Wrong type if image");
+            return res.status(400).send();
+        }
     });
 
     //get image from server side and send to frontend
