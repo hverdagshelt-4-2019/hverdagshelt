@@ -1,7 +1,7 @@
 // @flow
 /* eslint eqeqeq: "off" */
 import * as React from 'react';
-import {Component,} from 'react-simplified';
+import { Component,} from 'react-simplified';
 import {NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import GoogleMapReact from 'google-map-react';
@@ -116,9 +116,8 @@ export default class SimpleMap extends Component {
 
     
     getImage(i: String){
-
         let imageLink="/image/"+i;
-        let picture = document.getElementById("ID TIL IMG ELEMENTET");
+        let picture = document.getElementById("picture");
         picture.setAttribute("src", imageLink);
     }
 
@@ -141,7 +140,7 @@ export default class SimpleMap extends Component {
             <div className={css.aroundMap}>
                 <div style={{height: '100px'}}></div>
                 <button type="button" className="btn btn-primary" style={{width: '100%'}}>Legg til sak</button>
-                <div className = "leftSide" style={{height: '75vh'}}>
+                <div className = {css.leftSide} style={{height: '75vh'}}>
                     <img id="picture" src="logo.png" className={"img-fluid "+css.ticketImg} alt="Responsive image"/>
                     <br/>
                     <br/>
@@ -149,10 +148,11 @@ export default class SimpleMap extends Component {
                     <hr className={css.hr}/>
                     <p id="category" style={{color: 'white', fontSize: 'small'}}></p>
                     <hr className={css.hr}/>
-                    <div className = "aroundButton">
-                        <button id="vote" type="button" className="btn btn-light voteB"><i className={"fas "+css["fa-thumbs-up"]}></i></button>
+                    <div className = {css.aroundButton}>
+                        <button id="vote" type="button" className={"btn btn-light " + css.voteB}><i className={"fas "+css["fa-thumbs-up"]}></i></button>
                     </div>
                 </div>
+                
                 <div className={css.map} style={{ height: '75vh'}}>
                     <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
