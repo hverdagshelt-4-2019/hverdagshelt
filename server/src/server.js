@@ -233,10 +233,14 @@ export function create_app(pool) {
                     publicworkercommune: (data[0].commune_name != null ? data[0].commune_name : false)    // Null if not a publicworker
                 };
                 console.log(JSON.stringify(user));
+                let level = 'user';
+                if(user.isadmin) level = 'admin';
+                else if (user.publicworkercommune) level = 'publicworker';
                 jwt.sign({user}, 'key', {expiresIn: '30d'}, (err, token) => {
                     res.status(status);
                     res.json({
-                        token
+                        token,
+                        level
                     });
                 });
             } else {
