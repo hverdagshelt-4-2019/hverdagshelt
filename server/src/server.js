@@ -126,7 +126,6 @@ export function create_app(pool) {
 
     });
 
-
     app.get("/communes", (req, res) =>{
         communedao.getAll((status, data) =>{
             console.log('data' + data);
@@ -202,8 +201,8 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/comments/:ticketId", (req, res) =>{
-        commentdao.getAll(req.params.id, (status, data) =>{
+    app.get("/comments/:ticket_id", (req, res) =>{
+        commentdao.getAll(req.params.ticket_id, (status, data) =>{
             res.status(status);
             res.json(data);
         });
@@ -274,6 +273,17 @@ export function create_app(pool) {
                     long: req.body.long
                 }
                 ticketdao.addTicket(newTicket, (status, data) =>{
+                    if(status == 200) {
+                        userdao.getOne(authData.user.id, (userstatus, userdata) =>{
+                            let mailOptions = {
+                                from: 'Hverdagsheltene',
+                                to: userdata[0].email,
+                                subject: 'Registrering av problem',
+                                text: 'Du har registrert ett nytt problem.\nSe problemet på: http://localhost:3000/sak/' + data.insertId
+                            };
+                            sendEmail(transporter, mailOptions);
+                        });
+                    }
                     res.status(status);
                     res.json(data);
                 });
@@ -486,19 +496,40 @@ export function create_app(pool) {
         });
     });
 
-    app.put("/ticketstatus/:id", verifyToken, (req, res) =>{
+    app.put("/ticketedit/:id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 res.sendStatus(401);
             } else {
-                if(authData.user.isadmin || authData.user.publicworkercommune == req.body.commune) {
-                    ticketdao.editTicket(req.params.id, req.body, (status, data) =>{
-                        res.status(status);
-                        res.json(data);
-                    });
-                } else {
-                    res.sendStatus(403);
-                }
+                userdao.getOne(authData.user.id, (userstatus, userdata) =>{
+                    if(req.body.submitter_email == userdata[0].email) {
+                        ticketdao.editTicket(req.params.id, req.body, (status, data) =>{
+                            res.status(status);
+                            res.json(data);
+                        });
+                    } else {
+                        res.sendStatus(403);
+                    }
+                });
+            }
+        });
+    });
+
+    app.put("/ticket_picture/:ticket_it", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                console.log(err);
+            } else {
+                userdao.getOne(authData.user.id, (userstatus, userdata) =>{
+                    if(req.body.email == userdata[0].email) {
+                        ticketdao.setPicture(req.params.ticket_id, req.body, (status, data) =>{
+                            res.status(status);
+                            res.json(data);
+                        });
+                    } else {
+                        res.sendStatus(403);
+                    }
+                });
             }
         });
     });
@@ -561,31 +592,37 @@ export function create_app(pool) {
         });
     });
 
-    app.put("/ticketstatus/:status", verifyToken, (req, res) =>{
+    app.put("/ticketstatus/:ticket_id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 console.log(err);
             } else {
-                ticketdao.setStatus(req.body, (status, data) =>{
-                    userdao.getOne(authData.user.id, (status, data) =>{
-                        if(status == 200) {
-                            let emailOptions = {
-
-                            }
-                            sendEmail()
+                ticketdao.setStatus(req.params.ticket_id, req.body, (status, data) =>{
+                    if(status == 200) {
+                        console.log(data[0].email);
+                        let mailOptions = {
+                            from: 'Hverdagsheltene',
+                            to: req.body.email,
+                            subject: 'Status oppdatering',
+                            text: ('Ditt problem har fått ny status. Sjekk ny status på: http://localhost:3000/sak/' + req.params.ticket_id)
                         }
-                    });
+                        sendEmail(transporter, mailOptions)
+                        res.status(status);
+                        res.json(data);
+                    } else {
+                        console.log('Oops...');
+                    }
                 });
             }
         });
     });
 
-    app.put("/ticketcomp/:name", verifyToken, (req, res) =>{
+    app.put("/ticketcomp/:ticket_id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 console.log(err);
             } else {
-                ticketdao.setStatus(req.body, (status, data) =>{
+                ticketdao.setStatus(req.params.ticket_id, req.body, (status, data) =>{
                     res.status(status);
                     res.json(data);
                 });
