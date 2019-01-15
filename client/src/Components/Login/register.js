@@ -53,7 +53,7 @@ export default class Register extends Component {
                     }
                 })//OK
                 .catch(err => {
-                    // TODO: Skille mellom forskjellige server feil. F.eks. forskjellen mellom at emailen er tatt eller at brukeren har et ugyldig tegn i mailen sin (emojis eller punktum)g
+                    // TODO: Skille mellom forskjellige server feil. F.eks. forskjellen mellom at emailen er tatt eller at brukeren har et ugyldig tegn i mailen sin (emojis etc.)
                     console.log(err)
                     this.warning = "Intern server error. Ikke gi oss mindre enn perfekt data."
                 });
