@@ -3,37 +3,33 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
-import css from './Navbar.css'
 
 export default class Navbar extends Component {
 
     admin_pages = [
-        ['Hjem', 'Hjem', 'glyphicon-home'],
-        ['minesaker', 'Mine saker', 'glyphicon-folder-open'],
-        ['minesvar', 'Mine svar', 'glyphicon-folder-open'],
-        ['leggtilsak', 'Legg til sak', 'glyphicon-plus'],
-        ['begivenheter', 'Liste over saker', 'glyphicon-list-alt'],
-        ['kategorier', 'Kategorier', 'glyphicon-list-alt'],
-        ['statistikk', 'Statistikk', 'glyphicon-stats'],
-        ['hjelp', 'Hjelp', 'glyphicon-question-sign']
+        ['minesaker', 'Mine saker', 'folder-open'],
+        ['minesvar', 'Mine svar', 'folder-open'],
+        ['leggtilsak', 'Legg til sak', 'plus'],
+        ['begivenheter', 'Liste over saker', 'list'],
+        ['kategorier', 'Kategorier', 'list'],
+        ['statistikk', 'Statistikk', 'chart-bar'],
+        ['hjelp', 'Hjelp', 'question-circle']
     ];
     public_worker_pages = [
-        ['Hjem', 'Hjem', 'glyphicon-home'],
-        ['minesaker', 'Mine saker', 'glyphicon-folder-open'],
-        ['minesvar', 'Mine svar', 'glyphicon-folder-open'],
-        ['leggtilsak', 'Legg til sak', 'glyphicon-plus'],
-        ['begivenheter', 'Liste over saker', 'glyphicon-list-alt'],
-        ['kategorier', 'Kategorier', 'glyphicon-list-alt'],
-        ['hjelp', 'Hjelp', 'glyphicon-question-sign']
+        ['minesaker', 'Mine saker', 'folder-open'],
+        ['minesvar', 'Mine svar', 'folder-open'],
+        ['leggtilsak', 'Legg til sak', 'plus'],
+        ['begivenheter', 'Liste over saker', 'list'],
+        ['kategorier', 'Kategorier', 'list'],
+        ['hjelp', 'Hjelp', 'question-circle']
     ];
     user_pages = [
-        ['Hjem', 'Hjem', 'glyphicon-home'],
-        ['minesaker', 'Mine saker', 'glyphicon-folder-open'],
-        ['minesvar', 'Mine svar', 'glyphicon-folder-open'],
-        ['leggtilsak', 'Legg til sak', 'glyphicon-plus'],
-        ['begivenheter', 'Liste over saker', 'glyphicon-list-alt'],
-        ['kategorier', 'Kategorier', 'glyphicon-list-alt'],
-        ['hjelp', 'Hjelp', 'glyphicon-question-sign']
+        ['minesaker', 'Mine saker', 'folder-open'],
+        ['minesvar', 'Mine svar', 'folder-open'],
+        ['leggtilsak', 'Legg til sak', 'plus'],
+        ['begivenheter', 'Liste over saker', 'list'],
+        ['kategorier', 'Kategorier', 'list'],
+        ['hjelp', 'Hjelp', 'question-circle']
     ];
     current_list = [];
 
@@ -46,58 +42,51 @@ export default class Navbar extends Component {
 
     render() {
         return (
-            <nav className={"navbar navbar-light bg-light "+css.Navbar}>
-                <div className={"container-fluid "+css.container}>
-                    <div className="navbar-header">
-                        <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                            <span className={css['icon-bar']} />
-                            <span className={css['icon-bar']} />
-                            <span className={css['icon-bar']} />
-                        </button>
-                        <NavLink  className={css.title+" navbar-brand"} exact to="/hjem">
-                            <p><img src="Skjermbilde.PNG" width="20" height="17" />HverdagsHelt</p>
-                        </NavLink>
-                    </div>
-                    <div className="collapse navbar-collapse" id="myNavbar">
-                        <ul className={"nav navbar-nav "+css.nav}>
-                            {this.current_list.filter((e,i) => i<4).map( ([destination, text, glyphname]) => (
-                            <li>
-                                <NavLink to={destination}>
-                                    <span className={"glyphicon "+glyphname} /> {text}
-                                </NavLink>
-                            </li>
-                            ))}
-                            <li className="dropdown">
-                                <a className="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    Mer
-                                    <span className="caret" />
-                                </a>
-                                <ul className="dropdown-menu">
-                                    {this.current_list.filter((e,i) => i>=4).map( ([destination, text, glyphname]) => (
+            <nav class="navbar navbar-expand-md navbar-light bg-light">
+                <a class="navbar-brand" href="/">HverdagsHelt<img src="Skjermbilde.PNG" width="20" height="17" /></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        {this.current_list.filter((e,i) => i<5).map( ([destination, text, faname]) => (
+                        <li>
+                            <NavLink to={destination}>
+                                <i class={"fas fa-"+faname}></i>
+                                {text}
+                            </NavLink>
+                        </li>
+                        ))}  
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                Mer
+                            </a>
+                            <div class="dropdown-menu">
+                                {this.current_list.filter((e,i) => i>=5).map( ([destination, text, faname]) => (
                                         <li>
                                             <NavLink to={destination}>
-                                                <span className={"glyphicon "+glyphname} /> {text}
+                                                <span className={"fas fa-"+faname} /> {text}
                                             </NavLink>
                                         </li>
                                     ))}
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul className={"nav navbar-nav navbar-right "+css.nav}>
-                            <li>
-                                <NavLink to="/minside">
-                                    <span className="glyphicon glyphicon-user" /> Min Side
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/">
-                                    <span className="glyphicon glyphicon-log-out" /> Log ut
-                                </NavLink>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+                            </div>
+                        </li>
+                    </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li>
+                        <NavLink to="/minside">
+                            <i class="fas fa-user"></i> Min Side
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/">
+                            <i class="fas fa-sign-out-alt"></i> Log ut
+                        </NavLink>
+                    </li>
+                    
+                </ul>
+            </div>  
+        </nav>
         );
     }
 }
