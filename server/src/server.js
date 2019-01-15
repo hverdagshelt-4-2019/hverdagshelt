@@ -202,6 +202,13 @@ export function create_app(pool) {
         });
     });
 
+    app.get("/comments/:ticketId", (req, res) =>{
+        commentdao.getAll(req.params.id, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
 
   /*
     Post-functions
