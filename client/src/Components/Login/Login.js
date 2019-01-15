@@ -38,20 +38,21 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div className="container text-center">
-                HverdagsHelt - en nasjonal platform til å oppdatere kommunen om feil på offentlig infrastruktur
-                <form>
-                    <div className="form-group">
-                        <label>E-post</label>
-                        <input type="email" autoComplete="current-email" placeholder="E-post" className="form-control" name="email" onChange={e => this.email = e.target.value} />
-                    </div>
-                    <div className="form-group">
-                        <label>Passord</label>
-                        <input type="password" autoComplete="current-password" placeholder="Passord" className="form-control" name="password" onChange={e => this.password = e.target.value} />
-                        <NavLink to="registrerdeg">Registrer deg som bruker</NavLink>
-                    </div>
-                </form>
-                <button type="submit" className="btn btn-primary" onClick={this.login}>Logg inn </button>
+            <div className="container" align="center">
+                <div className="container-fluid center-align" style={{width: '40%'}}>
+                    <form>
+                        <div className="form-group">
+                            <label>E-post</label>
+                            <input type="email" autoComplete="current-email" placeholder="E-post" className="form-control" name="email" onChange={e => this.email = e.target.value} />
+                        </div>
+                        <div className="form-group">
+                            <label>Passord</label>
+                            <input type="password" autoComplete="current-password" placeholder="Passord" className="form-control" name="password" onChange={e => this.password = e.target.value} />
+                            <NavLink to="registrerdeg">Registrer deg som bruker</NavLink>
+                        </div>
+                    </form>
+                    <button type="submit" className="btn btn-primary" onClick={this.login}>Logg inn </button>
+                </div>
             </div>
         );
     }
