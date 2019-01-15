@@ -1,7 +1,7 @@
 // @flow
 /* eslint eqeqeq: "off" */
 import * as React from 'react';
-import {Component,} from 'react-simplified';
+import { Component,} from 'react-simplified';
 import {NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import GoogleMapReact from 'google-map-react';
@@ -12,9 +12,6 @@ import ControllableHover from './controllable_hover.js';
 import axios from 'axios';
 
 import {K_SIZE} from './controllable_hover_styles.js';
-import createHashHistory from 'history/createHashHistory';
-        const history = createHashHistory();
-
 
 class ticket {
     id: string;
@@ -140,22 +137,23 @@ export default class SimpleMap extends Component {
             );
         });
         return (
-            <div className="aroundMap">
-                <button type="button" className="btn btn-primary" style={{margin: '3px', width: '100%'}}>Legg til sak</button>
-                <div className = "leftSide" style={{height: '75vh'}}>
-                    <img id="picture" src="logo.png" className="img-fluid ticketImg" alt="Responsive image"/>
+            <div className={css.aroundMap}>
+                <div style={{height: '100px'}}></div>
+                <button type="button" className="btn btn-primary" style={{width: '100%'}}>Legg til sak</button>
+                <div className = {css.leftSide} style={{height: '75vh'}}>
+                    <img id="picture" src="logo.png" className={"img-fluid "+css.ticketImg} alt="Responsive image"/>
                     <br/>
                     <br/>
-                    <h5 id="header" className="header">Velkommen til hverdagshelt</h5>
-                    <hr/>
+                    <h5 id="header" className={css.header}>Velkommen til hverdagshelt</h5>
+                    <hr className={css.hr}/>
                     <p id="category" style={{color: 'white', fontSize: 'small'}}></p>
-                    <hr/>
-                    <div className = "aroundButton">
-                        <button id="vote" type="button" className="btn btn-light voteB"><i className="fas fa-thumbs-up"></i></button>
+                    <hr className={css.hr}/>
+                    <div className = {css.aroundButton}>
+                        <button id="vote" type="button" className={"btn btn-light" +css.voteB}><i className={"fas "+css["fa-thumbs-up"]}></i></button>
                     </div>
                 </div>
                 
-                <div className = "map" style={{ height: '75vh'}}>
+                <div className={css.map} style={{ height: '75vh'}}>
                     <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
                     center={this.props.center}

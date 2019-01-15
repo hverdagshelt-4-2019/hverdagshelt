@@ -1,4 +1,3 @@
-
 import mysql from 'mysql2'
 import fs from 'fs'
 import express from 'express'
@@ -18,6 +17,7 @@ import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
 import nodemailer from 'nodemailer';
 import config from '../config';
+import fetch from "node-fetch";
 
 
 export function create_app(pool) {
@@ -189,6 +189,19 @@ export function create_app(pool) {
         });
     });
 
+    app.get("/communeByCoordinates", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(401);
+            } else {
+                console.log(req.body.pos);
+                getCommuneByLatLong(req.body.pos, data =>{
+                    res.json(data);
+                });
+            }
+        });
+    });
+
 
   /*
     Post-functions
@@ -203,7 +216,7 @@ export function create_app(pool) {
                 subject: 'Registrering',
                 text: 'Du er nå registrert i vårt system.\nBrukernavn: ' + req.body.email + '\nPassord: ' + req.body.password
             };
-            sendEmail(transporter, mailoptions);
+            if(status == 200) sendEmail(transporter, mailoptions);
             res.status(status);
             res.json(data);
         });
@@ -747,3 +760,25 @@ function genRandPass() {
 
 }
 
+function getCommuneByLatLong(latlong, callback) {
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latlong[0] + ',' + latlong[1] + '&key=AIzaSyBs-c8HN1p8wyFwGWYa_dPjCMXiMBULtRw',
+        {
+            method: 'GET',
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        })
+        .then(data => data.json())
+        .then(res => {
+            let kom = res.results.map(e => e.address_components.filter(d => d.types[0] === 'administrative_area_level_2').map(final_res => ({"Kommune" : final_res.short_name.replace(' kommune', '').replace(' Municipality', '')})));
+            let fyl = res.results.map(e => e.address_components.filter(d => d.types[0] === 'administrative_area_level_1').map(final_res => ({"Fylke" : final_res.short_name})));
+
+            if(kom.filter(i=>i.length != 0)[0][0].Kommune === 'Bø' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Herøy' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Nes' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Os' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Sande' || kom.filter(i=>i.length != 0)[0][0].Kommune ===  'Våler') {
+                kom.filter(i=>i.length != 0)[0][0].Kommune = kom.filter(i=>i.length != 0)[0][0].Kommune + '(' + fyl[0][0].Fylke + ')';
+            }
+             callback({kommune: kom.filter(i=>i.length != 0)[0][0].Kommune});
+
+
+        })
+        .catch(err => console.log(latlong[0] + ' ' + latlong[1]))
+}

@@ -1,7 +1,6 @@
 // @flow
 import axios from 'axios';
-axios.interceptors.response.use(response => response.data);
-let url = "http://localhost:3000";
+let url = `http://localhost:3000`;
 
 class User {
     email;
@@ -10,35 +9,32 @@ class User {
 
 
 
-class UserService {
+export default class userService {
 
-    loginUser(
-        email,
-        password
-    ): Promise<void> {
+    static loginUser(
+        email: string,
+        password: string
+    ): Promise<{data: {token: string}}> {
         let user = new User();
         user.email = email;
         user.password = password;
-        console.log("okay2");
         return axios.post(url + '/login', user);
     }
 
-    createUser(email,password): Promise<Object>{
+    static createUser(email: string, password: string): Promise<Object>{
         let user = new User();
         user.email = email;
         user.password = password;
-        return axios.post(url + '/user');
+        return axios.post(url + '/user', user);
     }
 
-   updatePassword(password): Promise<Object>{
-       return axios.post(url + '/userpass', {password});
+   static updatePassword(oldPassword: string, newPassword: string): Promise<Object>{
+       return axios.post(url + '/userpass', {oldPassword, newPassword});
    }
 
-   updateEmail(email): Promise<Object>{
+   static updateEmail(email: string): Promise<Object>{
         return axios.post(url + '/usermail', {email});
    }
 }
-
-export let userService = new UserService;
 
 

@@ -5,7 +5,7 @@
     background-color: #019ad2;
 }*/
 /*footer*/
-footer { width:100%;
+.footer { width:100%;
     background-color:#019ad2;
     min-height:25px; 
     padding:10px 0px 25px 0px ;
@@ -17,7 +17,7 @@ footer { width:100%;
     opacity: 0.8;
 }
 
-footer p { 
+.footer p {
     font-size:13px;
     color:#ffffff; padding-bottom:0px;
     margin-bottom:8px;

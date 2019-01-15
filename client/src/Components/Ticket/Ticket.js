@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { ticketService } from '../../Services/TicketService';
+import { ticketService } from '../../Services/ticketService';
 import { Alert} from '../../widgets';
 import GoogleMapReact from 'google-map-react';
 import ControllableHover from './../../map/controllable_hover.js';
@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
-export class Ticket extends Component<{ match: { params: { id: number } } }> {
+export default class Ticket extends Component<{ match: { params: { id: number } } }> {
   ticket = '';
 
    static propTypes = {

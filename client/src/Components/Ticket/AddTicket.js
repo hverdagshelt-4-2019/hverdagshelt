@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { ticketService } from '../../Services/TicketService';
 import { Navbar_person } from '../Navbars/Navbar_person';
 import GoogleMapReact from 'google-map-react';
 import ControllableHover from './../../map/controllable_hover.js';
@@ -13,7 +12,7 @@ import PropTypes from 'prop-types';
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
-export class AddTicket extends Component {
+export default class AddTicket extends Component {
 title = '';
 description = '';
 static propTypes = {
