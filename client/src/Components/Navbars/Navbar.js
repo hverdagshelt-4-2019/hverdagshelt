@@ -10,7 +10,7 @@ export default class Navbar extends Component {
         ['minesaker', 'Mine saker', 'folder-open'],
         ['minesvar', 'Mine svar', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['begivenheter', 'Liste over saker', 'list'],
+        ['begivenheter', 'Begivenheter', 'list'],
         ['kategorier', 'Kategorier', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
         ['hjelp', 'Hjelp', 'question-circle']
@@ -19,7 +19,7 @@ export default class Navbar extends Component {
         ['minesaker', 'Mine saker', 'folder-open'],
         ['minesvar', 'Mine svar', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['begivenheter', 'Liste over saker', 'list'],
+        ['begivenheter', 'Begivenheter', 'list'],
         ['kategorier', 'Kategorier', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
         ['hjelp', 'Hjelp', 'question-circle']
@@ -28,13 +28,13 @@ export default class Navbar extends Component {
         ['minesaker', 'Mine saker', 'folder-open'],
         ['minesvar', 'Mine svar', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['begivenheter', 'Liste over saker', 'list'],
+        ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
         ['hjelp', 'Hjelp', 'question-circle']
     ];
     
     none_pages = [
-        ['begivenheter', 'Liste over saker', 'list'],
+        ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
         ['hjelp', 'Hjelp', 'question-circle']
     ];
@@ -55,45 +55,28 @@ export default class Navbar extends Component {
 
     render() {
         return (
-            <nav class="navbar navbar-expand-md navbar-light bg-light">
-                <a class="navbar-brand" href="/">HverdagsHelt<img src="Skjermbilde.PNG" width="20" height="17" /></a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                        <span class="navbar-toggler-icon"></span>
+            <nav className="navbar navbar-expand-md navbar-light bg-light">
+                <a className="navbar-brand" href="/">HverdagsHelt<img src="Skjermbilde.PNG" width="20" height="17" /></a>
+                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <span className="navbar-toggler-icon"></span>
                     </button>
-                <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                    <ul class="navbar-nav">
-                        {this.current_list.filter((e,i) => i<5).map( ([destination, text, faname]) => (
-                        <li>
-                            <NavLink to={destination}>
-                                <i class={"fas fa-"+faname}></i>
-                                {text}
-                            </NavLink>
+                <div className="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul className="navbar-nav">
+                    {this.current_list.filter((e,i) => i<10).map( ([destination, text, faname]) => (
+                        <li className="nav-item">                       
+                            <NavLink className="nav-link" to={destination}><i className={"fas fa-"+faname}></i> {text}</NavLink>
                         </li>
-                        ))}  
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                                Mer
-                            </a>
-                            <div class="dropdown-menu">
-                                {this.current_list.filter((e,i) => i>=5).map( ([destination, text, faname]) => (
-                                        <li>
-                                            <NavLink to={destination}>
-                                                <span className={"fas fa-"+faname} /> {text}
-                                            </NavLink>
-                                        </li>
-                                    ))}
-                            </div>
-                        </li>
+                         ))}
                     </ul>
-                <ul class="navbar-nav ml-auto">
-                    <li>
-                        <NavLink to="/minside">
-                            <i class="fas fa-user"></i> Min Side
+                <ul className="navbar-nav ml-auto">
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/minside">
+                            <i className="fas fa-user"></i> Min Side
                         </NavLink>
                     </li>
-                    <li>
-                        <NavLink to="/">
-                            <i class="fas fa-sign-out-alt"></i> {
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/">
+                            <i className="fas fa-sign-out-alt"></i> {
                                         localStorage.getItem('level') === 'none' ? "Logg inn" : "Logg ut"
                                     }
                         </NavLink>
