@@ -89,11 +89,18 @@ export function create_app(pool) {
     app.get("/tickets", (req, res) =>{
         console.log(req.body);
         let communes = [];
-        req.body.communes.map(c => communes.push(c.name));
-        ticketdao.getTicketsByCommune(communes, (status, data) =>{
-            res.status(status);
-            res.json(data);
-        });
+        if(req.body.communes && req.body.communes.length > 0 ) {
+            req.body.communes.forEach(c => communes.push(c.name));
+            ticketdao.getTicketsByCommune(communes, (status, data) => {
+                res.status(status);
+                res.json(data);
+            });
+        } else {
+            ticketdao.getAllTickets((status, data) =>{
+                res.status(status);
+                res.json(data);
+            });
+        }
     });
 
     app.get("/tickets/category", (req, res) =>{

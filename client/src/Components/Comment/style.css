@@ -1,0 +1,22 @@
+.commentBody {
+    background: #fff6e8;
+    box-shadow: 1px 1px #848484;
+    margin-bottom: 10px;
+}
+
+.header {
+    max-width: 1000px;
+    margin: 0px 40px 20px 10px;
+    align-items: center;
+}
+
+.header:nth-child(1) {
+    padding-top: 5px;
+}
+
+.description {
+    max-width: 1000px;
+    margin-left: 10px;
+    align-items: center;
+    padding-bottom: 5px;
+}
