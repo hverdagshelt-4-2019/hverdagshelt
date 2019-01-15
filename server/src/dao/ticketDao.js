@@ -43,8 +43,8 @@ export default class TicketDao extends Dao {
             callback)
     }
 
-    setPicture(id, json, callback) {
-        let params = [json.picture, id];
+    setPicture(id, img, callback) {
+        let params = [img, id];
         super.query("UPDATE ticket SET picture = ? WHERE id = ?", params, callback);
     }
 

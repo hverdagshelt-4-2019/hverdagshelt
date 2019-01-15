@@ -7,20 +7,29 @@ import { NavLink,} from 'react-router-dom';
 export default class uploadImage extends Component {
 
     addImage(id: number){
+        let token = localStorage.getItem('authToken');
+        let Authorization = 'none';
+        if(token){
+            Authorization = "Bearer " + token;
+        }else{
+            console.log("No token");
+            //Alert to user
+        }
         let url = "http://localhost:3000/image/";
         console.log("postImage");
         let file = document.getElementById("InputFile").files[0];
         console.log(file);
+        //axios.post(url + '/image', formData, config());
         let formData = new FormData();
         formData.append("id", id);
         formData.append("uploaded_image", file);
         fetch(url,
             {
                 method: "POST",
-                /*headers:
+                headers:
                     {
-                        "Content-Type": "application/json; charset=utf-8"
-                    },*/
+                        "authorization": Authorization
+                    },
                 body: formData,
             })
         .then(response => response.json())
