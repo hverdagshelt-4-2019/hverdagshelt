@@ -1,9 +1,11 @@
 import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
+import styles from "./style.css";
 
 export class Adder extends Component{
     name = '';
+    warning  = "";
 
     constructor(){
         super();
@@ -23,19 +25,23 @@ export class Adder extends Component{
         return(
             <button className="btn btn-primary btn-block" onClick={this.setAdding}>
                 Legg til kategori
-            </button> 
+            </button>
         )
-        
+
     }
 
     renderAdding(){
         return(
-            <div style={{border: '1px solid lightgrey'}}>
+            <div className={styles.addCategory}>
                 <input className="form-control" placeholder="Kategorinavn" onChange={(evt) => {this.name = evt.target.value}}/>
+                {this.warning !== "" &&
+                <label className="text-danger">{this.warning}</label>
+                }
                 <br/>
                 <button className="btn btn-primary" onClick={this.save}>Lagre</button>
                 {' '}
                 <button className="btn btn-secondary" onClick={this.setButton}>Avbryt</button>
+                <br/>
             </div>
         )
     }
@@ -46,11 +52,23 @@ export class Adder extends Component{
 
     setButton(){
         this.setState({adding:false});
+        this.warning = "";
     }
 
     save(){
+        this.warning = "";
+        if(!this.checkInput()) return;
+        // TODO: Bytt ut alert med noe som ikke er fra før år 2000.
         alert("Du la til kategorien: " + this.name);
         this.props.addFunction(this.name);
         this.setState({adding:false});
+    }
+
+    checkInput() {
+        if(this.name.trim() === ""){
+            this.warning = "You cant add an empty category";
+            return false;
+        }
+        return true;
     }
 }

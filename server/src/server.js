@@ -202,6 +202,13 @@ export function create_app(pool) {
         });
     });
 
+    app.get("/comments/:ticketId", (req, res) =>{
+        commentdao.getAll(req.params.id, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
 
   /*
     Post-functions
@@ -426,7 +433,6 @@ export function create_app(pool) {
         });
     });
 
-
     app.post("/followCommune/:commune", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
@@ -551,6 +557,38 @@ export function create_app(pool) {
                 } else {
                     res.status(403);
                 }
+            }
+        });
+    });
+
+    app.put("/ticketstatus/:status", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                console.log(err);
+            } else {
+                ticketdao.setStatus(req.body, (status, data) =>{
+                    userdao.getOne(authData.user.id, (status, data) =>{
+                        if(status == 200) {
+                            let emailOptions = {
+
+                            }
+                            sendEmail()
+                        }
+                    });
+                });
+            }
+        });
+    });
+
+    app.put("/ticketcomp/:name", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                console.log(err);
+            } else {
+                ticketdao.setStatus(req.body, (status, data) =>{
+                    res.status(status);
+                    res.json(data);
+                });
             }
         });
     });
@@ -761,8 +799,6 @@ export function create_app(pool) {
         //console.log(fileN);
         res.sendFile(path.join(client_public,'images',fileid));//sending the file that is in the foldier with root from the server
     });
-
-
 
     app.get("*", (req,res, next) =>{
         let options = {};
