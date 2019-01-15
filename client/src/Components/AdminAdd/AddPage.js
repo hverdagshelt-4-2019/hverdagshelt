@@ -24,8 +24,7 @@ export default class AddPage extends Component{
     existingEmail = 'skrt';
     communeExist = this.communes[0].name;
     typeExist = '';
-    users =  [];
-
+    users =  [];    
 
     render(){
         return(
@@ -49,7 +48,7 @@ export default class AddPage extends Component{
                                 onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.typeNew = event.target.value)}
                                 required
                                 />
-                                <label className="form-check-label" htmlFor="defaultCheck1">
+                                <label className="form-check-label" htmlFor="type1">
                                     Admin
                                 </label>
                                 <br/>
@@ -61,7 +60,7 @@ export default class AddPage extends Component{
                                     onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.typeNew = event.target.value)}
                                     required
                                 />
-                                <label className="form-check-label" htmlFor="defaultCheck1">
+                                <label className="form-check-label" htmlFor="type2">
                                     Kommunearbeider
                                 </label>
                             </div>
