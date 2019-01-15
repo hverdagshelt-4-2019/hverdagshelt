@@ -28,8 +28,8 @@ export default class TicketList extends Component{
                         <input className="form-control" type="text" placeholder="Søk"/>
                         <br/>
                         <h4>Kategorier</h4>
-                        {this.ticketCategories.map((category) => (
-                            <div>
+                        {this.ticketCategories.map((category, i) => (
+                            <div key={i}>
                                 <input value={category.name} type="checkbox" defaultChecked onChange={(evt) => this.itemChecked(category.name)}  />
                                 <label>{category.name}</label>
                             </div> 
@@ -45,7 +45,7 @@ export default class TicketList extends Component{
                         }}>
                         <br/>
                         <li className="list-group-item" >
-                            {this.tickets.map((ticket) => (
+                            {this.tickets.map((ticket, i) => (
                                 <SingleTicket title = {ticket.title} category = {ticket.category_id} />
                             ))}
                         </li>
@@ -56,21 +56,24 @@ export default class TicketList extends Component{
     }
 
     mounted(){
-        /*
-        //Get relevant communes for the user
+        
+        //Get relevant communes for the user //OK
         communeService.getFollowedCommunes()
-        .then((communes : Commune[]) => this.communes = communes)
+        .then(communes => console.log(communes.data))
+        .then((communes : Commune[]) => this.communes = communes.data)
         .catch((error : Error) => console.log(error));
 
+        
         //Then get all the tickets from these communes
-        ticketService.getAllTickets([{id:'1', name:'Trondheim'}]) //Test values, will be changed to this.communes later.
-        .then((tickets : Ticket[]) => this.tickets = tickets)
+        ticketService.getAllTickets(this.communes)
+        .then(tickets => console.log("Tickets: " + tickets))
+        .then((tickets : Ticket[]) => this.tickets = tickets.data)
         .catch((error : Error) => console.log("Error occured: " + error.message));
-        */
+        
 
         //Get categories for the possibility to filter
         categoryService.getTicketCategories()
-        .then((categories : Category[]) =>  this.ticketCategories = categories)
+        .then((categories : Category[]) =>  this.ticketCategories = categories.data)
         .catch((error : Error) => console.log("Error occured: " + error.message));
 
         //--Get tickets based on commune and checked categories--
