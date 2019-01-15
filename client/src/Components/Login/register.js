@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import userService from '../../Services/userService';
+import { NavLink } from 'react-router-dom';
 
 //Need route to login site.
 export default class Register extends Component {

@@ -38,15 +38,8 @@ ticket = {
                             />
 
                             <h4>Kategori:</h4>
-                            {/*}
-                            <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.category = event.target.value)}>
-            {this.categories.map((categories, i) => (
-              <option value={categories.name} key={i}>
-                {categories.name}
-              </option>
-            ))}
-          </select>
-*/}
+                            
+                            
                             <h4>Bilde:</h4>
                             <label htmlFor="InputFile">Last opp bilde</label>
                             <input type="file" className="form-control-file" id="InputFile"/>
@@ -68,13 +61,7 @@ ticket = {
         </div>
     );
   }
-{/*}
-    mounted() {
-        categoryService.getTicketCategories().then((response) => {
-            console.log(response);
-        });
-    }
-*/}
+
     save() {
         if (!this.ticket.title || !this.ticket.description) return null;
 
