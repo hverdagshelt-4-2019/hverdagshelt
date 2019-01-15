@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { Component } from 'react-simplified';
 import { ticketService } from '../../Services/ticketService';
 import { commentService } from '../../Services/ticketCommentService';
+import Comment from '../Comment/Comment.js';
 
 import Alert from '../../widgets';
 import Navbar_person from '../Navbars/Navbar_person';
@@ -81,6 +82,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
         />
       );
     });
+
     return (
       <div>
         <div className="container">
@@ -88,12 +90,14 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
             <div className="col-lg-8">
               <h1>{this.ticket.title}</h1>
               <p className="lead">
-                Status: Avventer svar <span className="glyphicon glyphicon-time" />
+                Status: {this.ticket.status} <span className="glyphicon glyphicon-time" />
               </p>
 
               <hr />
 
-              <p> {this.sub_date} </p>
+              <p>
+                <b>Registrert:</b> {this.ticket.submitted_time !== undefined && this.ticket.submitted_time.replace('T', ' ').replace('.000Z', '')}
+              </p>
 
               <p>
                 <b>Kommune:</b> {this.ticket.responsible_commune}
@@ -150,8 +154,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               <div className="media mb-4">
                 <div className="media-body">
                     {this.comments.map(e => {
-                        return(<h5>{e.email}</h5>,
-                            <p>{e.description} </p>
+                        return(<Comment email={e.email} description={e.description}/>
                         )
                     })}
                 </div>

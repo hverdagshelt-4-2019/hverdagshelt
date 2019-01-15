@@ -72,16 +72,18 @@ static propTypes = {
         pa.lng = lng;
         this.setState({greatPlaces: [pa]});
    }
-ticketCategories: Category[] = [];
-ticket = {
-    category: '',
-    title: '',
-    description: '',
-    picture: '',
-    lat: '',
-    long:''
-};
-    
+
+
+    ticketCategories: Category[] = [];
+    ticket = {
+        category: '',
+        title: '',
+        description: '',
+        picture: '',
+        lat: '',
+        long:''
+    };
+
   render() {
     return (
         <div>
@@ -103,9 +105,9 @@ ticket = {
                             <h4>Kategori:</h4>
                             
                             <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.category = event.target.value)}>
-                                {this.ticketCategories.map((ticketCategories, i) => (
-                                <option value={ticketCategories.name} key={i}>
-                                    {ticketCategories.name}
+                                {this.ticketCategories.map((categories, i) => (
+                                <option value={categories.name} key={i}>
+                                    {categories.name}
                                 </option>
                                 ))}
                             </select>

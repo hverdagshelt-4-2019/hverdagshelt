@@ -38,8 +38,8 @@ class TicketService {
         return axios.get(url + '/ticket/' + ticketID);
     }
 
-    getAllTickets(): Promise<Ticket[]>{
-        return axios.get(url + '/tickets');
+    getAllTickets(communes): Promise<Ticket[]>{
+        return axios.get(url + '/tickets', communes);
     }
 
     editTicket(ticketID, ticket): Promise<Object>{

@@ -66,7 +66,7 @@ CREATE TABLE ticket(
   picture VARCHAR(128) DEFAULT NULL,
   submitted_time DATETIME NOT NULL,
   finished_time DATETIME DEFAULT NULL,
-  status ENUM('unprocessed', 'in progress', 'done', 'denied') DEFAULT 'unprocessed',
+  status ENUM('Ubehandlet', 'Bearbeides', 'Fullført', 'Nektet') DEFAULT 'Ubehandlet',
   lat DOUBLE DEFAULT NULL,
   lng DOUBLE DEFAULT NULL,
 

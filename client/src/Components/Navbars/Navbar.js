@@ -56,13 +56,13 @@ export default class Navbar extends Component {
     render() {
         return (
             <nav className="navbar navbar-expand-md navbar-light bg-light">
-                <a className="navbar-brand" href="/">HverdagsHelt<img src="Skjermbilde.PNG" width="20" height="17" /></a>
+                <a className="navbar-brand" href="/hjem">HverdagsHelt<img src="Skjermbilde.PNG" width="20" height="17" /></a>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                 <div className="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul className="navbar-nav">
-                    {this.current_list.filter((e,i) => i<10).map( ([destination, text, faname]) => (
+                    {this.current_list.map( ([destination, text, faname]) => (
                         <li className="nav-item">                       
                             <NavLink className="nav-link" to={destination}><i className={"fas fa-"+faname}></i> {text}</NavLink>
                         </li>

@@ -58,8 +58,6 @@ export class Adder extends Component{
     save(){
         this.warning = "";
         if(!this.checkInput()) return;
-        // TODO: Bytt ut alert med noe som ikke er fra før år 2000.
-        alert("Du la til kategorien: " + this.name);
         this.props.addFunction(this.name);
         this.setState({adding:false});
     }
