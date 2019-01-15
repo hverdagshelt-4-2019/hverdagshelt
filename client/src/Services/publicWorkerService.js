@@ -7,9 +7,15 @@ class PublicWorker {
     commune;
 }
 
-let config = {
-    headers: {
-        Authorization: "Bearer " + localStorage.getItem('authToken'),
+function config() {
+    let token = localStorage.getItem('authToken');
+    let Authorization = 'none';
+    if(token)
+        Authorization = "Bearer " + token;
+    return {
+        headers: {
+            Authorization
+        }
     }
 }
 
@@ -18,6 +24,6 @@ export default class PublicWorkerService {
         let publicWorker = new PublicWorker();
         publicWorker.email = email;
         publicWorker.commune = commune;
-        return axios.post(url + '/publicworker', config);
+        return axios.post(url + '/publicworker', config());
     }
 }

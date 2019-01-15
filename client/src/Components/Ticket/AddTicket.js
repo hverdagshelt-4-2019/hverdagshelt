@@ -1,7 +1,7 @@
 //@flow
 
 import * as React from 'react';
-import { Component,} from 'react-simplified';
+import { Component } from 'react-simplified';
 import ticketService from '../../Services/ticketService';
 import categoryService from '../../Services/categoryService';
 import GoogleMapReact from 'google-map-react';
