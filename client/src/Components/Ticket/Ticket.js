@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { Component } from 'react-simplified';
 import { ticketService } from '../../Services/ticketService';
 import { commentService } from '../../Services/ticketCommentService';
+import Comment from '../Comment/Comment.js';
 
 import Alert from '../../widgets';
 import Navbar_person from '../Navbars/Navbar_person';
@@ -150,8 +151,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               <div className="media mb-4">
                 <div className="media-body">
                     {this.comments.map(e => {
-                        return(<h5>{e.email}</h5>,
-                            <p>{e.description} </p>
+                        return(<Comment email={e.email} description={e.description}/>
                         )
                     })}
                 </div>
