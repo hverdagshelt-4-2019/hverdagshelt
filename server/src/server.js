@@ -350,16 +350,16 @@ export function create_app(pool) {
         });
     });
 
-    app.post("/comment", verifyToken, (req, res) =>{
+    app.post("/comment/:id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 res.sendStatus(401);
             } else {
                 let newComment = {
-                    "ticket_id": req.body.ticketid,
+                    "ticket_id": req.params.id,
                     "description": req.body.description,
                     "submitter_id": authData.user.id
-                }
+                };
                 commentdao.addComment(newComment, (status, data) =>{
                     console.log('data:' + data);
                     res.status(status);
