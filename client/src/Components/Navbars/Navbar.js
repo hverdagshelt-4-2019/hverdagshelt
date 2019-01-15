@@ -53,6 +53,10 @@ export default class Navbar extends Component {
         console.log(this.current_list);
     }
 
+    logout() {
+        window.localStorage.clear();    // Deletes your token. And everything else...
+    }
+
     render() {
         return (
             <nav className={"navbar navbar-light bg-light "+css.Navbar}>
