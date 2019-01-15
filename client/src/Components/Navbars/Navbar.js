@@ -24,6 +24,7 @@ export default class Navbar extends Component {
         ['leggtilsak', 'Legg til sak', 'glyphicon-plus'],
         ['begivenheter', 'Liste over saker', 'glyphicon-list-alt'],
         ['kategorier', 'Kategorier', 'glyphicon-list-alt'],
+        ['statistikk', 'Statistikk', 'glyphicon-stats'],
         ['hjelp', 'Hjelp', 'glyphicon-question-sign']
     ];
     user_pages = [
@@ -32,10 +33,13 @@ export default class Navbar extends Component {
         ['minesvar', 'Mine svar', 'glyphicon-folder-open'],
         ['leggtilsak', 'Legg til sak', 'glyphicon-plus'],
         ['begivenheter', 'Liste over saker', 'glyphicon-list-alt'],
+        ['statistikk', 'Statistikk', 'glyphicon-stats'],
         ['hjelp', 'Hjelp', 'glyphicon-question-sign']
     ];
     none_pages = [
         ['Hjem', 'Hjem', 'glyphicon-home'],
+        ['begivenheter', 'Liste over saker', 'glyphicon-list-alt'],
+        ['statistikk', 'Statistikk', 'glyphicon-stats'],
         ['hjelp', 'Hjelp', 'glyphicon-question-sign']
     ];
     current_list = [];
@@ -65,7 +69,7 @@ export default class Navbar extends Component {
                     </div>
                     <div className="collapse navbar-collapse" id="myNavbar">
                         <ul className={"nav navbar-nav "+css.nav}>
-                            {this.current_list.filter((e,i) => i<4).map( ([destination, text, glyphname]) => (
+                            {this.current_list.filter((e,i) => i<5).map( ([destination, text, glyphname]) => (
                             <li>
                                 <NavLink to={destination}>
                                     <span className={"glyphicon "+glyphname} /> {text}
