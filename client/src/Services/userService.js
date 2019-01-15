@@ -22,7 +22,7 @@ function config() {
 
 export default class userService {
 
-    static getLevel() : Promise<{data: {level: string}}> {
+    static getLevel() : Promise<{data: {level: string, commune: string}}> {
         return axios.get(url + '/level', config())
     }
     static loginUser(

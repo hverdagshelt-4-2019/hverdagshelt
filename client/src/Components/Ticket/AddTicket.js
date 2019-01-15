@@ -161,6 +161,7 @@ ticket = {
             .then(() => {
             if (this.ticket.title && this.ticket.description && this.ticket.category) history.push('/home');
             })
+
             
     }
 }

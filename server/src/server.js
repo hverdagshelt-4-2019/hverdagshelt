@@ -55,14 +55,18 @@ export function create_app(pool) {
     app.get('/level', verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData) =>{
             let level = 'none';
+            let commune = 'false';
             if(!err){
                 if(authData.user.isadmin) level = 'admin';
-                else if (authData.user.publicworkercommune) level = 'publicworker';
+                else if (authData.user.publicworkercommune){
+                    level = 'publicworker';
+                    commune = authData.user.publicworkercommune;
+                }
                 else level = 'user';
             }
             console.log(authData);
             res.status(200);
-            res.json({level})
+            res.json({level, commune})
         });
     });
 
@@ -84,7 +88,9 @@ export function create_app(pool) {
 
     app.get("/tickets", (req, res) =>{
         console.log(req.body);
-        ticketdao.getTicketsByCommune(req.body.communes, (status, data) =>{
+        let communes = [];
+        req.body.communes.map(c => communes.push(c.name));
+        ticketdao.getTicketsByCommune(communes, (status, data) =>{
             res.status(status);
             res.json(data);
         });
@@ -259,7 +265,8 @@ export function create_app(pool) {
                     res.status(status);
                     res.json({
                         token,
-                        level
+                        level,
+                        commune: user.publicworkercommune
                     });
                 });
             } else {
