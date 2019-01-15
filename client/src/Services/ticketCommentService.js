@@ -3,7 +3,7 @@ let url = "http://localhost:3000";
 
 class Comment {
    description;
-
+   email
 }
 
 let config = {
@@ -14,9 +14,9 @@ let config = {
 
 class CommentService {
 
-    postComment(ticketID, comment): Promise<Object> {
-        console.log(config);
-        return axios.post(url + '/comment/' + ticketID, comment, config);
+    postComment(ticketID, description): Promise<Object> {
+        console.log({description});
+        return axios.post(url + '/comment/' + ticketID, {description}, config);
     }
 
     getAllComments(ticketID): Promise<Comment[]>{

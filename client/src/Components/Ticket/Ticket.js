@@ -21,6 +21,10 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
   sub_date = null;
   comments = [];
 
+  comment = {
+      description: ''
+  };
+
   static propTypes = {
     zoom: PropTypes.number, // @controllable
     hoverKey: PropTypes.string, // @controllable
@@ -132,9 +136,9 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 <br />
                 <h5 className="card-header">Kommenter:</h5>
                 <div className="card-body">
-                  <form>
+                  <form onSubmit={this.postComment}>
                     <div className="form-group">
-                      <textarea className="form-control" rows="3" />
+                      <textarea className="form-control" rows="3" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.comment.description = event.target.value)} />
                     </div>
                     <button type="submit" className="btn btn-primary">
                       Send
@@ -145,7 +149,11 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
 
               <div className="media mb-4">
                 <div className="media-body">
-
+                    {this.comments.map(e => {
+                        return(<h5>{e.email}</h5>,
+                            <p>{e.description} </p>
+                        )
+                    })}
                 </div>
               </div>
               <div style={{ height: '100px' }} />
@@ -168,12 +176,17 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
       })
       .catch((error: Error) => Alert.danger(error.message));
     commentService.getAllComments(this.props.match.params.id)
-        .then(comments => {this.comments = comments.data;})
+        .then(comments => {this.comments = comments.data; this.forceUpdate()})
         .catch((error: Error) => Alert.danger(error.message));
   }
 
-  postComment(){
+  postComment(e){
+      e.preventDefault();
+      if(!this.comment.description) return null;
+      console.log('posting');
 
+      commentService.postComment(this.props.match.params.id, this.comment.description);
+      window.location.reload();
   }
 
   getImage(i: String) {
