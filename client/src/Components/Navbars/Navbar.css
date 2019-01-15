@@ -1,0 +1,21 @@
+.Navbar {
+    max-height: min-content;
+}
+
+.icon-bar {
+    background-color: dodgerblue;
+}
+
+.title{
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 2em;
+    padding-top: 1.5em;
+}
+
+.nav{
+    flex-wrap: nowrap;
+    flex-direction: row;
+    font-size: 180%;
+    justify-content: space-between;
+}
