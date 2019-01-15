@@ -8,9 +8,23 @@ class User {
 }
 
 
+function config() {
+    let token = localStorage.getItem('authToken');
+    let Authorization = 'none';
+    if(token)
+        Authorization = "Bearer " + token;
+    return {
+        headers: {
+            Authorization
+        }
+    }
+}
 
 export default class userService {
 
+    static getLevel() : Promise<{data: {level: string, commune: string}}> {
+        return axios.get(url + '/level', config())
+    }
     static loginUser(
         email: string,
         password: string
@@ -36,7 +50,7 @@ export default class userService {
         return axios.post(url + '/usermail', {email});
    }
 
-   getUsers() : Promise<User[]>{
+   static getUsers() : Promise<User[]>{
        return axios.get(url + '/users');
    }
 }

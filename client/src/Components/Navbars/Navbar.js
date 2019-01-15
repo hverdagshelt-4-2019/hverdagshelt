@@ -21,6 +21,7 @@ export default class Navbar extends Component {
         ['leggtilsak', 'Legg til sak', 'plus'],
         ['begivenheter', 'Liste over saker', 'list'],
         ['kategorier', 'Kategorier', 'list'],
+        ['statistikk', 'Statistikk', 'chart-bar'],
         ['hjelp', 'Hjelp', 'question-circle']
     ];
     user_pages = [
@@ -28,12 +29,14 @@ export default class Navbar extends Component {
         ['minesvar', 'Mine svar', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
         ['begivenheter', 'Liste over saker', 'list'],
-        ['kategorier', 'Kategorier', 'list'],
+        ['statistikk', 'Statistikk', 'chart-bar'],
         ['hjelp', 'Hjelp', 'question-circle']
     ];
+    
     none_pages = [
-        ['Hjem', 'Hjem', 'glyphicon-home'],
-        ['hjelp', 'Hjelp', 'glyphicon-question-sign']
+        ['begivenheter', 'Liste over saker', 'list'],
+        ['statistikk', 'Statistikk', 'chart-bar'],
+        ['hjelp', 'Hjelp', 'question-circle']
     ];
     current_list = [];
 
@@ -44,6 +47,10 @@ export default class Navbar extends Component {
         else if (level === 'user') this.current_list = this.user_pages;
         else this.current_list = this.none_pages;
         console.log(this.current_list);
+    }
+
+    logout() {
+        window.localStorage.clear();    // Deletes your token. And everything else...
     }
 
     render() {
@@ -86,7 +93,9 @@ export default class Navbar extends Component {
                     </li>
                     <li>
                         <NavLink to="/">
-                            <i class="fas fa-sign-out-alt"></i> Log ut
+                            <i class="fas fa-sign-out-alt"></i> {
+                                        localStorage.getItem('level') === 'none' ? "Logg inn" : "Logg ut"
+                                    }
                         </NavLink>
                     </li>
                     

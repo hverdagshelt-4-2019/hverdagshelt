@@ -1,18 +1,9 @@
 import axios from 'axios';
 let url = "http://localhost:3000";
 
-//TODO: Dette er feil klasse
+class Comment {
+   description;
 
-class Ticket {
-    id;
-    submitter_id;
-    commune;
-    category;
-    title;
-    description;
-    picture;
-    lat;
-    long;
 }
 
 let config = {
@@ -21,28 +12,21 @@ let config = {
     }
 }
 
-class TicketService {
+class CommentService {
 
-    postTicket(ticket): Promise<Object> {
-        console.log(config)
-        return axios.post(url + '/ticket', ticket, config);
+    postComment(ticketID, comment): Promise<Object> {
+        console.log(config);
+        return axios.post(url + '/comment/' + ticketID, comment, config);
     }
 
-    getTicket(ticketID): Promise<Ticket>{
-        return axios.get(url + '/ticket/' + ticketID);
+    getAllComments(ticketID): Promise<Comment[]>{
+        return axios.get(url + '/comments/' + ticketID);
     }
 
-    getAllTickets(): Promise<Ticket[]>{
-        return axios.get(url + '/tickets');
-    }
 
-    editTicket(ticketID, ticket): Promise<Object> {
-        return axios.put(url + '/ticket/' + ticketID, ticket, config);
-    }
-
-    deleteTicket(ticketID): Promise<Object> {
+    /*deleteComment(ticketID): Promise<Object> {
         return axios.delete(url + '/ticket/' + ticketID, config);
-    }
+    }*/
 }
 
-export let ticketService = new TicketService;
+export let commentService = new CommentService;
