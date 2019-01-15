@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { Component } from 'react-simplified';
 import { ticketService } from '../../Services/ticketService';
 import { commentService } from '../../Services/ticketCommentService';
+import Comment from '../Comment/Comment.js';
 
 import Alert from '../../widgets';
 import Navbar_person from '../Navbars/Navbar_person';
@@ -20,6 +21,10 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
   ticket = '';
   sub_date = null;
   comments = [];
+
+  comment = {
+      description: ''
+  };
 
   static propTypes = {
     zoom: PropTypes.number, // @controllable
@@ -77,6 +82,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
         />
       );
     });
+
     return (
       <div>
         <div className="container">
@@ -84,12 +90,14 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
             <div className="col-lg-8">
               <h1>{this.ticket.title}</h1>
               <p className="lead">
-                Status: Avventer svar <span className="glyphicon glyphicon-time" />
+                Status: {this.ticket.status} <span className="glyphicon glyphicon-time" />
               </p>
 
               <hr />
 
-              <p> {this.sub_date} </p>
+              <p>
+                <b>Registrert:</b> {this.ticket.submitted_time !== undefined && this.ticket.submitted_time.replace('T', ' ').replace('.000Z', '')}
+              </p>
 
               <p>
                 <b>Kommune:</b> {this.ticket.responsible_commune}
@@ -105,7 +113,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
 
               <hr />
 
-              <img id="imageElement" alt="" />
+              <img id="imageElement" alt="" src={this.ticket.picture} />
 
               <hr />
 
@@ -132,9 +140,9 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 <br />
                 <h5 className="card-header">Kommenter:</h5>
                 <div className="card-body">
-                  <form>
+                  <form onSubmit={this.postComment}>
                     <div className="form-group">
-                      <textarea className="form-control" rows="3" />
+                      <textarea className="form-control" rows="3" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.comment.description = event.target.value)} />
                     </div>
                     <button type="submit" className="btn btn-primary">
                       Send
@@ -145,7 +153,10 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
 
               <div className="media mb-4">
                 <div className="media-body">
-
+                    {this.comments.map(e => {
+                        return(<Comment email={e.email} description={e.description}/>
+                        )
+                    })}
                 </div>
               </div>
               <div style={{ height: '100px' }} />
@@ -161,19 +172,22 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
     ticketService
       .getTicket(this.props.match.params.id)
       .then(ticket => {
-        this.ticket = ticket.data[0];
-        this.sub_date =
-          this.ticket.submitted_time.split('T', 1)[0] + ' ' + this.ticket.submitted_time.split('T')[1].split('.', 1);
+          this.ticket = ticket.data[0];
         console.log(this.props.match.params.id)
       })
       .catch((error: Error) => Alert.danger(error.message));
     commentService.getAllComments(this.props.match.params.id)
-        .then(comments => {this.comments = comments.data;})
+        .then(comments => {this.comments = comments.data; this.forceUpdate()})
         .catch((error: Error) => Alert.danger(error.message));
   }
 
-  postComment(){
+  postComment(e){
+      e.preventDefault();
+      if(!this.comment.description) return null;
+      console.log('posting');
 
+      commentService.postComment(this.props.match.params.id, this.comment.description);
+      window.location.reload();
   }
 
   getImage(i: String) {

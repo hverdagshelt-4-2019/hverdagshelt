@@ -40,6 +40,11 @@ static propTypes = {
 
     constructor(props) {
         super(props);
+        this.state = {
+            greatPlaces:  [
+            {id: 'Temp ex', lat: 63.42, lng: 10.38}
+            ]
+        };
     }
 
      _onChange = (center, zoom /* , bounds, marginBounds */) => {
@@ -62,7 +67,10 @@ static propTypes = {
 
    _onClick = ({x, y, lat, lng, event}) => {
        console.log(lat, lng);
-        this.props.greatPlaces[0].lat=lat;
+        let pa = this.state.greatPlaces[0];
+        pa.lat = lat;
+        pa.lng = lng;
+        this.setState({greatPlaces: [pa]});
    }
 
 
@@ -77,20 +85,6 @@ static propTypes = {
     };
 
   render() {
-    const places = this.props.greatPlaces
-    .map(place => {
-        const {id, ...coords} = place;
-
-        return (
-            <ControllableHover
-            key={id}
-            {...coords}
-            text={id}
-            // use your hover state (from store, react-controllables etc...)
-            hover={this.props.hoverKey === id} />
-        );
-    });  
-
     return (
         <div>
                 <div className="container">
@@ -133,7 +127,11 @@ static propTypes = {
                                     zoom={this.props.zoom}
                                     onClick={this._onClick} 
                                     >
-                                    {places}
+                                    <ControllableHover
+                                        key={this.props.greatPlaces[0].id}
+                                        {...this.state.greatPlaces[0]}
+                                        text={this.props.greatPlaces[0].id}
+                                        hover={this.props.hoverKey === this.props.greatPlaces[0].id} />
                                 </GoogleMapReact>
                             </div>
                             <div style={{height: '10px'}}></div>
@@ -165,6 +163,7 @@ static propTypes = {
             .then(() => {
             if (this.ticket.title && this.ticket.description && this.ticket.category) history.push('/home');
             })
+
             
     }
 }

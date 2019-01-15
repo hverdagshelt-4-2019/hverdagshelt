@@ -3,12 +3,13 @@
 import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import {NavLink} from "react-router-dom"
+import {NavLink, Redirect} from "react-router-dom"
 import userService from '../../Services/userService';
 
 export default class Login extends Component {
     email: string;
     password: string;
+    redirect: boolean = false;
 
     constructor(props: any) {
         super(props);
@@ -22,6 +23,7 @@ export default class Login extends Component {
                 if(result !== null) {
                     localStorage.setItem('authToken', result.data.token);
                     localStorage.setItem('level', result.data.level);
+                    this.redirect = true;
                 }
             });
         }
@@ -36,6 +38,9 @@ export default class Login extends Component {
     }
 
     render() {
+
+        if(this.redirect) return <Redirect from='/' to='/Hjem'/>
+        else
         return (
             <div className="container" align="center">
                 <div className="container-fluid center-align" style={{width: '40%'}}>

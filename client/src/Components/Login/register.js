@@ -22,9 +22,9 @@ export default class Register extends Component {
                     <label className="text-success">{this.success}</label>
                     <form>
                         <div className="form-group">
-                            <input className="form-control" placeholder="Email" onChange={(evt) => {this.email = evt.target.value}}></input>
-                            <input type="password" className="form-control" placeholder="Passord" onChange={(evt) => {this.password1 = evt.target.value}}></input>
-                            <input type="password" className="form-control" placeholder="Gjenta passord" onChange={(evt) => {this.password2 = evt.target.value}}></input>
+                            <input type="email" autoComplete="email" className="form-control" placeholder="Email" onChange={(evt) => {this.email = evt.target.value}}></input>
+                            <input type="password" autoComplete="new-password" className="form-control" placeholder="Passord" onChange={(evt) => {this.password1 = evt.target.value}}></input>
+                            <input type="password" autoComplete="new-password" className="form-control" placeholder="Gjenta passord" onChange={(evt) => {this.password2 = evt.target.value}}></input>
                         </div>
                     </form>
                     <button className="btn btn-primary" onClick={this.register}>Opprett</button>
