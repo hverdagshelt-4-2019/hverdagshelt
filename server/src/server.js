@@ -234,6 +234,16 @@ export function create_app(pool) {
         });
     });
 
+    app.get("/tokenValid", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                res.sendStatus(418);
+            } else {
+                res.sendStatus(200);
+            }
+        });
+    });
+
 
   /*
     Post-functions
