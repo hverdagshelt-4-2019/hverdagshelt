@@ -43,7 +43,7 @@ export default class TicketList extends Component{
                     <div className="col-md-8" style={{
                         border: "2px solid lightblue",
                         }}>
-                        
+                        <br/>
                         <li className="list-group-item" >
                             {this.tickets.map((ticket) => (
                                 <SingleTicket title = {ticket.title} category = {ticket.category_id} />
@@ -66,12 +66,12 @@ export default class TicketList extends Component{
         ticketService.getAllTickets([{id:'1', name:'Trondheim'}]) //Test values, will be changed to this.communes later.
         .then((tickets : Ticket[]) => this.tickets = tickets)
         .catch((error : Error) => console.log("Error occured: " + error.message));
+        */
 
         //Get categories for the possibility to filter
         categoryService.getTicketCategories()
         .then((categories : Category[]) =>  this.ticketCategories = categories)
         .catch((error : Error) => console.log("Error occured: " + error.message));
-        */
 
         //--Get tickets based on commune and checked categories--
         //ticketService.getTicketsByCommuneAndCategory(this.communeId, this.categories)
