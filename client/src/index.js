@@ -26,6 +26,7 @@ const root = document.getElementById('root');
 if (root) {
     userService.getLevel().then(res => {
         localStorage.setItem('level', res.data.level);
+        localStorage.setItem('commune', res.data.commune);
         ReactDOM.render(
             <BrowserRouter>
                 <div>
@@ -33,10 +34,10 @@ if (root) {
                     <Route exact path="/uploadImage" component={UploadImage}/>
                     <Route exact path="/map" component={SimpleMap}/>
                     <Route exact path="/" component={Login}/>
-                    <Route path="/registrerdeg" component={Register}/>
+                    {res.data.level === 'none' && <Route path="/registrerdeg" component={Register}/>}
                     <Route path="/sakliste" component={TicketList}/>
                     <Route path="/leggtil" component={AddPage}/>
-                    <Route path="/kategorier" component={CategoryCreation}/>
+                    {res.data.level === 'admin' && <Route path="/kategorier" component={CategoryCreation}/>}
                     <Route path="/sak/:id" component={Ticket}/>
                     <Route path="/leggtilsak" component={AddTicket}/>
                     <Route path="/endresak/:id" component={EditTicket}/>
