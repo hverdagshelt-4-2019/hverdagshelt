@@ -15,7 +15,7 @@ import EditTicket from './Components/Ticket/EditTicket';
 import TicketList from './Components/TicketList/TicketList.js';
 import CategoryCreation from './Components/CategoryCreation/CategoryCreation.js';
 import AddPage from './Components/AdminAdd/AddPage.js';
-import NavbarPerson from './Components/Navbars/Navbar_person'
+import Navbar from './Components/Navbars/Navbar'
 import Footer from './Components/Footer/footer'
 
 
@@ -24,7 +24,7 @@ if (root)
   ReactDOM.render(
     <BrowserRouter>
       <div>
-        <Route path="/" component={NavbarPerson} />
+        <Route path="/" component={Navbar} />
         <Route exact path="/uploadImage" component={UploadImage} />
         <Route exact path="/map" component={SimpleMap} />
         <Route exact path="/" component={Login} />
