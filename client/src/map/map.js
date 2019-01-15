@@ -69,6 +69,9 @@ export default class SimpleMap extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            cId: -1,
+        };
     }
 
     componentWillMount(){
@@ -104,6 +107,7 @@ export default class SimpleMap extends Component {
         vote.innerHTML = localTicket.votes;
         vote.appendChild(para);
 
+        this.setState({cId: localTicket.id});
     }
 
     _onChildMouseEnter = (key /*, childProps */) => {
@@ -137,10 +141,11 @@ export default class SimpleMap extends Component {
             );
         });
         return (
-            <div className={css.aroundMap}>
+            <div id="aroundMap" className={css.aroundMap}>
                 <div style={{height: '10px'}}></div>
                 <button type="button" className={"btn btn-primary "+css.btnCase}>Legg til sak</button>
                 <div className = {css.leftSide} style={{height: '75vh'}}>
+                    <NavLink id="goToCase" className="nav-link" to={"/sak/"+this.state.cId}>
                     <img id="picture" src="logo.png" className={"img-fluid "+css.ticketImg} alt="Responsive image"/>
                     <br/>
                     <br/>
@@ -148,6 +153,7 @@ export default class SimpleMap extends Component {
                     <hr className={css.hr}/>
                     <p id="category" style={{color: 'white', fontSize: 'small', marginLeft: '10px', marginRight: '10px'}}></p>
                     <hr className={css.hr}/>
+                    </NavLink>
                     <div className = {css.aroundButton}>
                         <button id="vote" type="button" className={"btn btn-light " + css.voteB}><i className={"fas "+css["fa-thumbs-up"]}></i></button>
                     </div>

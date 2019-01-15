@@ -69,6 +69,10 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
   };
 
   render() {
+          const ctr = {
+      lat: this.ticket.lat,
+      lng: this.ticket.lng
+      };
     const places = this.props.greatPlaces.map(place => {
       const { id, ...coords } = place;
 
@@ -123,7 +127,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               <div className="map" style={{ height: '300px', width: '100%' }}>
                 <GoogleMapReact
                   bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
-                  center={this.props.center}
+                  center={ctr}
                   zoom={this.props.zoom}
                   hoverDistance={K_SIZE / 2}
                   onBoundsChange={this._onBoundsChange}
@@ -178,8 +182,11 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
         console.log(this.props.match.params.id);
         this.props.greatPlaces[0].lat=this.ticket.lat;
         this.props.greatPlaces[0].lng=this.ticket.lng;
+        console.log("lat: " + this.ticket.lat + ". lng: " + this.ticket.lng)
         console.log(this.ticket.picture)
         this.getImage(this.ticket.picture)//xss 
+        this.state.center.lat=this.ticket.lat;
+        this.state.center.lng=this.ticket.lng;
       })
       .catch((error: Error) => Alert.danger(error.message));
     commentService.getAllComments(this.props.match.params.id)
