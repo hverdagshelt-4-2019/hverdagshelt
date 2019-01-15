@@ -624,6 +624,42 @@ export function create_app(pool) {
             }
         })
     });
+
+    app.delete("/ticketCategory/:name", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                console.log(err);
+                res.sendStatus(401);
+            } else {
+                if(authData.user.isadmin) {
+                    categorydao.deleteOneTicket(req.params.name, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        });
+    });
+
+    app.delete("/happeningCategory/:name", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                console.log(err);
+                res.sendStatus(401);
+            } else {
+                if(authData.user.isadmin) {
+                    categorydao.deleteOneEvent(req.params.name, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
+            }
+        });
+    });
     
 // Verify token
 // Verify token

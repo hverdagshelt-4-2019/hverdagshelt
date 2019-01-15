@@ -150,6 +150,8 @@ ticket = {
         </div>
     );
   }
+
+/*{}
     save() {
         /*
     mounted() {
@@ -157,7 +159,8 @@ ticket = {
             console.log(response);
         });
     }
-*/
+}*/
+    save() {
         if (!this.ticket.title || !this.ticket.description) return null;
 
         ticketService
