@@ -74,6 +74,10 @@ export default class Register extends Component {
             this.warning = "Emailen din er for lang.";
             return false;
         }
+        else if (!this.email.includes("@")){
+            this.warning = "Emailen din er ikke gyldig.";
+            return false;
+        }
         return true;
     }
 }
