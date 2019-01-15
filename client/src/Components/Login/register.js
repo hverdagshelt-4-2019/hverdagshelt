@@ -1,15 +1,16 @@
 import ReactDOM from 'react-dom';
 import * as React from 'react';
-import { Component } from 'react-simplified';
+import { Component,} from 'react-simplified';
 import userService from '../../Services/userService';
-import { NavLink } from 'react-router-dom';
+import { NavLink,} from 'react-router-dom';
 
 //Need route to login site.
 export default class Register extends Component {
-  email = null;
-  password1 = null;
-  password2 = null;
-  warning = null;
+  email = "";
+  password1 = "";
+  password2 = "";
+  warning = "";
+  success = "";
 
     render(){
         return(
@@ -18,6 +19,7 @@ export default class Register extends Component {
                     <br/>
                     <h2>Registrer deg</h2>
                     <br/>
+                    <label className="text-success">{this.success}</label>
                     <form>
                         <div className="form-group">
                             <input className="form-control" placeholder="Email" onChange={(evt) => {this.email = evt.target.value}}></input>
@@ -28,26 +30,33 @@ export default class Register extends Component {
                     <button className="btn btn-primary" onClick={this.register}>Opprett</button>
                     <br/>
                     <br/>
-                    {this.warning &&
-                        <div className="test">
-                            <label>{this.warning}</label>
-                        </div>
-                    }
+                    <label className="text-danger">{this.warning}</label>
                     <br/>
                     <label>Har du allerede en bruker?</label>{' '}
                     <NavLink exact to={'/'}>Logg inn her!</NavLink>
                 </div>
+                <div style={{height: '200px'}}></div>
             </div>
         )
     }
 
     register(){
-        if(this.password1 == this.password2) {
-            if(!this.checkFields()) return;
-            console.log("Registrerer...");
+        this.success = null;
+        this.warning = null;
+        if(!this.checkFields()) return;
+        if(this.password1 === this.password2) {
             userService.createUser(this.email, this.password1)
-                .then(data => console.log(data))//OK
-                .catch(err => console.log(err));
+                .then(res => {
+                    if(res.status === 200) this.success = "Ny bruker er registrert!";
+                    else {
+                        this.warning = "Kunne ikke legge til bruker fordi grunner.";
+                    }
+                })//OK
+                .catch(err => {
+                    // TODO: Skille mellom forskjellige server feil. F.eks. forskjellen mellom at emailen er tatt eller at brukeren har et ugyldig tegn i mailen sin (emojis eller punktum)g
+                    console.log(err)
+                    this.warning = "Intern server error. Ikke gi oss mindre enn perfekt data."
+                });
         }
         else{
             this.warning = "Passordene du skrev inn stemmer ikke overens.";
@@ -55,8 +64,20 @@ export default class Register extends Component {
     }
 
     checkFields(){
-        if(this.email === null || this.password1 === null || this.password2 === null) {
+        if(this.email.trim() === "" || this.password1.trim() === "" || this.password2.trim() === "") {
             this.warning = "Du må fylle ut alle feltene for å opprette en bruker";
+            return false;
+        }
+        else if(this.password1.length < 8 || this.password2.length < 8){
+            this.warning = "Passordet ditt er ikke langt nok";
+            return false;
+        }
+        else if(this.email.length > 254){
+            this.warning = "Emailen din er for lang.";
+            return false;
+        }
+        else if (!this.email.includes("@")){
+            this.warning = "Emailen din er ikke gyldig.";
             return false;
         }
         return true;

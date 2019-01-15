@@ -6,7 +6,7 @@ import { Component } from 'react-simplified';
 import { HashRouter, Route, NavLink } from 'react-router-dom';
 
 export class SpecificCategory extends Component{
-    id = this.props.theCategory.id;;
+    name = this.props.theCategory.name;
 
     render(){
         return(
@@ -20,7 +20,7 @@ export class SpecificCategory extends Component{
     }
 
     delete(){
-        console.log("Sletter kategori med id " + this.id);
-        this.props.deleteFunc(this.id);
+        console.log("Sletter kategori med name " + this.props.theCategory.name);
+        this.props.deleteFunc(this.props.theCategory.name);
     }
 }
