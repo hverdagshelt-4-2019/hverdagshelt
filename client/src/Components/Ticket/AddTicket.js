@@ -3,12 +3,12 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { ticketService } from '../../Services/ticketService';
-import { categoryService } from '../../Services/categoryService';
+import  categoryService  from '../../Services/categoryService';
 import { Navbar_person } from '../Navbars/Navbar_person';
 import { Alert } from '../../widgets';
 
 export default class AddTicket extends Component {
-categories = [];
+ticketCategories: Category[] = [];
 ticket = {
     category: '',
     title: '',
@@ -21,7 +21,6 @@ ticket = {
   render() {
     return (
         <div>
-            <Navbar_person />
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-8">
@@ -38,15 +37,16 @@ ticket = {
                             />
 
                             <h4>Kategori:</h4>
-                            {/*}
+                            
                             <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.category = event.target.value)}>
-            {this.categories.map((categories, i) => (
-              <option value={categories.name} key={i}>
-                {categories.name}
-              </option>
-            ))}
-          </select>
-*/}
+                                {this.ticketCategories.map((ticketCategories, i) => (
+                                <option value={ticketCategories.name} key={i}>
+                                    {ticketCategories.name}
+                                </option>
+                                ))}
+                            </select>
+
+
                             <h4>Bilde:</h4>
                             <label htmlFor="InputFile">Last opp bilde</label>
                             <input type="file" className="form-control-file" id="InputFile"/>
@@ -62,26 +62,28 @@ ticket = {
 
                             <br />
                             <br />
-                    </div>
+                    </div> 
                 </div>
             </div>
         </div>
     );
   }
-{/*}
+
     mounted() {
-        categoryService.getTicketCategories().then((response) => {
-            console.log(response);
-        });
+        categoryService.getTicketCategories()
+        .then((categories: Array<Category>) => this.ticketCategories = categories.data)
+        .catch((error : Error) => console.log(error.message));
+        
     }
-*/}
+
     save() {
-        if (!this.ticket.title || !this.ticket.description) return null;
+        if (!this.ticket.title || !this.ticket.description || !this.ticket.category) return null;
 
         ticketService
             .postTicket(ticket)
             .then(() => {
-            if (this.ticket.title && this.ticket.description) history.push('/home');
+            if (this.ticket.title && this.ticket.description && this.ticket.category) history.push('/home');
             })
+            
     }
 }
