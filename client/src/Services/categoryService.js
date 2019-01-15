@@ -28,15 +28,11 @@ export default class CategoryService{
     }
 
     static deleteTicketCategory(name: string) : Promise<Object>{
-        let category = new Category;
-        category.name = name;
-        return axios.delete(url + "/ticketCategory", category);
+        return axios.delete(url + "/ticketCategory/" + name, config());
     }
 
     static deleteEventCategory(name: string) : Promise<Object>{
-        let category = new Category;
-        category.name = name;
-        return axios.delete(url + "/happeningCategory", category, config());
+        return axios.delete(url + "/happeningCategory/" + name, config());
     }
 
     static addTicketCategory(name: string) : Promise<void>{

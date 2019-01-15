@@ -621,14 +621,14 @@ export function create_app(pool) {
         })
     });
 
-    app.delete("/ticketCategory", (req, res) =>{
+    app.delete("/ticketCategory/:name", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 console.log(err);
                 res.sendStatus(401);
             } else {
                 if(authData.user.isadmin) {
-                    categorydao.deleteOneTicket(req.body.name, (status, data) =>{
+                    categorydao.deleteOneTicket(req.params.name, (status, data) =>{
                         res.status(status);
                         res.json(data);
                     });
@@ -639,14 +639,14 @@ export function create_app(pool) {
         });
     });
 
-    app.delete("/happeningCategory", verifyToken, (req, res) =>{
+    app.delete("/happeningCategory/:name", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 console.log(err);
                 res.sendStatus(401);
             } else {
                 if(authData.user.isadmin) {
-                    categorydao.deleteOneEvent(req.body.name, (status, data) =>{
+                    categorydao.deleteOneEvent(req.params.name, (status, data) =>{
                         res.status(status);
                         res.json(data);
                     });

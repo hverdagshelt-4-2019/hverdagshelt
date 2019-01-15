@@ -20,7 +20,7 @@ export class SpecificCategory extends Component{
     }
 
     delete(){
-        console.log("Sletter kategori med name " + this.name);
-        this.props.deleteFunc(this.name);
+        console.log("Sletter kategori med name " + this.props.theCategory.name);
+        this.props.deleteFunc(this.props.theCategory.name);
     }
 }
