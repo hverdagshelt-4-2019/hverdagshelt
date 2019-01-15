@@ -145,10 +145,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
 
               <div className="media mb-4">
                 <div className="media-body">
-                  {this.comments.map(comment => {
-                      return(<h5 className="mt-0">Commenter Name</h5>
-                      comment.description
-                  })}
+
                 </div>
               </div>
               <div style={{ height: '100px' }} />
@@ -171,7 +168,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
       })
       .catch((error: Error) => Alert.danger(error.message));
     commentService.getAllComments(this.props.match.params.id)
-        .then(comments => (this.comments = comments))
+        .then(comments => {this.comments = comments.data;})
         .catch((error: Error) => Alert.danger(error.message));
   }
 
