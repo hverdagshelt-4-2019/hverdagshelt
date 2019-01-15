@@ -149,7 +149,7 @@ export default class SimpleMap extends Component {
                     <p id="category" style={{color: 'white', fontSize: 'small'}}></p>
                     <hr className={css.hr}/>
                     <div className = {css.aroundButton}>
-                        <button id="vote" type="button" className={"btn btn-light" +css.voteB}><i className={"fas "+css["fa-thumbs-up"]}></i></button>
+                        <button id="vote" type="button" className={"btn btn-light " + css.voteB}><i className={"fas "+css["fa-thumbs-up"]}></i></button>
                     </div>
                 </div>
                 

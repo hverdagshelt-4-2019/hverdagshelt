@@ -5,9 +5,11 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import categoryService from '../../Services/categoryService';
 import {Adder} from './Adder';
+import {SpecificCategory} from './SpecificCategory';
 
 export default class CategoryCreation extends Component{
-    categories = [{name: 'Kategori1'}, {name: 'Kateogri2'}, {name: "Kategori3"}];
+    ticketCategories = [{name: 'Kategori1', id:'1'}, {name: 'Kateogri2', id:'2'}, {name: "Kategori3", id:'3'}]; //Test values
+    eventCategories = [];
 
     constructor(props){
         super(props);
@@ -21,25 +23,15 @@ export default class CategoryCreation extends Component{
                     <div className="col-md-6" style={{width: '50%'}}>
                         <h3>Ticket categories</h3>
                         <Adder addFunction={this.addTicketCategory.bind(this)} />
-                            {this.categories.map((category, i) => (
-                                <li className="list-group-item" key={i}>
-                                    <h3 to=''>{category.name}</h3>
-                                    <div className="float-right">
-                                        <button className="float-right btn btn-danger btn-sm" onClick={this.delete}>Slett</button>
-                                    </div>
-                                </li>
+                            {this.ticketCategories.map((category, i) => (
+                                <SpecificCategory theCategory={category} deleteFunc={this.deleteTC.bind(this)}/>
                             ))}
                     </div>  
                     <div className="col-md-6" style={{width: '50%'}}>
                         <h3>Event categories</h3>
                         <Adder addFunction={this.addEventCategory.bind(this)} />
-                            {this.categories.map((category, i) => (
-                                <li className="list-group-item" key={i}>
-                                    <h3 to=''>{category.name}</h3>
-                                    <div className="float-right">
-                                        <button className="float-right btn btn-danger btn-sm" onClick={this.delete}>Slett</button>
-                                    </div>
-                                </li>
+                            {this.eventCategories.map((category, i) => (
+                                <SpecificCategory theCategory={category} deleteFunc={this.deleteEC.bind(this)}/>
                             ))}
                     </div> 
                 </div>  
@@ -48,9 +40,13 @@ export default class CategoryCreation extends Component{
     }
 
     mounted(){
-        categoryService.getAllCategories()
-        //.then((categories: Array<Category>) => this.categories = categories) //Uncomment when service is OK
-        //.catch((error : Error) => console.log(error.message));
+        categoryService.getTicketCategories()
+        .then((categories: Array<Category>) => this.categories = categories) //Uncomment when service is OK
+        .catch((error : Error) => console.log(error.message));
+
+        categoryService.getEventCategories()
+        .then((categories: Array<Category>) => this.categories = categories) //Uncomment when service is OK
+        .catch((error : Error) => console.log(error.message));
     }
 
     changeSate(){
@@ -58,10 +54,12 @@ export default class CategoryCreation extends Component{
     }
 
     addTicketCategory(name){ 
+        console.log("Navn: " + name);
         categoryService.addTicketCategory(name);
     }
 
     addEventCategory(name){
+        console.log("Navn: " + name);
         categoryService.addEventCategory(name);
     }
 

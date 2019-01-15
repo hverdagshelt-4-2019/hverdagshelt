@@ -51,6 +51,6 @@ export class Adder extends Component{
     save(){
         alert("Du la til kategorien: " + this.name);
         this.props.addFunction(this.name);
-        this.setButton();
+        this.setState({adding:false});
     }
 }

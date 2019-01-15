@@ -2,12 +2,15 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
+import { ticketService } from '../../Services/ticketService';
+import { categoryService } from '../../Services/categoryService';
 import { Navbar_person } from '../Navbars/Navbar_person';
 import GoogleMapReact from 'google-map-react';
 import ControllableHover from './../../map/controllable_hover.js';
 import controllable from 'react-controllables';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import PropTypes from 'prop-types';
+import { Alert } from '../../widgets';
 
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
 
@@ -64,6 +67,15 @@ static propTypes = {
        console.log(lat, lng);
         this.props.greatPlaces[0].lat=lat;
    }
+categories = [];
+ticket = {
+    category: '',
+    title: '',
+    description: '',
+    picture: '',
+    lat: '',
+    long:''
+};
 
   render() {
     const places = this.props.greatPlaces
@@ -86,25 +98,28 @@ static propTypes = {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-8">
-                            <h1>Raporter en ny sak:</h1>
+                            <h1>Rapporter en ny sak:</h1>
 
                             <hr />
 
                             <h4>Tittel:</h4>
-                            <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.title = event.target.value)}/>
+                            <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.title = event.target.value)}/>
 
                              <h4>Beskrivelse:</h4>
                             <textarea className="form-control" style={{width:"100%"}} 
-                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.description = event.target.value)}
+                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.description = event.target.value)}
                             />
 
                             <h4>Kategori:</h4>
-                            <select>
-                                <option>Hærverk</option>
-                                <option>Søppel</option>
-                                <option>Strøing</option>
-                            </select>
-
+                            {/*}
+                            <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.category = event.target.value)}>
+            {this.categories.map((categories, i) => (
+              <option value={categories.name} key={i}>
+                {categories.name}
+              </option>
+            ))}
+          </select>
+*/}
                             <h4>Bilde:</h4>
                             <label htmlFor="InputFile">Last opp bilde</label>
                             <input type="file" className="form-control-file" id="InputFile"/>
@@ -136,8 +151,20 @@ static propTypes = {
         </div>
     );
   }
+    save() {
+        /*
+    mounted() {
+        categoryService.getTicketCategories().then((response) => {
+            console.log(response);
+        });
+    }
+*/
+        if (!this.ticket.title || !this.ticket.description) return null;
 
-  save() {
-      
-  }
+        ticketService
+            .postTicket(ticket)
+            .then(() => {
+            if (this.ticket.title && this.ticket.description) history.push('/home');
+            })
+    }
 }
