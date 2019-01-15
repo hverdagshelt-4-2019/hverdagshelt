@@ -44,6 +44,10 @@ export default class Navbar extends Component {
         else this.current_list = this.user_pages;
     }
 
+    logout() {
+        window.localStorage.clear();    // Deletes your token. And everything else...
+    }
+
     render() {
         return (
             <nav className={"navbar navbar-light bg-light "+css.Navbar}>
@@ -90,7 +94,7 @@ export default class Navbar extends Component {
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink to="/">
+                                <NavLink onClick={this.logout} to="/">
                                     <span className="glyphicon glyphicon-log-out" /> Log ut
                                 </NavLink>
                             </li>
