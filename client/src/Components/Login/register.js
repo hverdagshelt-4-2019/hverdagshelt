@@ -52,6 +52,7 @@ export default class Register extends Component {
                     }
                 })//OK
                 .catch(err => {
+                    // TODO: Skille mellom forskjellige server feil. F.eks. forskjellen mellom at emailen er tatt eller at brukeren har et ugyldig tegn i mailen sin (emojis etc.)
                     console.log(err)
                     this.warning = "Intern server error. Ikke gi oss mindre enn perfekt data."
                 });
@@ -72,6 +73,10 @@ export default class Register extends Component {
         }
         else if(this.email.length > 254){
             this.warning = "Emailen din er for lang.";
+            return false;
+        }
+        else if (!this.email.includes("@")){
+            this.warning = "Emailen din er ikke gyldig.";
             return false;
         }
         return true;
