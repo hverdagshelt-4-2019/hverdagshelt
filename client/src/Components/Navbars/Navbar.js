@@ -100,7 +100,9 @@ export default class Navbar extends Component {
                             </li>
                             <li>
                                 <NavLink to="/">
-                                    <span className="glyphicon glyphicon-log-out" /> Log ut
+                                    <span className="glyphicon glyphicon-log-out" /> {
+                                        localStorage.getItem('level') === 'none' ? "Logg inn" : "Logg ut"
+                                    }
                                 </NavLink>
                             </li>
                         </ul>
