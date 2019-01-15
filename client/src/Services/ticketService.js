@@ -3,12 +3,14 @@ let url = "http://localhost:3000";
 
 class Ticket {
     responsible_commune;
+    submitter_email;
     category;
     title;
     description;
     picture;
     status;
     submitted_time;
+    company;
     lat;
     lng;
 }
