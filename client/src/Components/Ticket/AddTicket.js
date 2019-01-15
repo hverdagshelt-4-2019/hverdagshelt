@@ -40,6 +40,11 @@ static propTypes = {
 
     constructor(props) {
         super(props);
+        this.state = {
+            greatPlaces:  [
+            {id: 'Temp ex', lat: 63.42, lng: 10.38}
+            ]
+        };
     }
 
      _onChange = (center, zoom /* , bounds, marginBounds */) => {
@@ -62,33 +67,24 @@ static propTypes = {
 
    _onClick = ({x, y, lat, lng, event}) => {
        console.log(lat, lng);
-        this.props.greatPlaces[0].lat=lat;
+        let pa = this.state.greatPlaces[0];
+        pa.lat = lat;
+        pa.lng = lng;
+        this.setState({greatPlaces: [pa]});
    }
-ticketCategories: Category[] = [];
-ticket = {
-    category: '',
-    title: '',
-    description: '',
-    picture: '',
-    lat: '',
-    long:''
-};
+
+
+    ticketCategories: Category[] = [];
+    ticket = {
+        category: '',
+        title: '',
+        description: '',
+        picture: '',
+        lat: '',
+        long:''
+    };
 
   render() {
-    const places = this.props.greatPlaces
-    .map(place => {
-        const {id, ...coords} = place;
-
-        return (
-            <ControllableHover
-            key={id}
-            {...coords}
-            text={id}
-            // use your hover state (from store, react-controllables etc...)
-            hover={this.props.hoverKey === id} />
-        );
-    });  
-
     return (
         <div>
                 <div className="container">
@@ -109,9 +105,9 @@ ticket = {
                             <h4>Kategori:</h4>
                             
                             <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.category = event.target.value)}>
-                                {this.ticketCategories.map((ticketCategories, i) => (
-                                <option value={ticketCategories.name} key={i}>
-                                    {ticketCategories.name}
+                                {this.ticketCategories.map((categories, i) => (
+                                <option value={categories.name} key={i}>
+                                    {categories.name}
                                 </option>
                                 ))}
                             </select>
@@ -131,7 +127,11 @@ ticket = {
                                     zoom={this.props.zoom}
                                     onClick={this._onClick} 
                                     >
-                                    {places}
+                                    <ControllableHover
+                                        key={this.props.greatPlaces[0].id}
+                                        {...this.state.greatPlaces[0]}
+                                        text={this.props.greatPlaces[0].id}
+                                        hover={this.props.hoverKey === this.props.greatPlaces[0].id} />
                                 </GoogleMapReact>
                             </div>
                             <div style={{height: '10px'}}></div>
