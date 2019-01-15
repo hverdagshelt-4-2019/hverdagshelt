@@ -52,6 +52,19 @@ export function create_app(pool) {
     Get-functions
      */
 
+    app.get('/level', verifyToken, (req, res) => {
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            let level = 'none';
+            if(!err){
+                if(authData.user.isadmin) level = 'admin';
+                else if (authData.user.publicworkercommune) level = 'publicworker';
+                else level = 'user';
+            }
+            console.log(authData);
+            res.status(200);
+            res.json({level})
+        });
+    });
 
     app.get("/user/:id", (req, res) =>{
         userdao.getOne(req.params.id, (status, data) =>{
@@ -125,7 +138,6 @@ export function create_app(pool) {
         });
 
     });
-
 
     app.get("/communes", (req, res) =>{
         communedao.getAll((status, data) =>{
@@ -202,6 +214,13 @@ export function create_app(pool) {
         });
     });
 
+    app.get("/comments/:ticket_id", (req, res) =>{
+        commentdao.getAll(req.params.ticket_id, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
 
   /*
     Post-functions
@@ -267,6 +286,17 @@ export function create_app(pool) {
                     long: req.body.long
                 }
                 ticketdao.addTicket(newTicket, (status, data) =>{
+                    if(status == 200) {
+                        userdao.getOne(authData.user.id, (userstatus, userdata) =>{
+                            let mailOptions = {
+                                from: 'Hverdagsheltene',
+                                to: userdata[0].email,
+                                subject: 'Registrering av problem',
+                                text: 'Du har registrert ett nytt problem.\nSe problemet på: http://localhost:3000/sak/' + data.insertId
+                            };
+                            sendEmail(transporter, mailOptions);
+                        });
+                    }
                     res.status(status);
                     res.json(data);
                 });
@@ -426,7 +456,6 @@ export function create_app(pool) {
         });
     });
 
-
     app.post("/followCommune/:commune", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
@@ -480,19 +509,40 @@ export function create_app(pool) {
         });
     });
 
-    app.put("/ticketstatus/:id", verifyToken, (req, res) =>{
+    app.put("/ticketedit/:id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
                 res.sendStatus(401);
             } else {
-                if(authData.user.isadmin || authData.user.publicworkercommune == req.body.commune) {
-                    ticketdao.editTicket(req.params.id, req.body, (status, data) =>{
-                        res.status(status);
-                        res.json(data);
-                    });
-                } else {
-                    res.sendStatus(403);
-                }
+                userdao.getOne(authData.user.id, (userstatus, userdata) =>{
+                    if(req.body.submitter_email == userdata[0].email) {
+                        ticketdao.editTicket(req.params.id, req.body, (status, data) =>{
+                            res.status(status);
+                            res.json(data);
+                        });
+                    } else {
+                        res.sendStatus(403);
+                    }
+                });
+            }
+        });
+    });
+
+    app.put("/ticket_picture/:ticket_it", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                console.log(err);
+            } else {
+                userdao.getOne(authData.user.id, (userstatus, userdata) =>{
+                    if(req.body.email == userdata[0].email) {
+                        ticketdao.setPicture(req.params.ticket_id, req.body, (status, data) =>{
+                            res.status(status);
+                            res.json(data);
+                        });
+                    } else {
+                        res.sendStatus(403);
+                    }
+                });
             }
         });
     });
@@ -551,6 +601,44 @@ export function create_app(pool) {
                 } else {
                     res.status(403);
                 }
+            }
+        });
+    });
+
+    app.put("/ticketstatus/:ticket_id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                console.log(err);
+            } else {
+                ticketdao.setStatus(req.params.ticket_id, req.body, (status, data) =>{
+                    if(status == 200) {
+                        console.log(data[0].email);
+                        let mailOptions = {
+                            from: 'Hverdagsheltene',
+                            to: req.body.email,
+                            subject: 'Status oppdatering',
+                            text: ('Ditt problem har fått ny status. Sjekk ny status på: http://localhost:3000/sak/' + req.params.ticket_id)
+                        }
+                        sendEmail(transporter, mailOptions)
+                        res.status(status);
+                        res.json(data);
+                    } else {
+                        console.log('Oops...');
+                    }
+                });
+            }
+        });
+    });
+
+    app.put("/ticketcomp/:ticket_id", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                console.log(err);
+            } else {
+                ticketdao.setStatus(req.params.ticket_id, req.body, (status, data) =>{
+                    res.status(status);
+                    res.json(data);
+                });
             }
         });
     });
@@ -763,8 +851,6 @@ export function create_app(pool) {
         //console.log(fileN);
         res.sendFile(path.join(client_public,'images',fileid));//sending the file that is in the foldier with root from the server
     });
-
-
 
     app.get("*", (req,res, next) =>{
         let options = {};

@@ -1,7 +1,7 @@
 //@flow
 
 import * as React from 'react';
-import { Component,} from 'react-simplified';
+import { Component } from 'react-simplified';
 import ticketService from '../../Services/ticketService';
 import categoryService from '../../Services/categoryService';
 import GoogleMapReact from 'google-map-react';
@@ -9,14 +9,12 @@ import ControllableHover from './../../map/controllable_hover.js';
 import controllable from 'react-controllables';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import PropTypes from 'prop-types';
-import { Alert } from '../../widgets';
+import Alert from '../../widgets';
 
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 export default class AddTicket extends Component {
-title = '';
-description = '';
 static propTypes = {
         zoom: PropTypes.number, // @controllable
         hoverKey: PropTypes.string, // @controllable
@@ -66,7 +64,7 @@ static propTypes = {
        console.log(lat, lng);
         this.props.greatPlaces[0].lat=lat;
    }
-categories = [];
+ticketCategories: Category[] = [];
 ticket = {
     category: '',
     title: '',
@@ -109,15 +107,16 @@ ticket = {
                             />
 
                             <h4>Kategori:</h4>
-                            {/*}
+                            
                             <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.category = event.target.value)}>
-            {this.categories.map((categories, i) => (
-              <option value={categories.name} key={i}>
-                {categories.name}
-              </option>
-            ))}
-          </select>
-*/}
+                                {this.ticketCategories.map((ticketCategories, i) => (
+                                <option value={ticketCategories.name} key={i}>
+                                    {ticketCategories.name}
+                                </option>
+                                ))}
+                            </select>
+
+
                             <h4>Bilde:</h4>
                             <label htmlFor="InputFile">Last opp bilde</label>
                             <input type="file" className="form-control-file" id="InputFile"/>
@@ -150,22 +149,20 @@ ticket = {
     );
   }
 
-/*{}
-    save() {
-        /*
     mounted() {
-        categoryService.getTicketCategories().then((response) => {
-            console.log(response);
-        });
+        categoryService.getTicketCategories()
+        .then((categories: Array<Category>) => this.ticketCategories = categories.data)
+        .catch((error : Error) => console.log(error.message));
+        
     }
-}*/
     save() {
-        if (!this.ticket.title || !this.ticket.description) return null;
+        if (!this.ticket.title || !this.ticket.description || !this.ticket.category) return null;
 
         ticketService
             .postTicket(ticket)
             .then(() => {
-            if (this.ticket.title && this.ticket.description) history.push('/home');
+            if (this.ticket.title && this.ticket.description && this.ticket.category) history.push('/home');
             })
+            
     }
 }

@@ -32,16 +32,21 @@ export default class Navbar extends Component {
         ['minesvar', 'Mine svar', 'glyphicon-folder-open'],
         ['leggtilsak', 'Legg til sak', 'glyphicon-plus'],
         ['begivenheter', 'Liste over saker', 'glyphicon-list-alt'],
-        ['kategorier', 'Kategorier', 'glyphicon-list-alt'],
+        ['hjelp', 'Hjelp', 'glyphicon-question-sign']
+    ];
+    none_pages = [
+        ['Hjem', 'Hjem', 'glyphicon-home'],
         ['hjelp', 'Hjelp', 'glyphicon-question-sign']
     ];
     current_list = [];
 
-    mounted() {
+    componentDidMount() {
         let level = localStorage.getItem('level');
         if(level === 'admin') this.current_list = this.admin_pages;
         else if (level === 'publicworker') this.current_list = this.public_worker_pages;
-        else this.current_list = this.user_pages;
+        else if (level === 'user') this.current_list = this.user_pages;
+        else this.current_list = this.none_pages;
+        console.log(this.current_list);
     }
 
     render() {
