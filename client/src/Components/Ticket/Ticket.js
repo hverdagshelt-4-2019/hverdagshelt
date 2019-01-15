@@ -1,12 +1,12 @@
 //@flow
 
 import * as React from 'react';
-import { Component } from 'react-simplified';
-import { ticketService } from '../../Services/ticketService';
-import { Alert} from '../../widgets';
-import { Navbar_person } from '../Navbars/Navbar_person';
+import Component from 'react-simplified';
+import ticketService from '../../Services/ticketService';
+import  Alert from '../../widgets';
+import  Navbar_person  from '../Navbars/Navbar_person';
 
-export default class Ticket extends Component<{ match: { params: { id: number } } }> {
+export default class Ticket extends React.Component<{ match: { params: { id: number } } }> {
   ticket = '';
   sub_date = null;
 
