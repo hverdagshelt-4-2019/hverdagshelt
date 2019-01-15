@@ -1,15 +1,13 @@
 //@flow
 
 import * as React from 'react';
-import { Component } from 'react-simplified';
-import { ticketService } from '../../Services/ticketService';
-import { Navbar_person } from '../Navbars/Navbar_person';
+import { Component,} from 'react-simplified';
+import ticketService from '../../Services/ticketService';
 
 export default class EditTicket extends Component {
   render() {
     return (
             <div>
-                <Navbar_person />
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-8">
@@ -42,11 +40,12 @@ export default class EditTicket extends Component {
 
                             <hr />
 
-                            <button type="button" class="btn btn-primary">Lagre</button>
+                            <button type="button" className="btn btn-primary">Lagre</button>
 
                         </div>
                     </div>
                 </div>
+                <div style={{height: '150px'}}></div>
             </div>
         );
     }

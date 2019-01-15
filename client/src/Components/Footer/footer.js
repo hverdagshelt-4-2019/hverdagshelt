@@ -22,7 +22,7 @@ export default class Footer extends Component {
                 </ul>
                 <p className="text-center">Copyright @2019 | <a className={css.team} href="#">Team 4</a></p>
 
-                <ul className={css.social_footer_ul+" "+css.footer}>
+                    <ul className={css.social_footer_ul}>
                     <li><a href="#"><i className="fab fa-facebook-f"></i></a></li>
                     <li><a href="#"><i className="fab fa-twitter"></i></a></li>
                     <li><a href="#"><i className="fab fa-linkedin"></i></a></li>

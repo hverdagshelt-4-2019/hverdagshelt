@@ -109,7 +109,7 @@ export default class Ticket extends React.Component<{ match: { params: { id: num
                         <p>{this.ticket.description}</p>
 
                         <hr />
-                        <div className = "map" style={{ height: '300px', width: '100%'}}>
+                        <div style={{ height: '300px', width: '100%'}}>
                             <GoogleMapReact
                             bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
                             center={this.props.center}
@@ -123,7 +123,7 @@ export default class Ticket extends React.Component<{ match: { params: { id: num
                             {places}
                             </GoogleMapReact>
                         </div>
-                        <div style={{height: '300px'}}></div>
+
                         <hr />
 
                         <div>

@@ -34,21 +34,21 @@ export default class CategoryCreation extends Component<P, S>{
                     <div className="col-md-6" style={{width: '50%'}}>
                         <h3>Ticket categories</h3>
                         <Adder addFunction={this.addTicketCategory.bind(this)} />
-                        {this.ticketCategories.map((category, i) => (
-                            <SpecificCategory theCategory={category} deleteFunc={this.deleteTC.bind(this)}/>
-                        ))}
-                    </div>
+                            {this.ticketCategories.map((category, i) => (
+                                <SpecificCategory key={category.id} theCategory={category} deleteFunc={this.deleteTC.bind(this)}/>
+                            ))}
+                    </div>  
                     <div className="col-md-6" style={{width: '50%'}}>
                         <h3>Event categories</h3>
                         <Adder addFunction={this.addEventCategory.bind(this)} />
-
-                        {this.eventCategories.map((category, i) => (
-                            <SpecificCategory theCategory={category} deleteFunc={this.deleteEC.bind(this)}/>
-                        ))}
-                    </div>
+                            {this.eventCategories.map((category, i) => (
+                                <SpecificCategory theCategory={category} deleteFunc={this.deleteEC.bind(this)}/>
+                            ))}
+                    </div> 
                 </div>
-            </div>
-        );
+                <div style={{height: '200px'}}></div>  
+            </div>     
+        )
     }
 
     mounted(){

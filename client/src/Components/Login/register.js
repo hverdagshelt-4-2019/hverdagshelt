@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom';
 import * as React from 'react';
-import { Component } from 'react-simplified';
+import { Component,} from 'react-simplified';
 import userService from '../../Services/userService';
-import {NavLink } from 'react-router-dom';
+import { NavLink,} from 'react-router-dom';
 
 //Need route to login site.
 export default class Register extends Component {
@@ -35,6 +35,7 @@ export default class Register extends Component {
                     <label>Har du allerede en bruker?</label>{' '}
                     <NavLink exact to={'/'}>Logg inn her!</NavLink>
                 </div>
+                <div style={{height: '200px'}}></div>
             </div>
         )
     }
@@ -52,7 +53,7 @@ export default class Register extends Component {
                     }
                 })//OK
                 .catch(err => {
-                    // TODO: Skille mellom forskjellige server feil. F.eks. forskjellen mellom at emailen er tatt eller at brukeren har et ugyldig tegn i mailen sin (emojis eller punktum)g
+                    // TODO: Skille mellom forskjellige server feil. F.eks. forskjellen mellom at emailen er tatt eller at brukeren har et ugyldig tegn i mailen sin (emojis etc.)
                     console.log(err)
                     this.warning = "Intern server error. Ikke gi oss mindre enn perfekt data."
                 });
