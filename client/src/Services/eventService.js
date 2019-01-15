@@ -12,9 +12,15 @@ class Event {
     happening_time;
 }
 
-let config = {
-    headers: {
-        Authorization: "Bearer " + localStorage.getItem('authToken'),
+function config() {
+    let token = localStorage.getItem('authToken');
+    let Authorization = 'none';
+    if(token)
+        Authorization = "Bearer " + token;
+    return {
+        headers: {
+            Authorization
+        }
     }
 }
 
@@ -22,7 +28,7 @@ class EventService {
 
     postEvent(event): Promise<Object> {
         console.log(config)
-        return axios.post(url + '/event', event, config);
+        return axios.post(url + '/event', event, config());
     }
 
     getEvent(eventID): Promise<Event>{
@@ -34,11 +40,11 @@ class EventService {
     }
 
     editEvent(eventID, event): Promise<Object> {
-        return axios.put(url + '/event/' + eventID, event, config);
+        return axios.put(url + '/event/' + eventID, event, config());
     }
 
     deleteEvent(eventID): Promise<Object> {
-        return axios.delete(url + '/event/' + eventID, config);
+        return axios.delete(url + '/event/' + eventID, config());
     }
 }
 

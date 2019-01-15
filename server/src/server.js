@@ -52,6 +52,19 @@ export function create_app(pool) {
     Get-functions
      */
 
+    app.get('/level', verifyToken, (req, res) => {
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            let level = 'none';
+            if(!err){
+                if(authData.user.isadmin) level = 'admin';
+                else if (authData.user.publicworkercommune) level = 'publicworker';
+                else level = 'user';
+            }
+            console.log(authData);
+            res.status(200);
+            res.json({level})
+        });
+    });
 
     app.get("/user/:id", (req, res) =>{
         userdao.getOne(req.params.id, (status, data) =>{

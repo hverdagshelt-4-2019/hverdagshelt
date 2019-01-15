@@ -8,10 +8,13 @@ export class Category{
 }
 
 function config() {
-    let wtf = "Bearer " + localStorage.getItem('authToken');
+    let token = localStorage.getItem('authToken');
+    let Authorization = 'none';
+    if(token)
+        Authorization = "Bearer " + token;
     return {
         headers: {
-            Authorization: wtf
+            Authorization
         }
     }
 }
