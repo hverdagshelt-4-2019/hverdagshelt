@@ -19,7 +19,10 @@ export default class Login extends Component {
     login() {
         if(this.email && this.password) {
             userService.loginUser(this.email,this.password).then((result) => {
-                if(result !== null) localStorage.setItem('authToken', result.data.token);
+                if(result !== null) {
+                    localStorage.setItem('authToken', result.data.token);
+                    localStorage.setItem('level', result.data.level);
+                }
             });
         }
     }
