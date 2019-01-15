@@ -34,7 +34,7 @@ if (root) {
                     <Route exact path="/uploadImage" component={UploadImage}/>
                     <Route exact path="/map" component={SimpleMap}/>
                     <Route exact path="/" component={Login}/>
-                    {res.data.level === 'none' && <Route path="/registrerdeg" component={Register}/>}
+                    <Route path="/registrerdeg" component={Register}/>
                     <Route path="/sakliste" component={TicketList}/>
                     <Route path="/leggtil" component={AddPage}/>
                     {res.data.level === 'admin' && <Route path="/kategorier" component={CategoryCreation}/>}

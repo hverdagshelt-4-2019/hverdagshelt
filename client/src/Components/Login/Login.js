@@ -47,7 +47,7 @@ export default class Login extends Component {
                 <form>
                     <div className="form-group">
                         <label>E-post</label>
-                        <input type="email" autoComplete="current-email" placeholder="E-post" className="form-control" name="email" onChange={e => this.email = e.target.value} />
+                        <input type="email" autoComplete="email" placeholder="E-post" className="form-control" name="email" onChange={e => this.email = e.target.value} />
                     </div>
                     <div className="form-group">
                         <label>Passord</label>
