@@ -26,10 +26,8 @@ function config() {
 }
 
 function getCommune(lat: number, long: number): Promise<Object> {
-        let coordArr = {pos: [lat, long]};
-        console.log(coordArr);
         console.log("Finding commune...");
-        return axios.post(url + '/communeByCoordinates/' + lat + '/' + long, coordArr, config());
+        return axios.get(url + '/communeByCoordinates/' + lat + '/' + long, config());
     }
 
 class TicketService {
