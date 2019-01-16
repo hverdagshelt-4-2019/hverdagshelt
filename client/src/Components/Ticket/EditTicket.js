@@ -104,7 +104,7 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                            
                             <input type="file" className="form-control-file" id="InputFile"/>
                             <small id="fileHelp" className="form-text text-muted"></small>
-                            {/* need to fix default value here */}
+                            
 
                             <hr />
 
