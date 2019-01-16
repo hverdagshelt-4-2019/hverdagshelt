@@ -293,7 +293,7 @@ export function create_app(pool) {
                     email: req.body.email,
                     id: data[0].id,
                     isadmin: (data[0].isAdmin != null),
-                    companyname: (data[0].companyname != null),
+                    companyname: (data[0].companyname != null ? data[0].companyname : false),
                     publicworkercommune: (data[0].commune_name != null ? data[0].commune_name : false)    // Null if not a publicworker
                 };
                 console.log(JSON.stringify(user));
