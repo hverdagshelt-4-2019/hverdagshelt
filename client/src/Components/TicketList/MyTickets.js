@@ -11,43 +11,36 @@ import Ticket from '../Ticket/Ticket';
 //--- This class is not finished. No filter function created. ---\\
 //At the moment, the list displays all tickets, not filtered.
 
-export default class TicketList extends Component{
+export default class MyTickets extends Component{
     communes = [];
-    ticketCategories : Category[] = []; //Ticking off input box will add category to the array
-    tickets = []; 
+    tickets = [];
 
     render(){
         return(
             <div className='container'>
-                <h1>Liste over saker</h1>
+                <h1>Liste over saker du har sendt inn</h1>
                 <br/>
                 <div className="row">
                     <div className="col-md-4" style={{
                         border: "2px solid lightblue",
-                        }}>
+                    }}>
                         <br/>
                         <input className="form-control" type="text" placeholder="Søk"/>
                         <br/>
-                        <h4>Kategorier</h4>
-                        {this.ticketCategories.map((category, i) => (
-                            <div key={i}>
-                                <input value={category.name} type="checkbox" defaultChecked onChange={(evt) => this.itemChecked(category.name)}  />
-                                <label>{category.name}</label>
-                            </div> 
-                        ))}
+
                         <br/>
                         <input type="checkbox" />
-                        <label>Vis arkiverte saker</label>  
-                    
+                        <label>Vis arkiverte saker</label>
+
                     </div>
 
                     <div className="col-md-8" style={{
                         border: "2px solid lightblue",
-                        }}>
+                    }}>
                         <br/>
                         <div>
                             {this.tickets.map((ticket, i) => (
-                                <SingleTicket 
+                                <SingleTicket
                                     key={i}
                                     theTicket={ticket}
                                 />
@@ -63,18 +56,13 @@ export default class TicketList extends Component{
     mounted(){
 
         //Then get all the tickets from these communes
-        ticketService.getAllTickets() //this.communes
-        .then((tickets : {data: Ticket[]}) => this.tickets = tickets.data)
-        .catch((error : Error) => console.log("Error occured: " + error.message));
-
-        //Get categories for the possibility to filter //OK
-        categoryService.getTicketCategories()
-        .then((categories : Category[]) =>  this.ticketCategories = categories.data)
-        .catch((error : Error) => console.log("Error occured: " + error.message));
+        /*ticketService.getTicketsUser()
+            .then((tickets : {data: Ticket[]}) => this.tickets = tickets.data)
+            .catch((error : Error) => console.log("Error occured: " + error.message));*/
 
         //--Get tickets based on commune and checked categories--
         //ticketService.getTicketsByCommuneAndCategory(this.communeId, this.categories)
-        //.then(tickets => this.tickets = tickets);        
+        //.then(tickets => this.tickets = tickets);
     }
 
     itemChecked(){
@@ -87,22 +75,22 @@ export default class TicketList extends Component{
     }
 
     changeArrow(){
-       let e: HTMLElement|null = document.getElementById("arrow");
-       if(e) {
-           if (e.getAttribute("data-temp") === "false") {
-               e.setAttribute("data-temp", "true");
-               let temptext = document.getElementById("tempText");
-               if(temptext) temptext.innerHTML = "";
-           }
-           if (e.getAttribute("class") === "fa fa-arrow-right") {
-               e.setAttribute("class", "fa fa-arrow-left");
-           } else {
-               e.setAttribute("class", "fa fa-arrow-right");
-           }
-       }
-   }
+        let e: HTMLElement|null = document.getElementById("arrow");
+        if(e) {
+            if (e.getAttribute("data-temp") === "false") {
+                e.setAttribute("data-temp", "true");
+                let temptext = document.getElementById("tempText");
+                if(temptext) temptext.innerHTML = "";
+            }
+            if (e.getAttribute("class") === "fa fa-arrow-right") {
+                e.setAttribute("class", "fa fa-arrow-left");
+            } else {
+                e.setAttribute("class", "fa fa-arrow-right");
+            }
+        }
+    }
 
-   
+
 
 
 }

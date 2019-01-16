@@ -10,6 +10,7 @@ export default class Navbar extends Component {
         ['minesaker', 'Mine saker', 'folder-open'],
         ['minesvar', 'Mine svar', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
+        ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
         ['kategorier', 'Kategorier', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
@@ -19,8 +20,17 @@ export default class Navbar extends Component {
         ['minesaker', 'Mine saker', 'folder-open'],
         ['minesvar', 'Mine svar', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
+        ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['kategorier', 'Kategorier', 'list'],
+        ['statistikk', 'Statistikk', 'chart-bar'],
+        ['hjelp', 'Hjelp', 'question-circle']
+    ];
+    company_pages = [
+        ['minesaker', 'Mine saker', 'folder-open'],
+        ['minesvar', 'Mine svar', 'folder-open'],
+        ['leggtilsak', 'Legg til sak', 'plus'],
+        ['sakliste', 'Saker', 'list'],
+        ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
         ['hjelp', 'Hjelp', 'question-circle']
     ];
@@ -28,12 +38,14 @@ export default class Navbar extends Component {
         ['minesaker', 'Mine saker', 'folder-open'],
         ['minesvar', 'Mine svar', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
+        ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
         ['hjelp', 'Hjelp', 'question-circle']
     ];
-    
+
     none_pages = [
+        ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
         ['hjelp', 'Hjelp', 'question-circle']
@@ -51,6 +63,7 @@ export default class Navbar extends Component {
 
     logout() {
         window.localStorage.clear();    // Deletes your token. And everything else...
+        window.localStorage.setItem('level', 'none');
     }
 
     render() {
@@ -63,8 +76,8 @@ export default class Navbar extends Component {
                 <div className="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul className="navbar-nav">
                     {this.current_list.map( ([destination, text, faname]) => (
-                        <li className="nav-item">                       
-                            <NavLink className="nav-link" to={destination}><i className={"fas fa-"+faname}></i> {text}</NavLink>
+                        <li key={destination} className="nav-item">
+                            <NavLink className="nav-link" to={'/' + destination}><i className={"fas fa-"+faname}></i> {text}</NavLink>
                         </li>
                          ))}
                     </ul>
@@ -75,7 +88,7 @@ export default class Navbar extends Component {
                         </NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink className="nav-link" to="/">
+                        <NavLink className="nav-link" to="/" onClick={this.logout}>
                             <i className="fas fa-sign-out-alt"></i> {
                                         localStorage.getItem('level') === 'none' ? "Logg inn" : "Logg ut"
                                     }

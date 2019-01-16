@@ -7,20 +7,19 @@ import controllable from 'react-controllables';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import PropTypes from 'prop-types';
 import { Component } from 'react-simplified';
-import { ticketService } from '../../Services/ticketService';
-import { commentService } from '../../Services/ticketCommentService';
+import ticketService from '../../Services/ticketService';
+import commentService from '../../Services/ticketCommentService';
 import Comment from '../Comment/Comment.js';
 import Dropdown from "../Dropdown/Dropdown";
 import styles from "./style.css";
 
-import Alert from '../../widgets';
-import Navbar_person from '../Navbars/Navbar_person';
+import { Alert } from '../../widgets';
 
 import { K_SIZE } from './../../map/controllable_hover_styles.js';
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 export default class Ticket extends Component<{ match: { params: { id: number } } }> {
-  ticket = '';
+  ticket: {lat:any, lng:any, picture:any} = {lat: '', lng: '', picture: ''};
   sub_date = null;
   comments = [];
 
@@ -76,6 +75,11 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
   };
 
   render() {
+      if(!this.ticket) return (<></>);
+      const ctr = {
+          lat: this.ticket.lat,
+          lng: this.ticket.lng
+      };
     const places = this.props.greatPlaces.map(place => {
       const { id, ...coords } = place;
 
@@ -106,6 +110,10 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 <Dropdown options={status} reciever={this.editStatus}/>
               </div>
 
+              <p className="col-lg-8">
+                Registrert av: {this.ticket.submitter_email}
+              </p>
+
               <hr />
 
               <p>
@@ -117,7 +125,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               </p>
 
               <p>
-                <b>Bedrift:</b> {this.ticket.company}
+                <b>Bedrift:</b> {this.ticket.company_name}
               </p>
 
               <p>
@@ -136,7 +144,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               <div className="map" style={{ height: '300px', width: '100%' }}>
                 <GoogleMapReact
                   bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
-                  center={this.props.center}
+                  center={ctr}
                   zoom={this.props.zoom}
                   hoverDistance={K_SIZE / 2}
                   onBoundsChange={this._onBoundsChange}
@@ -180,25 +188,28 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
     );
   }
 
-  mounted() {
-    console.log('mounting');
-    ticketService
-      .getTicket(this.props.match.params.id)
-      .then(ticket => {
-        this.ticket = ticket.data[0];
-        this.sub_date =
-          this.ticket.submitted_time.split('T', 1)[0] + ' ' + this.ticket.submitted_time.split('T')[1].split('.', 1);
-        console.log(this.props.match.params.id);
-        this.props.greatPlaces[0].lat=this.ticket.lat;
-        this.props.greatPlaces[0].lng=this.ticket.lng;
-        console.log(this.ticket.picture)
-        this.getImage(this.ticket.picture)//xss 
-      })
-      .catch((error: Error) => Alert.danger(error.message));
-    commentService.getAllComments(this.props.match.params.id)
-        .then(comments => {this.comments = comments.data; this.forceUpdate()})
-        .catch((error: Error) => Alert.danger(error.message));
-  }
+    mounted() {
+        console.log('mounting');
+        ticketService
+            .getTicket(this.props.match.params.id)
+            .then(ticket => {
+                this.ticket = ticket.data[0];
+                this.sub_date =
+                    this.ticket.submitted_time.split('T', 1)[0] + ' ' + this.ticket.submitted_time.split('T')[1].split('.', 1);
+                console.log(this.props.match.params.id);
+                this.props.greatPlaces[0].lat=this.ticket.lat;
+                this.props.greatPlaces[0].lng=this.ticket.lng;
+                console.log("lat: " + this.ticket.lat + ". lng: " + this.ticket.lng)
+                console.log(this.ticket.picture);
+                this.getImage(this.ticket.picture); //xss
+                this.state.center.lat=this.ticket.lat;
+                this.state.center.lng=this.ticket.lng;
+            })
+            .catch((error: Error) => Alert.danger(error.message));
+        commentService.getAllComments(this.props.match.params.id)
+            .then(comments => {this.comments = comments.data; this.forceUpdate()})
+            .catch((error: Error) => Alert.danger(error.message));
+    }
 
   postComment(e){
       e.preventDefault();
@@ -211,8 +222,9 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
 
   getImage(i: String) {
     let imageLink = '/image/' + i;
-    let picture = document.getElementById('picture');
-    picture.setAttribute('src', imageLink);
+    let picture: HTMLElement|null = document.getElementById('picture');
+    if(picture)
+        picture.setAttribute('src', imageLink);
   }
 
   componentDidMount() {

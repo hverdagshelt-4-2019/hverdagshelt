@@ -3,16 +3,18 @@
 import * as React from 'react';
 import { Component,} from 'react-simplified';
 import ticketService from '../../Services/ticketService';
+import categoryService from '../../Services/categoryService';
 import GoogleMapReact from 'google-map-react';
 import ControllableHover from './../../map/controllable_hover.js';
 import controllable from 'react-controllables';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import PropTypes from 'prop-types';
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
+import { Alert } from '../../widgets';
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 
-export default class EditTicket extends Component {
+export default class EditTicket extends Component<{ match: { params: { id: number } } }> {
         static propTypes = {
             zoom: PropTypes.number, // @controllable
             hoverKey: PropTypes.string, // @controllable
@@ -70,6 +72,9 @@ export default class EditTicket extends Component {
             pa.lng = lng;
             this.setState({greatPlaces: [pa]});
     }
+
+    ticket = '';
+    ticketCategories: Category[] = [];
   render() {
     return (
             <div>
@@ -81,16 +86,18 @@ export default class EditTicket extends Component {
                             <hr />
 
                             <h4>Tittel:</h4>
-                            <input className="form-control" defaultValue="Hull i veien"/>
+                            <input className="form-control" defaultValue={this.ticket.title}/>
 
                              <h4>Beskrivelse:</h4>
-                            <textarea className="form-control" style={{width:"100%"}} defaultValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus."/>
-                            
+                            <textarea className="form-control" style={{width:"100%"}} defaultValue={this.ticket.description} />
+                                                        
                             <h4>Kategori:</h4>
-                            <select>
-                                <option>Hærverk</option>
-                                <option>Søppel</option>
-                                <option selected="selected">Veiproblem</option>
+                            <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.category = event.target.value)}>
+                                {this.ticketCategories.map((categories, i) => (
+                                <option value={categories.name} key={i}>
+                                    {categories.name}
+                                </option>
+                                ))}
                             </select>
 
                             <h4>Bilde:</h4>
@@ -126,5 +133,16 @@ export default class EditTicket extends Component {
                 <div style={{height: '150px'}}></div>
             </div>
         );
+    }
+
+    mounted() {
+        categoryService.getTicketCategories()
+        .then((categories: Array<Category>) => this.ticketCategories = categories.data)
+        .catch((error : Error) => console.log(error.message));
+
+        ticketService
+            .getTicket(this.props.match.params.id)
+            .then(ticket => (this.ticket = ticket.data[0]))
+            .catch((error : Error) => console.log(error.message));
     }
 }

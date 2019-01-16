@@ -15,3 +15,22 @@ body {
     padding-bottom: 6rem;
     min-height: 100%;
 }
+@media (max-width:1150px) {
+  .navbar{
+      font-size: 13px;
+  }
+}
+@media (max-width:1000px) {
+  .navbar{
+      font-size: 10px;
+  }
+  @media (max-width:850px) {
+    .navbar{
+        font-size: 8px;
+    }
+}
+@media (max-width:767px) {
+  .navbar{
+      font-size: 14px;
+  }
+}

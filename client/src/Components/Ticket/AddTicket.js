@@ -9,12 +9,12 @@ import ControllableHover from './../../map/controllable_hover.js';
 import controllable from 'react-controllables';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import PropTypes from 'prop-types';
-import Alert from '../../widgets';
+import { Alert } from '../../widgets';
 
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
-export default class AddTicket extends Component {
+export default class AddTicket extends Component<{ match: { params: { id: number } } }> {
 static propTypes = {
         zoom: PropTypes.number, // @controllable
         hoverKey: PropTypes.string, // @controllable
@@ -47,6 +47,17 @@ static propTypes = {
         };
     }
 
+    ticketCategories: Category[] = [];
+    ticket = {
+        category: '',
+        commune: '',
+        title: '',
+        description: '',
+        picture: '',
+        lat: '',
+        long:''
+    };
+
      _onChange = (center, zoom /* , bounds, marginBounds */) => {
         this.props.onCenterChange(center);
         this.props.onZoomChange(zoom);
@@ -66,6 +77,8 @@ static propTypes = {
     }
 
    _onClick = ({x, y, lat, lng, event}) => {
+       this.ticket.lat = lat;
+       this.ticket.long = lng;
        console.log(lat, lng);
         let pa = this.state.greatPlaces[0];
         pa.lat = lat;
@@ -94,15 +107,15 @@ static propTypes = {
 
                             <hr />
 
-                            <h4>Tittel:</h4>
+                            <h4>Tittel</h4>
                             <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.title = event.target.value)}/>
 
-                             <h4>Beskrivelse:</h4>
+                             <h4>Beskrivelse</h4>
                             <textarea className="form-control" style={{width:"100%"}} 
                                 onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.description = event.target.value)}
                             />
 
-                            <h4>Kategori:</h4>
+                            <h4>Kategori</h4>
                             
                             <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.category = event.target.value)}>
                                 {this.ticketCategories.map((categories, i) => (
@@ -113,7 +126,7 @@ static propTypes = {
                             </select>
 
 
-                            <h4>Bilde:</h4>
+                            <h4>Bilde</h4>
                             <label htmlFor="InputFile">Last opp bilde</label>
                             <input type="file" className="form-control-file" id="InputFile"/>
                             <small id="fileHelp" className="form-text text-muted"></small>
@@ -156,14 +169,11 @@ static propTypes = {
         
     }
     save() {
-        if (!this.ticket.title || !this.ticket.description || !this.ticket.category) return null;
-
         ticketService
-            .postTicket(ticket)
-            .then(() => {
-            if (this.ticket.title && this.ticket.description && this.ticket.category) history.push('/home');
-            })
-
-            
+        .postTicket(this.ticket.category, this.ticket.title, this.ticket.description, this.ticket.lat, this.ticket.long)
+        .then(() => {
+            console.log('Great success, buddy!');
+        })
+        .catch((error : Error) => console.log(error.message));
     }
 }
