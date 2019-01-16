@@ -1,11 +1,10 @@
-import {ReactDOM} from 'react-dom';
+import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Route, NavLink } from 'react-router-dom';
 import ExistingUser from './ExistingUser';
-import {userService} from '../../Services/userService';
-import { adminService} from '../../Services/adminService';
-import { publicWorkerService} from '../../Services/publicWorkerService';
+import userService from '../../Services/userService';
+import adminService from '../../Services/adminService';
+import publicWorkerService from '../../Services/publicWorkerService';
 
 //TODO: Fix so you can enter email and promote user to admin
 

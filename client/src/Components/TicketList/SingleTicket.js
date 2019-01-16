@@ -5,9 +5,7 @@ import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 
 
-export default class SingleTicket extends Component<{
-    
-}>{
+export default class SingleTicket extends Component<{}>{
     render(){
         return (
             <li className="list-group-item" >
@@ -15,7 +13,7 @@ export default class SingleTicket extends Component<{
                     <div className="row">
 
                         <div className="col-sm-4">
-                            <img style={{maxWidth: '100%'}}src={this.props.theTicket.picture} />
+                            <img id={"picture"+this.props.theTicket.id} src="image/temp.jpg" className={"img-fluid "} alt="Responsive image" style={{maxWidth: '100%'}} />
                         </div>
                         <div className="col-sm-8" >
                             <NavLink 
@@ -39,4 +37,14 @@ export default class SingleTicket extends Component<{
             </li>
         )
     }
+
+    componentDidMount(){
+        this.getImage(this.props.theTicket.picture);
+    } 
+
+    getImage(i: String) {
+        let imageLink = '/image/' + i;
+        let picture = document.getElementById('picture'+this.props.theTicket.id);
+        picture.setAttribute('src', imageLink);
+    } 
 }

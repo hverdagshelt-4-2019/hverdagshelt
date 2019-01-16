@@ -7,8 +7,6 @@ import ReactDOM from 'react-dom';
 
 import SimpleMap  from './map/map';// Gets map component
 import UploadImage from './temp/uploadImage'
-import { Alert, Info } from './widgets';
-import { TicketTest } from './Components/Ticket/TicketTest';
 import Login from './Components/Login/Login.js';
 import Register from './Components/Login/register.js';
 import Ticket from './Components/Ticket/Ticket';

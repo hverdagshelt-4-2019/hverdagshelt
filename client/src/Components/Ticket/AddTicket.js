@@ -2,14 +2,14 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import {ticketService} from '../../Services/ticketService';
+import ticketService from '../../Services/ticketService';
 import categoryService from '../../Services/categoryService';
 import GoogleMapReact from 'google-map-react';
 import ControllableHover from './../../map/controllable_hover.js';
 import controllable from 'react-controllables';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import PropTypes from 'prop-types';
-import Alert from '../../widgets';
+import { Alert } from '../../widgets';
 
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
 

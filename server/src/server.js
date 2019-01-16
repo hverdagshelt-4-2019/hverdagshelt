@@ -110,13 +110,21 @@ export function create_app(pool) {
                 } else {
                     communedao.getFollowed(authData.user.id, (status, data) => {
                         if (status == 200) {
-                            let communes = [];
-                            data.forEach(e => communes.push(e.commune_name));
-                            ticketdao.getTicketsByCommune(communes, (status2, data2) => {
-                                console.log(data2)
-                                res.status(status2);
-                                res.json(data2);
-                            });
+                            let communes = data.map(e => e.commune_name);
+                            if (communes.length) {
+                                ticketdao.getTicketsByCommune(communes, (status2, data2) => {
+                                    console.log(data2);
+                                    res.status(status2);
+                                    res.json(data2);
+                                });
+
+                            } else {
+                                ticketdao.getAllTickets((status2, data2) => {
+                                    console.log(data2);
+                                    res.status(status2);
+                                    res.json(data2);
+                                })
+                            }
                         } else {
                             res.sendStatus(500);
                         }
