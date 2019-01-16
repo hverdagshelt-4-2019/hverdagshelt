@@ -2,6 +2,7 @@ import axios from 'axios';
 let url = "http://localhost:3000";
 
 class Ticket {
+    submitter_email;
     commune;
     category;
     title;
