@@ -17,7 +17,7 @@ import { K_SIZE } from './../../map/controllable_hover_styles.js';
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 export default class Ticket extends Component<{ match: { params: { id: number } } }> {
-  ticket = '';
+  ticket: {lat:any, lng:any, picture:any};
   sub_date = null;
   comments = [];
 
@@ -68,9 +68,10 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
   };
 
   render() {
-          const ctr = {
-      lat: this.ticket.lat,
-      lng: this.ticket.lng
+      if(!this.ticket) return (<></>);
+      const ctr = {
+          lat: this.ticket.lat,
+          lng: this.ticket.lng
       };
     const places = this.props.greatPlaces.map(place => {
       const { id, ...coords } = place;
@@ -170,28 +171,28 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
     );
   }
 
-  mounted() {
-    console.log('mounting');
-    ticketService
-      .getTicket(this.props.match.params.id)
-      .then(ticket => {
-        this.ticket = ticket.data[0];
-        this.sub_date =
-          this.ticket.submitted_time.split('T', 1)[0] + ' ' + this.ticket.submitted_time.split('T')[1].split('.', 1);
-        console.log(this.props.match.params.id);
-        this.props.greatPlaces[0].lat=this.ticket.lat;
-        this.props.greatPlaces[0].lng=this.ticket.lng;
-        console.log("lat: " + this.ticket.lat + ". lng: " + this.ticket.lng)
-        console.log(this.ticket.picture)
-        this.getImage(this.ticket.picture)//xss 
-        this.state.center.lat=this.ticket.lat;
-        this.state.center.lng=this.ticket.lng;
-      })
-      .catch((error: Error) => Alert.danger(error.message));
-    commentService.getAllComments(this.props.match.params.id)
-        .then(comments => {this.comments = comments.data; this.forceUpdate()})
-        .catch((error: Error) => Alert.danger(error.message));
-  }
+    mounted() {
+        console.log('mounting');
+        ticketService
+            .getTicket(this.props.match.params.id)
+            .then(ticket => {
+                this.ticket = ticket.data[0];
+                this.sub_date =
+                    this.ticket.submitted_time.split('T', 1)[0] + ' ' + this.ticket.submitted_time.split('T')[1].split('.', 1);
+                console.log(this.props.match.params.id);
+                this.props.greatPlaces[0].lat=this.ticket.lat;
+                this.props.greatPlaces[0].lng=this.ticket.lng;
+                console.log("lat: " + this.ticket.lat + ". lng: " + this.ticket.lng)
+                console.log(this.ticket.picture);
+                this.getImage(this.ticket.picture); //xss
+                this.state.center.lat=this.ticket.lat;
+                this.state.center.lng=this.ticket.lng;
+            })
+            .catch((error: Error) => Alert.danger(error.message));
+        commentService.getAllComments(this.props.match.params.id)
+            .then(comments => {this.comments = comments.data; this.forceUpdate()})
+            .catch((error: Error) => Alert.danger(error.message));
+    }
 
   postComment(e){
       e.preventDefault();
