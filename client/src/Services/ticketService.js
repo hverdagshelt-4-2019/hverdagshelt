@@ -27,28 +27,26 @@ function config() {
     }
 }
 
-class TicketService {
+export default class ticketService {
 
-    postTicket(ticket): Promise<Object> {
+    static postTicket(ticket): Promise<Object> {
         return axios.post(url + '/ticket', ticket, config());
     }
 
-    getTicket(ticketID): Promise<Ticket>{
+    static getTicket(ticketID): Promise<Ticket>{
         console.log("getting ticket");
         return axios.get(url + '/ticket/' + ticketID);
     }
 
-    getAllTickets(communes): Promise<Ticket[]>{
+    static getAllTickets(communes): Promise<Ticket[]>{
         return axios.get(url + '/tickets', communes);
     }
 
-    editTicket(ticketID, ticket): Promise<Object>{
+    static editTicket(ticketID, ticket): Promise<Object>{
         return axios.put(url + '/ticket/' + ticketID, ticket, config());
     }
 
-    deleteTicket(ticketID): Promise<Object>{
+    static deleteTicket(ticketID): Promise<Object>{
         return axios.delete(url + '/ticket/' + ticketID, config());
     }
 }
-
-export let ticketService = new TicketService;

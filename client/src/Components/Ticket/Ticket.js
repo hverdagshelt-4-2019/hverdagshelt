@@ -7,12 +7,11 @@ import controllable from 'react-controllables';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import PropTypes from 'prop-types';
 import { Component } from 'react-simplified';
-import { ticketService } from '../../Services/ticketService';
-import { commentService } from '../../Services/ticketCommentService';
+import ticketService from '../../Services/ticketService';
+import commentService from '../../Services/ticketCommentService';
 import Comment from '../Comment/Comment.js';
 
-import Alert from '../../widgets';
-import Navbar_person from '../Navbars/Navbar_person';
+import { Alert } from '../../widgets';
 
 import { K_SIZE } from './../../map/controllable_hover_styles.js';
 
@@ -205,8 +204,9 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
 
   getImage(i: String) {
     let imageLink = '/image/' + i;
-    let picture = document.getElementById('picture');
-    picture.setAttribute('src', imageLink);
+    let picture: HTMLElement|null = document.getElementById('picture');
+    if(picture)
+        picture.setAttribute('src', imageLink);
   }
 
   componentDidMount() {

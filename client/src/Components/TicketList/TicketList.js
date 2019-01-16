@@ -2,7 +2,7 @@
 import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import {ticketService} from '../../Services/ticketService';
+import ticketService from '../../Services/ticketService';
 import categoryService from '../../Services/categoryService';
 import communeService from '../../Services/communeService';
 import SingleTicket from './SingleTicket';

@@ -27,7 +27,6 @@ function config() {
 class EventService {
 
     postEvent(event): Promise<Object> {
-        console.log(config)
         return axios.post(url + '/event', event, config());
     }
 

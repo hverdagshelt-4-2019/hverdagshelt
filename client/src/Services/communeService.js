@@ -8,14 +8,21 @@ class Commune{
     name : string; 
 }
 
-let config = {
-    headers: {
-        Authorization: "Bearer " + localStorage.getItem('authToken'),
+function config() {
+    let token = localStorage.getItem('authToken');
+    let Authorization = 'none';
+    if(token)
+        Authorization = "Bearer " + token;
+    return {
+        headers: {
+            Authorization
+        }
     }
 }
 
+
 export default class CommuneService{
     static getFollowedCommunes() : Promise<void>{
-        return axios.get(url + "/followedCommunes", config); 
+        return axios.get(url + "/followedCommunes", config());
     }
 }

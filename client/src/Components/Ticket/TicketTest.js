@@ -2,13 +2,11 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Navbar_person } from '../Navbars/Navbar_person';
 
-export class TicketTest extends Component {
+export default class TicketTest extends Component {
   render() {
     return (
             <div>
-                <Navbar_person />
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-8">
