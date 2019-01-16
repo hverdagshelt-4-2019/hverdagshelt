@@ -65,6 +65,10 @@ export default class TicketService {
         return axios.delete(url + '/ticket/' + ticketID, config());
     }
 
+    static getTicketsUser(): Promise<Ticket[]>{
+        return axios.get(url + '/ticketsbyuser', config());
+    }
+
     static verifyToken(): Promise<Object>{
         return axios.get(url + '/tokenValid', config());
     }
