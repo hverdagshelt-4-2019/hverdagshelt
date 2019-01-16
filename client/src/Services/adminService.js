@@ -2,7 +2,7 @@
 import axios from 'axios';
 let url = "http://localhost:3000";
 
-export default class Admin {
+class Admin {
     email: string;
 }
 
@@ -18,12 +18,13 @@ function config() {
     }
 }
 
-class AdminService {
+export default class AdminService {
 
     static createAdmin(email): Promise<Object>{
         let admin = new Admin();
         admin.email = email;
-        return axios.post(url + '/admin', config());
+        console.log('Trying to make an admin...')
+        return axios.post(url + '/admin', admin, config());
     }
 
 }

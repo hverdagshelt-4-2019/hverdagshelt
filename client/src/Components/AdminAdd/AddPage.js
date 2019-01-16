@@ -3,36 +3,42 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Route, NavLink } from 'react-router-dom';
 import ExistingUser from './ExistingUser';
-import {userService} from '../../Services/userService';
-import { adminService} from '../../Services/adminService';
-import { publicWorkerService} from '../../Services/publicWorkerService';
+import adminService from '../../Services/adminService';
+import publicWorkerService from '../../Services/publicWorkerService';
+import communeService from '../../Services/communeService';
+import userService from '../../Services/userService';
 
 //TODO: Fix so you can enter email and promote user to admin
 
 export default class AddPage extends Component{
     //Common
-    communes = [{id: '1', name: 'Trondheim' }, {id: '2', name: "Bergen"}]; //Test values
+    communes = []; //Test values
     
     //New user variables
     newEmail = '';
     password1 = '';
     password2 = '';
     typeNew = '';
-    communeNew = this.communes[0].name;
+    communeNew = '';
 
     //Existing user variables
-    existingEmail = 'skrt';
-    communeExist = this.communes[0].name;
+    existingEmail = '';
+    communeExist = '';
     typeExist = '';
     users =  [];    
+    user = '';
 
     render(){
         return(
             <div className="container" >
                 <hr/>
                 <div className="row">
-                    <div className="col-md-6">
-                        <h4>Registrer ny admin eller kommunearbeider</h4>
+                    <div className="col-md-6" style={{border: "2px solid lightblue"}}>
+                        <br/>
+                        <h4>Registrer ny admin</h4>
+                        <h4>eller</h4>
+                        <h4>kommunearbeider</h4>
+                        
                         <hr/>
                         <form>
                             <div className="form-group">
@@ -41,7 +47,6 @@ export default class AddPage extends Component{
                                 <input className="form-control" placeholder="Gjenta passord" onChange={(evt) => {this.password2 = evt.target.value}}></input>
                                 <br/>
                                 <input name="type"
-                                className="form-check-input"
                                 type="radio"
                                 value="1"
                                 id="type1"
@@ -53,7 +58,6 @@ export default class AddPage extends Component{
                                 </label>
                                 <br/>
                                 <input name="type"
-                                    className="form-check-input"
                                     type="radio"
                                     value="2"
                                     id="type2"
@@ -64,8 +68,9 @@ export default class AddPage extends Component{
                                     Kommunearbeider
                                 </label>
                             </div>
-                            <label htmlFor="communeSelector">Kommune</label>  
-                            <select id="communeSelector" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.communeNew = event.target.value)}>
+                            <label htmlFor="communeSelector">Kommune</label> 
+                            {' '} 
+                            <select className="form-control" style={{width:'100%'}} id="communeSelector" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.communeNew = event.target.value)}>
                                 {this.communes.map((commune, i) => (
                                     <option value={commune.name} key={i}>{commune.name}</option>
                                 ))}
@@ -75,14 +80,22 @@ export default class AddPage extends Component{
                         </form>
                         <hr/>
                         <button className="btn btn-primary" onClick={this.addNew}>Opprett ny</button>
+                        <br/>
+                        <br/>
                     </div>
-                    <div className="col-md-6">  
-                        <h4>Gi en eksisterende bruker admin- eller kommunerettigheter</h4>
+                    <div className="col-md-6" style={{border: "2px solid lightblue"}}> 
+                        <br/> 
+                        <h4>Gi en eksisterende bruker</h4>
+                        <h4>admin- eller</h4>
+                        <h4>kommunerettigheter</h4>
                         <hr/>
-                        <ExistingUser updateFunc={this.setExistingEmail.bind(this)}/>
+                        <select className="form-control" style={{width:'100%'}} id="userSelector" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.existingEmail = event.target.value)}>
+                            {this.users.map((user, i) => (
+                                <option value={user.email} key={i}>{user.email}</option>
+                            ))}
+                        </select>
                         <br/>
                         <input name="type"
-                            className="form-check-input"
                             type="radio"
                             value="1"
                             id="type1"                                
@@ -94,7 +107,6 @@ export default class AddPage extends Component{
                             </label>
                             <br/>
                             <input name="type"
-                                className="form-check-input"
                                 type="radio"
                                 value="2"                                    
                                 id="type2"                                    
@@ -105,35 +117,48 @@ export default class AddPage extends Component{
                                 Kommunearbeider
                             </label>
                             <br/>
-                            <label htmlFor="communeSelector">Kommune</label>  
-                            <select id="communeSelector" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.communeExist = event.target.value)}>
+                            <br/>
+                            <label htmlFor="communeSelector">Kommune</label> 
+                            {' '} 
+                            <select className="form-control" style={{width:'100%'}} id="communeSelector" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.communeExist = event.target.value)}>
                                 {this.communes.map((commune, i) => (
                                     <option value={commune.name} key={i}>{commune.name}</option>
                                 ))}
                             </select>
                             <br/>
                             <br/>
+                            <hr/>
                             <button className="btn btn-primary" onClick={this.updateExisting}>Opprett fra eksisterende</button>
                     </div>
-                </div> 
+                </div>
+                <div style={{height: '150px'}} /> 
             </div>
         )
     }
 
-    addNew(){
-        if(this.password1 == this.password2){
-            userService.createUser(this.newEmail, this.password1);
+    async addNew(){
+        if(this.password1 == this.password2 && this.typeNew){
+            console.log(this.newEmail + " " + this.password1);
+            await userService.createUser(this.newEmail, this.password1)
+                .then(res => {
+                    if(res.status === 200) console.log("Ny bruker er registrert!");
+                    else {
+                        console.log("Kunne ikke legge til bruker fordi grunner.");
+                        return;
+                    };
+                })  
             if(this.typeNew == 1){
-                console.log("New admin: " + this.newEmail);
                 adminService.createAdmin(this.newEmail);
+                window.location.reload();
             }
             else if (this.typeNew == 2 ){
                 console.log("New commune worker: " + this.newEmail, this.communeNew);
                 publicWorkerService.createPublicWorker(this.newEmail, this.communeNew);
+                window.location.reload();
             }
         }
         else{
-            alert("Passordene du skrev inn stemmer ikke overens.");
+            alert("Feil");
         }
     }
 
@@ -141,15 +166,36 @@ export default class AddPage extends Component{
         if(this.typeExist == 1){
             console.log("Admin from existing user: " + this.existingEmail);
             adminService.createAdmin(this.existingEmail);
+            window.location.reload();
         }
         else if(this.typeExist == 2){
             console.log("Commune worker from existing user: " + this.existingEmail + " " + this.communeExist);
             publicWorkerService.createPublicWorker(this.existingEmail, this.communeExist);
+            window.location.reload();
+        }
+        else{
+            alert("Velg type");
         }
     }
 
     setExistingEmail(email){
         this.existingEmail = email;
+    }
+
+    mounted(){
+        //Get all communes
+        communeService.getAllCommunes()
+        .then(communes => this.communes = communes.data)
+        .catch((error : Error) => console.log(error.message));
+
+        //Get all users 
+        userService.getUsers() 
+        .then(users => this.users = users.data)
+        .catch((error : Error) => console.log(error.message));
+    }
+
+    componentDidMount(){
+        this.communeNew = communes[0].name;
     }
 
 }

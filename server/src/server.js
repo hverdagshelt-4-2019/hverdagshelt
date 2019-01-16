@@ -476,7 +476,7 @@ export function create_app(pool) {
                 res.sendStatus(401);
             } else {
                 if(authData.user.isadmin) {
-                    publicworkerdao.createPublicworker(req.body, (stauts, data) =>{
+                    publicworkerdao.createPublicworker(req.body, (status, data) =>{
                         res.status(status);
                         res.json(data);
                     });
