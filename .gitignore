@@ -71,3 +71,8 @@ fetchtesting.js
 flow-typed
 
 build
+
+server.crt
+server.key
+
+client/public/images/*

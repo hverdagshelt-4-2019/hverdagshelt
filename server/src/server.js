@@ -370,7 +370,7 @@ export function create_app(pool) {
                                 from: 'Hverdagsheltene',
                                 to: userdata[0].email,
                                 subject: 'Registrering av problem',
-                                text: 'Du har registrert ett nytt problem.\nSe problemet på: http://localhost:3000/sak/' + data.insertId
+                                text: 'Du har registrert ett nytt problem.\nSe problemet på: '+config.domainname+'/sak/' + data.insertId
                             };
                             sendEmail(transporter, mailOptions);
                         });
@@ -523,7 +523,7 @@ export function create_app(pool) {
                 res.sendStatus(401);
             } else {
                 if(authData.user.isadmin) {
-                    publicworkerdao.createPublicworker(req.body, (stauts, data) =>{
+                    publicworkerdao.createPublicworker(req.body, (status, data) =>{
                         res.status(status);
                         res.json(data);
                     });
@@ -559,7 +559,7 @@ export function create_app(pool) {
             } else {
                 console.log(req.body.submitter_id);
                 console.log(authData.user.id);
-                if(req.body.submitter_id == authData.user.id) {
+                if(req.body.email == authData.user.id) {
                     ticketdao.editTicket(req.params.id, req.body, (status, data) => {
                        console.log("Edited ticket");
                        res.status(status);
@@ -690,12 +690,12 @@ export function create_app(pool) {
             } else {
                 ticketdao.setStatus(req.params.ticket_id, req.body, (status, data) =>{
                     if(status == 200) {
-                        console.log(data[0].email);
+                        console.log(req.body.email);
                         let mailOptions = {
                             from: 'Hverdagsheltene',
                             to: req.body.email,
                             subject: 'Status oppdatering',
-                            text: ('Ditt problem har fått ny status. Sjekk ny status på: http://localhost:3000/sak/' + req.params.ticket_id)
+                            text: ('Ditt problem har fått ny status. Sjekk ny status på: '+config.domainname+'/sak/' + req.params.ticket_id)
                         }
                         sendEmail(transporter, mailOptions)
                         res.status(status);
@@ -713,9 +713,12 @@ export function create_app(pool) {
             if(err) {
                 console.log(err);
             } else {
-                ticketdao.setStatus(req.params.ticket_id, req.body, (status, data) =>{
-                    res.status(status);
-                    res.json(data);
+                companydao.getByMail(req.body.name, (status, data) =>{
+                    console.log(data[0].id)
+                    ticketdao.setResponsibility(req.params.ticket_id, data[0], (status2, data2) =>{
+                        res.status(status2);
+                        res.json(data2);
+                    });
                 });
             }
         });

@@ -30,8 +30,6 @@ npm test
 ```
 
 ## Tests: server
-This test is being run on git lab. Go to CI/CD then Piplines to see test results
+This test is being run on travis. Go to CI/CD then Piplines to see test results
 
-## Open application
-http://localhost:8080/
 

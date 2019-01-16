@@ -1,5 +1,4 @@
 import axios from 'axios';
-let url = "http://localhost:3000";
 
 class Ticket {
     submitter_email;
@@ -30,7 +29,7 @@ function config() {
 
 function getCommune(lat: number, long: number): Promise<Object> {
         console.log("Finding commune...");
-        return axios.get(url + '/communeByCoordinates/' + lat + '/' + long, config());
+        return axios.get('/communeByCoordinates/' + lat + '/' + long, config());
     }
 
 export default class TicketService {
@@ -45,17 +44,17 @@ export default class TicketService {
         await getCommune(lat, long).then((response) => ticket.commune = response.data.kommune).catch((error : Error) => console.log(error.message));
         console.log("Posting ticket...");
         console.log(ticket.commune);
-        return axios.post(url + '/ticket', ticket, config());
+        return axios.post('/ticket', ticket, config());
     }
 
     static getTicket(ticketID): Promise<Ticket>{
         console.log("getting ticket");
-        return axios.get(url + '/ticket/' + ticketID);
+        return axios.get('/ticket/' + ticketID);
     }
 
 
     static getAllTickets(): Promise<Ticket[]>{
-        return axios.get(url + '/tickets', config());
+        return axios.get('/tickets', config());
     }
 
     static async editTicket(ticketID: number, category: string, title: string, description: string, lat: number, long: number, submitter_email: string): Promise<Object>{
@@ -69,20 +68,28 @@ export default class TicketService {
         await getCommune(lat, long).then((response) => ticket.commune = response.data.kommune).catch((error : Error) => console.log(error.message));
         console.log("Posting ticket...");
         console.log(ticket.commune);
-        console.log(ticket.long)
-        console.log(ticket.lat)
-        return axios.put(url + '/ticketedit/' + ticketID, ticket, config());
+        console.log(ticket.long);
+        console.log(ticket.lat);
+        return axios.put('/ticketedit/' + ticketID, ticket, config());
     }
 
     static deleteTicket(ticketID): Promise<Object>{
-        return axios.delete(url + '/ticket/' + ticketID, config());
+        return axios.delete('/ticket/' + ticketID, config());
+    }
+
+    static setStatus(id, obj): Promise<Object> {
+        return axios.put("/ticketstatus/" + id, obj, config());
+    }
+
+    static setCompany(id, obj): Promise<Object> {
+        return axios.put('/ticketcomp/' + id, obj, config());
     }
 
     static getTicketsUser(): Promise<Ticket[]>{
-        return axios.get(url + '/ticketsByUser', config());
+        return axios.get('/ticketsByUser', config());
     }
 
     static verifyToken(): Promise<Object>{
-        return axios.get(url + '/tokenValid', config());
+        return axios.get('/tokenValid', config());
     }
 }

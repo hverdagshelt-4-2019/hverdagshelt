@@ -11,12 +11,15 @@ let config =
         debug: false
     },
 
-    port: 3000,
+    port: 3000,//port: 80,
+    httpsport: 443,
 
     email: {
         user: "hverdagsheltene4@gmail.com",
         pass: "set password in private.config.js"
     },
+
+    domainname: "hverdagsheltene.no",
 
     test: {
         mysql: {

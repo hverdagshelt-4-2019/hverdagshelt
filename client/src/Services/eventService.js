@@ -1,5 +1,4 @@
 import axios from 'axios';
-let url = "http://localhost:3000";
 
 class Event {
     id;
@@ -27,23 +26,23 @@ function config() {
 class EventService {
 
     postEvent(event): Promise<Object> {
-        return axios.post(url + '/event', event, config());
+        return axios.post('/event', event, config());
     }
 
     getEvent(eventID): Promise<Event>{
-        return axios.get(url + '/event/' + eventID);
+        return axios.get('/event/' + eventID);
     }
 
     getAllEvents(): Promise<Event[]>{
-        return axios.get(url + '/events');
+        return axios.get('/events');
     }
 
     editEvent(eventID, event): Promise<Object> {
-        return axios.put(url + '/event/' + eventID, event, config());
+        return axios.put('/event/' + eventID, event, config());
     }
 
     deleteEvent(eventID): Promise<Object> {
-        return axios.delete(url + '/event/' + eventID, config());
+        return axios.delete('/event/' + eventID, config());
     }
 }
 
