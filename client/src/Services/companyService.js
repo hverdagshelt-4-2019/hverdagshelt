@@ -1,5 +1,4 @@
 import axios from 'axios';
-let url = 'http://localhost:3000';
 
 class Company {
     id;
@@ -9,6 +8,6 @@ class Company {
 
 export default class CompanyService {
     static getCompanies(): Promise<Company[]> {
-        return axios.get(url + '/companies')
+        return axios.get('/companies')
     }
 }

@@ -7,8 +7,7 @@
     "test": "jest"
   },
   "jest": {
-    "testRegex": "./tests/.+Test\\.js$",
-    "testURL": "http://localhost"
+    "testRegex": "./tests/.+Test\\.js$"
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",

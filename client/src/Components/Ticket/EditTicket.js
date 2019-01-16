@@ -155,7 +155,7 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
         }else{
             console.log("No token");
         }
-        let url = "http://localhost:3000/image/";
+        let url = "/image/";
         console.log("postImage");
         let file = document.getElementById("InputFile").files[0];
         console.log(file);

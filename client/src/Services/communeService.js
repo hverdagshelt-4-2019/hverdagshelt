@@ -26,6 +26,6 @@ export default class CommuneService{
     }
 
     static getAllCommunes() : Promise<Commune[]>{
-        return axios.get(url + "/communes");
+        return axios.get("/communes");
     }
 }

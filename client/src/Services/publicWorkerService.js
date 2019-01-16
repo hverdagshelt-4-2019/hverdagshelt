@@ -23,6 +23,6 @@ export default class PublicWorkerService {
         let publicWorker = new PublicWorker();
         publicWorker.email = email;
         publicWorker.commune = commune;
-        return axios.post('/publicworker', publicworker, config());
+        return axios.post('/publicworker', publicWorker, config());
     }
 }

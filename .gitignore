@@ -74,3 +74,5 @@ build
 
 server.crt
 server.key
+
+client/public/images/*

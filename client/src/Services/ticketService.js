@@ -44,7 +44,7 @@ export default class TicketService {
         await getCommune(lat, long).then((response) => ticket.commune = response.data.kommune).catch((error : Error) => console.log(error.message));
         console.log("Posting ticket...");
         console.log(ticket.commune);
-        return axios.post(url + '/ticket', ticket, config());
+        return axios.post('/ticket', ticket, config());
     }
 
     static getTicket(ticketID): Promise<Ticket>{
@@ -78,11 +78,11 @@ export default class TicketService {
     }
 
     static setStatus(id, obj): Promise<Object> {
-        return axios.put(url + "/ticketstatus/" + id, obj, config());
+        return axios.put("/ticketstatus/" + id, obj, config());
     }
 
     static setCompany(id, obj): Promise<Object> {
-        return axios.put(url + '/ticketcomp/' + id, obj, config());
+        return axios.put('/ticketcomp/' + id, obj, config());
     }
 
     static getTicketsUser(): Promise<Ticket[]>{
