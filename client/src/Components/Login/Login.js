@@ -23,6 +23,9 @@ export default class Login extends Component {
                 if(result !== null) {
                     localStorage.setItem('authToken', result.data.token);
                     localStorage.setItem('level', result.data.level);
+                    localStorage.setItem('id', result.data.id);
+                    localStorage.setItem('commune', result.data.commune);
+                    localStorage.setItem('company', result.data.company);
                     this.redirect = true;
                 }
             });

@@ -2,6 +2,7 @@ import axios from 'axios';
 let url = "http://localhost:3000";
 
 class Ticket {
+    submitter_email;
     commune;
     category;
     title;
@@ -9,7 +10,7 @@ class Ticket {
     picture;
     status;
     submitted_time;
-    company;
+    company_name;
     lat;
     long;
 }
@@ -26,14 +27,15 @@ function config() {
     }
 }
 
+
 function getCommune(lat: number, long: number): Promise<Object> {
         console.log("Finding commune...");
         return axios.get(url + '/communeByCoordinates/' + lat + '/' + long, config());
     }
 
-class TicketService {
+export default class TicketService {
 
-    async postTicket(category: string, title: string, description: string, lat: number, long: number): Promise<Object> {
+    static async postTicket(category: string, title: string, description: string, lat: number, long: number): Promise<Object> {
         let ticket = new Ticket();
         ticket.title = title;
         ticket.category = category;
@@ -46,22 +48,29 @@ class TicketService {
         return axios.post(url + '/ticket', ticket, config());
     }
 
-    getTicket(ticketID): Promise<Ticket>{
+    static getTicket(ticketID): Promise<Ticket>{
         console.log("getting ticket");
         return axios.get(url + '/ticket/' + ticketID);
     }
 
-    getAllTickets(communes): Promise<Ticket[]>{
-        return axios.get(url + '/tickets', communes);
+
+    static getAllTickets(): Promise<Ticket[]>{
+        return axios.get(url + '/tickets', config());
     }
 
-    editTicket(ticketID, ticket): Promise<Object>{
+    static editTicket(ticketID, ticket): Promise<Object>{
         return axios.put(url + '/ticket/' + ticketID, ticket, config());
     }
 
-    deleteTicket(ticketID): Promise<Object>{
+    static deleteTicket(ticketID): Promise<Object>{
         return axios.delete(url + '/ticket/' + ticketID, config());
     }
-}
 
-export let ticketService = new TicketService;
+    static getTicketsUser(): Promise<Ticket[]>{
+        return axios.get(url + '/ticketsByUser', config());
+    }
+
+    static verifyToken(): Promise<Object>{
+        return axios.get(url + '/tokenValid', config());
+    }
+}
