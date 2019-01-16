@@ -15,18 +15,24 @@ body {
     padding-bottom: 6rem;
     min-height: 100%;
 }
+
+@media (max-width:1250px) {
+    .navbar{
+        font-size: 14px;
+    }
+  }
 @media (max-width:1150px) {
   .navbar{
-      font-size: 13px;
+      font-size: 12px;
   }
 }
 @media (max-width:1000px) {
   .navbar{
-      font-size: 10px;
+      font-size: 9px;
   }
   @media (max-width:850px) {
     .navbar{
-        font-size: 8px;
+        font-size: 7px;
     }
 }
 @media (max-width:767px) {
