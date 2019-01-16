@@ -2,7 +2,7 @@
 /* eslint eqeqeq: "off" */
 import * as React from 'react';
 import { Component,} from 'react-simplified';
-import {NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import GoogleMapReact from 'google-map-react';
 import shouldPureComponentUpdate from 'react-pure-render/function';
@@ -13,7 +13,7 @@ import CommuneService from "../Services/communeService";
 import axios from 'axios';
 
 import {K_SIZE} from './controllable_hover_styles.js';
-import {ticketService} from "../Services/ticketService";
+import ticketService from "../Services/ticketService";
 
 class ticket {
     id: string;

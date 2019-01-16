@@ -6,7 +6,7 @@ export default class CommuneDao extends Dao{
     }
 
     getFollowed(id, callback) {
-        super.query("SELECT commune.name FROM commune JOIN person_CROSS_commune pc ON commune.name = pc.commune_name WHERE person_id = ?", [id], callback);
+        super.query("SELECT commune_name FROM person_CROSS_commune pc WHERE person_id = ?", [id], callback);
     }
 
     getNotFollowed(id, callback) {

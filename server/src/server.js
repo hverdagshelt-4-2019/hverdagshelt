@@ -56,17 +56,24 @@ export function create_app(pool) {
         jwt.verify(req.token, 'key', (err, authData) =>{
             let level = 'none';
             let commune = 'false';
+            let company = 'false';
+            let id = -1;
             if(!err){
+                id = authData.user.id;
                 if(authData.user.isadmin) level = 'admin';
                 else if (authData.user.publicworkercommune){
                     level = 'publicworker';
                     commune = authData.user.publicworkercommune;
                 }
+                else if (authData.user.companyname){
+                    level = 'company';
+                    company = authData.user.companyname;
+                }
                 else level = 'user';
             }
             console.log(authData);
             res.status(200);
-            res.json({level, commune})
+            res.json({level, id, commune, company})
         });
     });
 
@@ -86,24 +93,52 @@ export function create_app(pool) {
         });
     });
 
-    app.post("/tickets", (req, res) =>{
-        console.log(req.body);
-        let communes = [];
-        if(req.body && req.body.length > 0 ) {
-            req.body.forEach(c => communes.push(c.name));
-            console.log('COMMUNES');
-            console.log(communes);
-            ticketdao.getTicketsByCommune(communes, (status, data) => {
-                res.status(status);
-                res.json(data);
-            });
-        } else {
-            console.log('NO COMMUNES');
-            ticketdao.getAllTickets((status, data) =>{
-                res.status(status);
-                res.json(data);
-            });
-        }
+    app.get("/tickets", verifyToken2, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if (err) {
+                ticketdao.getAllTickets((status, data) => {
+                    res.status(status);
+                    res.json(data);
+                });
+            } else {
+                console.log(authData.user.publicworkercommune);
+                if(authData.user.publicworkercommune) {
+                    let communes = [authData.user.publicworkercommune];
+                    console.log(authData.user.publicworkercommune);
+                    ticketdao.getTicketsByCommune(communes, (status, data) => {
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else if(authData.user.companyname) {
+                    ticketdao.getTicketsByCompany(authData.user.id, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    communedao.getFollowed(authData.user.id, (status, data) => {
+                        if (status == 200) {
+                            let communes = data.map(e => e.commune_name);
+                            if (communes.length) {
+                                ticketdao.getTicketsByCommune(communes, (status2, data2) => {
+                                    console.log(data2);
+                                    res.status(status2);
+                                    res.json(data2);
+                                });
+
+                            } else {
+                                ticketdao.getAllTickets((status2, data2) => {
+                                    console.log(data2);
+                                    res.status(status2);
+                                    res.json(data2);
+                                })
+                            }
+                        } else {
+                            res.sendStatus(500);
+                        }
+                    });
+                }
+            }
+        });
     });
 
     app.get("/tickets/category", (req, res) =>{
@@ -111,6 +146,19 @@ export function create_app(pool) {
         ticketdao.getTicketsByCategory(req.body.communes, req.body.categories, (status, data) =>{
             res.status(status);
             res.json(data);
+        });
+    });
+
+    app.get("/ticketsByUser", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                res.sendStatus(401);
+            } else {
+                ticketdao.getTicketsByUser(authData.user.id, (status, data) =>{
+                    res.status(status);
+                    res.json(data);
+                });
+            }
         });
     });
 
@@ -148,7 +196,6 @@ export function create_app(pool) {
 
     app.get("/ticketcat", (req, res) => {
         categorydao.getAllTicket((status, data) => {
-            console.log('data:' + data);
             res.status(status);
             res.json(data);
         });
@@ -207,7 +254,7 @@ export function create_app(pool) {
     app.get("/unfollowedCommunes", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
-                res.sendStatus(418);
+                res.sendStatus(401);
             } else {
                 communedao.getNotFollowed(authData.user.id, (status, data) => {
                     res.status(status);
@@ -275,18 +322,22 @@ export function create_app(pool) {
                     email: req.body.email,
                     id: data[0].id,
                     isadmin: (data[0].isAdmin != null),
+                    companyname: (data[0].companyname != null ? data[0].companyname : false),
                     publicworkercommune: (data[0].commune_name != null ? data[0].commune_name : false)    // Null if not a publicworker
                 };
                 console.log(JSON.stringify(user));
                 let level = 'user';
                 if(user.isadmin) level = 'admin';
                 else if (user.publicworkercommune) level = 'publicworker';
+                else if (user.companyname) level = 'company';
                 jwt.sign({user}, 'key', {expiresIn: '30d'}, (err, token) => {
                     res.status(status);
                     res.json({
                         token,
                         level,
-                        commune: user.publicworkercommune
+                        id: user.id,
+                        commune: user.publicworkercommune,
+                        company: user.companyname
                     });
                 });
             } else {
@@ -788,6 +839,20 @@ export function create_app(pool) {
             next();
         }else {
             res.sendStatus(401);
+        }
+    }
+
+    function verifyToken2(req, res, next) {
+        const bearerHeader = req.headers['authorization'];
+
+        if(typeof bearerHeader !== 'undefined') {
+            const bearer = bearerHeader.split(' ');
+            const bearerToken = bearer[1];
+            req.token = bearerToken;
+            next();
+        }else {
+            req.token = 'abcdefghijklmnopqrstuvwxyz';
+            next();
         }
     }
 

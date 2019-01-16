@@ -7,8 +7,6 @@ import ReactDOM from 'react-dom';
 
 import SimpleMap  from './map/map';// Gets map component
 import UploadImage from './temp/uploadImage'
-import { Alert, Info } from './widgets';
-import { TicketTest } from './Components/Ticket/TicketTest';
 import Login from './Components/Login/Login.js';
 import Register from './Components/Login/register.js';
 import Ticket from './Components/Ticket/Ticket';
@@ -20,6 +18,7 @@ import AddPage from './Components/AdminAdd/AddPage.js';
 import Navbar from './Components/Navbars/Navbar'
 import Footer from './Components/Footer/footer'
 import userService from './Services/userService';
+import MyTickets from "./Components/TicketList/MyTickets";
 
 
 const root = document.getElementById('root');
@@ -36,6 +35,7 @@ if (root) {
                     <Route exact path="/" component={Login}/>
                     <Route path="/registrerdeg" component={Register}/>
                     <Route path="/sakliste" component={TicketList}/>
+                    <Route path="/minesaker" component={MyTickets}/>
                     <Route path="/leggtil" component={AddPage}/>
                     {res.data.level === 'admin' && <Route path="/kategorier" component={CategoryCreation}/>}
                     <Route path="/sak/:id" component={Ticket}/>
