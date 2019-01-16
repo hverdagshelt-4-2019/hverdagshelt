@@ -10,6 +10,8 @@ import { Component } from 'react-simplified';
 import { ticketService } from '../../Services/ticketService';
 import { commentService } from '../../Services/ticketCommentService';
 import Comment from '../Comment/Comment.js';
+import Dropdown from "../Dropdown/Dropdown";
+import styles from "./style.css";
 
 import Alert from '../../widgets';
 import Navbar_person from '../Navbars/Navbar_person';
@@ -51,6 +53,11 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
     super(props);
   }
 
+  editStatus(cat) {
+    let res = ticketService.setStatus(this.ticket.id, {status: cat, email: "person1@mail.no"});
+    console.log("Response: " + res);
+  }
+
   _onChange = (center, zoom /* , bounds, marginBounds */) => {
     this.props.onCenterChange(center);
     this.props.onZoomChange(zoom);
@@ -83,15 +90,21 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
       );
     });
 
+    const status = ["Ubehandlet", "Bearbeides", "Fullført", "Nektet"];
+
     return (
       <div>
         <div className="container">
           <div className="row">
             <div className="col-lg-8">
               <h1>{this.ticket.title}</h1>
-              <p className="lead">
-                Status: {this.ticket.status} <span className="glyphicon glyphicon-time" />
-              </p>
+
+              <div className={styles.statusDiv}>
+                <p className="lead" style={{marginTop: "6px"}}>Status:</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <Dropdown options={status} reciever={this.editStatus}/>
+              </div>
 
               <hr />
 

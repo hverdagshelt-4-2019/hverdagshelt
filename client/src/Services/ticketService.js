@@ -49,6 +49,10 @@ class TicketService {
     deleteTicket(ticketID): Promise<Object>{
         return axios.delete(url + '/ticket/' + ticketID, config());
     }
+
+    setStatus(id, obj): Promise<Object> {
+        return axios.put(url + "/ticketstatus/" + id, obj)
+    }
 }
 
 export let ticketService = new TicketService;
