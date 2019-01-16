@@ -37,12 +37,7 @@ class ticket {
     }
 }
 let ta = [];
-ta.push(new ticket('0',"Det har hvert hull i denne veien for flere år", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna.", 
-"veiproblemer", 8, 63.42, 10.38, "temp.jpg"));
-ta.push(new ticket('1', "Nå har lyset gått", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna."
-, "lysproblemer", 2, 63.425, 10.386, "temp.jpg"));
-ta.push(new ticket('2', "Test", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna."
-, "testproblemer", 0, 63.41, 10.3723, "0kopimaskin.jpg"));
+
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 
