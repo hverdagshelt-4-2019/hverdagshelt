@@ -10,7 +10,6 @@ import controllable from 'react-controllables';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import PropTypes from 'prop-types';
 import { Alert } from '../../widgets';
-
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
@@ -124,7 +123,6 @@ static propTypes = {
                             <label htmlFor="InputFile">Last opp bilde</label>
                             <input type="file" className="form-control-file" id="InputFile" onChange={this.handleImageAdded}/>
                             <small id="fileHelp" className="form-text text-muted"></small>
-                            {/* needs to be added function to listen to changes */}
                             <hr />
 
                             <div className = "map" style={{ height: '300px', width: '100%'}}>
