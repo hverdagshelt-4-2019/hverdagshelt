@@ -60,13 +60,9 @@ export default class TicketList extends Component{
     }
 
     mounted(){
-        //Get relevant communes for the user //OK
-        communeService.getFollowedCommunes()
-        .then((communes : Commune[]) => this.communes = communes.data)
-        .catch((error : Error) => console.log(error));
-    
+
         //Then get all the tickets from these communes
-        ticketService.getAllTickets(this.communes) //this.communes
+        ticketService.getAllTickets() //this.communes
         .then((tickets : Ticket[]) => this.tickets = tickets.data)
         .catch((error : Error) => console.log("Error occured: " + error.message));
 

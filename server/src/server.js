@@ -86,21 +86,29 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/tickets", (req, res) =>{
-        console.log(req.body);
-        let communes = [];
-        if(req.body.communes && req.body.communes.length > 0 ) {
-            req.body.communes.forEach(c => communes.push(c.name));
-            ticketdao.getTicketsByCommune(communes, (status, data) => {
-                res.status(status);
-                res.json(data);
-            });
-        } else {
-            ticketdao.getAllTickets((status, data) =>{
-                res.status(status);
-                res.json(data);
-            });
-        }
+    app.get("/tickets", verifyToken2, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if (err) {
+                ticketdao.getAllTickets((status, data) => {
+                    res.status(status);
+                    res.json(data);
+                });
+            } else {
+                communedao.getFollowed(authData.user.id, (status, data) => {
+                    if (status == 200) {
+                        let communes = [];
+                        data.forEach(e => communes.push(e.commune_name));
+                        ticketdao.getTicketsByCommune(communes, (status2, data2) => {
+                            console.log(data2)
+                            res.status(status2);
+                            res.json(data2);
+                        });
+                    } else {
+                        res.sendStatus(500);
+                    }
+                });
+            }
+        });
     });
 
     app.get("/tickets/category", (req, res) =>{
@@ -145,7 +153,6 @@ export function create_app(pool) {
 
     app.get("/ticketcat", (req, res) => {
         categorydao.getAllTicket((status, data) => {
-            console.log('data:' + data);
             res.status(status);
             res.json(data);
         });
@@ -214,13 +221,13 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/communeByCoordinates", verifyToken, (req, res) =>{
+    app.get("/communeByCoordinates/:lat/:long", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
                 res.sendStatus(401);
             } else {
-                console.log(req.body.pos);
-                getCommuneByLatLong(req.body.pos, data =>{
+                console.log([req.params.lat, req.params.long]);
+                getCommuneByLatLong([req.params.lat, req.params.long], data =>{
                     res.json(data);
                 });
             }
@@ -305,7 +312,7 @@ export function create_app(pool) {
                     title: req.body.title,
                     category: req.body.category,
                     description: req.body.description,
-                    picture: (req.body.picture != null ? req.body.picture : "./logo.PNG"),
+                    picture: (req.body.picture != null ? req.body.picture : "logo.PNG"),
                     lat: req.body.lat,
                     long: req.body.long
                 }
@@ -785,6 +792,20 @@ export function create_app(pool) {
             next();
         }else {
             res.sendStatus(401);
+        }
+    }
+
+    function verifyToken2(req, res, next) {
+        const bearerHeader = req.headers['authorization'];
+
+        if(typeof bearerHeader !== 'undefined') {
+            const bearer = bearerHeader.split(' ');
+            const bearerToken = bearer[1];
+            req.token = bearerToken;
+            next();
+        }else {
+            req.token = 'abcdefghijklmnopqrstuvwxyz';
+            next();
         }
     }
 
