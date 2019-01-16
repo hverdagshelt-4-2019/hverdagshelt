@@ -10,6 +10,7 @@ export default class Navbar extends Component {
         ['minesaker', 'Mine saker', 'folder-open'],
         ['minesvar', 'Mine svar', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
+        ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
         ['kategorier', 'Kategorier', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
@@ -19,6 +20,7 @@ export default class Navbar extends Component {
         ['minesaker', 'Mine saker', 'folder-open'],
         ['minesvar', 'Mine svar', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
+        ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
         ['kategorier', 'Kategorier', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
@@ -28,12 +30,14 @@ export default class Navbar extends Component {
         ['minesaker', 'Mine saker', 'folder-open'],
         ['minesvar', 'Mine svar', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
+        ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
         ['hjelp', 'Hjelp', 'question-circle']
     ];
     
     none_pages = [
+        ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
         ['hjelp', 'Hjelp', 'question-circle']
