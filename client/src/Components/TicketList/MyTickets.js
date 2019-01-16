@@ -28,10 +28,6 @@ export default class MyTickets extends Component{
                         <input className="form-control" type="text" placeholder="Søk"/>
                         <br/>
 
-                        <br/>
-                        <input type="checkbox" />
-                        <label>Vis arkiverte saker</label>
-
                     </div>
 
                     <div className="col-md-8" style={{
@@ -56,9 +52,9 @@ export default class MyTickets extends Component{
     mounted(){
 
         //Then get all the tickets from these communes
-        /*ticketService.getTicketsUser()
+        ticketService.getTicketsUser()
             .then((tickets : {data: Ticket[]}) => this.tickets = tickets.data)
-            .catch((error : Error) => console.log("Error occured: " + error.message));*/
+            .catch((error : Error) => console.log("Error occured: " + error.message));
 
         //--Get tickets based on commune and checked categories--
         //ticketService.getTicketsByCommuneAndCategory(this.communeId, this.categories)

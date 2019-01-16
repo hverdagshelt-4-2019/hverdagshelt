@@ -66,7 +66,7 @@ export default class TicketService {
     }
 
     static getTicketsUser(): Promise<Ticket[]>{
-        return axios.get(url + '/ticketsbyuser', config());
+        return axios.get(url + '/ticketsByUser', config());
     }
 
     static verifyToken(): Promise<Object>{
