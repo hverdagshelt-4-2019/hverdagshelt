@@ -13,7 +13,6 @@ import {K_SIZE} from './../../map/controllable_hover_styles.js';
 import { Alert } from '../../widgets';
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
-
 export default class EditTicket extends Component<{ match: { params: { id: number } } }> {
         static propTypes = {
             zoom: PropTypes.number, // @controllable
@@ -43,7 +42,15 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
             this.state = {
                 greatPlaces:  [
                 {id: 'Temp ex', lat: 63.42, lng: 10.38}
-                ]
+                ],
+                category: '',
+                commune: '',
+                title: '',
+                description: '',
+                picture: '',
+                lat: '',
+                long: '',
+                imageAdded: false
             };
         }
 
@@ -72,9 +79,14 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
             pa.lng = lng;
             this.setState({greatPlaces: [pa]});
     }
+    handleImageAdded() {
+       this.state.imageAdded ? this.setState({imageAdded: false}) : this.setState({imageAdded: true});
+   }
 
-    ticket = '';
     ticketCategories: Category[] = [];
+    ticket='';
+
+
   render() {
     return (
             <div>
@@ -86,13 +98,13 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                             <hr />
 
                             <h4>Tittel:</h4>
-                            <input className="form-control" defaultValue={this.ticket.title}/>
+                            <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))} defaultValue={this.ticket.title}/>
 
                              <h4>Beskrivelse:</h4>
-                            <textarea className="form-control" style={{width:"100%"}} defaultValue={this.ticket.description} />
+                            <textarea className="form-control" style={{width:"100%"}} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))} defaultValue={this.ticket.description} />
                                                         
                             <h4>Kategori:</h4>
-                            <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.category = event.target.value)}>
+                            <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({category: event.target.value}))}>
                                 {this.ticketCategories.map((categories, i) => (
                                 <option value={categories.name} key={i}>
                                     {categories.name}
@@ -102,9 +114,9 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
 
                             <h4>Bilde:</h4>
                            
-                            <input type="file" className="form-control-file" id="InputFile"/>
+                            <label htmlFor="InputFile">Last opp bilde</label>
+                            <input type="file" className="form-control-file" id="InputFile" onChange={this.handleImageAdded}/>
                             <small id="fileHelp" className="form-text text-muted"></small>
-                            
 
                             <hr />
 
@@ -125,7 +137,7 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                             <div style={{height: '10px'}}></div>
                             <hr />
 
-                            <button type="button" className="btn btn-primary">Lagre</button>
+                            <button type="button" className="btn btn-primary" onClick={this.save}>Lagre</button>
 
                         </div>
                     </div>
@@ -135,14 +147,63 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
         );
     }
 
+    addImage(id: number){
+        let token = localStorage.getItem('authToken');
+        let Authorization = 'none';
+        if(token){
+            Authorization = "Bearer " + token;
+        }else{
+            console.log("No token");
+        }
+        let url = "http://localhost:3000/image/";
+        console.log("postImage");
+        let file = document.getElementById("InputFile").files[0];
+        console.log(file);
+        let formData = new FormData();
+        formData.append("id", id);
+        formData.append("uploaded_image", file);
+        fetch(url,
+            {
+                method: "POST",
+                headers:
+                    {
+                        "authorization": Authorization
+                    },
+                body: formData,
+            })
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+        })
+        .catch(error => {
+            console.error("Error: ", error);
+        });
+    }
+
+    async save() {
+        let postId: Number;
+        await ticketService
+        .editTicket(this.props.match.params.id, this.state.category, this.state.title, this.state.description, this.state.greatPlaces[0].lat, this.state.greatPlaces[0].lng, this.ticket.submitter_email)
+        .then((response) => {
+            postId = response.data.insertId;
+        })
+        .catch((error : Error) => console.log(error.message));
+        console.log(postId);
+
+        if(postId !== null && this.state.imageAdded){
+        this.addImage(postId);
+        }
+        console.log(this.state.imageAdded);
+    }
+
     mounted() {
         categoryService.getTicketCategories()
         .then((categories: Array<Category>) => this.ticketCategories = categories.data)
         .catch((error : Error) => console.log(error.message));
 
         ticketService
-            .getTicket(this.props.match.params.id)
-            .then(ticket => (this.ticket = ticket.data[0]))
-            .catch((error : Error) => console.log(error.message));
+        .getTicket(this.props.match.params.id)
+        .then(ticket => (this.ticket = ticket.data[0]))
+        .catch((error : Error) => console.log(error.message));
     }
 }
