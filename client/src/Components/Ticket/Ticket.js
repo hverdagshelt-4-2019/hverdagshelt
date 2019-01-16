@@ -96,6 +96,9 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               <p className="lead">
                 Status: {this.ticket.status} <span className="glyphicon glyphicon-time" />
               </p>
+              <p className="col-lg-8">
+                Registrert av: {this.ticket.submitter_email}
+              </p>
 
               <hr />
 
@@ -108,7 +111,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               </p>
 
               <p>
-                <b>Bedrift:</b> {this.ticket.company}
+                <b>Bedrift:</b> {this.ticket.company_name}
               </p>
 
               <p>
