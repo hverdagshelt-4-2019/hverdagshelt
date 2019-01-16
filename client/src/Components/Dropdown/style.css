@@ -1,0 +1,18 @@
+.root {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.root > button {
+    padding: 3px 10px;
+}
+
+.holder {
+    display: flex;
+    flex-direction: row;
+}
+
+.formControl {
+    min-width: 120px;
+}

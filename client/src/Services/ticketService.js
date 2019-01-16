@@ -78,6 +78,14 @@ export default class TicketService {
         return axios.delete(url + '/ticket/' + ticketID, config());
     }
 
+    static setStatus(id, obj): Promise<Object> {
+        return axios.put(url + "/ticketstatus/" + id, obj, config());
+    }
+
+    static setCompany(id, obj): Promise<Object> {
+        return axios.put(url + '/ticketcomp/' + id, obj, config());
+    }
+
     static getTicketsUser(): Promise<Ticket[]>{
         return axios.get(url + '/ticketsByUser', config());
     }

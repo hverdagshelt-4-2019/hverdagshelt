@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "@material-ui/core": "^3.9.0",
     "axios": "^0.18.0",
+    "css-loader": "^2.1.0",
     "google-map-react": "^1.1.2",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.3.1",
@@ -26,7 +28,6 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.0.4",
     "react-simplified": "^1.5.1",
-    "css-loader": "^2.1.0",
     "style-loader": "^0.23.1"
   },
   "devDependencies": {
