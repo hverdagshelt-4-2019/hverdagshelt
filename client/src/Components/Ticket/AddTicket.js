@@ -14,7 +14,7 @@ import { Alert } from '../../widgets';
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
-export default class AddTicket extends Component {
+export default class AddTicket extends Component<{ match: { params: { id: number } } }> {
 static propTypes = {
         zoom: PropTypes.number, // @controllable
         hoverKey: PropTypes.string, // @controllable
