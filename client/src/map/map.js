@@ -37,12 +37,6 @@ class ticket {
     }
 }
 let ta = [];
-ta.push(new ticket('0',"Det har hvert hull i denne veien for flere år", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna.", 
-"veiproblemer", 8, 63.42, 10.38, "temp.jpg"));
-ta.push(new ticket('1', "Nå har lyset gått", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna."
-, "lysproblemer", 2, 63.425, 10.386, "temp.jpg"));
-ta.push(new ticket('2', "Test", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna."
-, "testproblemer", 0, 63.41, 10.3723, "0kopimaskin.jpg"));
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 
@@ -80,35 +74,24 @@ export default class SimpleMap extends Component {
     componentWillMount(){
 
         let communes = [];
-        let validToken = 0;
-        ticketService.verifyToken().then(res => (validToken = res.status)).then(res =>{
-            console.log(validToken);
-        if(validToken === 200){
-            console.log('valid');
-            CommuneService.getFollowedCommunes()
-                .then(res => {communes = res.data;
-                //console.log(communes);
-                let marks = [];
-                let list = [];
-                ticketService.getAllTickets(communes).then(res => {
-                    list = res.data;
-                    list.forEach(commune => {
-                    //console.log(commune.lat);
-                    //console.log(commune.lng);
-                    ta.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.id, commune.lat, commune.lng, commune.picture));
-                    //console.log(ta);
-                    })
-                   
-                    console.log(ta);
-                    this.setState({greatPlaces: ta});
-                    console.log(this.state.greatPlaces);
-                    this._onChildMouseEnter (1);
-                    this._onChildMouseLeave();
-                })
-                })
-        } else {
-            console.log('not valid');
-        }})
+        console.log('valid');
+        console.log(communes);
+        let list = [];
+        ticketService.getAllTickets(communes).then(res => {
+            list = res.data;
+            list.forEach(commune => {
+            //console.log(commune.lat);
+            //console.log(commune.lng);
+            ta.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.id, commune.lat, commune.lng, commune.picture));
+            //console.log(ta);
+            })
+            console.log(ta);
+            this.setState({greatPlaces: ta});
+            console.log(this.state.greatPlaces);
+            this._onChildMouseEnter (1);
+            this._onChildMouseLeave();
+        })
+
     }
 
     _onChange = (center, zoom /* , bounds, marginBounds */) => {
