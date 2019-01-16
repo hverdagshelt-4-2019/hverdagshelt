@@ -9,9 +9,11 @@ import shouldPureComponentUpdate from 'react-pure-render/function';
 import controllable from 'react-controllables';
 import css from './styleMap.css';
 import ControllableHover from './controllable_hover.js';
+import CommuneService from "../Services/communeService";
 import axios from 'axios';
 
 import {K_SIZE} from './controllable_hover_styles.js';
+import {ticketService} from "../Services/ticketService";
 
 class ticket {
     id: string;
@@ -74,12 +76,29 @@ export default class SimpleMap extends Component {
         };
     }
 
-    componentWillMount(){
-       /* console.log(ta);
-        ta.forEach(ticket => {
-            console.log(ticket.lat);
-            this.props.greatPlaces.push({id: ticket.id, lat: ticket.lat, lon: ticket.lon});    
-        })*/
+    mounted(){
+        let communes = [];
+        let validToken = 0;
+        ticketService.verifyToken().then(res => (validToken = res.status)).then(res =>{
+            console.log(validToken);
+        if(validToken === 200){
+            console.log('valid');
+            CommuneService.getFollowedCommunes()
+                .then(res => {communes = res.data;
+                console.log(communes);
+                ticketService.getAllTickets(communes).then(res => {
+                    ta = res.data;
+                    console.log(ta);
+                    ta.forEach(commune => {
+                    console.log(commune.lat);
+                    console.log(commune.lng);
+                    this.props.greatPlaces.push({id: commune.id, lat: commune.lat, lon: commune.lng});
+                    })
+                })
+                })
+        } else {
+            console.log('not valid');
+        }})
     }
 
     _onChange = (center, zoom /* , bounds, marginBounds */) => {
