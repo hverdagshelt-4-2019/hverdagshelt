@@ -56,17 +56,24 @@ export function create_app(pool) {
         jwt.verify(req.token, 'key', (err, authData) =>{
             let level = 'none';
             let commune = 'false';
+            let company = 'false';
+            let id = -1;
             if(!err){
+                id = authData.user.id;
                 if(authData.user.isadmin) level = 'admin';
                 else if (authData.user.publicworkercommune){
                     level = 'publicworker';
                     commune = authData.user.publicworkercommune;
                 }
+                else if (authData.user.companyname){
+                    level = 'company';
+                    company = authData.user.companyname;
+                }
                 else level = 'user';
             }
             console.log(authData);
             res.status(200);
-            res.json({level, commune})
+            res.json({level, id, commune, company})
         });
     });
 
@@ -286,18 +293,22 @@ export function create_app(pool) {
                     email: req.body.email,
                     id: data[0].id,
                     isadmin: (data[0].isAdmin != null),
+                    companyname: (data[0].companyname != null),
                     publicworkercommune: (data[0].commune_name != null ? data[0].commune_name : false)    // Null if not a publicworker
                 };
                 console.log(JSON.stringify(user));
                 let level = 'user';
                 if(user.isadmin) level = 'admin';
                 else if (user.publicworkercommune) level = 'publicworker';
+                else if (user.companyname) level = 'company';
                 jwt.sign({user}, 'key', {expiresIn: '30d'}, (err, token) => {
                     res.status(status);
                     res.json({
                         token,
                         level,
-                        commune: user.publicworkercommune
+                        id: user.id,
+                        commune: user.publicworkercommune,
+                        company: user.companyname
                     });
                 });
             } else {

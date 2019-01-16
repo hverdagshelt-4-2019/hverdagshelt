@@ -22,7 +22,15 @@ export default class Navbar extends Component {
         ['leggtilsak', 'Legg til sak', 'plus'],
         ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['kategorier', 'Kategorier', 'list'],
+        ['statistikk', 'Statistikk', 'chart-bar'],
+        ['hjelp', 'Hjelp', 'question-circle']
+    ];
+    company_pages = [
+        ['minesaker', 'Mine saker', 'folder-open'],
+        ['minesvar', 'Mine svar', 'folder-open'],
+        ['leggtilsak', 'Legg til sak', 'plus'],
+        ['sakliste', 'Saker', 'list'],
+        ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
         ['hjelp', 'Hjelp', 'question-circle']
     ];
@@ -35,7 +43,7 @@ export default class Navbar extends Component {
         ['statistikk', 'Statistikk', 'chart-bar'],
         ['hjelp', 'Hjelp', 'question-circle']
     ];
-    
+
     none_pages = [
         ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
