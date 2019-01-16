@@ -47,36 +47,28 @@ export default class TicketList extends Component{
                         <div>
                             {this.tickets.map((ticket, i) => (
                                 <SingleTicket 
+                                    key={i}
                                     theTicket={ticket}
                                 />
                             ))}
                         </div>
                     </div>
                 </div>
+                <div style={{height: '150px'}} />
             </div>
         )
     }
 
     mounted(){
-        
         //Get relevant communes for the user //OK
         communeService.getFollowedCommunes()
         .then((communes : Commune[]) => this.communes = communes.data)
         .catch((error : Error) => console.log(error));
-        
-
-        let kommuner = {
-            'communes':[
-                {'name':'Sel'}
-            ]
-        }
-
+    
         //Then get all the tickets from these communes
-        ticketService.getAllTickets(kommuner) //this.communes
+        ticketService.getAllTickets(this.communes) //this.communes
         .then((tickets : Ticket[]) => this.tickets = tickets.data)
         .catch((error : Error) => console.log("Error occured: " + error.message));
-
-        
 
         //Get categories for the possibility to filter //OK
         categoryService.getTicketCategories()
@@ -109,5 +101,8 @@ export default class TicketList extends Component{
           e.setAttribute("class", "fa fa-arrow-right");
        }
    }
+
+   
+
 
 }
