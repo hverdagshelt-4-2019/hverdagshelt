@@ -57,12 +57,32 @@ export default class TicketService {
         return axios.get('/tickets', config());
     }
 
-    static editTicket(ticketID, ticket): Promise<Object>{
-        return axios.put('/ticket/' + ticketID, ticket, config());
+    static async editTicket(ticketID: number, category: string, title: string, description: string, lat: number, long: number, submitter_email: string): Promise<Object>{
+        let ticket = new Ticket();
+        ticket.title = title;
+        ticket.category = category;
+        ticket.description = description;
+        ticket.lat = lat;
+        ticket.long = long;
+        ticket.submitter_email = submitter_email;
+        await getCommune(lat, long).then((response) => ticket.commune = response.data.kommune).catch((error : Error) => console.log(error.message));
+        console.log("Posting ticket...");
+        console.log(ticket.commune);
+        console.log(ticket.long);
+        console.log(ticket.lat);
+        return axios.put('/ticketedit/' + ticketID, ticket, config());
     }
 
     static deleteTicket(ticketID): Promise<Object>{
         return axios.delete('/ticket/' + ticketID, config());
+    }
+
+    static setStatus(id, obj): Promise<Object> {
+        return axios.put(url + "/ticketstatus/" + id, obj, config());
+    }
+
+    static setCompany(id, obj): Promise<Object> {
+        return axios.put(url + '/ticketcomp/' + id, obj, config());
     }
 
     static getTicketsUser(): Promise<Ticket[]>{

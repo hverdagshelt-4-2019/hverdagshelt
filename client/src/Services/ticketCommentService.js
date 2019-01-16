@@ -21,7 +21,7 @@ export default class commentService {
 
     static postComment(ticketID, description): Promise<Object> {
         console.log({description});
-        return axios.post('/comment/' + ticketID, {description}, config);
+        return axios.post('/comment/' + ticketID, {description}, config());
     }
 
     static getAllComments(ticketID): Promise<Comment[]>{

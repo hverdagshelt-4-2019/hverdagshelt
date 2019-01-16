@@ -24,4 +24,8 @@ export default class CommuneService{
     static getFollowedCommunes() : Promise<void>{
         return axios.get("/followedCommunes", config());
     }
+
+    static getAllCommunes() : Promise<Commune[]>{
+        return axios.get(url + "/communes");
+    }
 }

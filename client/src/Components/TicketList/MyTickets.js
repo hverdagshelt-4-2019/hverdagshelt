@@ -14,18 +14,20 @@ import Ticket from '../Ticket/Ticket';
 export default class MyTickets extends Component{
     communes = [];
     tickets = [];
+    filter = '';
 
     render(){
         return(
             <div className='container'>
                 <h1>Liste over saker du har sendt inn</h1>
                 <br/>
+
                 <div className="row">
                     <div className="col-md-4" style={{
                         border: "2px solid lightblue",
                     }}>
                         <br/>
-                        <input className="form-control" type="text" placeholder="Søk"/>
+                        <input className="form-control" type="text" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.filter = event.target.value)} placeholder="Søk"/>
                         <br/>
 
                     </div>

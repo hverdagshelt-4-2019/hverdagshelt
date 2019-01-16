@@ -64,7 +64,7 @@ export default class TicketDao extends Dao {
     }
 
     setResponsibility(id, json, callback) {
-        let params = [json.company, id];
+        let params = [json.id, id];
         super.query("UPDATE ticket SET responsible_company_id = ? WHERE ticket.id = ?", params, callback);
     }
 
