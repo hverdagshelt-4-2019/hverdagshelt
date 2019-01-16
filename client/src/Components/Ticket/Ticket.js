@@ -183,8 +183,8 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
         this.props.greatPlaces[0].lat=this.ticket.lat;
         this.props.greatPlaces[0].lng=this.ticket.lng;
         console.log("lat: " + this.ticket.lat + ". lng: " + this.ticket.lng)
-        console.log(this.ticket.picture)
-        this.getImage(this.ticket.picture)//xss 
+        console.log(this.ticket.picture);
+        this.getImage(this.ticket.picture)//xss
         this.state.center.lat=this.ticket.lat;
         this.state.center.lng=this.ticket.lng;
       })

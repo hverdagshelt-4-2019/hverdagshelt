@@ -2,8 +2,7 @@ import axios from 'axios';
 let url = "http://localhost:3000";
 
 class Ticket {
-    responsible_commune;
-    submitter_email;
+    commune;
     category;
     title;
     description;
@@ -12,7 +11,7 @@ class Ticket {
     submitted_time;
     company;
     lat;
-    lng;
+    long;
 }
 
 function config() {
@@ -27,9 +26,23 @@ function config() {
     }
 }
 
+function getCommune(lat: number, long: number): Promise<Object> {
+        console.log("Finding commune...");
+        return axios.get(url + '/communeByCoordinates/' + lat + '/' + long, config());
+    }
+
 class TicketService {
 
-    postTicket(ticket): Promise<Object> {
+    async postTicket(category: string, title: string, description: string, lat: number, long: number): Promise<Object> {
+        let ticket = new Ticket();
+        ticket.title = title;
+        ticket.category = category;
+        ticket.description = description;
+        ticket.lat = lat;
+        ticket.long = long;
+        await getCommune(lat, long).then((response) => ticket.commune = response.data.kommune).catch((error : Error) => console.log(error.message));
+        console.log("Posting ticket...");
+        console.log(ticket.commune);
         return axios.post(url + '/ticket', ticket, config());
     }
 
@@ -39,7 +52,8 @@ class TicketService {
     }
 
     getAllTickets(communes): Promise<Ticket[]>{
-        return axios.get(url + '/tickets', communes);
+        console.log(communes);
+        return axios.post(url + '/tickets', communes);
     }
 
     editTicket(ticketID, ticket): Promise<Object>{
@@ -48,6 +62,10 @@ class TicketService {
 
     deleteTicket(ticketID): Promise<Object>{
         return axios.delete(url + '/ticket/' + ticketID, config());
+    }
+
+    verifyToken(): Promise<Object>{
+        return axios.get(url + '/tokenValid', config());
     }
 }
 
