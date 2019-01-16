@@ -18,6 +18,16 @@ export default class TicketDao extends Dao {
       callback
     );
   }
+
+    getTicketsByCompany(companyId, callback) {
+        super.query(
+            'SELECT t.id, email as submitter_email, responsible_commune, c2.name as company_name, category, ' +
+            'title, description, picture, submitted_time, finished_time, status, lat, lng FROM ticket t JOIN person p ' +
+            'ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id WHERE responsible_company_id = ?;',
+            [companyId],
+            callback
+        )
+    }
   
     getTicketsByCategory(communes, categories, callback) {
         super.query("SELECT t.id, email as submitter_email, responsible_commune, c2.name as company_name, category, " +

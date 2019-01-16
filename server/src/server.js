@@ -94,19 +94,34 @@ export function create_app(pool) {
                     res.json(data);
                 });
             } else {
-                communedao.getFollowed(authData.user.id, (status, data) => {
-                    if (status == 200) {
-                        let communes = [];
-                        data.forEach(e => communes.push(e.commune_name));
-                        ticketdao.getTicketsByCommune(communes, (status2, data2) => {
-                            console.log(data2)
-                            res.status(status2);
-                            res.json(data2);
-                        });
-                    } else {
-                        res.sendStatus(500);
-                    }
-                });
+                console.log(authData.user.publicworkercommune);
+                if(authData.user.publicworkercommune) {
+                    let communes = [authData.user.publicworkercommune];
+                    console.log(authData.user.publicworkercommune);
+                    ticketdao.getTicketsByCommune(communes, (status, data) => {
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else if(authData.user.companyname) {
+                    ticketdao.getTicketsByCompany(authData.user.id, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    communedao.getFollowed(authData.user.id, (status, data) => {
+                        if (status == 200) {
+                            let communes = [];
+                            data.forEach(e => communes.push(e.commune_name));
+                            ticketdao.getTicketsByCommune(communes, (status2, data2) => {
+                                console.log(data2)
+                                res.status(status2);
+                                res.json(data2);
+                            });
+                        } else {
+                            res.sendStatus(500);
+                        }
+                    });
+                }
             }
         });
     });
@@ -117,6 +132,10 @@ export function create_app(pool) {
             res.status(status);
             res.json(data);
         });
+    });
+
+    app.get("/ticketsByUser/:userid", (req, res) =>{
+
     });
 
     app.get("/event/:id", (req, res) =>{
@@ -211,7 +230,7 @@ export function create_app(pool) {
     app.get("/unfollowedCommunes", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
-                res.sendStatus(418);
+                res.sendStatus(401);
             } else {
                 communedao.getNotFollowed(authData.user.id, (status, data) => {
                     res.status(status);
