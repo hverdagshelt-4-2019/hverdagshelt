@@ -17,7 +17,7 @@ import { K_SIZE } from './../../map/controllable_hover_styles.js';
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 export default class Ticket extends Component<{ match: { params: { id: number } } }> {
-  ticket: {lat:any, lng:any, picture:any};
+  ticket: {lat:any, lng:any, picture:any} = {lat: '', lng: '', picture: ''};
   sub_date = null;
   comments = [];
 
