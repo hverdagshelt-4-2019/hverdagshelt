@@ -1,5 +1,4 @@
 import axios from 'axios';
-let url = "http://localhost:3000";
 
 class Ticket {
     submitter_email;
@@ -30,7 +29,7 @@ function config() {
 
 function getCommune(lat: number, long: number): Promise<Object> {
         console.log("Finding commune...");
-        return axios.get(url + '/communeByCoordinates/' + lat + '/' + long, config());
+        return axios.get('/communeByCoordinates/' + lat + '/' + long, config());
     }
 
 export default class TicketService {
@@ -50,27 +49,27 @@ export default class TicketService {
 
     static getTicket(ticketID): Promise<Ticket>{
         console.log("getting ticket");
-        return axios.get(url + '/ticket/' + ticketID);
+        return axios.get('/ticket/' + ticketID);
     }
 
 
     static getAllTickets(): Promise<Ticket[]>{
-        return axios.get(url + '/tickets', config());
+        return axios.get('/tickets', config());
     }
 
     static editTicket(ticketID, ticket): Promise<Object>{
-        return axios.put(url + '/ticket/' + ticketID, ticket, config());
+        return axios.put('/ticket/' + ticketID, ticket, config());
     }
 
     static deleteTicket(ticketID): Promise<Object>{
-        return axios.delete(url + '/ticket/' + ticketID, config());
+        return axios.delete('/ticket/' + ticketID, config());
     }
 
     static getTicketsUser(): Promise<Ticket[]>{
-        return axios.get(url + '/ticketsByUser', config());
+        return axios.get('/ticketsByUser', config());
     }
 
     static verifyToken(): Promise<Object>{
-        return axios.get(url + '/tokenValid', config());
+        return axios.get('/tokenValid', config());
     }
 }

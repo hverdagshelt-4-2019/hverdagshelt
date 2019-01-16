@@ -1,7 +1,6 @@
 //@flow 
 
 import axios from 'axios';
-let url = 'http://localhost:3000';
 
 class Commune{
     id : number; 
@@ -23,6 +22,6 @@ function config() {
 
 export default class CommuneService{
     static getFollowedCommunes() : Promise<void>{
-        return axios.get(url + "/followedCommunes", config());
+        return axios.get("/followedCommunes", config());
     }
 }

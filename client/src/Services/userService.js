@@ -1,6 +1,5 @@
 // @flow
 import axios from 'axios';
-let url = `http://localhost:3000`;
 
 class User {
     email;
@@ -23,7 +22,7 @@ function config() {
 export default class userService {
 
     static getLevel() : Promise<{data: {level: string, commune: string}}> {
-        return axios.get(url + '/level', config())
+        return axios.get('/level', config())
     }
     static loginUser(
         email: string,
@@ -32,26 +31,26 @@ export default class userService {
         let user = new User();
         user.email = email;
         user.password = password;
-        return axios.post(url + '/login', user);
+        return axios.post('/login', user);
     }
 
     static createUser(email: string, password: string): Promise<Object>{
         let user = new User();
         user.email = email;
         user.password = password;
-        return axios.post(url + '/user', user);
+        return axios.post('/user', user);
     }
 
    static updatePassword(oldPassword: string, newPassword: string): Promise<Object>{
-       return axios.post(url + '/userpass', {oldPassword, newPassword});
+       return axios.post('/userpass', {oldPassword, newPassword});
    }
 
    static updateEmail(email: string): Promise<Object>{
-        return axios.post(url + '/usermail', {email});
+        return axios.post('/usermail', {email});
    }
 
    static getUsers() : Promise<User[]>{
-       return axios.get(url + '/users');
+       return axios.get('/users');
    }
 }
 

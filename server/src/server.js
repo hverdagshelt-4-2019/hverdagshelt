@@ -370,7 +370,7 @@ export function create_app(pool) {
                                 from: 'Hverdagsheltene',
                                 to: userdata[0].email,
                                 subject: 'Registrering av problem',
-                                text: 'Du har registrert ett nytt problem.\nSe problemet på: http://localhost:3000/sak/' + data.insertId
+                                text: 'Du har registrert ett nytt problem.\nSe problemet på: '+config.domainname+'/sak/' + data.insertId
                             };
                             sendEmail(transporter, mailOptions);
                         });
@@ -695,7 +695,7 @@ export function create_app(pool) {
                             from: 'Hverdagsheltene',
                             to: req.body.email,
                             subject: 'Status oppdatering',
-                            text: ('Ditt problem har fått ny status. Sjekk ny status på: http://localhost:3000/sak/' + req.params.ticket_id)
+                            text: ('Ditt problem har fått ny status. Sjekk ny status på: '+config.domainname+'/sak/' + req.params.ticket_id)
                         }
                         sendEmail(transporter, mailOptions)
                         res.status(status);
