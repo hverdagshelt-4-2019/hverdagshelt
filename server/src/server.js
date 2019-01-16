@@ -559,7 +559,7 @@ export function create_app(pool) {
             } else {
                 console.log(req.body.submitter_id);
                 console.log(authData.user.id);
-                if(req.body.submitter_id == authData.user.id) {
+                if(req.body.email == authData.user.id) {
                     ticketdao.editTicket(req.params.id, req.body, (status, data) => {
                        console.log("Edited ticket");
                        res.status(status);
@@ -713,9 +713,12 @@ export function create_app(pool) {
             if(err) {
                 console.log(err);
             } else {
-                ticketdao.setStatus(req.params.ticket_id, req.body, (status, data) =>{
-                    res.status(status);
-                    res.json(data);
+                companydao.getByMail(req.body.name, (status, data) =>{
+                    console.log(data[0].id)
+                    ticketdao.setResponsibility(req.params.ticket_id, data[0], (status2, data2) =>{
+                        res.status(status2);
+                        res.json(data2);
+                    });
                 });
             }
         });
