@@ -47,12 +47,14 @@ export default class TicketList extends Component{
                         <div>
                             {this.tickets.map((ticket, i) => (
                                 <SingleTicket 
+                                    key={i}
                                     theTicket={ticket}
                                 />
                             ))}
                         </div>
                     </div>
                 </div>
+                <div style={{height: '150px'}} />
             </div>
         )
     }
@@ -63,8 +65,6 @@ export default class TicketList extends Component{
         ticketService.getAllTickets() //this.communes
         .then((tickets : Ticket[]) => this.tickets = tickets.data)
         .catch((error : Error) => console.log("Error occured: " + error.message));
-
-        
 
         //Get categories for the possibility to filter //OK
         categoryService.getTicketCategories()
@@ -97,5 +97,8 @@ export default class TicketList extends Component{
           e.setAttribute("class", "fa fa-arrow-right");
        }
    }
+
+   
+
 
 }
