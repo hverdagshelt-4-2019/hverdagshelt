@@ -214,13 +214,13 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/communeByCoordinates", verifyToken, (req, res) =>{
+    app.get("/communeByCoordinates/:lat/:long", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
                 res.sendStatus(401);
             } else {
-                console.log(req.body.pos);
-                getCommuneByLatLong(req.body.pos, data =>{
+                console.log([req.params.lat, req.params.long]);
+                getCommuneByLatLong([req.params.lat, req.params.long], data =>{
                     res.json(data);
                 });
             }
@@ -305,7 +305,7 @@ export function create_app(pool) {
                     title: req.body.title,
                     category: req.body.category,
                     description: req.body.description,
-                    picture: (req.body.picture != null ? req.body.picture : "./logo.PNG"),
+                    picture: (req.body.picture != null ? req.body.picture : "logo.PNG"),
                     lat: req.body.lat,
                     long: req.body.long
                 }
