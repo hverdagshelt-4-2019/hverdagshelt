@@ -149,8 +149,17 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/ticketsByUser/:userid", (req, res) =>{
-
+    app.get("/ticketsByUser", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                res.sendStatus(401);
+            } else {
+                ticketdao.getTicketsByUser(authData.user.id, (status, data) =>{
+                    res.status(status);
+                    res.json(data);
+                });
+            }
+        });
     });
 
     app.get("/event/:id", (req, res) =>{

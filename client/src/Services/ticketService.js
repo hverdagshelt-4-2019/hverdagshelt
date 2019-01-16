@@ -2,6 +2,7 @@ import axios from 'axios';
 let url = "http://localhost:3000";
 
 class Ticket {
+    submitter_email;
     commune;
     category;
     title;
@@ -9,7 +10,7 @@ class Ticket {
     picture;
     status;
     submitted_time;
-    company;
+    company_name;
     lat;
     long;
 }
@@ -63,6 +64,10 @@ export default class TicketService {
 
     static deleteTicket(ticketID): Promise<Object>{
         return axios.delete(url + '/ticket/' + ticketID, config());
+    }
+
+    static getTicketsUser(): Promise<Ticket[]>{
+        return axios.get(url + '/ticketsByUser', config());
     }
 
     static verifyToken(): Promise<Object>{
