@@ -2,7 +2,7 @@
 /* eslint eqeqeq: "off" */
 import * as React from 'react';
 import { Component,} from 'react-simplified';
-import {NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import GoogleMapReact from 'google-map-react';
 import shouldPureComponentUpdate from 'react-pure-render/function';
@@ -13,7 +13,7 @@ import CommuneService from "../Services/communeService";
 import axios from 'axios';
 
 import {K_SIZE} from './controllable_hover_styles.js';
-import {ticketService} from "../Services/ticketService";
+import ticketService from "../Services/ticketService";
 
 class ticket {
     id: string;
@@ -37,12 +37,6 @@ class ticket {
     }
 }
 let ta = [];
-ta.push(new ticket('0',"Det har hvert hull i denne veien for flere år", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna.", 
-"veiproblemer", 8, 63.42, 10.38, "temp.jpg"));
-ta.push(new ticket('1', "Nå har lyset gått", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna."
-, "lysproblemer", 2, 63.425, 10.386, "temp.jpg"));
-ta.push(new ticket('2', "Test", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae placerat neque. Aenean et ornare lectus, et malesuada tellus. Praesent ullamcorper volutpat felis id semper. Pellentesque mattis egestas aliquet. Vivamus tempus orci nec neque hendrerit scelerisque. Fusce non augue eu ex blandit tristique. Pellentesque eget tincidunt urna, et imperdiet turpis. Vivamus imperdiet arcu eget ullamcorper ultricies. Donec volutpat nibh eget lobortis consectetur. Phasellus aliquam risus tellus, in tincidunt neque blandit eu. Duis vel fermentum urna."
-, "testproblemer", 0, 63.41, 10.3723, "0kopimaskin.jpg"));
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 
@@ -73,32 +67,31 @@ export default class SimpleMap extends Component {
         super(props);
         this.state = {
             cId: -1,
+            greatPlaces: ta
         };
     }
 
-    mounted(){
+    componentWillMount(){
+
         let communes = [];
-        let validToken = 0;
-        ticketService.verifyToken().then(res => (validToken = res.status)).then(res =>{
-            console.log(validToken);
-        if(validToken === 200){
-            console.log('valid');
-            CommuneService.getFollowedCommunes()
-                .then(res => {communes = res.data;
-                console.log(communes);
-                ticketService.getAllTickets(communes).then(res => {
-                    ta = res.data;
-                    console.log(ta);
-                    ta.forEach(commune => {
-                    console.log(commune.lat);
-                    console.log(commune.lng);
-                    this.props.greatPlaces.push({id: commune.id, lat: commune.lat, lon: commune.lng});
-                    })
-                })
-                })
-        } else {
-            console.log('not valid');
-        }})
+        console.log('valid');
+        console.log(communes);
+        let list = [];
+        ticketService.getAllTickets(communes).then(res => {
+            list = res.data;
+            list.forEach(commune => {
+            //console.log(commune.lat);
+            //console.log(commune.lng);
+            ta.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.id, commune.lat, commune.lng, commune.picture));
+            //console.log(ta);
+            })
+            console.log(ta);
+            this.setState({greatPlaces: ta});
+            console.log(this.state.greatPlaces);
+            this._onChildMouseEnter (1);
+            this._onChildMouseLeave();
+        })
+
     }
 
     _onChange = (center, zoom /* , bounds, marginBounds */) => {
@@ -108,9 +101,11 @@ export default class SimpleMap extends Component {
 
     _onChildClick = (key, childProps) => {
         this.props.onCenterChange([childProps.lat, childProps.lng]);
-        console.log(childProps.text);
-        console.log(ta[childProps.text]);
-        let localTicket = ta[childProps.text];
+        console.log(childProps);
+        console.log(this.state.greatPlaces.filter(e => e.id== childProps.id));
+        let lt = this.state.greatPlaces.filter(e => e.id== childProps.id);
+        let localTicket = lt[0];
+        console.log(localTicket);
 
         this.getImage(localTicket.pic);
 
@@ -146,26 +141,13 @@ export default class SimpleMap extends Component {
 
 
     render() {
-        const places = this.props.greatPlaces
-        .map(place => {
-            const {id, ...coords} = place;
-
-            return (
-                <ControllableHover
-                key={id}
-                {...coords}
-                text={id}
-                // use your hover state (from store, react-controllables etc...)
-                hover={this.props.hoverKey === id} />
-            );
-        });
         return (
             <div id="aroundMap" className={css.aroundMap}>
                 <div style={{height: '10px'}}></div>
                 <button type="button" className={"btn btn-primary "+css.btnCase}>Legg til sak</button>
                 <div className = {css.leftSide} style={{height: '75vh'}}>
                     <NavLink id="goToCase" className="nav-link" to={"/sak/"+this.state.cId}>
-                    <img id="picture" src="logo.png" className={"img-fluid "+css.ticketImg} alt="Responsive image"/>
+                    <img id="picture" src="/image/logo.png" className={"img-fluid "+css.ticketImg} alt="Responsive image"/>
                     <br/>
                     <br/>
                     <h5 id="header" className={css.header}>Velkommen til hverdagshelt</h5>
@@ -180,16 +162,23 @@ export default class SimpleMap extends Component {
                 
                 <div className={css.map} style={{ height: '75vh'}}>
                     <GoogleMapReact
-                    bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
-                    center={this.props.center}
-                    zoom={this.props.zoom}
-                    hoverDistance={K_SIZE / 2}
-                    onBoundsChange={this._onBoundsChange}
-                    onChildClick={this._onChildClick}
-                    onChildMouseEnter={this._onChildMouseEnter}
-                    onChildMouseLeave={this._onChildMouseLeave}
-                    >
-                    {places}
+                        bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
+                        center={this.props.center}
+                        zoom={this.props.zoom}
+                        hoverDistance={K_SIZE / 2}
+                        onBoundsChange={this._onBoundsChange}
+                        onChildClick={this._onChildClick}
+                        onChildMouseEnter={this._onChildMouseEnter}
+                        onChildMouseLeave={this._onChildMouseLeave}
+                        >
+                        {this.state.greatPlaces.map(greatPlace =>
+                        <ControllableHover
+                            key={greatPlace.id}
+                            {...greatPlace}
+                            text={greatPlace.id}
+                            hover={this.props.hoverKey === greatPlace.id}
+                             />
+                        )}
                     </GoogleMapReact>
                 </div>
                 <div style={{height: '85vh'}}></div>

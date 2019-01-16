@@ -28,7 +28,7 @@ export default class userService {
     static loginUser(
         email: string,
         password: string
-    ): Promise<{data: {token: string, level: string}}> {
+    ): Promise<{data: {token: string, level: string, id: string, commune: string, company: string}}> {
         let user = new User();
         user.email = email;
         user.password = password;

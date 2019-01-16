@@ -1,10 +1,9 @@
-import {ReactDOM} from 'react-dom';
+import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Route, NavLink } from 'react-router-dom';
 import userService from '../../Services/userService';
-import { adminService} from '../../Services/adminService';
-import { publicWorkerService } from '../../Services/publicWorkerService';
+import adminService from '../../Services/adminService';
+import publicWorkerService from '../../Services/publicWorkerService';
 
 export default class ExistingUser extends Component{
     users=[{id:1, email:"mail"}, {id:2, email:"mail2"}]; //Test values

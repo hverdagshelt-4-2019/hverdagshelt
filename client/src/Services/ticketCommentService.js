@@ -6,20 +6,26 @@ class Comment {
    email
 }
 
-let config = {
-    headers: {
-        Authorization: "Bearer " + localStorage.getItem('authToken'),
+function config() {
+    let token = localStorage.getItem('authToken');
+    let Authorization = 'none';
+    if(token)
+        Authorization = "Bearer " + token;
+    return {
+        headers: {
+            Authorization
+        }
     }
 }
 
-class CommentService {
+export default class commentService {
 
-    postComment(ticketID, description): Promise<Object> {
+    static postComment(ticketID, description): Promise<Object> {
         console.log({description});
-        return axios.post(url + '/comment/' + ticketID, {description}, config);
+        return axios.post(url + '/comment/' + ticketID, {description}, config());
     }
 
-    getAllComments(ticketID): Promise<Comment[]>{
+    static getAllComments(ticketID): Promise<Comment[]>{
         return axios.get(url + '/comments/' + ticketID);
     }
 
@@ -28,5 +34,3 @@ class CommentService {
         return axios.delete(url + '/ticket/' + ticketID, config);
     }*/
 }
-
-export let commentService = new CommentService;

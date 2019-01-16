@@ -2,19 +2,18 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import {ticketService} from '../../Services/ticketService';
+import ticketService from '../../Services/ticketService';
 import categoryService from '../../Services/categoryService';
 import GoogleMapReact from 'google-map-react';
 import ControllableHover from './../../map/controllable_hover.js';
 import controllable from 'react-controllables';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import PropTypes from 'prop-types';
-import Alert from '../../widgets';
-
+import { Alert } from '../../widgets';
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
-export default class AddTicket extends Component {
+export default class AddTicket extends Component<{ match: { params: { id: number } } }> {
 static propTypes = {
         zoom: PropTypes.number, // @controllable
         hoverKey: PropTypes.string, // @controllable
@@ -43,20 +42,20 @@ static propTypes = {
         this.state = {
             greatPlaces:  [
             {id: 'Temp ex', lat: 63.42, lng: 10.38}
-            ]
+            ],
+            category: '',
+            commune: '',
+            title: '',
+            description: '',
+            picture: '',
+            lat: '',
+            long: '',
+            imageAdded: false
         };
+        this.handleImageAdded = this.handleImageAdded.bind(this);
     }
 
     ticketCategories: Category[] = [];
-    ticket = {
-        category: '',
-        commune: '',
-        title: '',
-        description: '',
-        picture: '',
-        lat: '',
-        long:''
-    };
 
      _onChange = (center, zoom /* , bounds, marginBounds */) => {
         this.props.onCenterChange(center);
@@ -77,25 +76,19 @@ static propTypes = {
     }
 
    _onClick = ({x, y, lat, lng, event}) => {
-       this.ticket.lat = lat;
-       this.ticket.long = lng;
        console.log(lat, lng);
         let pa = this.state.greatPlaces[0];
         pa.lat = lat;
         pa.lng = lng;
-        this.setState({greatPlaces: [pa]});
+        this.setState({greatPlaces: [pa],
+        lat : lat,
+        long: lng
+        });
    }
 
-
-    ticketCategories: Category[] = [];
-    ticket = {
-        category: '',
-        title: '',
-        description: '',
-        picture: '',
-        lat: '',
-        long:''
-    };
+   handleImageAdded() {
+       this.state.imageAdded ? this.setState({imageAdded: false}) : this.setState({imageAdded: true});
+   }
 
   render() {
     return (
@@ -103,21 +96,21 @@ static propTypes = {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-8">
-                            <h1>Rapporter en ny sak:</h1>
+                            <h1>Rapporter en ny sak</h1>
 
                             <hr />
 
                             <h4>Tittel</h4>
-                            <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.title = event.target.value)}/>
+                            <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))}/>
 
                              <h4>Beskrivelse</h4>
                             <textarea className="form-control" style={{width:"100%"}} 
-                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.description = event.target.value)}
+                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))}
                             />
 
                             <h4>Kategori</h4>
                             
-                            <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.ticket.category = event.target.value)}>
+                            <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({category: event.target.value}))}>
                                 {this.ticketCategories.map((categories, i) => (
                                 <option value={categories.name} key={i}>
                                     {categories.name}
@@ -128,9 +121,8 @@ static propTypes = {
 
                             <h4>Bilde</h4>
                             <label htmlFor="InputFile">Last opp bilde</label>
-                            <input type="file" className="form-control-file" id="InputFile"/>
+                            <input type="file" className="form-control-file" id="InputFile" onChange={this.handleImageAdded}/>
                             <small id="fileHelp" className="form-text text-muted"></small>
-                            {/* needs to be added function to listen to changes */}
                             <hr />
 
                             <div className = "map" style={{ height: '300px', width: '100%'}}>
@@ -162,18 +154,59 @@ static propTypes = {
     );
   }
 
+  addImage(id: number){
+        let token = localStorage.getItem('authToken');
+        let Authorization = 'none';
+        if(token){
+            Authorization = "Bearer " + token;
+        }else{
+            console.log("No token");
+        }
+        let url = "http://localhost:3000/image/";
+        console.log("postImage");
+        let file = document.getElementById("InputFile").files[0];
+        console.log(file);
+        let formData = new FormData();
+        formData.append("id", id);
+        formData.append("uploaded_image", file);
+        fetch(url,
+            {
+                method: "POST",
+                headers:
+                    {
+                        "authorization": Authorization
+                    },
+                body: formData,
+            })
+        .then(response => response.json())
+        .then(json => {
+            console.log(json);
+        })
+        .catch(error => {
+            console.error("Error: ", error);
+        });
+    }
+
+    async save() {
+        let postId: Number;
+        await ticketService
+        .postTicket(this.state.category, this.state.title, this.state.description, this.state.lat, this.state.long)
+        .then((response) => {
+            postId = response.data.insertId;
+        })
+        .catch((error : Error) => console.log(error.message));
+        console.log(postId);
+
+        if(postId !== null && this.state.imageAdded){
+        this.addImage(postId);
+        }
+        console.log(this.state.imageAdded);
+    }
+
     mounted() {
         categoryService.getTicketCategories()
         .then((categories: Array<Category>) => this.ticketCategories = categories.data)
         .catch((error : Error) => console.log(error.message));
         
-    }
-    save() {
-        ticketService
-        .postTicket(this.ticket.category, this.ticket.title, this.ticket.description, this.ticket.lat, this.ticket.long)
-        .then(() => {
-            console.log('Great success, buddy!');
-        })
-        .catch((error : Error) => console.log(error.message));
     }
 }
