@@ -35,7 +35,7 @@ if (root) {
                     <Route exact path="/hjem" component={SimpleMap}/>
                     <Route exact path="/" component={Login}/>
                     <Route path="/registrerdeg" component={Register}/>
-                    <Route path="/sakliste" component={TicketList}/>
+                    <Route path="/minesaker" component={TicketList}/>
                     <Route path="/leggtil" component={AddPage}/>
                     {res.data.level === 'admin' && <Route path="/kategorier" component={CategoryCreation}/>}
                     <Route path="/sak/:id" component={Ticket}/>
