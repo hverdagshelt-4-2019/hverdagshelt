@@ -39,7 +39,8 @@ class TicketService {
     }
 
     getAllTickets(communes): Promise<Ticket[]>{
-        return axios.get(url + '/tickets', communes);
+        console.log(communes);
+        return axios.post(url + '/tickets', communes);
     }
 
     editTicket(ticketID, ticket): Promise<Object>{
@@ -48,6 +49,10 @@ class TicketService {
 
     deleteTicket(ticketID): Promise<Object>{
         return axios.delete(url + '/ticket/' + ticketID, config());
+    }
+
+    verifyToken(): Promise<Object>{
+        return axios.get(url + '/tokenValid', config());
     }
 }
 

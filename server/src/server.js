@@ -86,16 +86,19 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/tickets", (req, res) =>{
+    app.post("/tickets", (req, res) =>{
         console.log(req.body);
         let communes = [];
-        if(req.body.communes && req.body.communes.length > 0 ) {
-            req.body.communes.forEach(c => communes.push(c.name));
+        if(req.body && req.body.length > 0 ) {
+            req.body.forEach(c => communes.push(c.name));
+            console.log('COMMUNES');
+            console.log(communes);
             ticketdao.getTicketsByCommune(communes, (status, data) => {
                 res.status(status);
                 res.json(data);
             });
         } else {
+            console.log('NO COMMUNES');
             ticketdao.getAllTickets((status, data) =>{
                 res.status(status);
                 res.json(data);
