@@ -690,7 +690,7 @@ export function create_app(pool) {
             } else {
                 ticketdao.setStatus(req.params.ticket_id, req.body, (status, data) =>{
                     if(status == 200) {
-                        console.log(data[0].email);
+                        console.log(req.body.email);
                         let mailOptions = {
                             from: 'Hverdagsheltene',
                             to: req.body.email,

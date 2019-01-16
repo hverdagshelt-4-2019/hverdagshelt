@@ -107,7 +107,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 <p className="lead" style={{marginTop: "6px"}}>Status:</p>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
-                <Dropdown options={status} reciever={this.editStatus}/>
+                {this.ticket.status && <Dropdown options={status} currValue={this.ticket.status} reciever={this.editStatus}/>}
               </div>
 
               <p className="col-lg-8">

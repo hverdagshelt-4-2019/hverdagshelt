@@ -27,6 +27,15 @@ export default class Dropdown extends Component {
         this.props.reciever(this.state.value);
     }
 
+    componentDidMount() {
+        const currValue = this.props.currValue? this.props.currValue : "";
+        console.log("Props: " + this.props.currValue);
+        console.log("Compnent mounted and currValue is: " + currValue);
+        this.setState({
+            value: currValue
+        })
+    }
+
     render(){
         const items = this.props.options? this.props.options : [];
         return (
