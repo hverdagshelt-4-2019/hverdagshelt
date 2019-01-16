@@ -9,7 +9,7 @@ class Ticket {
     picture;
     status;
     submitted_time;
-    company;
+    company_name;
     lat;
     long;
 }
