@@ -29,6 +29,7 @@ export default class CommuneService{
         return axios.get(url + "/communes");
     }
 
+    // TODO: Fix this method.
     static followCommune(communeName): Promise<void>{
         return axios.post(url + "/followCommune/" + communeName)
     }

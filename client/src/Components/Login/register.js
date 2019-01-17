@@ -54,7 +54,7 @@ export default class Register extends Component {
         this.warning = null;
         if(!this.checkFields()) return;
         if(this.password1 === this.password2) {
-            userService.createUser(this.email, this.password1)
+            userService.createUser(this.email, this.password1, this.commune)
                 .then(res => {
                     if(res.status === 200) {
                         this.success = "Ny bruker er registrert!";
