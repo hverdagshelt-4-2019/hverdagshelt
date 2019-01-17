@@ -101,9 +101,12 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                             <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))} defaultValue={this.ticket.title}/>
 
                              <h4>Beskrivelse:</h4>
+                             {/* fix default value */}
                             <textarea className="form-control" style={{width:"100%"}} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))} defaultValue={this.ticket.description} />
+                            
                                                         
                             <h4>Kategori:</h4>
+                            {/* add default value */}
                             <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({category: event.target.value}))}>
                                 {this.ticketCategories.map((categories, i) => (
                                 <option value={categories.name} key={i}>
@@ -111,15 +114,17 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                                 </option>
                                 ))}
                             </select>
+                            
 
                             <h4>Bilde:</h4>
-                           
+                            {/* add default value */}
                             <label htmlFor="InputFile">Last opp bilde</label>
                             <input type="file" className="form-control-file" id="InputFile" onChange={this.handleImageAdded}/>
                             <small id="fileHelp" className="form-text text-muted"></small>
-
+                            
                             <hr />
 
+                            {/* add default value */}
                             <div className = "map" style={{ height: '300px', width: '100%'}}>
                                 <GoogleMapReact
                                     bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
@@ -155,7 +160,7 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
         }else{
             console.log("No token");
         }
-        let url = "http://localhost:3000/image/";
+        let url = "/image/";
         console.log("postImage");
         let file = document.getElementById("InputFile").files[0];
         console.log(file);
@@ -181,6 +186,11 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
     }
 
     async save() {
+        if (!this.state.title) this.state.title = this.ticket.title;
+        if (!this.state.description) this.state.description = this.ticket.description;
+        if (!this.state.category) this.state.category = this.ticket.category;
+        if (!this.state.long) this.state.long = this.ticket.long;
+        if (!this.state.lat) this.state.lat = this.ticket.lat;
         let postId: Number;
         await ticketService
         .editTicket(this.props.match.params.id, this.state.category, this.state.title, this.state.description, this.state.greatPlaces[0].lat, this.state.greatPlaces[0].lng, this.ticket.submitter_email)
@@ -194,6 +204,7 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
         this.addImage(postId);
         }
         console.log(this.state.imageAdded);
+        
     }
 
     mounted() {

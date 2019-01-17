@@ -14,49 +14,58 @@ import Ticket from '../Ticket/Ticket';
 export default class TicketList extends Component{
     communes = [];
     ticketCategories : Category[] = []; //Ticking off input box will add category to the array
-    tickets = []; 
+    allTickets = [];
+    constructor() {
+        super();
+        this.state = {
+            tickets: []
+        };
+    } 
 
     render(){
         return(
-            <div className='container'>
+            <div>
                 <h1>Liste over saker</h1>
                 <br/>
-                    <div className="col-xs-6 col-sm-pull-9 sidebar-offcanvas" id="sidebar">
-                        <h5 id="tempText">Kategorier:</h5>
-                        <button className="btn" onClick={this.changeArrow} data-toggle="collapse" href="#allOptionsCat">
-                            <i id="arrow" data-temp="false" className="fa fa-arrow-right"></i> 
-                        </button>
-                        <div className="list-group collapse in" id="allOptionsCat" style={{width: '300px'}}>
-                            <p className="list-group-item bg-primary" style={{color: "white"}}>Velg kategorier</p>
-                            <li className="list-group-item">
-                                <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input" id="checkAll" defaultChecked/>
-                                <label className="form-check-label" htmlFor="checkAll">Alle kategorier</label>
-                            </li>
-                            {this.ticketCategories.map(category =>
-                            <li key={category.name} className="list-group-item">
-                                <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input markCheck" id={"check"+category.name} defaultChecked/>
-                                <label className="form-check-label" htmlFor={"check"+category.name}>{category.name}</label>
-                            </li>
-                            )}
-                            <li className="list-group-item">
-                                <br/>
-                                <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input" id="arkiverteSaker"/>
-                                <label className="form-check-label" htmlFor="arkiverteSaker">Vis arkiverte saker</label>
-                            </li>
-                            <button type="submit list-group-item" className="btn btn-primary">Sorter</button>
-                        </div>
+                <div className="col-xs-6 col-sm-pull-9 sidebar-offcanvas" id="sidebar" style={{width: '25%', float: 'left', margin: '10px'}}>
+                    <h5 id="tempText">Kategorier:</h5>
+                    <button className="btn" onClick={this.changeArrow} data-toggle="collapse" href="#allOptionsCat">
+                        <i id="arrow" data-temp="false" className="fa fa-arrow-right"></i> 
+                    </button>
+                    <div className="list-group collapse in shadow" id="allOptionsCat">
+                        <p className="list-group-item bg-primary" style={{color: "white"}}>Velg kategorier</p>
+                        <li className="list-group-item">
+                            <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input" id="checkAll" defaultChecked/>
+                            <label className="form-check-label" htmlFor="checkAll">Alle kategorier</label>
+                        </li>
+                        {this.ticketCategories.map(category =>
+                        <li key={category.name} className="list-group-item">
+                            <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input markCheck" id={"check"+category.name} defaultChecked/>
+                            <label className="form-check-label" htmlFor={"check"+category.name}>{category.name}</label>
+                        </li>
+                        )}
+                        <li className="list-group-item">
+                            <br/>
+                            <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input" id="arkiverteSaker"/>
+                            <label className="form-check-label" htmlFor="arkiverteSaker">Vis arkiverte saker</label>
+                        </li>
+                        <button type="submit list-group-item" onClick={this.updateTickets} className="btn btn-primary">Sorter</button>
                     </div>
-                <div className="row">
-                    <div className="col-md-8" style={{
+                </div>
+                <div className="row" style={{width: '60%'}}>
+                    <div className="col-md-11 float-right border shadow bg-white rounded" style={{
                         border: "2px solid lightblue",
-                        }}>
+                        float: "right",
+                        marginLeft: '10%'}}>
                         <br/>
                         <div>
-                            {this.tickets.map((ticket, i) => (
-                                <SingleTicket 
-                                    key={i}
-                                    theTicket={ticket}
-                                />
+                            {this.state.tickets.map((ticket, i) => (
+                                <div>
+                                    <SingleTicket 
+                                        key={i}
+                                        theTicket={ticket}
+                                    />
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -70,33 +79,14 @@ export default class TicketList extends Component{
 
         //Then get all the tickets from these communes
         ticketService.getAllTickets() //this.communes
-        .then((tickets : {data: Ticket[]}) => this.tickets = tickets.data)
+        .then((tickets : {data: Ticket[]}) => { 
+            this.allTickets = tickets.data;
+            this.allTickets.sort(function(a,b){return new Date(b.submitted_time) - new Date(a.submitted_time)});
+            let arkTickets = this.allTickets.filter(e => e.status != "Fullført");
+            this.setState({tickets: arkTickets});
+            console.log("hei" +this.state.tickets);
+        })
         .catch((error : Error) => console.log("Error occured: " + error.message));
-
-        /*
-         <div className="row">
-                    <div className="col-md-4" style={{
-                        border: "2px solid lightblue",
-                        }}>
-                        <br/>
-                        <input className="form-control" type="text" placeholder="Søk"/>
-                        <br/>
-                        <h4>Kategorier</h4>
-                        {this.ticketCategories.map((category, i) => (
-                            <div key={i}>
-                                <input value={category.name} type="checkbox" defaultChecked onChange={(evt) => this.itemChecked(category.name)}  />
-                                <label>{category.name}</label>
-                            </div> 
-                        ))}
-                        <br/>
-                        <input type="checkbox" />
-                        <label>Vis arkiverte saker</label>  
-                    
-                    </div>
-                    */
-
-        
-
         //Get categories for the possibility to filter //OK
         categoryService.getTicketCategories()
         .then((categories : Category[]) =>  this.ticketCategories = categories.data)
@@ -104,7 +94,16 @@ export default class TicketList extends Component{
 
         //--Get tickets based on commune and checked categories--
         //ticketService.getTicketsByCommuneAndCategory(this.communeId, this.categories)
-        //.then(tickets => this.tickets = tickets);        
+        //.then(tickets => this.tickets = tickets);  
+        /*ticketService.getAllTickets() //this.communes
+        .then((tickets: Ticket[]) => this.setState({tickets}, () => {
+        console.log('Tickets fetched...', tickets);
+        this.allTickets = [];
+        this.allTickets = this.allTickets.concat(tickets);
+        console.log(this.allTickets);
+        }
+        ));*/ 
+            
     }
 
     itemChecked(){
@@ -131,8 +130,24 @@ export default class TicketList extends Component{
            }
        }
    }
-
-   
-
+    updateTickets(){
+        console.log("Updated tickets");
+        let localTickets = [];
+        if(!document.getElementById("checkAll").checked){
+            this.ticketCategories.forEach(categories => {
+                if(document.getElementById("check"+categories.name).checked){
+                    localTickets = localTickets.concat(this.allTickets.filter(e => e.category == categories.name));
+                }
+            });
+            localTickets.sort(function(a,b){return new Date(b.submitted_time) - new Date(a.submitted_time)});
+            console.log(localTickets);
+        }else{
+            localTickets = this.allTickets;
+        } 
+         if(document.getElementById("arkiverteSaker").checked){
+            localTickets = localTickets.filter(e => e.status == "Fullført");
+        }
+        this.setState({tickets: localTickets});
+    }
 
 }

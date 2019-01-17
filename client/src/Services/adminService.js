@@ -1,8 +1,7 @@
 // @flow
 import axios from 'axios';
-let url = "http://localhost:3000";
 
-class Admin {
+export class Admin {
     email: string;
 }
 
@@ -23,8 +22,7 @@ export default class AdminService {
     static createAdmin(email): Promise<Object>{
         let admin = new Admin();
         admin.email = email;
-        console.log('Trying to make an admin...')
-        return axios.post(url + '/admin', admin, config());
+        return axios.post('/admin', admin, config());
     }
 
 }

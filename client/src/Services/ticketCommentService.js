@@ -1,5 +1,4 @@
 import axios from 'axios';
-let url = "http://localhost:3000";
 
 class Comment {
    description;
@@ -22,15 +21,15 @@ export default class commentService {
 
     static postComment(ticketID, description): Promise<Object> {
         console.log({description});
-        return axios.post(url + '/comment/' + ticketID, {description}, config());
+        return axios.post('/comment/' + ticketID, {description}, config());
     }
 
     static getAllComments(ticketID): Promise<Comment[]>{
-        return axios.get(url + '/comments/' + ticketID);
+        return axios.get('/comments/' + ticketID);
     }
 
 
     /*deleteComment(ticketID): Promise<Object> {
-        return axios.delete(url + '/ticket/' + ticketID, config);
+        return axios.delete('/ticket/' + ticketID, config);
     }*/
 }

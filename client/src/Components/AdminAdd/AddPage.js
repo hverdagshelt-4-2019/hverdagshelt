@@ -2,16 +2,10 @@ import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import ExistingUser from './ExistingUser';
-<<<<<<< HEAD
 import adminService from '../../Services/adminService';
 import publicWorkerService from '../../Services/publicWorkerService';
 import communeService from '../../Services/communeService';
 import userService from '../../Services/userService';
-=======
-import userService from '../../Services/userService';
-import adminService from '../../Services/adminService';
-import publicWorkerService from '../../Services/publicWorkerService';
->>>>>>> a1aefb2101438d2d0d00127d39f4511acf31f578
 
 //TODO: Fix so you can enter email and promote user to admin
 
@@ -144,7 +138,7 @@ export default class AddPage extends Component{
     async addNew(){
         if(this.password1 == this.password2 && this.typeNew){
             console.log(this.newEmail + " " + this.password1);
-            await userService.createUser(this.newEmail, this.password1)
+            await userService.createUser(this.newEmail, this.password1, this.communeNew)
                 .then(res => {
                     if(res.status === 200) console.log("Ny bruker er registrert!");
                     else {
@@ -157,8 +151,8 @@ export default class AddPage extends Component{
                 window.location.reload();
             }
             else if (this.typeNew == 2 ){
-                console.log("New commune worker: " + this.newEmail, this.communeNew);
-                publicWorkerService.createPublicWorker(this.newEmail, this.communeNew);
+                console.log("New commune worker: " + this.newEmail);
+                publicWorkerService.createPublicWorker(this.newEmail);
                 window.location.reload();
             }
         }

@@ -8,29 +8,20 @@ import css from './styleFooter.css';
 export default class Footer extends Component {
     render() {
         return(
-            <footer className={css.footer}>
+            <div>
+                <div style={{height: '250px'}}></div>
+                <footer className={css.footer}>
+                <div className="container">
+                    <ul className={css.foote_bottom_ul_amrc}>
+                        <li><a href="/Hjem">Hjem</a></li>
+                        <li><a href="/Om">Om</a></li>
+                        <li><a href="/Hjelp">Hjelp</a></li>
+                    </ul>
+                    <p className="text-center">Copyright @2019 | <a className={css.team} href="#">Team 4</a></p>
+                </div>
 
-
-            <div className="container">
-                <ul className={css.foote_bottom_ul_amrc}>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Pricing</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-                <p className="text-center">Copyright @2019 | <a className={css.team} href="#">Team 4</a></p>
-
-                    <ul className={css.social_footer_ul}>
-                    <li><a href="#"><i className="fab fa-facebook-f"></i></a></li>
-                    <li><a href="#"><i className="fab fa-twitter"></i></a></li>
-                    <li><a href="#"><i className="fab fa-linkedin"></i></a></li>
-                    <li><a href="#"><i className="fab fa-instagram"></i></a></li>
-                </ul>
+                </footer>
             </div>
-
-            </footer>
 
         )
     }
