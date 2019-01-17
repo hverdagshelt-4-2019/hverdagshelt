@@ -4,8 +4,24 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 
+class Options extends Component{
+    render(){
+        return(
+            <div>
+                <NavLink to={"/endresak/" + this.props.id}>
+                    <button className="btn btn-primary">Rediger</button>
+                </NavLink>    
+            </div>
+        )
+    }
+
+    
+}
+
 
 export default class SingleTicket extends Component<{}>{
+    static Options = Options; 
+
     render(){
         return (
             <li className="list-group-item shadow p-3 mb-5 bg-white rounded" >
@@ -29,7 +45,12 @@ export default class SingleTicket extends Component<{}>{
                             <br/> 
                             Kommune: {' '} {this.props.theTicket.responsible_commune} 
                             <br/>
-                            <div style={{float:'right'}}><h3>Status: {' '} {this.props.theTicket.status}</h3></div>
+                            <br/>
+                            <div>
+                                <div style={{float:'right'}}><h3>Status: {' '} {this.props.theTicket.status}</h3></div>
+                                <div style={{float:'left'}}>{this.props.children}{' '}</div>
+                            </div>
+                            
                             
                         </div>
                     </div>
@@ -38,7 +59,11 @@ export default class SingleTicket extends Component<{}>{
         )
     }
 
-    componentDidMount(){
+    mounted(){
+        this.getImage(this.props.theTicket.picture);
+    }
+
+    componentDidUpdate(){
         this.getImage(this.props.theTicket.picture);
     } 
 
