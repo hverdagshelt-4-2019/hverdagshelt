@@ -19,6 +19,7 @@ import Navbar from './Components/Navbars/Navbar'
 import Footer from './Components/Footer/footer'
 import userService from './Services/userService';
 import MyTickets from "./Components/TicketList/MyTickets";
+import { Alert } from './widgets';
 
 
 const root = document.getElementById('root');
@@ -30,6 +31,7 @@ if (root) {
             <BrowserRouter>
                 <div>
                     <Navbar/>
+                    <Alert />
                     <Route exact path="/uploadImage" component={UploadImage}/>
                     <Route exact path="/kart" component={SimpleMap}/>
                     <Route exact path="/" component={Login}/>
