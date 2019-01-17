@@ -32,14 +32,6 @@ export default class Login extends Component {
         }
     }
 
-    register(){
-        if(this.email && this.password) {
-            userService.createUser(this.email, this.password).then(res => {
-                console.log(res);
-            });
-        }
-    }
-
     render() {
 
         if(this.redirect) return <Redirect from='/' to='/Hjem'/>
