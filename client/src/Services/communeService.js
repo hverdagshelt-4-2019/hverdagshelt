@@ -3,7 +3,6 @@
 import axios from 'axios';
 
 class Commune{
-    id : number; 
     name : string; 
 }
 
@@ -27,5 +26,10 @@ export default class CommuneService{
 
     static getAllCommunes() : Promise<Commune[]>{
         return axios.get("/communes");
+    }
+
+    // TODO: Fix this method.
+    static followCommune(communeName): Promise<void>{
+        return axios.post("/followCommune/" + communeName)
     }
 }
