@@ -13,34 +13,34 @@ export default class Navbar extends Component {
         ['begivenheter', 'Begivenheter', 'list'],
         ['kategorier', 'Kategorier', 'edit'],
         ['statistikk', 'Statistikk', 'chart-bar'],
-        ['leggtil', 'Legg til admin', 'plus'],
+        ['leggtil', 'Legg til admin', 'user-plus'],
     ];
     public_worker_pages = [
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['statistikk', 'Statistikk', 'chart-bar']
+        ['statistikk', 'Statistikk', 'chart-bar'],
     ];
     company_pages = [
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['statistikk', 'Statistikk', 'chart-bar']
+        ['statistikk', 'Statistikk', 'chart-bar'],
     ];
     user_pages = [
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['statistikk', 'Statistikk', 'chart-bar']
+        ['statistikk', 'Statistikk', 'chart-bar'],
     ];
 
     none_pages = [
         ['kart', 'Kart', 'map-marked-alt'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['statistikk', 'Statistikk', 'chart-bar']
+        ['statistikk', 'Statistikk', 'chart-bar'],
     ];
     current_list = [];
 
@@ -80,11 +80,11 @@ export default class Navbar extends Component {
                         </NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink className="nav-link" to="/" onClick={this.logout}>
+                        <a className="nav-link" href="/" onClick={this.logout}>
                             <i className="fas fa-sign-out-alt"></i> {
-                                        localStorage.getItem('level') === 'none' ? "Logg inn" : "Logg ut"
-                                    }
-                        </NavLink>
+                                localStorage.getItem('level') === 'none' ? "Logg inn" : "Logg ut"
+                            }
+                        </a>
                     </li>
                     
                 </ul>

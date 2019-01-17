@@ -49,13 +49,15 @@
 .social_footer_ul { 
     display:table; 
     margin:15px auto 0 auto; 
-    list-style-type:none;  
+    list-style-type:none; 
 }
 
 .social_footer_ul li { 
-    padding-left:20px; 
-    padding-top:10px; 
-    float:left; 
+    display:inline-block;
+        *display:inline; 
+        *zoom:1;
+        margin-right:10px;
+        margin-left: 10px;
 }
 .social_footer_ul li a { 
     color:#ffffff; 
