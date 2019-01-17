@@ -7,48 +7,40 @@ import { NavLink } from 'react-router-dom';
 export default class Navbar extends Component {
 
     admin_pages = [
+        ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
-        ['minesvar', 'Mine svar', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['kategorier', 'Kategorier', 'list'],
+        ['kategorier', 'Kategorier', 'edit'],
         ['statistikk', 'Statistikk', 'chart-bar'],
-        ['hjelp', 'Hjelp', 'question-circle']
+        ['leggtil', 'Legg til admin', 'plus'],
     ];
     public_worker_pages = [
+        ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
-        ['minesvar', 'Mine svar', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
-        ['hjelp', 'Hjelp', 'question-circle']
     ];
     company_pages = [
+        ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
-        ['minesvar', 'Mine svar', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
-        ['hjelp', 'Hjelp', 'question-circle']
     ];
     user_pages = [
+        ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
-        ['minesvar', 'Mine svar', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
-        ['hjelp', 'Hjelp', 'question-circle']
     ];
 
     none_pages = [
-        ['sakliste', 'Saker', 'list'],
+        ['kart', 'Kart', 'map-marked-alt'],
         ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
-        ['hjelp', 'Hjelp', 'question-circle']
     ];
     current_list = [];
 
