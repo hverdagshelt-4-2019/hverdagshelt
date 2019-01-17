@@ -20,27 +20,27 @@ export default class Navbar extends Component {
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['statistikk', 'Statistikk', 'chart-bar'],
+        ['statistikk', 'Statistikk', 'chart-bar']
     ];
     company_pages = [
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['statistikk', 'Statistikk', 'chart-bar'],
+        ['statistikk', 'Statistikk', 'chart-bar']
     ];
     user_pages = [
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['statistikk', 'Statistikk', 'chart-bar'],
+        ['statistikk', 'Statistikk', 'chart-bar']
     ];
 
     none_pages = [
         ['kart', 'Kart', 'map-marked-alt'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['statistikk', 'Statistikk', 'chart-bar'],
+        ['statistikk', 'Statistikk', 'chart-bar']
     ];
     current_list = [];
 
