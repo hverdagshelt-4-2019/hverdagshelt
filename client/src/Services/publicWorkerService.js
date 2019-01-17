@@ -1,6 +1,5 @@
 // @flow
 import axios from 'axios';
-let url = "http://localhost:3000";
 
 class PublicWorker {
     email;
@@ -24,6 +23,6 @@ export default class PublicWorkerService {
         let publicWorker = new PublicWorker();
         publicWorker.email = email;
         publicWorker.commune = commune;
-        return axios.post(url + '/publicworker', publicWorker, config());
+        return axios.post('/publicworker', publicWorker, config());
     }
 }

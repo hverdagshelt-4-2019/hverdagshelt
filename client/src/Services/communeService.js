@@ -1,10 +1,8 @@
 //@flow 
 
 import axios from 'axios';
-let url = 'http://localhost:3000';
 
 class Commune{
-    id : number; 
     name : string; 
 }
 
@@ -23,10 +21,15 @@ function config() {
 
 export default class CommuneService{
     static getFollowedCommunes() : Promise<void>{
-        return axios.get(url + "/followedCommunes", config());
+        return axios.get("/followedCommunes", config());
     }
 
     static getAllCommunes() : Promise<Commune[]>{
-        return axios.get(url + "/communes");
+        return axios.get("/communes");
+    }
+
+    // TODO: Fix this method.
+    static followCommune(communeName): Promise<void>{
+        return axios.post("/followCommune/" + communeName)
     }
 }

@@ -138,7 +138,7 @@ export default class AddPage extends Component{
     async addNew(){
         if(this.password1 == this.password2 && this.typeNew){
             console.log(this.newEmail + " " + this.password1);
-            await userService.createUser(this.newEmail, this.password1)
+            await userService.createUser(this.newEmail, this.password1, this.communeNew)
                 .then(res => {
                     if(res.status === 200) console.log("Ny bruker er registrert!");
                     else {
@@ -151,8 +151,8 @@ export default class AddPage extends Component{
                 window.location.reload();
             }
             else if (this.typeNew == 2 ){
-                console.log("New commune worker: " + this.newEmail, this.communeNew);
-                publicWorkerService.createPublicWorker(this.newEmail, this.communeNew);
+                console.log("New commune worker: " + this.newEmail);
+                publicWorkerService.createPublicWorker(this.newEmail);
                 window.location.reload();
             }
         }

@@ -15,11 +15,11 @@ export default class uploadImage extends Component {
             console.log("No token");
             //Alert to user
         }
-        let url = "http://localhost:3000/image/";
+        let url = "/image/";
         console.log("postImage");
         let file = document.getElementById("InputFile").files[0];
         console.log(file);
-        //axios.post(url + '/image', formData, config());
+        //axios.post('/image', formData, config());
         let formData = new FormData();
         formData.append("id", id);
         formData.append("uploaded_image", file);

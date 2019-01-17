@@ -1,0 +1,11 @@
+.root {
+    width: auto;
+    overflow-x: auto;
+}
+
+.rowHolder {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
