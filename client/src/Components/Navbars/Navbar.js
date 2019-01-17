@@ -13,7 +13,7 @@ export default class Navbar extends Component {
         ['begivenheter', 'Begivenheter', 'list'],
         ['kategorier', 'Kategorier', 'edit'],
         ['statistikk', 'Statistikk', 'chart-bar'],
-        ['leggtil', 'Legg til admin', 'plus'],
+        ['leggtil', 'Legg til admin', 'user-plus'],
     ];
     public_worker_pages = [
         ['kart', 'Kart', 'map-marked-alt'],
