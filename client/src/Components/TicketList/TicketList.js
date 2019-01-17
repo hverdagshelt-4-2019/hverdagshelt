@@ -59,10 +59,12 @@ export default class TicketList extends Component{
                         <br/>
                         <div>
                             {this.state.tickets.map((ticket, i) => (
-                                <SingleTicket 
-                                    key={i}
-                                    theTicket={ticket}
-                                />
+                                <div>
+                                    <SingleTicket 
+                                        key={i}
+                                        theTicket={ticket}
+                                    />
+                                </div>
                             ))}
                         </div>
                     </div>
