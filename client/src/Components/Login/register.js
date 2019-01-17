@@ -81,7 +81,7 @@ export default class Register extends Component {
             return false;
         }
         else if(this.password1.length < 8 || this.password2.length < 8){
-            this.warning = "Passordet ditt er ikke langt nok";
+            this.warning = "Passordet ditt er ikke langt nok (må bestå av minst 8 tegn).";
             return false;
         }
         else if(this.email.length > 254){
