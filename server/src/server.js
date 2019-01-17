@@ -114,6 +114,11 @@ export function create_app(pool) {
                         res.status(status);
                         res.json(data);
                     });
+                } else if(authData.user.isadmin) {
+                    ticketdao.getAllTickets((status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
                 } else {
                     communedao.getFollowed(authData.user.id, (status, data) => {
                         if (status == 200) {
@@ -306,11 +311,16 @@ export function create_app(pool) {
                 from: 'Hverdagsheltene',
                 to: req.body.email,
                 subject: 'Registrering',
-                text: 'Du er nå registrert i vårt system.\nBrukernavn: ' + req.body.email + '\nPassord: ' + req.body.password
+                text: 'Du er nå registrert i vårt system.\nBrukernavn: ' + req.body.email + '\nPassord: ' + req.body.password + '\nHoved kommune: ' + req.body.commune
             };
-            if(status == 200) sendEmail(transporter, mailoptions);
-            res.status(status);
-            res.json(data);
+            if(status == 200) {
+                sendEmail(transporter, mailoptions);
+
+                communedao.followCommune(data.insertId, req.body.commune, (status2, data2) => {
+                    res.status(status2);
+                    res.json(data2);
+                })
+            }
         });
     });
 
