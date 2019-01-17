@@ -53,9 +53,10 @@ export default class TicketList extends Component{
                     </div>
                 </div>
                 <div className="row" style={{width: '60%'}}>
-                    <div className="col-md-11 float-right" style={{
+                    <div className="col-md-11 float-right border shadow bg-white rounded" style={{
                         border: "2px solid lightblue",
-                        float: "right"}}>
+                        float: "right",
+                        marginLeft: '10%'}}>
                         <br/>
                         <div>
                             {this.state.tickets.map((ticket, i) => (
