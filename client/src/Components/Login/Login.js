@@ -57,7 +57,7 @@ export default class Login extends Component {
                     <button type="submit" className="btn btn-primary" onClick={this.login}>Logg inn </button>
                     {this.loginFail &&
                     <div className="alert alert-danger">
-                        <strong>Feil!</strong> Kontoen din eller passordet er feil. Hvis du ikke husker passordet, <NavLink to="registrerdeg">tilbakestill det nå.</NavLink>
+                        <strong>Feil!</strong> Kontoen din eller passordet er feil. Hvis du ikke husker passordet, <NavLink to="resetpassord">tilbakestill det nå.</NavLink>
                     </div>
                     }
                 </div>

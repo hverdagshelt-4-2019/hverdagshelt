@@ -53,6 +53,10 @@ export default class userService {
    static getUsers() : Promise<User[]>{
        return axios.get(url + '/users');
    }
+
+   static resetPassword(email, json): Promise<Object>{
+        return axios.put(url + "/forgotPassword/" + email, json);
+   }
 }
 
 

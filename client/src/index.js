@@ -19,6 +19,7 @@ import Navbar from './Components/Navbars/Navbar'
 import Footer from './Components/Footer/footer'
 import userService from './Services/userService';
 import MyTickets from "./Components/TicketList/MyTickets";
+import ResetPassword from "./Components/Login/ResetPassword";
 
 
 const root = document.getElementById('root');
@@ -42,6 +43,7 @@ if (root) {
                     <Route path="/leggtilsak" component={AddTicket}/>
                     <Route path="/endresak/:id" component={EditTicket}/>
                     <Route path="/" component={Footer}/>
+                    <Route path="/resetpassord" component={ResetPassword} />
                 </div>
             </BrowserRouter>,
             root
