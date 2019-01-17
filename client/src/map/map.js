@@ -42,6 +42,8 @@ let ta = [];
 
 export default class SimpleMap extends Component {
 
+    crd = null;
+
     static propTypes = {
         zoom: PropTypes.number, // @controllable
         hoverKey: PropTypes.string, // @controllable
@@ -53,11 +55,6 @@ export default class SimpleMap extends Component {
         greatPlaces: PropTypes.array
     }
     static defaultProps = {
-        center: {
-            lat: 63.42,
-            lng: 10.38
-        },
-        zoom: 13,
         greatPlaces: ta
     };
 
@@ -67,9 +64,30 @@ export default class SimpleMap extends Component {
         super(props);
         this.state = {
             cId: -1,
-            greatPlaces: ta
+            greatPlaces: ta,
+            center: {
+                lat: 62.423336,
+                lng: 12.100478
+            },
+            zoom: 5
         };
+
     }
+
+    componentDidMount(){
+        navigator.geolocation.getCurrentPosition(
+            pos => {
+                this.setState({
+                    center: {
+                        lat: pos.coords.latitude,
+                        lng: pos.coords.longitude,
+                    },
+                    zoom : 13
+                });
+            }
+        )
+    }
+
 
     componentWillMount(){
 
@@ -163,8 +181,8 @@ export default class SimpleMap extends Component {
                 <div className={css.map} style={{ height: '75vh'}}>
                     <GoogleMapReact
                         bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
-                        center={this.props.center}
-                        zoom={this.props.zoom}
+                        center={this.state.center}
+                        zoom={this.state.zoom}
                         hoverDistance={K_SIZE / 2}
                         onBoundsChange={this._onBoundsChange}
                         onChildClick={this._onChildClick}
