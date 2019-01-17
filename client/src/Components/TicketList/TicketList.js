@@ -53,16 +53,16 @@ export default class TicketList extends Component{
                             <button type="submit list-group-item" onClick={this.updateTickets} className="btn btn-primary">Sorter</button>
                         </div>
                     </div>
-                    <div className="col-md-8" style={{
-                        border: "2px solid lightblue",
-                        float: "right"}}>
+                    <div className="col-md-8 border shadow p-3 mb-5 bg-white rounded" >
                         <br/>
                         <div>
                             {this.state.tickets.map((ticket, i) => (
-                                <SingleTicket 
-                                    key={i}
-                                    theTicket={ticket}
-                                />
+                                <div>
+                                    <SingleTicket 
+                                        key={i}
+                                        theTicket={ticket}
+                                    />
+                                </div>
                             ))}
                         </div>
                     </div>

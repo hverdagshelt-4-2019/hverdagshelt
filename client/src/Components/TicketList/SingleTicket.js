@@ -8,8 +8,8 @@ import { NavLink } from 'react-router-dom';
 export default class SingleTicket extends Component<{}>{
     render(){
         return (
-            <li className="list-group-item" >
-                <div className="container">
+            <li className="list-group-item shadow p-3 mb-5 bg-white rounded" >
+                <div className="container" >
                     <div className="row">
 
                         <div className="col-sm-4">
@@ -38,7 +38,11 @@ export default class SingleTicket extends Component<{}>{
         )
     }
 
-    componentDidMount(){
+    mounted(){
+        this.getImage(this.props.theTicket.picture);
+    }
+
+    componentDidUpdate(){
         this.getImage(this.props.theTicket.picture);
     } 
 
