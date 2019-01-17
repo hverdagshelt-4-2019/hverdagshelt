@@ -48,8 +48,6 @@ static propTypes = {
             title: '',
             description: '',
             picture: '',
-            lat: '',
-            long: '',
             imageAdded: false
         };
         this.handleImageAdded = this.handleImageAdded.bind(this);
@@ -81,14 +79,13 @@ static propTypes = {
         pa.lat = lat;
         pa.lng = lng;
         this.setState({greatPlaces: [pa],
-        lat : lat,
-        long: lng
         });
    }
 
    handleImageAdded() {
        this.state.imageAdded ? this.setState({imageAdded: false}) : this.setState({imageAdded: true});
    }
+
 
   render() {
     return (
@@ -188,25 +185,29 @@ static propTypes = {
     }
 
     async save() {
-        let postId: Number;
-        await ticketService
-        .postTicket(this.state.category, this.state.title, this.state.description, this.state.lat, this.state.long)
-        .then((response) => {
-            postId = response.data.insertId;
-        })
-        .catch((error : Error) => console.log(error.message));
-        console.log(postId);
+        if(this.state.title && this.state.description && this.state.category){
+            let postId: Number;
+            await ticketService
+            .postTicket(this.state.category, this.state.title, this.state.description, this.state.greatPlaces[0].lat, this.state.greatPlaces[0].lng)
+            .then((response) => {
+                postId = response.data.insertId;
+            })
+            .catch((error : Error) => console.log(error.message));
+            console.log(postId);
 
-        if(postId !== null && this.state.imageAdded){
-        this.addImage(postId);
+            if(postId !== null && this.state.imageAdded){
+            this.addImage(postId);
+            }
+            console.log(this.state.imageAdded);
         }
-        console.log(this.state.imageAdded);
     }
 
     mounted() {
         categoryService.getTicketCategories()
-        .then((categories: Array<Category>) => this.ticketCategories = categories.data)
+        .then((categories: Array<Category>) => {
+            this.ticketCategories = categories.data;
+            this.setState({category: this.ticketCategories[0].name});
+        })
         .catch((error : Error) => console.log(error.message));
-        
     }
 }

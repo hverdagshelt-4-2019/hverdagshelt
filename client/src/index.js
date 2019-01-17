@@ -20,6 +20,8 @@ import Footer from './Components/Footer/footer'
 import userService from './Services/userService';
 import MyTickets from "./Components/TicketList/MyTickets";
 import { Alert } from './widgets';
+import AddCompany from './Components/Company/AddCompanjy';
+import UserRegister from './Components/UserRegister/UserRegister';
 
 
 const root = document.getElementById('root');
@@ -40,6 +42,8 @@ if (root) {
                     <Route path="/minesaker" component={MyTickets}/>
                     <Route path="/leggtil" component={AddPage}/>
                     {res.data.level === 'admin' && <Route path="/kategorier" component={CategoryCreation}/>}
+                    {(res.data.level === 'admin'|| res.data.level === 'publicworker') && <Route path= '/nyttSelskap' component={AddCompany}/>}
+                    {(res.data.level === 'admin' || res.data.level === 'publicworker') && <Route path='/register' component={UserRegister}/>}
                     <Route path="/sak/:id" component={Ticket}/>
                     <Route path="/leggtilsak" component={AddTicket}/>
                     <Route path="/endresak/:id" component={EditTicket}/>

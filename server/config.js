@@ -20,6 +20,7 @@ let config =
     },
 
     domainname: "hverdagsheltene.no",
+    mapskey: "set API key in private.config.js",
 
     test: {
         mysql: {
