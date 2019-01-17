@@ -10,6 +10,7 @@ export default class Login extends Component {
     email: string;
     password: string;
     redirect: boolean = false;
+    loginFail = false;
 
     constructor(props: any) {
         super(props);
@@ -28,7 +29,10 @@ export default class Login extends Component {
                     localStorage.setItem('company', result.data.company);
                     this.redirect = true;
                 }
-            });
+            }).catch(err => {
+                // Wrong username/password
+                this.loginFail = true;
+            })
         }
     }
 
@@ -42,15 +46,20 @@ export default class Login extends Component {
                     <form>
                         <div className="form-group">
                             <label>E-post</label>
-                            <input type="email" autoComplete="current-email" placeholder="E-post" className="form-control" name="email" onChange={e => this.email = e.target.value} />
+                            <input type="email" autoComplete="current-email" placeholder="E-post" className="form-control" name="email" onChange={e => {this.email = e.target.value; this.loginFail = false;}} />
                         </div>
                         <div className="form-group">
                             <label>Passord</label>
-                            <input type="password" autoComplete="current-password" placeholder="Passord" className="form-control" name="password" onChange={e => this.password = e.target.value} />
+                            <input type="password" autoComplete="current-password" placeholder="Passord" className="form-control" name="password" onChange={e => {this.password = e.target.value; this.loginFail = false;}} />
                             <NavLink to="registrerdeg">Registrer deg som bruker</NavLink>
                         </div>
                     </form>
                     <button type="submit" className="btn btn-primary" onClick={this.login}>Logg inn </button>
+                    {this.loginFail &&
+                    <div className="alert alert-danger">
+                        <strong>Feil!</strong> Kontoen din eller passordet er feil. Hvis du ikke husker passordet, <NavLink to="registrerdeg">tilbakestill det nå.</NavLink>
+                    </div>
+                    }
                 </div>
             </div>
         );
