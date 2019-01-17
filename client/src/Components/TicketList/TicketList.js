@@ -81,7 +81,8 @@ export default class TicketList extends Component{
         .then((tickets : {data: Ticket[]}) => { 
             this.allTickets = tickets.data;
             this.allTickets.sort(function(a,b){return new Date(b.submitted_time) - new Date(a.submitted_time)});
-            this.setState({tickets: this.allTickets});
+            let arkTickets = this.allTickets.filter(e => e.status != "Fullført");
+            this.setState({tickets: arkTickets});
             console.log("hei" +this.state.tickets);
         })
         .catch((error : Error) => console.log("Error occured: " + error.message));
@@ -130,23 +131,22 @@ export default class TicketList extends Component{
    }
     updateTickets(){
         console.log("Updated tickets");
+        let localTickets = [];
         if(!document.getElementById("checkAll").checked){
-            let localTickets = [];
             this.ticketCategories.forEach(categories => {
                 if(document.getElementById("check"+categories.name).checked){
-                    console.log("yep");
                     localTickets = localTickets.concat(this.allTickets.filter(e => e.category == categories.name));
                 }
             });
             localTickets.sort(function(a,b){return new Date(b.submitted_time) - new Date(a.submitted_time)});
-            this.setState({tickets: localTickets});
             console.log(localTickets);
         }else{
-            this.setState({tickets: this.allTickets});
-            console.log(this.allTickets);
+            localTickets = this.allTickets;
+        } 
+         if(document.getElementById("arkiverteSaker").checked){
+            localTickets = localTickets.filter(e => e.status == "Fullført");
         }
+        this.setState({tickets: localTickets});
     }
-   
-
 
 }
