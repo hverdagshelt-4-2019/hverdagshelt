@@ -3,14 +3,21 @@ import * as React from 'react';
 import { Component,} from 'react-simplified';
 import userService from '../../Services/userService';
 import { NavLink,} from 'react-router-dom';
+import CustomTable from "../CustomTable/CustomTable";
 
 //Need route to login site.
 export default class Register extends Component {
-  email = "";
-  password1 = "";
-  password2 = "";
-  warning = "";
-  success = "";
+    email = "";
+    password1 = "";
+    password2 = "";
+    warning = "";
+    success = "";
+    commune = "";
+
+    getCommune(commune) {
+        this.commune = commune;
+        console.log("Commune selected: " + commune);
+    }
 
     render(){
         return(
@@ -27,6 +34,8 @@ export default class Register extends Component {
                             <input type="password" autoComplete="new-password" className="form-control" placeholder="Gjenta passord" onChange={(evt) => {this.password2 = evt.target.value}}></input>
                         </div>
                     </form>
+                    <CustomTable reciever={this.getCommune} />
+                    <br />
                     <button className="btn btn-primary" onClick={this.register}>Opprett</button>
                     <br/>
                     <br/>
@@ -47,7 +56,10 @@ export default class Register extends Component {
         if(this.password1 === this.password2) {
             userService.createUser(this.email, this.password1)
                 .then(res => {
-                    if(res.status === 200) this.success = "Ny bruker er registrert!";
+                    if(res.status === 200) {
+                        this.success = "Ny bruker er registrert!";
+
+                    }
                     else {
                         this.warning = "Kunne ikke legge til bruker fordi grunner.";
                     }
@@ -76,8 +88,12 @@ export default class Register extends Component {
             this.warning = "Emailen din er for lang.";
             return false;
         }
-        else if (!this.email.includes("@")){
+        else if(!this.email.includes("@")){
             this.warning = "Emailen din er ikke gyldig.";
+            return false;
+        }
+        else if(this.commune.trim() === ""){
+            this.warning = "Du må velge en kommune";
             return false;
         }
         return true;

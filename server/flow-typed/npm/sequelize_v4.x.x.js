@@ -4260,7 +4260,7 @@ declare module "sequelize" {
 
     /**
      * Drops the specified table.
-     * @param tableName Table name.
+     * @param tableName CustomTable name.
      * @param options Query options, particularly "force".
      */
     dropTable(tableName: string, options?: QueryOptions): Promise<void>,
