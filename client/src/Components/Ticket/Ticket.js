@@ -103,7 +103,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
       );
     });
 
-    const status = ["Ubehandlet", "Bearbeides", "Fullført", "Nektet"];
+    const status = ["Ubehandlet", "Bearbeides", "Fullført"];
 
     return (
       <div>
