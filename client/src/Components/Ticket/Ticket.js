@@ -12,16 +12,19 @@ import commentService from '../../Services/ticketCommentService';
 import Comment from '../Comment/Comment.js';
 import Dropdown from "../Dropdown/Dropdown";
 import styles from "./style.css";
+import CompanyService from '../../Services/companyService'
 
 import { Alert } from '../../widgets';
 
 import { K_SIZE } from './../../map/controllable_hover_styles.js';
+import CompanyDao from "../../../../server/src/dao/companyDao";
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 export default class Ticket extends Component<{ match: { params: { id: number } } }> {
   ticket: {lat:any, lng:any, picture:any} = {lat: '', lng: '', picture: ''};
   sub_date = null;
   comments = [];
+  companies = ['Ingen'];
 
   comment = {
       description: ''
@@ -53,8 +56,14 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
   }
 
   editStatus(cat) {
-    let res = ticketService.setStatus(this.ticket.id, {status: cat, email: "person1@mail.no"});
+    let res = ticketService.setStatus(this.ticket.id, {status: cat, email: this.ticket.submitter_email});
     console.log("Response: " + res);
+  }
+
+  editCompany(cat) {
+    ticketService.setCompany(this.ticket.id, {name: cat})
+        .then(e => console.log(e))
+        .catch(err => console.log(err))
   }
 
   _onChange = (center, zoom /* , bounds, marginBounds */) => {
@@ -104,10 +113,11 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               <h1>{this.ticket.title}</h1>
 
               <div className={styles.statusDiv}>
-                <p className="lead" style={{marginTop: "6px"}}>Status:</p>
+                <p className="lead">Status:</p>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
-                {this.ticket.status && <Dropdown options={status} currValue={this.ticket.status} reciever={this.editStatus}/>}
+                {this.canSetStatus() && this.ticket.status && <Dropdown options={status} currValue={this.ticket.status} reciever={this.editStatus}/>}
+                {!this.canSetStatus() && this.ticket.status && <p>{this.ticket.status}</p>}
               </div>
 
               <p className="col-lg-8">
@@ -125,7 +135,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               </p>
 
               <p>
-                <b>Bedrift:</b> {this.ticket.company_name}
+                <b>Bedrift:</b> {this.ticket.company_name} {this.canSetStatus() && this.companies.length > 1 && <Dropdown options={this.companies} currValue={this.ticket.company_name} reciever={this.editCompany}/>}
               </p>
 
               <p>
@@ -209,6 +219,11 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
         commentService.getAllComments(this.props.match.params.id)
             .then(comments => {this.comments = comments.data; this.forceUpdate()})
             .catch((error: Error) => Alert.danger(error.message));
+        // communes = communes.concat(res);
+        CompanyService.getCompanies()
+            .then(res => {this.companies = this.companies.concat(res.data.map(e => e.name)); console.log(this.companies.length); this.forceUpdate()})//this.companies = this.companies.concat(res.data))
+            .then(console.log('length: ' + this.companies.length))
+            .catch(err => console.log(err))
     }
 
   postComment(e){
@@ -232,5 +247,10 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
     {
       this.getImage(this.ticket.picture);
     }
+  }
+
+  canSetStatus() {
+    return localStorage.getItem('level') === 'publicworker' || localStorage.getItem('level') === 'company';
+
   }
 }
