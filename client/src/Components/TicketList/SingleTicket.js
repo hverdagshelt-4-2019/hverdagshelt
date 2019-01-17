@@ -38,7 +38,11 @@ export default class SingleTicket extends Component<{}>{
         )
     }
 
-    componentDidMount(){
+    mounted(){
+        this.getImage(this.props.theTicket.picture);
+    }
+
+    componentDidUpdate(){
         this.getImage(this.props.theTicket.picture);
     } 
 
