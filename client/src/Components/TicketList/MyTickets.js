@@ -41,7 +41,9 @@ export default class MyTickets extends Component{
                                 <SingleTicket
                                     key={i}
                                     theTicket={ticket}
-                                />
+                                >
+                                    <SingleTicket.Options id={ticket.id}/>
+                                </SingleTicket>
                             ))}
                         </div>
                     </div>
