@@ -162,8 +162,7 @@ export default class SimpleMap extends Component {
         return (
             <div id="aroundMap" className={css.aroundMap}>
                 <div style={{height: '10px'}}></div>
-                <button type="button" className={"btn btn-primary "+css.btnCase}z>Legg til sak</button>
-                <div className = {css.leftSide} style={{height: '75vh'}}>
+                <div className = {css.leftSide} style={{height: '87vh'}}>
                     <NavLink id="goToCase" className="nav-link" to={"/sak/"+this.state.cId}>
                     <img id="picture" src="/image/logo.png" className={"img-fluid "+css.ticketImg} alt="Responsive image"/>
                     <br/>
@@ -178,7 +177,7 @@ export default class SimpleMap extends Component {
                     </div>
                 </div>
                 
-                <div className={css.map} style={{ height: '75vh'}}>
+                <div className={css.map} style={{ height: '87vh'}}>
                     <GoogleMapReact
                         bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
                         center={this.state.center}
