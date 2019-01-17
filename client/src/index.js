@@ -33,10 +33,10 @@ if (root) {
                 <div>
                     <Navbar/>
                     <Route exact path="/uploadImage" component={UploadImage}/>
-                    <Route exact path="/hjem" component={SimpleMap}/>
+                    <Route exact path="/kart" component={SimpleMap}/>
                     <Route exact path="/" component={Login}/>
                     <Route path="/registrerdeg" component={Register}/>
-                    <Route path="/sakliste" component={TicketList}/>
+                    <Route path="/hjem" component={TicketList}/>
                     <Route path="/minesaker" component={MyTickets}/>
                     <Route path="/leggtil" component={AddPage}/>
                     {res.data.level === 'admin' && <Route path="/kategorier" component={CategoryCreation}/>}

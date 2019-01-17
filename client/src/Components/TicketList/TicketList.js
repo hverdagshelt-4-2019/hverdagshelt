@@ -24,38 +24,39 @@ export default class TicketList extends Component{
 
     render(){
         return(
-            <div className='container'>
+            <div>
                 <h1>Liste over saker</h1>
                 <br/>
-                <div className="row">
-                    <div className="col-xs-6 col-sm-pull-9 sidebar-offcanvas" id="sidebar" style={{width: '20%'}}>
-                        <h5 id="tempText">Kategorier:</h5>
-                        <button className="btn" onClick={this.changeArrow} data-toggle="collapse" href="#allOptionsCat">
-                            <i id="arrow" data-temp="false" className="fa fa-arrow-right"></i> 
-                        </button>
-                        <div className="list-group collapse in" id="allOptionsCat">
-                            <p className="list-group-item bg-primary" style={{color: "white"}}>Velg kategorier</p>
-                            <li className="list-group-item">
-                                <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input" id="checkAll" defaultChecked/>
-                                <label className="form-check-label" htmlFor="checkAll">Alle kategorier</label>
-                            </li>
-                            {this.ticketCategories.map(category =>
-                            <li key={category.name} className="list-group-item">
-                                <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input markCheck" id={"check"+category.name} defaultChecked/>
-                                <label className="form-check-label" htmlFor={"check"+category.name}>{category.name}</label>
-                            </li>
-                            )}
-                            <li className="list-group-item">
-                                <br/>
-                                <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input" id="arkiverteSaker"/>
-                                <label className="form-check-label" htmlFor="arkiverteSaker">Vis arkiverte saker</label>
-                            </li>
-                            <button type="submit list-group-item" onClick={this.updateTickets} className="btn btn-primary">Sorter</button>
-                        </div>
+                <div className="col-xs-6 col-sm-pull-9 sidebar-offcanvas" id="sidebar" style={{width: '25%', float: 'left', margin: '10px'}}>
+                    <h5 id="tempText">Kategorier:</h5>
+                    <button className="btn" onClick={this.changeArrow} data-toggle="collapse" href="#allOptionsCat">
+                        <i id="arrow" data-temp="false" className="fa fa-arrow-right"></i> 
+                    </button>
+                    <div className="list-group collapse in shadow" id="allOptionsCat">
+                        <p className="list-group-item bg-primary" style={{color: "white"}}>Velg kategorier</p>
+                        <li className="list-group-item">
+                            <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input" id="checkAll" defaultChecked/>
+                            <label className="form-check-label" htmlFor="checkAll">Alle kategorier</label>
+                        </li>
+                        {this.ticketCategories.map(category =>
+                        <li key={category.name} className="list-group-item">
+                            <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input markCheck" id={"check"+category.name} defaultChecked/>
+                            <label className="form-check-label" htmlFor={"check"+category.name}>{category.name}</label>
+                        </li>
+                        )}
+                        <li className="list-group-item">
+                            <br/>
+                            <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input" id="arkiverteSaker"/>
+                            <label className="form-check-label" htmlFor="arkiverteSaker">Vis arkiverte saker</label>
+                        </li>
+                        <button type="submit list-group-item" onClick={this.updateTickets} className="btn btn-primary">Sorter</button>
                     </div>
-                    <div className="col-md-8" style={{
+                </div>
+                <div className="row" style={{width: '60%'}}>
+                    <div className="col-md-11 float-right border shadow bg-white rounded" style={{
                         border: "2px solid lightblue",
-                        float: "right"}}>
+                        float: "right",
+                        marginLeft: '10%'}}>
                         <br/>
                         <div>
                             {this.state.tickets.map((ticket, i) => (
@@ -81,7 +82,8 @@ export default class TicketList extends Component{
         .then((tickets : {data: Ticket[]}) => { 
             this.allTickets = tickets.data;
             this.allTickets.sort(function(a,b){return new Date(b.submitted_time) - new Date(a.submitted_time)});
-            this.setState({tickets: this.allTickets});
+            let arkTickets = this.allTickets.filter(e => e.status != "Fullført");
+            this.setState({tickets: arkTickets});
             console.log("hei" +this.state.tickets);
         })
         .catch((error : Error) => console.log("Error occured: " + error.message));
@@ -130,23 +132,22 @@ export default class TicketList extends Component{
    }
     updateTickets(){
         console.log("Updated tickets");
+        let localTickets = [];
         if(!document.getElementById("checkAll").checked){
-            let localTickets = [];
             this.ticketCategories.forEach(categories => {
                 if(document.getElementById("check"+categories.name).checked){
-                    console.log("yep");
                     localTickets = localTickets.concat(this.allTickets.filter(e => e.category == categories.name));
                 }
             });
             localTickets.sort(function(a,b){return new Date(b.submitted_time) - new Date(a.submitted_time)});
-            this.setState({tickets: localTickets});
             console.log(localTickets);
         }else{
-            this.setState({tickets: this.allTickets});
-            console.log(this.allTickets);
+            localTickets = this.allTickets;
+        } 
+         if(document.getElementById("arkiverteSaker").checked){
+            localTickets = localTickets.filter(e => e.status == "Fullført");
         }
+        this.setState({tickets: localTickets});
     }
-   
-
 
 }
