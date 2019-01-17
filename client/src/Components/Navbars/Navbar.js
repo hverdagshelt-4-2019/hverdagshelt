@@ -13,8 +13,7 @@ export default class Navbar extends Component {
         ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
         ['kategorier', 'Kategorier', 'list'],
-        ['statistikk', 'Statistikk', 'chart-bar'],
-        ['hjelp', 'Hjelp', 'question-circle']
+        ['statistikk', 'Statistikk', 'chart-bar']
     ];
     public_worker_pages = [
         ['minesaker', 'Mine saker', 'folder-open'],
@@ -22,8 +21,7 @@ export default class Navbar extends Component {
         ['leggtilsak', 'Legg til sak', 'plus'],
         ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['statistikk', 'Statistikk', 'chart-bar'],
-        ['hjelp', 'Hjelp', 'question-circle']
+        ['statistikk', 'Statistikk', 'chart-bar']
     ];
     company_pages = [
         ['minesaker', 'Mine saker', 'folder-open'],
@@ -31,8 +29,7 @@ export default class Navbar extends Component {
         ['leggtilsak', 'Legg til sak', 'plus'],
         ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['statistikk', 'Statistikk', 'chart-bar'],
-        ['hjelp', 'Hjelp', 'question-circle']
+        ['statistikk', 'Statistikk', 'chart-bar']
     ];
     user_pages = [
         ['minesaker', 'Mine saker', 'folder-open'],
@@ -40,15 +37,13 @@ export default class Navbar extends Component {
         ['leggtilsak', 'Legg til sak', 'plus'],
         ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['statistikk', 'Statistikk', 'chart-bar'],
-        ['hjelp', 'Hjelp', 'question-circle']
+        ['statistikk', 'Statistikk', 'chart-bar']
     ];
 
     none_pages = [
         ['sakliste', 'Saker', 'list'],
         ['begivenheter', 'Begivenheter', 'list'],
-        ['statistikk', 'Statistikk', 'chart-bar'],
-        ['hjelp', 'Hjelp', 'question-circle']
+        ['statistikk', 'Statistikk', 'chart-bar']
     ];
     current_list = [];
 
