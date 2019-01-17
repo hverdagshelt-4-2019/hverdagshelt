@@ -4,7 +4,8 @@ import axios from 'axios';
 class User {
     email;
     password;
-    commune; 
+    commune;
+    id;
 }
 
 
