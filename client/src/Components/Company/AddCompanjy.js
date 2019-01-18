@@ -1,11 +1,16 @@
+//@flow
+
 import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import userService from '../../Services/userService';
+import Typography from '@material-ui/core/Typography';
+import CompanyService from "../../Services/companyService";
+import autocomplete from '../../Autocomplete';
+import styles from './style.css';
 
-export default class AddCompany extends Component {
+export default class AddCompany extends Component<{history: string[]}>{
     users = [];
-    newCompany = '';
 
     render() {
         return (
@@ -16,50 +21,24 @@ export default class AddCompany extends Component {
                         <br/>
                         <h4>Registrer nytt selskap</h4>
                         <hr/>
-                        <form>
+                        <form onSubmit={this.validation} autoComplete="off">
                             <div className="form-group">
-                                <select className="form-control" style={{width:'100%'}} id="userSelector" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.newCompany = event.target.value)}>
-                                    {
-                                        this.users.map((user, index) => {
-                                            return (
-                                                <option value={user.email} key={user.id}>{user.email}</option>
-                                            );
-                                        })
-                                    }
-                                </select>
+                                <div>
+                                <label>Velg firma bruker:</label>
+                                </div>
+                                <div className="autocomplete">
+                                    <input type="text" id="userSelector" placeholder="Bruker e-post" onChange={(event) => {console.log(event.target.value)}}/>
+                                </div>
                                 <br/>
-                                <input name="type"
-                                       type="radio"
-                                       value="1"
-                                       id="type1"
-                                       onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.typeNew = event.target.value)}
-                                       required
-                                />
-                                <label className="form-check-label" htmlFor="type1">
-                                    Admin
-                                </label>
-                                <br/>
-                                <input name="type"
-                                       type="radio"
-                                       value="2"
-                                       id="type2"
-                                       onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.typeNew = event.target.value)}
-                                       required
-                                />
-                                <label className="form-check-label" htmlFor="type2">
-                                    Kommunearbeider
-                                </label>
                             </div>
-                            <label htmlFor="communeSelector">Kommune</label>
+                            <label htmlFor="userSelector">Bedriftsnavn:</label>
                             {' '}
-                            <select className="form-control" style={{width:'100%'}} id="communeSelector" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.communeNew = event.target.value)}>
-
-                            </select>
+                            <input id="companyName" placeholder="Bedriftsnavn" type='text' required/>
                             <br/>
                             <br/>
+                            <button type="submit" className="btn btn-primary">Send inn</button>
                         </form>
                         <hr/>
-                        <button className="btn btn-primary" onClick={this.addNew}>Opprett ny</button>
                         <br/>
                         <br/>
                     </div>
@@ -71,7 +50,23 @@ export default class AddCompany extends Component {
 
     mounted() {
         userService.getUsers()
-            .then(res => this.users = res.data)
+            .then(res => {
+                this.users = res.data.map(e => e.email);
+                console.log(this.users.length)
+                autocomplete(document.getElementById("userSelector"), this.users);
+            })
             .catch(err => console.log(err))
     }
+
+    validation() {
+        if(this.users.includes(document.getElementById('userSelector').value)){
+            CompanyService.addOne(document.getElementById('userSelector').value, document.getElementById('companyName').value)
+                .then(res => {if(res.status == 200)this.props.history.push('/register')})
+                .catch(err => console.log(err))
+        } else {
+            alert("Vennligst skriv inn en gyldig bruker.");
+            document.getElementById('userSelector').value = '';
+        }
+    }
 }
+// #NICE!

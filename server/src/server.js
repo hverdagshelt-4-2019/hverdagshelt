@@ -175,11 +175,51 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/events", (req, res) =>{
-        console.log(req.body);
-        eventdao.getAll(req.body.communes, (status, res) =>{
-            res.status(status);
-            res.json(data);
+    app.get("/events", verifyToken2, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if (err) {
+                eventdao.getAllEvents((status, data) => {
+                    res.status(status);
+                    res.json(data);
+                });
+            } else {
+                console.log(authData.user.publicworkercommune);
+                if(authData.user.publicworkercommune) {
+                    let communes = [authData.user.publicworkercommune];
+                    console.log(authData.user.publicworkercommune);
+                    eventdao.getEventsByCommune(communes, (status, data) => {
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else if(authData.user.isadmin || authData.user.companyName) {
+                    eventdao.getAllEvents((status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    communedao.getFollowed(authData.user.id, (status, data) => {
+                        if (status == 200) {
+                            let communes = data.map(e => e.commune_name);
+                            if (communes.length) {
+                                eventdao.getEventsByCommune(communes, (status2, data2) => {
+                                    console.log(data2);
+                                    res.status(status2);
+                                    res.json(data2);
+                                });
+
+                            } else {
+                                eventdao.getAllEvents((status2, data2) => {
+                                    console.log(data2);
+                                    res.status(status2);
+                                    res.json(data2);
+                                })
+                            }
+                        } else {
+                            res.sendStatus(500);
+                        }
+                    });
+                }
+            }
         });
     });
 
@@ -193,7 +233,6 @@ export function create_app(pool) {
 
     app.get("/eventcat", (req, res) =>{
         categorydao.getAllEvent((status, data) =>{
-            console.log('data:' + data);
             res.status(status);
             res.json(data);
         });
@@ -665,6 +704,7 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(401);
             } else {
+                console.log("Req.body = " + JSON.stringify(req.body));
                 userdao.updatePassword(authData.user.id, req.body, (status, data) => {
                     console.log("Edited password");
                     res.status(status);

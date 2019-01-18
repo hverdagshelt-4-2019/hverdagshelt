@@ -109,4 +109,16 @@ CREATE TABLE happening(
 CREATE TRIGGER tickettime BEFORE INSERT ON ticket
     FOR EACH ROW SET NEW.submitted_time=now()
 ;
+
+DELIMITER $$
+CREATE TRIGGER ticketfinishtime BEFORE UPDATE ON ticket
+    FOR EACH ROW
+  BEGIN
+    IF NEW.status = 'Fullført' THEN
+      SET NEW.finished_time=now();
+    END IF;
+END;$$
+
+DROP TRIGGER ticketfinishtime
+
 commit;

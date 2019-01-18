@@ -19,9 +19,12 @@ import Navbar from './Components/Navbars/Navbar'
 import Footer from './Components/Footer/footer'
 import userService from './Services/userService';
 import MyTickets from "./Components/TicketList/MyTickets";
+import EventList from "./Components/EventList/EventList";
 import { Alert } from './widgets';
 import AddCompany from './Components/Company/AddCompanjy';
 import UserRegister from './Components/UserRegister/UserRegister';
+import ResetPassword from "./Components/Login/ResetPassword";
+import UserPage from "./Components/UserPage/UserPage";
 
 
 const root = document.getElementById('root');
@@ -47,7 +50,10 @@ if (root) {
                     <Route path="/sak/:id" component={Ticket}/>
                     <Route path="/leggtilsak" component={AddTicket}/>
                     <Route path="/endresak/:id" component={EditTicket}/>
+                    <Route path="/begivenheter" component={EventList} />
                     <Route path="/" component={Footer}/>
+                    <Route path="/resetpassord" component={ResetPassword} />
+                    <Route path="/minside" component={UserPage} />
                 </div>
             </BrowserRouter>,
             root

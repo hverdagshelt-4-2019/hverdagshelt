@@ -23,7 +23,7 @@ export default class UserDao extends Dao {
     }
 
     getAll(callback) {
-        super.query("SELECT id, email FROM person WHERE id NOT IN (SELECT id FROM admin UNION (SELECT id FROM public_worker) UNION (SELECT id FROM company))", [], callback);
+        super.query("SELECT id, email FROM person WHERE id NOT IN (SELECT id FROM admin UNION (SELECT id FROM public_worker) UNION (SELECT id FROM company)) ORDER BY email", [], callback);
     }
 
     updateEmail(id, json, callback) {
@@ -33,9 +33,8 @@ export default class UserDao extends Dao {
     }
 
     updatePassword(id, json, callback) {
-
         if(json.newPassword.length < 8) {
-            callback(400, {error: "Password"});
+            callback(400, {error: "Password is too short"});
         } else {
             super.query("SELECT password FROM person WHERE id = ?", id, (code, rows) => {
                 if (code === 200) {
