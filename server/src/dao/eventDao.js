@@ -43,6 +43,11 @@ export default class EventDao extends Dao {
         );
     }
 
+    setPicture(id, img, callback) {
+        let params = [img, id];
+        super.query("UPDATE event SET picture = ? WHERE id = ?", params, callback);
+    }
+
 
   deleteOne(id, callback) {
     super.query('DELETE FROM happening WHERE id = ?', [id], callback);

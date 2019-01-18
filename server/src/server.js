@@ -1052,7 +1052,7 @@ function genRandPass() {
 }
 
 function getCommuneByLatLong(latlong, callback) {
-    fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latlong[0] + ',' + latlong[1] + '&key=AIzaSyBs-c8HN1p8wyFwGWYa_dPjCMXiMBULtRw',
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlong[0]},${latlong[1]}&key=${config.mapskey}`,
         {
             method: 'GET',
             headers: {

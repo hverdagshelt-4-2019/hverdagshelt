@@ -50,7 +50,8 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                 picture: '',
                 lat: '',
                 long: '',
-                imageAdded: false
+                imageAdded: false,
+                categories: []
             };
         }
 
@@ -82,12 +83,14 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
     handleImageAdded() {
        this.state.imageAdded ? this.setState({imageAdded: false}) : this.setState({imageAdded: true});
    }
-
-    ticketCategories: Category[] = [];
     ticket='';
 
 
   render() {
+      const ctr = {
+          lat: this.ticket.lat,
+          lng: this.ticket.lng
+      };
     return (
             <div>
                 <div className="container">
@@ -101,24 +104,21 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                             <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))} defaultValue={this.ticket.title}/>
 
                              <h4>Beskrivelse:</h4>
-                             {/* fix default value */}
-                            <textarea className="form-control" style={{width:"100%"}} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))} defaultValue={this.ticket.description} />
+                            <textarea className="form-control" value={this.state.description} style={{width:"100%"}} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))} defaultValue={this.ticket.description} />
                             
                                                         
                             <h4>Kategori:</h4>
-                            {/* add default value */}
                             <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({category: event.target.value}))}>
-                                {this.ticketCategories.map((categories, i) => (
-                                <option value={categories.name} key={i}>
-                                    {categories.name}
-                                </option>
+                                {this.state.categories.map((categories, i) => (
+                                    <option selected={categories.name==this.state.category} id ={"option"+categories.name} key={i}>{categories.name}</option>
                                 ))}
                             </select>
                             
 
                             <h4>Bilde:</h4>
-                            {/* add default value */}
-                            <label htmlFor="InputFile">Last opp bilde</label>
+                            <img id="picture" src="/image/logo.png" style={{maxWidth: '40%'}} className={"img-fluid"} alt="Responsive image"/>
+                            <br />
+                            <label htmlFor="InputFile">Last opp nytt bilde om ønsket</label>
                             <input type="file" className="form-control-file" id="InputFile" onChange={this.handleImageAdded}/>
                             <small id="fileHelp" className="form-text text-muted"></small>
                             
@@ -128,7 +128,7 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                             <div className = "map" style={{ height: '300px', width: '100%'}}>
                                 <GoogleMapReact
                                     bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
-                                    center={this.props.center}
+                                    center={ctr}
                                     zoom={this.props.zoom}
                                     onClick={this._onClick} 
                                     >
@@ -197,24 +197,44 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
         .then((response) => {
             postId = response.data.insertId;
         })
-        .catch((error : Error) => console.log(error.message));
-        console.log(postId);
+        .catch((error : Error) => {
+            console.log(error.message);
+            Alert.danger("Noe gikk galt, Sak ikke oppdatert");
+            });
 
         if(postId !== null && this.state.imageAdded){
-        this.addImage(postId);
+        this.addImage(this.props.match.params.id);
         }
         console.log(this.state.imageAdded);
-        
+        Alert.success("Sak oppdatert");
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+        console.log("done")
+    }
+
+    getImage(i: String){
+        let imageLink="/image/"+i;
+        let picture = document.getElementById("picture");
+        picture.setAttribute("src", imageLink);
     }
 
     mounted() {
-        categoryService.getTicketCategories()
-        .then((categories: Array<Category>) => this.ticketCategories = categories.data)
-        .catch((error : Error) => console.log(error.message));
 
         ticketService
         .getTicket(this.props.match.params.id)
-        .then(ticket => (this.ticket = ticket.data[0]))
+        .then(ticket => {
+            this.ticket = ticket.data[0];
+            this.state.category = ticket.data[0].category;
+            this.state.description = ticket.data[0].description;
+            this.state.greatPlaces[0].lat= this.ticket.lat;
+            this.state.greatPlaces[0].lng= this.ticket.lng;
+            this.getImage(this.ticket.picture);
+            })
+        .catch((error : Error) => console.log(error.message));
+
+        categoryService.getTicketCategories()
+        .then((categories: Array<Category>) => {
+            this.setState({categories: categories.data});
+        })
         .catch((error : Error) => console.log(error.message));
     }
 }

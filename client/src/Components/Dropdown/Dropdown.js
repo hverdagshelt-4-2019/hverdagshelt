@@ -55,7 +55,7 @@ export default class Dropdown extends Component {
                     </NativeSelect>
                     <FormHelperText>{this.props.helperText}</FormHelperText>
                 </FormControl>
-                {this.state.changed && <button className="btn btn-primary" onClick={this.handleClick}>Save</button>}
+                {this.state.changed && <button className="btn btn-primary" onClick={this.handleClick}>Lagre</button>}
             </div>
         )
     }
