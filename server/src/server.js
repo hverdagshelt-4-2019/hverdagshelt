@@ -704,6 +704,7 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(401);
             } else {
+                console.log("Req.body = " + JSON.stringify(req.body));
                 userdao.updatePassword(authData.user.id, req.body, (status, data) => {
                     console.log("Edited password");
                     res.status(status);

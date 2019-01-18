@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component,} from 'react-simplified';
 import userService from '../../Services/userService';
-import { NavLink,} from 'react-router-dom';
+import {NavLink, Redirect,} from 'react-router-dom';
 import CustomTable from "../CustomTable/CustomTable";
 
 //Need route to login site.
@@ -13,6 +13,7 @@ export default class Register extends Component {
     warning = "";
     success = "";
     commune = "";
+    redirect = false;
 
     getCommune(commune) {
         this.commune = commune;
@@ -20,6 +21,8 @@ export default class Register extends Component {
     }
 
     render(){
+        if(this.redirect) return <Redirect from='/registrerdeg' to='/'/>
+        else
         return(
             <div className="container" align="center">
                 <div className="mx-auto" style={{width: '25%'}} align="center">
@@ -58,7 +61,7 @@ export default class Register extends Component {
                 .then(res => {
                     if(res.status === 200) {
                         this.success = "Ny bruker er registrert!";
-
+                        this.redirect = true;
                     }
                     else {
                         this.warning = "Kunne ikke legge til bruker fordi grunner.";
@@ -81,7 +84,7 @@ export default class Register extends Component {
             return false;
         }
         else if(this.password1.length < 8 || this.password2.length < 8){
-            this.warning = "Passordet ditt er ikke langt nok";
+            this.warning = "Passordet ditt er ikke langt nok (må bestå av minst 8 tegn).";
             return false;
         }
         else if(this.email.length > 254){
