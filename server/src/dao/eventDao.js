@@ -33,7 +33,7 @@ export default class EventDao extends Dao {
       val,
       callback
     );
-  }
+    }
 
     updateOne(id, json, callback) {
         var val = [json.commune_name, json.category, json.title, json.description, json.picture, json.happening_time, id];
@@ -41,6 +41,11 @@ export default class EventDao extends Dao {
             val,
             callback
         );
+    }
+
+    setPicture(id, img, callback) {
+        let params = [img, id];
+        super.query("UPDATE ticket SET picture = ? WHERE id = ?", params, callback);
     }
 
 
