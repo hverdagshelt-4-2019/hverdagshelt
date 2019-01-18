@@ -32,15 +32,23 @@ export default class ChangePassword extends Component {
     }
 
     verify() {
+        // TODO: Give feedback for different scenarios.
         if(this.state.repeatNewPass !== this.state.newPass){
             this.warning = "Insert meme here";
             return false;
         }
+        else if(this.state.newPass.length < 8){
+            this.warning = "Passordet ditt er fort kort (må minst være 8 tegn langt).";
+            return false;
+        }
         userService.updatePassword(this.state.oldPass, this.state.newPass).then(res => {
             console.log("Res: " + JSON.stringify(res));
+            return true;
         }).catch(err => {
+            // TODO: Give feedback if previous password does not match
             console.log("We got error");
             console.log(err);
+            return false;
         })
     }
 
