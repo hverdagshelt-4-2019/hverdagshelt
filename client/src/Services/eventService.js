@@ -40,19 +40,26 @@ export default class EventService {
         return axios.post('/event', event, config());
     }
 
-    getEvent(eventID): Promise<Event>{
+    static getEvent(eventID): Promise<Event>{
         return axios.get('/event/' + eventID);
     }
 
-    getAllEvents(): Promise<Event[]>{
+    static getAllEvents(): Promise<Event[]>{
         return axios.get('/events');
     }
 
-    editEvent(eventID, event): Promise<Object> {
+    static editEvent(eventID: number, category: string, title: string, description: string, happening_time: string): Promise<Object>{
+        console.log('fff')
+        let event = new Event();
+        event.title = title;
+        event.category = category;
+        event.description = description;
+        event.happening_time = happening_time;
+        console.log('saving servie event');
         return axios.put('/event/' + eventID, event, config());
     }
 
-    deleteEvent(eventID): Promise<Object> {
+    static deleteEvent(eventID): Promise<Object> {
         return axios.delete('/event/' + eventID, config());
     }
 }

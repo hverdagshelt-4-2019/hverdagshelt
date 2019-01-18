@@ -10,6 +10,8 @@ import UploadImage from './temp/uploadImage'
 import Login from './Components/Login/Login.js';
 import Register from './Components/Login/register.js';
 import Ticket from './Components/Ticket/Ticket';
+import Event from './Components/Event/Event';
+import EditEvent from './Components/Event/EditEvent';
 import AddTicket from './Components/Ticket/AddTicket';
 import EditTicket from './Components/Ticket/EditTicket';
 import TicketList from './Components/TicketList/TicketList.js';
@@ -48,6 +50,7 @@ if (root) {
                     <Route path="/leggtilsak" component={AddTicket}/>
                     <Route path="/endresak/:id" component={EditTicket}/>
                     <Route path="/begivenhet/:id" component={Event}/>
+                    <Route path="/endrebegivenhet/:id" component={EditEvent}/>
                     <Route path="/" component={Footer}/>
                 </div>
             </BrowserRouter>,
