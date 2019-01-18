@@ -47,13 +47,19 @@ export default class TicketList extends Component{
                         <li className="list-group-item">
                             <br/>
                             <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input" id="arkiverteSaker"/>
-                            <label className="form-check-label" htmlFor="arkiverteSaker">Vis arkiverte saker</label>
+                            <label className="form-check-label" htmlFor="arkiverteSaker">Vis bare arkiverte saker</label>
                         </li>
                         <button type="submit list-group-item" onClick={this.updateTickets} className="btn btn-primary">Sorter</button>
                     </div>
                 </div>
                 <div className="row" style={{width: '60%'}}>
-                    <div className="col-md-11 float-right border shadow bg-white rounded" style={{
+                    <select className="shadow-sm" style={{marginLeft: '70%', width: '30%', marginBottom: '5px'}}  onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.sortBy(event.target.value))}>
+                        <option  id ="optionNyeste" key={"nyeste"}>Nyeste først</option>
+                        <option  id ="optionEldste" key={"eldste"}>Eldste først</option>
+                        <option  id ="optionBearbeides" key={"bearbeides"}>Bearbeides først</option>
+                        <option  id ="optionUbehandlet" key={"ubehandlet"}>Ubehandlet først</option>
+                    </select>
+                    <div className="col-md-11 float-right border shadow rounded" style={{
                         border: "2px solid lightblue",
                         float: "right",
                         marginLeft: '10%'}}>
@@ -84,7 +90,6 @@ export default class TicketList extends Component{
             this.allTickets.sort(function(a,b){return new Date(b.submitted_time) - new Date(a.submitted_time)});
             let arkTickets = this.allTickets.filter(e => e.status != "Fullført");
             this.setState({tickets: arkTickets});
-            console.log("hei" +this.state.tickets);
         })
         .catch((error : Error) => console.log("Error occured: " + error.message));
         //Get categories for the possibility to filter //OK
@@ -148,6 +153,25 @@ export default class TicketList extends Component{
             localTickets = localTickets.filter(e => e.status == "Fullført");
         }
         this.setState({tickets: localTickets});
+    }
+
+    sortBy(by: string){
+        //event.target.value
+        switch(by) {
+            case "Nyeste først":
+                this.setState({tickets: this.state.tickets.sort(function(a,b){return new Date(b.submitted_time) - new Date(a.submitted_time)})});
+                break;
+            case "Eldste først":
+                this.setState({tickets: this.state.tickets.sort(function(a,b){return new Date(a.submitted_time) - new Date(b.submitted_time)})});
+                break;
+            case "Bearbeides først":
+                this.setState({tickets: this.state.tickets.sort(function(a,b){return (''+a.status).localeCompare(b.status)})});
+                break;
+            case "Ubehandlet først":
+                this.setState({tickets: this.state.tickets.sort(function(a,b){return (''+b.status).localeCompare(a.status)})});
+                break;
+        }
+
     }
 
 }

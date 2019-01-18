@@ -24,9 +24,9 @@ export default class SingleTicket extends Component<{}>{
 
     render(){; 
         return (
-            <NavLink style={{color: 'black'}} to={"/sak/" + this.props.theTicket.id}>
-                <li className="list-group-item shadow p-3 mb-5 bg-white rounded" >
-                <div className="container" >
+            <NavLink style={{color: 'white'}} to={"/sak/" + this.props.theTicket.id}>
+                <li className="list-group-item shadow p-3 mb-5 rounded" style={{backgroundColor: "#8FC1E3", color: "white"}}>
+                <div className="container">
                     <div className="row">
 
                         <div className="col-sm-4">

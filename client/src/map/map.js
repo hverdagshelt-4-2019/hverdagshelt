@@ -93,19 +93,13 @@ export default class SimpleMap extends Component {
 
         let communes = [];
         console.log('valid');
-        console.log(communes);
         let list = [];
         ticketService.getAllTickets(communes).then(res => {
             list = res.data;
             list.forEach(commune => {
-            //console.log(commune.lat);
-            //console.log(commune.lng);
             ta.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.id, commune.lat, commune.lng, commune.picture));
-            //console.log(ta);
             })
-            console.log(ta);
             this.setState({greatPlaces: ta});
-            console.log(this.state.greatPlaces);
             this._onChildMouseEnter (1);
             this._onChildMouseLeave();
         })
