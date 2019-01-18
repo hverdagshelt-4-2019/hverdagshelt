@@ -192,6 +192,7 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
         if (!this.state.long) this.state.long = this.ticket.long;
         if (!this.state.lat) this.state.lat = this.ticket.lat;
         let postId: Number;
+        let posted = true;
         await ticketService
         .editTicket(this.props.match.params.id, this.state.category, this.state.title, this.state.description, this.state.greatPlaces[0].lat, this.state.greatPlaces[0].lng, this.ticket.submitter_email)
         .then((response) => {
@@ -200,15 +201,17 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
         .catch((error : Error) => {
             console.log(error.message);
             Alert.danger("Noe gikk galt, Sak ikke oppdatert");
+            posted = false;
             });
-
-        if(postId !== null && this.state.imageAdded){
-        this.addImage(this.props.match.params.id);
+        if(posted){
+            if(postId !== null && this.state.imageAdded){
+                this.addImage(this.props.match.params.id);
+            }
+            console.log(this.state.imageAdded);
+            Alert.success("Sak oppdatert");
+            console.log("done");
         }
-        console.log(this.state.imageAdded);
-        Alert.success("Sak oppdatert");
         document.body.scrollTop = document.documentElement.scrollTop = 0;
-        console.log("done")
     }
 
     getImage(i: String){

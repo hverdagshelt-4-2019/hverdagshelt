@@ -14,6 +14,24 @@ body {
     margin: 0;
     padding-bottom: 6rem;
     min-height: 100%;
+    background-color: #FFFFFF;
+}
+
+.customBtn {
+    background-color: #F74356;
+    color: #FFFFFF;
+}
+
+.blue{
+    background-color: #64C2EC;
+    color: white;
+}
+.lightBlue{
+    background-color: #BAE1F2;
+}
+
+.customBtn:hover {
+    background-color: rgb(211, 17, 37);
 }
 
 @media (max-width:1250px) {
