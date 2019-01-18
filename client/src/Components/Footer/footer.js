@@ -9,7 +9,6 @@ export default class Footer extends Component {
     render() {
         return(
             <div>
-                <div style={{height: '250px'}}></div>
                 <footer className={css.footer}>
                 <div className="container">
                     <ul className={css.foote_bottom_ul_amrc}>
