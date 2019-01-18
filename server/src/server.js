@@ -168,8 +168,8 @@ export function create_app(pool) {
     });
 
     app.get("/event/:id", (req, res) =>{
-        console.log(req.body);
-        eventdao.getOne(req.body.communes, (status, data) =>{
+        console.log(req.params.id);
+        eventdao.getOne(req.params.id, (status, data) =>{
             res.status(status);
             res.json(data);
         });

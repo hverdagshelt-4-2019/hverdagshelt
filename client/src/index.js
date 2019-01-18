@@ -47,6 +47,7 @@ if (root) {
                     <Route path="/sak/:id" component={Ticket}/>
                     <Route path="/leggtilsak" component={AddTicket}/>
                     <Route path="/endresak/:id" component={EditTicket}/>
+                    <Route path="/begivenhet/:id" component={Event}/>
                     <Route path="/" component={Footer}/>
                 </div>
             </BrowserRouter>,
