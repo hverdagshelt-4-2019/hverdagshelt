@@ -20,6 +20,7 @@ import Footer from './Components/Footer/footer'
 import userService from './Services/userService';
 import MyTickets from "./Components/TicketList/MyTickets";
 import ResetPassword from "./Components/Login/ResetPassword";
+import UserPage from "./Components/UserPage/UserPage";
 
 
 const root = document.getElementById('root');
@@ -44,6 +45,7 @@ if (root) {
                     <Route path="/endresak/:id" component={EditTicket}/>
                     <Route path="/" component={Footer}/>
                     <Route path="/resetpassord" component={ResetPassword} />
+                    <Route path="/minside" component={UserPage} />
                 </div>
             </BrowserRouter>,
             root

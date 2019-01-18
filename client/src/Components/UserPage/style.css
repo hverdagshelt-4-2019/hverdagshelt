@@ -1,0 +1,44 @@
+.infoDiv {
+    display: grid;
+    grid-gap: 20px;
+    width: 100%;
+}
+
+.textHolder {
+    display: grid;
+    grid-template-columns: 100px 100px;
+    grid-gap: 5%;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.root {
+    margin: 5% 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.changePasswordDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media only screen and (max-width: 1000px){
+    .root {
+        margin: 5% 10%;
+        display: grid;
+        grid-gap: 40px;
+        grid-template-columns: 1fr;
+        align-items: center;
+    }
+
+    .changePasswordDiv {
+        display: flex;
+        margin: auto;
+        justify-content: center;
+        width: 100%;
+    }
+}
