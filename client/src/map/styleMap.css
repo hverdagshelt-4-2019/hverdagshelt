@@ -2,8 +2,7 @@
     position: relative;
     float: left;
     width: 19%;
-    box-shadow: 0px 5px 10px #555;
-    background-color: #019ad2;
+    background-color: #64C2EC;
     margin: 4px;
 }
 
@@ -22,7 +21,6 @@
 .map {
     width: 78%;
     float: right;
-    box-shadow: 0px 2px 4px #555;
 }
 
 .ticketImg{

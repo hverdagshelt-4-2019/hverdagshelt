@@ -25,7 +25,7 @@ export default class SingleTicket extends Component<{}>{
     render(){; 
         return (
             <NavLink style={{color: 'white'}} to={"/sak/" + this.props.theTicket.id}>
-                <li className="list-group-item shadow p-3 mb-5 rounded" style={{backgroundColor: "#8FC1E3", color: "white"}}>
+                <li className="list-group-item shadow p-3 mb-5 rounded blue">
                 <div className="container">
                     <div className="row">
 
@@ -66,8 +66,15 @@ export default class SingleTicket extends Component<{}>{
     } 
 
     getImage(i: String) {
-        let imageLink = '/image/' + i;
-        let picture = document.getElementById('picture'+this.props.theTicket.id);
-        picture.setAttribute('src', imageLink);
+        try{
+            let imageLink = '/image/' + i;
+            let picture = document.getElementById('picture'+this.props.theTicket.id);
+            picture.setAttribute('src', imageLink);
+        }catch(err) {
+            let imageLink = '/image/' + "270profil.jpg";
+            let picture = document.getElementById('picture'+this.props.theTicket.id);
+            picture.setAttribute('src', imageLink);
+            console.log("image not found")  
+        }
     } 
 }

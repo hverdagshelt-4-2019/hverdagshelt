@@ -156,7 +156,7 @@ export default class SimpleMap extends Component {
         return (
             <div id="aroundMap" className={css.aroundMap}>
                 <div style={{height: '10px'}}></div>
-                <div className = {css.leftSide} style={{height: '87vh'}}>
+                <div className = {"shadow "+css.leftSide} style={{height: '87vh'}}>
                     <NavLink id="goToCase" className="nav-link" to={"/sak/"+this.state.cId}>
                     <img id="picture" src="/image/logo.png" className={"img-fluid "+css.ticketImg} alt="Responsive image"/>
                     <br/>
@@ -167,11 +167,11 @@ export default class SimpleMap extends Component {
                     <hr className={css.hr}/>
                     </NavLink>
                     <div className = {css.aroundButton}>
-                        <button id="vote" type="button" className={"btn btn-light " + css.voteB}><i className={"fas "+css["fa-thumbs-up"]}></i></button>
+                        <button id="vote" type="button" className={"btn customBtn " + css.voteB}><i className={"fas "+css["fa-thumbs-up"]}></i></button>
                     </div>
                 </div>
                 
-                <div className={css.map} style={{ height: '87vh'}}>
+                <div className={"shadow "+css.map} style={{ height: '87vh'}}>
                     <GoogleMapReact
                         bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
                         center={this.state.center}
@@ -192,7 +192,6 @@ export default class SimpleMap extends Component {
                         )}
                     </GoogleMapReact>
                 </div>
-                <div style={{height: '85vh'}}></div>
             </div>
             );
         }
