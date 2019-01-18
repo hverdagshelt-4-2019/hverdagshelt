@@ -20,6 +20,7 @@ export default class Navbar extends Component {
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
         ['begivenheter', 'Begivenheter', 'list'],
+        ['leggtilbegivenhet', 'Legg til begivenhet', 'plus'],
         ['statistikk', 'Statistikk', 'chart-bar'],
     ];
     company_pages = [
