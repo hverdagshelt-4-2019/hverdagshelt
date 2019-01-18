@@ -23,7 +23,7 @@ function config() {
     }
 }
 
-class EventService {
+export default class EventService {
 
     postEvent(event): Promise<Object> {
         return axios.post('/event', event, config());
@@ -46,4 +46,3 @@ class EventService {
     }
 }
 
-export let eventService = new EventService;
