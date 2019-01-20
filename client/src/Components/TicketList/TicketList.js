@@ -7,6 +7,8 @@ import categoryService from '../../Services/categoryService';
 import communeService from '../../Services/communeService';
 import SingleTicket from './SingleTicket';
 import Ticket from '../Ticket/Ticket';
+import css from './ticketStyle.css';
+import $ from 'jquery';
 
 //--- This class is not finished. No filter function created. ---\\
 //At the moment, the list displays all tickets, not filtered.
@@ -24,58 +26,56 @@ export default class TicketList extends Component{
 
     render(){
         return(
-            <div>
+            <div className={"shadow " + css.aroundTickets}>
                 <br/>
                 <div className="col-xs-6 col-sm-pull-9 sidebar-offcanvas" id="sidebar" style={{width: '2%', float: 'left', margin: '1%'}}>
                     <h5 id="tempText">Kategorier:</h5>
-                    <button className="btn" onClick={this.changeArrow} data-toggle="collapse" href="#allOptionsCat">
+                    <button id="arrowBtn" className={"btn customBtn " + css.btnCircle} onClick={this.changeArrow} data-toggle="collapse" href="#allOptionsCat">
                         <i id="arrow" data-temp="false" className="fa fa-arrow-right"></i> 
                     </button>
                     <div className="list-group collapse in shadow" id="allOptionsCat">
-                        <p className="list-group-item lightBlue">Velg kategorier</p>
-                        <li className="list-group-item blue">
+                        <p className="list-group-item blue" style={{textAlign: "center"}}> <i className="fas fa-folder-open" style={{marginRight: "4px"}}></i>Velg kategorier</p>
+                        <li className="list-group-item">
                             <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input" id="checkAll" defaultChecked/>
                             <label className="form-check-label" htmlFor="checkAll">Alle kategorier</label>
                         </li>
                         {this.ticketCategories.map(category =>
-                        <li key={category.name} className="list-group-item blue">
+                        <li key={category.name} className="list-group-item">
                             <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input markCheck" id={"check"+category.name} defaultChecked/>
                             <label className="form-check-label" htmlFor={"check"+category.name}>{category.name}</label>
                         </li>
                         )}
-                        <li className="list-group-item blue">
+                        <li className="list-group-item">
                             <br/>
                             <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input" id="arkiverteSaker"/>
                             <label className="form-check-label" htmlFor="arkiverteSaker">Vis bare arkiverte saker</label>
                         </li>
-                        <button type="submit list-group-item" onClick={this.updateTickets} className="btn customBtn">Sorter</button>
+                        <button type="submit list-group-item" onClick={this.updateTickets} className="btn customBtn"><i className="fas fa-filter" style={{marginRight: "4px"}}></i>Filtrer</button>
                     </div>
                 </div>
-                <div id="cases" className="row" style={{height: 'auto', width: '85%'}}>
-                    <select id="sorting" className="shadow-sm" style={{marginLeft: '70%', width: '30%', marginBottom: '5px'}}  onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.sortBy(event.target.value))}>
+                <br />
+                <div id="cases" className="row" style={{height: 'auto', width: '90%'}}>
+                    <select id="sorting" className="shadow-sm" style={{marginLeft: '65%', width: '30%'}}  onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.sortBy(event.target.value))}>
                         <option  id ="optionNyeste" key={"nyeste"}>Nyeste først</option>
                         <option  id ="optionEldste" key={"eldste"}>Eldste først</option>
                         <option  id ="optionBearbeides" key={"bearbeides"}>Bearbeides først</option>
                         <option  id ="optionUbehandlet" key={"ubehandlet"}>Ubehandlet først</option>
                     </select>
-                    <div className="col-md-11 float-right border shadow rounded" style={{
-                        border: "2px solid lightblue",
+                    <div className="col-md-11 col-sm-offset-2 col-sm-8  float-right" style={{
                         float: "right",
-                        marginLeft: '10%'}}>
-                        <br/>
-                        <div>
+                        marginLeft: '5%'}}>
+                        <br />
+                        <ul className={css.ticketList}>
                             {this.state.tickets.map((ticket, i) => (
-                                <div>
                                     <SingleTicket 
                                         key={i}
                                         theTicket={ticket}
                                     />
-                                </div>
                             ))}
-                        </div>
+                        </ul>
                     </div>
                 </div>
-                <div style={{height: '200px'}} />
+                <div style={{height: '80px'}} />
             </div>
         )
     }
@@ -95,6 +95,10 @@ export default class TicketList extends Component{
         categoryService.getTicketCategories()
         .then((categories : Category[]) =>  this.ticketCategories = categories.data)
         .catch((error : Error) => console.log("Error occured: " + error.message));
+        document.getElementById("arrowBtn").click();
+        $("#checkAll").click(function () {
+            $(".form-check-input").prop('checked', $(this).prop('checked'));
+        });
 
         //--Get tickets based on commune and checked categories--
         //ticketService.getTicketsByCommuneAndCategory(this.communeId, this.categories)
@@ -131,11 +135,11 @@ export default class TicketList extends Component{
             }
             if (e.getAttribute("class") === "fa fa-arrow-right") {
                 e.setAttribute("class", "fa fa-arrow-left");
-                c.style.width = "65%";
+                c.style.width = "70%";
                 s.style.width = "25%";
             } else {
                 e.setAttribute("class", "fa fa-arrow-right");
-                c.style.width = "85%";
+                c.style.width = "90%";
                 s.style.width = "2%";
             }
         }

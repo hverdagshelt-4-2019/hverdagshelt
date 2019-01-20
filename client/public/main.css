@@ -14,47 +14,84 @@ body {
     margin: 0;
     padding-bottom: 6rem;
     min-height: 100%;
-    background-color: #FFFFFF;
+    background-color: rgb(233, 233, 233);
 }
 
 .customBtn {
-    background-color: #F74356;
-    color: #FFFFFF;
+    background-color: #FF5722;
+    color: white;
+}
+
+.black {
+    background-color: #33393D;
+}
+
+.grey {
+    background-color: #666B6E;
 }
 
 .blue{
-    background-color: #64C2EC;
+    background-color: #1976D2;
     color: white;
 }
 .lightBlue{
-    background-color: #BAE1F2;
+    background-color: #9DC8E4;
 }
 
 .customBtn:hover {
-    background-color: rgb(211, 17, 37);
+    background-color: rgb(224, 57, 6);
+    color: #666B6E;
 }
-
+.navbar {
+    height: 50px;
+}
+.topOfLink {
+    margin-top: 8px;
+}
+label {
+    white-space: pre-wrap;
+}
+.aroundStuff {
+    background-color: #FFFFFF;
+    width: 75%;
+    display: inline-block;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+}
 @media (max-width:1250px) {
     .navbar{
         font-size: 14px;
     }
+    .topOfLink {
+        margin-top: 10px;
+    }
   }
 @media (max-width:1150px) {
   .navbar{
-      font-size: 12px;
+      font-size: 10px;
   }
+  .topOfLink {
+    margin-top: 12px;
+}
 }
 @media (max-width:1000px) {
   .navbar{
       font-size: 9px;
   }
+}
   @media (max-width:850px) {
     .navbar{
         font-size: 7px;
+    }
+    .topOfLink {
+        margin-top: 14px;
     }
 }
 @media (max-width:767px) {
   .navbar{
       font-size: 14px;
+      height: auto;
   }
 }

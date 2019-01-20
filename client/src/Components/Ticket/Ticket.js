@@ -106,10 +106,11 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
     const status = ["Ubehandlet", "Bearbeides", "Fullført"];
 
     return (
-      <div>
+      <div className="aroundStuff">
         <div className="container">
           <div className="row">
-            <div className="col-lg-8">
+            <div className="col-lg-10" style={{marginLeft: "8%", marginRight: "8%"}}>
+              <br />
               <h1>{this.ticket.title}</h1>
 
               <div className={styles.statusDiv}>
@@ -144,11 +145,11 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
 
               <hr />
 
-              <img id="picture" src="logo.png" className={"img-fluid "} alt="Responsive image"/>
+              <img id="picture" src="" style={{maxHeight: "400px"}} className={"img-fluid "} alt="Responsive image"/>
 
               <hr />
 
-              <p>{this.ticket.description}</p>
+              <label>{this.ticket.description}</label>
 
               <hr />
               <div className="map" style={{ height: '300px', width: '100%' }}>
@@ -175,7 +176,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                     <div className="form-group">
                       <textarea className="form-control" rows="3" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.comment.description = event.target.value)} />
                     </div>
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="btn customBtn">
                       Send
                     </button>
                   </form>

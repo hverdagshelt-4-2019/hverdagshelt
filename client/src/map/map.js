@@ -96,6 +96,7 @@ export default class SimpleMap extends Component {
         let list = [];
         ticketService.getAllTickets(communes).then(res => {
             list = res.data;
+            console.log(list);
             list.forEach(commune => {
             ta.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.id, commune.lat, commune.lng, commune.picture));
             })
@@ -156,7 +157,7 @@ export default class SimpleMap extends Component {
         return (
             <div id="aroundMap" className={css.aroundMap}>
                 <div style={{height: '10px'}}></div>
-                <div className = {"shadow "+css.leftSide} style={{height: '87vh'}}>
+                <div className = {"shadow blue "+css.leftSide} style={{height: '87vh'}}>
                     <NavLink id="goToCase" className="nav-link" to={"/sak/"+this.state.cId}>
                     <img id="picture" src="/image/logo.png" className={"img-fluid "+css.ticketImg} alt="Responsive image"/>
                     <br/>
