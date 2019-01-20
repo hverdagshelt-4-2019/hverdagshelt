@@ -90,9 +90,10 @@ static propTypes = {
   render() {
     return (
         <div>
-                <div className="container">
+                <div className="container aroundStuff">
                     <div className="row">
-                        <div className="col-lg-8">
+                        <div className="col-lg-10" style={{marginLeft: "8%", marginRight: "8%"}}>
+                            <br />
                             <h1>Rapporter en ny sak</h1>
 
                             <hr />
@@ -101,7 +102,7 @@ static propTypes = {
                             <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))}/>
 
                              <h4>Beskrivelse</h4>
-                            <textarea className="form-control" style={{width:"100%"}} 
+                            <textarea className="form-control" rows="5" style={{width:"100%"}} 
                                 onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))}
                             />
 
@@ -139,7 +140,7 @@ static propTypes = {
                             <div style={{height: '10px'}}></div>
                             <hr />
                             
-                            <button type="button" className="btn btn-primary" onClick={this.save}>Send</button>
+                            <button type="button" className="btn customBtn" onClick={this.save}>Send</button>
 
                             <br />
                             <br />

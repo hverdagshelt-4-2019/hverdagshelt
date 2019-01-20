@@ -33,9 +33,8 @@ export default class UserDao extends Dao {
     }
 
     updatePassword(id, json, callback) {
-
         if(json.newPassword.length < 8) {
-            callback(400, {error: "Password"});
+            callback(400, {error: "Password is too short"});
         } else {
             super.query("SELECT password FROM person WHERE id = ?", id, (code, rows) => {
                 if (code === 200) {

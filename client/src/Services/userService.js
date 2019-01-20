@@ -45,7 +45,8 @@ export default class userService {
     }
 
    static updatePassword(oldPassword: string, newPassword: string): Promise<Object>{
-       return axios.post('/userpass', {oldPassword, newPassword});
+        console.log("oldpassword: " + oldPassword + "\nnewpassword: " + newPassword);
+        return axios.put(url + '/userpass', {oldPassword: oldPassword, newPassword: newPassword}, config());
    }
 
    static updateEmail(email: string): Promise<Object>{
@@ -54,6 +55,10 @@ export default class userService {
 
    static getUsers() : Promise<User[]>{
        return axios.get('/users');
+   }
+
+   static resetPassword(email, json): Promise<Object>{
+        return axios.put(url + "/forgotPassword/" + email, json);
    }
 }
 

@@ -1,3 +1,16 @@
 .icon-bar {
     background-color: dodgerblue;
 }
+
+.customLink {
+    color: #FFFFFF;
+}
+
+.customLink:hover {
+    color: rgb(194, 194, 194);
+    background-color: rgb(19, 80, 141);
+}
+.active {
+    color: rgb(194, 194, 194);
+    background-color: rgb(19, 80, 141);
+}

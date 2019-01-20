@@ -9,8 +9,8 @@ export default class Footer extends Component {
     render() {
         return(
             <div>
-                <div style={{height: '250px'}}></div>
-                <footer className={css.footer}>
+                <div style={{height: '120px'}}></div>
+                <footer className={"blue " + css.footer}>
                 <div className="container">
                     <ul className={css.foote_bottom_ul_amrc}>
                         <li><a href="/Hjem">Hjem</a></li>

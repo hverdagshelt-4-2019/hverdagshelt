@@ -24,6 +24,8 @@ import { Alert } from './widgets';
 import AddCompany from './Components/Company/AddCompanjy';
 import UserRegister from './Components/UserRegister/UserRegister';
 import Statistics from './Components/Statistics/Statistics';
+import ResetPassword from "./Components/Login/ResetPassword";
+import UserPage from "./Components/UserPage/UserPage";
 
 
 const root = document.getElementById('root');
@@ -52,6 +54,8 @@ if (root) {
                     <Route path="/begivenheter" component={EventList} />
                     <Route exact path="/statistikk" component={Statistics}/>
                     <Route path="/" component={Footer}/>
+                    <Route path="/resetpassord" component={ResetPassword} />
+                    <Route path="/minside" component={UserPage} />
                 </div>
             </BrowserRouter>,
             root
