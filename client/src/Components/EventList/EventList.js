@@ -59,9 +59,9 @@ export default class EventList extends Component{
                         <div>
                             {this.allEvents.map((event, i) => (
                                 <div key={i}>
-                                    <SingleEvent 
-                                        theEvent={event}
-                                    />
+                                    <SingleEvent theEvent={event}>
+                                        <SingleEvent.Options id={event.id}/>
+                                    </SingleEvent>
                                 </div>
                             ))}
                         </div>

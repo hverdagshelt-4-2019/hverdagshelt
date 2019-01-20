@@ -23,6 +23,7 @@ import EventList from "./Components/EventList/EventList";
 import { Alert } from './widgets';
 import AddCompany from './Components/Company/AddCompanjy';
 import UserRegister from './Components/UserRegister/UserRegister';
+import Statistics from './Components/Statistics/Statistics';
 
 
 const root = document.getElementById('root');
@@ -49,6 +50,7 @@ if (root) {
                     <Route path="/leggtilsak" component={AddTicket}/>
                     <Route path="/endresak/:id" component={EditTicket}/>
                     <Route path="/begivenheter" component={EventList} />
+                    <Route exact path="/statistikk" component={Statistics}/>
                     <Route path="/" component={Footer}/>
                 </div>
             </BrowserRouter>,
