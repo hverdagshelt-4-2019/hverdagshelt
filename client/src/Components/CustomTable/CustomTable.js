@@ -52,7 +52,9 @@ export default class CustomTable extends Component {
                     value={this.state.query}
                     margin="normal"
                     onChange={this.handleChange}
-                />
+                    style={{width: "100%"}}
+                >
+                </TextField>
                 <Paper className={styles.root}>
                     <Table>
                         <TableHead>

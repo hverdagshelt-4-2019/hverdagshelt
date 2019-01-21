@@ -10,7 +10,7 @@ class Options extends Component{
         return(
             <div>
                 <NavLink to={"/endresak/" + this.props.id}>
-                    <button className="btn customBtn">Rediger</button>
+                    <button className={"btn customBtn " + css.btnOnTicket}>Rediger</button>
                 </NavLink>    
             </div>
         )
@@ -29,14 +29,14 @@ export default class SingleTicket extends Component<{}>{
                 <li key={this.props.theTicket.id}>
                         <img id={"picture"+this.props.theTicket.id} src="image/temp.jpg"/>
                         <div className={css.info}>
-                            <h2 style={{marginLeft: "6px"}} className="title">{this.props.theTicket.title}</h2>
+                            <h2 style={{marginLeft: "6px"}} className={css.title}>{this.props.theTicket.title}</h2>
 
                             <p id={"status"+this.props.theTicket.id} style={{marginLeft: "6px", fontWeight: "900", color: "#666B6E"}} className="desc">
                                 <i id={"it"+this.props.theTicket.id} style={{marginRight: "4px"}}></i>{this.props.theTicket.status}
                             </p>
 
                             <ul>
-                                <li style={{width: "33%"}}> <i className="fas fa-folder-open" style={{marginRight: "4px"}}></i>{this.props.theTicket.category} </li>
+                                <li style={{width: "33%"}}> <i className="fas fa-edit" style={{marginRight: "4px"}}></i>{this.props.theTicket.category} </li>
                                 <li style={{width: "34%"}}> <i className="fas fa-map-marker-alt" style={{marginRight: "4px"}}></i>{this.props.theTicket.responsible_commune} </li>
                                 <li style={{width: "33%"}}> <i className="fas fa-calendar" style={{marginRight: "4px"}}></i>{this.props.theTicket.submitted_time !== undefined && this.props.theTicket.submitted_time.replace('T', ' ').replace('.000Z', '').slice(0, -9)}</li>
                             </ul>
@@ -66,6 +66,18 @@ export default class SingleTicket extends Component<{}>{
 
     componentDidUpdate(){
         this.getImage(this.props.theTicket.picture);
+        let s = document.getElementById("status"+this.props.theTicket.id);
+        let i = document.getElementById("it"+this.props.theTicket.id);
+        if(this.props.theTicket.status == "Fullført"){
+            s.style.color = "green";
+            i.setAttribute("class", "fas fa-check");
+        }else if(this.props.theTicket.status == "Bearbeides"){
+            s.style.color = "#FFCD24";
+            i.setAttribute("class", "fas fa-spinner");
+        }else {
+            i.setAttribute("class", "fas fa-clipboard-list");
+        }
+        console.log(s);
     } 
 
     getImage(i: String) {
