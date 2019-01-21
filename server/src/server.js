@@ -680,14 +680,10 @@ export function create_app(pool) {
                 res.sendStatus(401);
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
-                    console.log(req.params.id);
                     eventdao.updateOne(req.params.id, req.body, (status, data) => {
-                        eventdao.setPicture(req.params.id, req.body, (status, data) =>{
-                            console.log(req.params.id);
                             res.status(status);
                             res.json(data);
                         });
-                    });
                 } else {
                     res.status(403);
                 }
@@ -842,7 +838,6 @@ export function create_app(pool) {
         });
     });
     
-// Verify token
 // Verify token
     function verifyToken(req, res, next) {
         const bearerHeader = req.headers['authorization'];

@@ -49,7 +49,7 @@ export default class EventService {
     }
 
     static editEvent(eventID: number, category: string, title: string, description: string, happening_time: string): Promise<Object>{
-        console.log('fff')
+        console.log('fff');
         let event = new Event();
         event.title = title;
         event.category = category;
