@@ -369,7 +369,7 @@ export function create_app(pool) {
                     title: req.body.title,
                     category: req.body.category,
                     description: req.body.description,
-                    picture: (req.body.picture != null ? req.body.picture : "logo.PNG"),
+                    picture: (req.body.picture != null ? req.body.picture : "logo.png"),
                     lat: req.body.lat,
                     long: req.body.long
                 }
@@ -409,7 +409,7 @@ export function create_app(pool) {
                         "category": req.body.category,
                         "title": req.body.title,
                         "description": req.body.description,
-                        "picture": (req.body.picture != null ? req.body.picture : "./logo.PNG"),
+                        "picture": (req.body.picture != null ? req.body.picture : "./logo.png"),
                         "happening_time": req.body.time
                     }
                     eventdao.createOne(newEvent, (status, data) =>{
@@ -424,7 +424,7 @@ export function create_app(pool) {
                         "category": req.body.category,
                         "title": req.body.title,
                         "description": req.body.description,
-                        "picture": (req.body.picture != null ? req.body.picture : "./logo.PNG"),
+                        "picture": (req.body.picture != null ? req.body.picture : "./logo.png"),
                         "happening_time": req.body.time
                     }
                     eventdao.createOne(newEvent, (status, data) =>{
@@ -682,9 +682,11 @@ export function create_app(pool) {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
                     console.log(req.params.id);
                     eventdao.updateOne(req.params.id, req.body, (status, data) => {
-                       console.log("Edited event");
-                       res.status(status);
-                       res.json(data);
+                        eventdao.setPicture(req.params.id, req.body, (status, data) =>{
+                            console.log(req.params.id);
+                            res.status(status);
+                            res.json(data);
+                        });
                     });
                 } else {
                     res.status(403);
