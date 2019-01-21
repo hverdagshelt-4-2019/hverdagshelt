@@ -18,6 +18,7 @@ CREATE TABLE commune(
 CREATE TABLE person(
   id INT PRIMARY KEY AUTO_INCREMENT,
   email VARCHAR(254) UNIQUE NOT NULL,
+  navn VARCHAR(254),
   password VARCHAR(256) NOT NULL
 );
 
@@ -63,10 +64,11 @@ CREATE TABLE ticket(
   category VARCHAR(64) NOT NULL,
   title VARCHAR(64) NOT NULL,
   description VARCHAR(512) NOT NULL,
+  statusText VARCHAR(512) DEFAULT NULL,
   picture VARCHAR(128) DEFAULT NULL,
   submitted_time DATETIME NOT NULL,
   finished_time DATETIME DEFAULT NULL,
-  status ENUM('Ubehandlet', 'Bearbeides', 'Fullført', 'Nektet') DEFAULT 'Ubehandlet',
+  status ENUM('Ubehandlet', 'Bearbeides', 'Fullført') DEFAULT 'Ubehandlet',
   lat DOUBLE DEFAULT NULL,
   lng DOUBLE DEFAULT NULL,
 

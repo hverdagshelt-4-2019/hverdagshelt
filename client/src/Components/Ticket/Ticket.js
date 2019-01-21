@@ -13,11 +13,8 @@ import Comment from '../Comment/Comment.js';
 import Dropdown from "../Dropdown/Dropdown";
 import styles from "./style.css";
 import CompanyService from '../../Services/companyService'
-
 import { Alert } from '../../widgets';
-
 import { K_SIZE } from './../../map/controllable_hover_styles.js';
-import CompanyDao from "../../../../server/src/dao/companyDao";
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 export default class Ticket extends Component<{ match: { params: { id: number } } }> {
@@ -30,7 +27,9 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
       description: ''
   };
 
-  static propTypes = {
+
+
+    static propTypes = {
     zoom: PropTypes.number, // @controllable
     hoverKey: PropTypes.string, // @controllable
     clickKey: PropTypes.string, // @controllable
@@ -53,10 +52,13 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
 
   constructor(props) {
     super(props);
+      this.state = {
+          statusText: ''
+      };
   }
 
   editStatus(cat) {
-    let res = ticketService.setStatus(this.ticket.id, {status: cat, email: this.ticket.submitter_email});
+    let res = ticketService.setStatus(this.ticket.id, {status: cat, statusText: this.state.statusText, email: this.ticket.submitter_email});
     console.log("Response: " + res);
   }
 
@@ -124,7 +126,9 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
                 {this.canSetStatus() && this.ticket.status && <Dropdown options={status} currValue={this.ticket.status} reciever={this.editStatus}/>}
+                {this.canSetStatus() && this.ticket.status && <textarea value={this.state.statusText} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({statusText: event.target.value}))}/>}
                 {!this.canSetStatus() && this.ticket.status && <p style={{fontWeight: "900", color: "#666B6E"}} id={"statusT"+this.ticket.id}>{this.ticket.status}</p>}
+                  {!this.canSetStatus() && this.ticket.status && <p>{this.state.statusText}</p>}
               </div>
 
               <p>
@@ -206,6 +210,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
             .getTicket(this.props.match.params.id)
             .then(ticket => {
                 this.ticket = ticket.data[0];
+                this.state.statusText = ticket.data[0].statusText;
                 this.sub_date =
                     this.ticket.submitted_time.split('T', 1)[0] + ' ' + this.ticket.submitted_time.split('T')[1].split('.', 1);
                 console.log(this.props.match.params.id);
@@ -214,9 +219,9 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 console.log("lat: " + this.ticket.lat + ". lng: " + this.ticket.lng)
                 console.log(this.ticket.picture);
                 this.getImage(this.ticket.picture);
-                let s = document.getElementById("status"+this.ticket.id);
-                let st = document.getElementById("statusT"+this.ticket.id);
-                let i = document.getElementById("it"+this.ticket.id);
+                let s = document.getElementById("status"+ticket.id);
+                let st = document.getElementById("statusT"+ticket.id);
+                let i = document.getElementById("it"+ticket.id);
                 console.log("hei"+this.ticket.status);
                 if(this.ticket.status == "Fullført"){
                     s.style.color = "green";
@@ -233,7 +238,9 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
             .catch((error: Error) => Alert.danger(error.message));
         commentService.getAllComments(this.props.match.params.id)
             .then(comments => {this.comments = comments.data; this.forceUpdate()})
-            .catch((error: Error) => Alert.danger(error.message));
+            .catch((error: Error) => { 
+              Alert.danger(error.message);
+              });
         // communes = communes.concat(res);
         CompanyService.getCompanies()
             .then(res => {this.companies = this.companies.concat(res.data.map(e => e.name)); console.log(this.companies.length); this.forceUpdate()})//this.companies = this.companies.concat(res.data))
