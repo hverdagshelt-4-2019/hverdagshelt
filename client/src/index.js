@@ -24,7 +24,7 @@ import MyTickets from "./Components/TicketList/MyTickets";
 import EventList from "./Components/EventList/EventList";
 import { Alert } from './widgets';
 import AddCompany from './Components/Company/AddCompanjy';
-import UserRegister from './Components/UserRegister/UserRegister';
+import UserArchive from './Components/UserArchive/UserArchive';
 import Statistics from './Components/Statistics/Statistics';
 import ResetPassword from "./Components/Login/ResetPassword";
 import UserPage from "./Components/UserPage/UserPage";
@@ -49,7 +49,7 @@ if (root) {
                     <Route path="/leggtil" component={AddPage}/>
                     {res.data.level === 'admin' && <Route path="/kategorier" component={CategoryCreation}/>}
                     {(res.data.level === 'admin'|| res.data.level === 'publicworker') && <Route path= '/nyttSelskap' component={AddCompany}/>}
-                    {(res.data.level === 'admin' || res.data.level === 'publicworker') && <Route path='/register' component={UserRegister}/>}
+                    {(res.data.level === 'admin' || res.data.level === 'publicworker') && <Route path='/register' component={UserArchive}/>}
                     <Route path="/sak/:id" component={Ticket}/>
                     <Route path="/leggtilsak" component={AddTicket}/>
                     <Route path="/endresak/:id" component={EditTicket}/>

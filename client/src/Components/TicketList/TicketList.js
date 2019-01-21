@@ -34,21 +34,27 @@ export default class TicketList extends Component{
                         <i id="arrow" data-temp="false" className="fa fa-arrow-right"></i> 
                     </button>
                     <div className="list-group collapse in shadow" id="allOptionsCat">
-                        <p className="list-group-item blue" style={{textAlign: "center"}}> <i className="fas fa-folder-open" style={{marginRight: "4px"}}></i>Velg kategorier</p>
+                        <p className="list-group-item blue" style={{textAlign: "center"}}> <i className="fas fa-edit" style={{marginRight: "4px"}}></i>Velg kategorier</p>
                         <li className="list-group-item">
-                            <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input" id="checkAll" defaultChecked/>
-                            <label className="form-check-label" htmlFor="checkAll">Alle kategorier</label>
+                            <div style={{marginLeft: "6px"}}>
+                                <input type="checkbox" style={{width: "17px", height: "17px"}} className="form-check-input cat" id="checkAll" defaultChecked/>
+                                <label className="form-check-label" style={{marginTop: "3px"}} htmlFor="checkAll">Alle kategorier</label>
+                            </div>
                         </li>
                         {this.ticketCategories.map(category =>
                         <li key={category.name} className="list-group-item">
-                            <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input markCheck" id={"check"+category.name} defaultChecked/>
-                            <label className="form-check-label" htmlFor={"check"+category.name}>{category.name}</label>
+                            <div style={{marginLeft: "6px"}}>
+                                <input type="checkbox" style={{width: "17px", height: "17px"}} className="form-check-input markCheck cat" id={"check"+category.name} defaultChecked/>
+                                <label className="form-check-label" style={{marginTop: "3px"}} htmlFor={"check"+category.name}>{category.name}</label>
+                            </div>
                         </li>
                         )}
                         <li className="list-group-item">
-                            <br/>
-                            <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input" id="arkiverteSaker"/>
-                            <label className="form-check-label" htmlFor="arkiverteSaker">Vis bare arkiverte saker</label>
+                            <div style={{marginLeft: "6px"}}>
+                                <br/>
+                                <input type="checkbox" style={{width: "17px", height: "17px"}} className="form-check-input" id="arkiverteSaker"/>
+                                <label className="form-check-label" style={{marginTop: "3px"}} htmlFor="arkiverteSaker">Vis bare arkiverte saker</label>
+                            </div>
                         </li>
                         <button type="submit list-group-item" onClick={this.updateTickets} className="btn customBtn"><i className="fas fa-filter" style={{marginRight: "4px"}}></i>Filtrer</button>
                     </div>
@@ -67,10 +73,12 @@ export default class TicketList extends Component{
                         <br />
                         <ul className={css.ticketList}>
                             {this.state.tickets.map((ticket, i) => (
+                                    <div>
                                     <SingleTicket 
                                         key={i}
                                         theTicket={ticket}
                                     />
+                                    </div>
                             ))}
                         </ul>
                     </div>
@@ -97,7 +105,7 @@ export default class TicketList extends Component{
         .catch((error : Error) => console.log("Error occured: " + error.message));
         document.getElementById("arrowBtn").click();
         $("#checkAll").click(function () {
-            $(".form-check-input").prop('checked', $(this).prop('checked'));
+            $(".cat").prop('checked', $(this).prop('checked'));
         });
 
         //--Get tickets based on commune and checked categories--
@@ -151,11 +159,12 @@ export default class TicketList extends Component{
             this.ticketCategories.forEach(categories => {
                 if(document.getElementById("check"+categories.name).checked){
                     localTickets = localTickets.concat(this.allTickets.filter(e => e.category == categories.name));
+                    localTickets = localTickets.filter(e => e.status != "Fullført");
                 }
             });
             console.log(localTickets);
         }else{
-            localTickets = this.allTickets;
+            localTickets = this.allTickets.filter(e => e.status != "Fullført");
         } 
          if(document.getElementById("arkiverteSaker").checked){
             localTickets = localTickets.filter(e => e.status == "Fullført");
