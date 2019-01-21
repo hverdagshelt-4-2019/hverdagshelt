@@ -2,6 +2,7 @@ import React from "react";
 import { Component } from "react-simplified";
 import styles from "./style.css";
 import FollowCommunes from "../CustomTable/FollowCommunes";
+import FollowCommunesTab from "../CustomTab/FollowCommunesTab";
 
 import ChangePassword from "../ChangePassword/ChangePassword";
 
@@ -35,7 +36,7 @@ export default class UserPage extends Component {
                       </div>
                   </div>
                   <div className={styles.communeTable}>
-                      <FollowCommunes/>
+                      <FollowCommunesTab/>
                   </div>
               </div>
               <div>
