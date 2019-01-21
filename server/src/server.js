@@ -168,8 +168,8 @@ export function create_app(pool) {
     });
 
     app.get("/event/:id", (req, res) =>{
-        console.log(req.body);
-        eventdao.getOne(req.body.communes, (status, data) =>{
+        console.log(req.params.id);
+        eventdao.getOne(req.params.id, (status, data) =>{
             res.status(status);
             res.json(data);
         });
@@ -408,7 +408,7 @@ export function create_app(pool) {
                     title: req.body.title,
                     category: req.body.category,
                     description: req.body.description,
-                    picture: (req.body.picture != null ? req.body.picture : "logo.PNG"),
+                    picture: (req.body.picture != null ? req.body.picture : "logo.png"),
                     lat: req.body.lat,
                     long: req.body.long
                 }
@@ -433,7 +433,7 @@ export function create_app(pool) {
         });
       });
 
-    app.post("/event", (req, res) =>{
+    app.post("/event", verifyToken, (req, res) =>{
 
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
@@ -448,8 +448,8 @@ export function create_app(pool) {
                         "category": req.body.category,
                         "title": req.body.title,
                         "description": req.body.description,
-                        "picture": (req.body.picture != null ? req.body.picture : "./logo.PNG"),
-                        "happening_time": req.body.time
+                        "picture": (req.body.picture != null ? req.body.picture : "./logo.png"),
+                        "happening_time": req.body.happening_time
                     }
                     eventdao.createOne(newEvent, (status, data) =>{
                         res.status(status);
@@ -463,8 +463,8 @@ export function create_app(pool) {
                         "category": req.body.category,
                         "title": req.body.title,
                         "description": req.body.description,
-                        "picture": (req.body.picture != null ? req.body.picture : "./logo.PNG"),
-                        "happening_time": req.body.time
+                        "picture": (req.body.picture != null ? req.body.picture : "./logo.png"),
+                        "happening_time": req.body.happening_time
                     }
                     eventdao.createOne(newEvent, (status, data) =>{
                         res.status(status);
@@ -715,17 +715,16 @@ export function create_app(pool) {
     });
 
     app.put("/event/:id", verifyToken, (req, res) =>{
+        console.log(req.body);
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
                 res.sendStatus(401);
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
-                    console.log(req.params.id);
                     eventdao.updateOne(req.params.id, req.body, (status, data) => {
-                       console.log("Edited event");
-                       res.status(status);
-                       res.json(data);
-                    });
+                            res.status(status);
+                            res.json(data);
+                        });
                 } else {
                     res.status(403);
                 }
@@ -834,9 +833,11 @@ export function create_app(pool) {
                 res.sendStatus(401);
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
-                    console.log("Deleted event");
-                    res.status(status);
-                    res.json(data);
+                    eventdao.deleteOne(req.params.id, (status,data) => {
+                        console.log("Deleted event");
+                        res.status(status);
+                        res.json(data);
+                    })
                 } else {
                     res.sendStatus(403);
                 }
@@ -880,7 +881,6 @@ export function create_app(pool) {
         });
     });
     
-// Verify token
 // Verify token
     function verifyToken(req, res, next) {
         const bearerHeader = req.headers['authorization'];
@@ -958,6 +958,46 @@ export function create_app(pool) {
                     }
 
                     ticketdao.setPicture(req.body.id, img_name, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                });
+            }else{
+                console.log("Wrong type if image");
+                return res.status(400).send();
+            }
+        });
+    });
+
+    //Upload image for an event/happening
+
+     app.post("/imageEvent", verifyToken, (req, res) => {
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            console.log("Got POST-request from client");
+            console.log(req.headers['authorization']);
+            console.log("id: " + req.body.id);//temp delete
+            console.log(req.files);//temp delete
+
+            if (!req.files) {
+                console.log("no files were uploaded");
+                return res.status(400).send("No files were uploaded.");
+            }
+
+            console.log("files where uploaded");
+            let file = req.files.uploaded_image;
+            let img_name = file.name;
+            img_name = "e" + req.body.id + img_name;
+            console.log(img_name);
+            if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
+                console.log("Correct type of image");
+                file.mv(path.join(client_public,'images', img_name), function (err) {
+
+                    if (err) {
+                        console.log("Something went wrong");
+                        return res.status(500).send(err);
+                    }
+
+                    eventdao.setPicture(req.body.id, img_name, (status, data) =>{
                         res.status(status);
                         res.json(data);
                     });

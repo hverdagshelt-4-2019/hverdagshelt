@@ -39,6 +39,7 @@ export default class Login extends Component {
     render() {
         return (
             <div className="container" align="center">
+                <br />
                 <div className="container-fluid center-align" style={{width: '40%'}}>
                     <form>
                         <div className="form-group">
@@ -51,7 +52,7 @@ export default class Login extends Component {
                             <NavLink to="registrerdeg">Registrer deg som bruker</NavLink>
                         </div>
                     </form>
-                    <button type="submit" className="btn btn-primary" onClick={this.login}>Logg inn </button>
+                    <button type="submit" className="btn customBtn" onClick={this.login}><i class="fas fa-sign-in-alt customIcon"></i>Logg inn </button>
                     {this.loginFail &&
                     <div className="alert alert-danger">
                         <strong>Feil!</strong> Kontoen din eller passordet er feil. Hvis du ikke husker passordet, <NavLink to="resetpassord">tilbakestill det nå.</NavLink>

@@ -24,8 +24,9 @@ export default class Register extends Component {
         if(this.redirect) return <Redirect from='/registrerdeg' to='/'/>
         else
         return(
+            <div className="aroundStuff">
             <div className="container" align="center">
-                <div className="mx-auto" style={{width: '25%'}} align="center">
+                <div className="mx-auto" style={{width: '50%'}} align="center">
                     <br/>
                     <h2>Registrer deg</h2>
                     <br/>
@@ -39,7 +40,7 @@ export default class Register extends Component {
                     </form>
                     <CustomTable reciever={this.getCommune} />
                     <br />
-                    <button className="btn btn-primary" onClick={this.register}>Opprett</button>
+                    <button className="btn customBtn" onClick={this.register}><i className="fas fa-plus customIcon"></i>Opprett</button>
                     <br/>
                     <br/>
                     <label className="text-danger">{this.warning}</label>
@@ -48,6 +49,7 @@ export default class Register extends Component {
                     <NavLink exact to={'/'}>Logg inn her!</NavLink>
                 </div>
                 <div style={{height: '200px'}}></div>
+            </div>
             </div>
         )
     }
