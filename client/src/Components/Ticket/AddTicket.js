@@ -194,11 +194,16 @@ static propTypes = {
                 postId = response.data.insertId;
             })
             .catch((error : Error) => console.log(error.message));
-            console.log(postId);
 
             if(postId !== null && this.state.imageAdded){
             this.addImage(postId);
             }
+
+            if(this.state.title && this.state.description && this.state.category && postId !== null){
+                this.props.history.push('/sak/' + postId)
+            }
+            
+            console.log(postId);
             console.log(this.state.imageAdded);
         }
     }
