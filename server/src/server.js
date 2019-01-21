@@ -254,28 +254,28 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/users", (req, res) =>{
+    app.get("/users", (req, res) =>{ //todo auth
         userdao.getAll((status, data) =>{
             res.status(status);
             res.json(data);
         });
     });
 
-    app.get("/companies", (req, res) => {
+    app.get("/companies", (req, res) => { //todo auth
         companydao.getAll((status, data) =>{
             res.status(status);
             res.json(data);
         });
     });
 
-    app.get("/admins", (req, res) =>{
+    app.get("/admins", (req, res) =>{ //todo auth
         admindao.getAll((status, data) =>{
             res.status(status);
             res.json(data);
         });
     });
 
-    app.get("/publicworkers", (req, res) =>{
+    app.get("/publicworkers", (req, res) =>{ //todo auth
         publicworkerdao.getAll((status, data) =>{
             res.status(status);
             res.json(data);

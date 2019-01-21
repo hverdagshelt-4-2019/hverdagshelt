@@ -117,7 +117,7 @@ static propTypes = {
                             </select>
 
                             <label>Dato og tid</label>
-                            <input type="datetime-local" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({dateTime: event.target.value}))}>
+                            <input type="datetime-local" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({dateTime: event.target.value}))}/>
 
 
                             <h4>Bilde</h4>
