@@ -3,6 +3,10 @@ select status, count(*) as 'number_of_tickets_with_status' from ticket group by 
 
 select category, count(*) as 'tickets_in_categories' from ticket group by category;
 
+select date(submitted_time), count(*) as count from ticket group by date(submitted_time);
+
+select responsible_commune, date(submitted_time), count(*) as count from ticket group by responsible_commune, date(submitted_time);
+
 
 -- Communal stats
 select responsible_commune as 'commune', count(*) from ticket group by responsible_commune;
