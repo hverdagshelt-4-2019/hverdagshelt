@@ -27,7 +27,7 @@ export default class Login extends Component {
                     localStorage.setItem('id', result.data.id);
                     localStorage.setItem('commune', result.data.commune);
                     localStorage.setItem('company', result.data.company);
-                    this.redirect = true;
+                    window.location.href = "http://localhost:3000/hjem";
                 }
             }).catch(err => {
                 // Wrong username/password
@@ -37,11 +37,9 @@ export default class Login extends Component {
     }
 
     render() {
-
-        if(this.redirect) return <Redirect from='/' to='/Hjem'/>
-        else
         return (
             <div className="container" align="center">
+                <br />
                 <div className="container-fluid center-align" style={{width: '40%'}}>
                     <form>
                         <div className="form-group">
@@ -54,7 +52,7 @@ export default class Login extends Component {
                             <NavLink to="registrerdeg">Registrer deg som bruker</NavLink>
                         </div>
                     </form>
-                    <button type="submit" className="btn btn-primary" onClick={this.login}>Logg inn </button>
+                    <button type="submit" className="btn customBtn" onClick={this.login}><i className="fas fa-sign-in-alt customIcon"></i>Logg inn </button>
                     {this.loginFail &&
                     <div className="alert alert-danger">
                         <strong>Feil!</strong> Kontoen din eller passordet er feil. Hvis du ikke husker passordet, <NavLink to="resetpassord">tilbakestill det nå.</NavLink>

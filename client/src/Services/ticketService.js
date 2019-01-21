@@ -8,6 +8,7 @@ class Ticket {
     description;
     picture;
     status;
+    statusText;
     submitted_time;
     company_name;
     lat;

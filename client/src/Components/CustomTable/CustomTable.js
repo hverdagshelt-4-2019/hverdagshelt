@@ -11,6 +11,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TextField from "@material-ui/core/TextField";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import SearchIcon from "@material-ui/icons/Search";
 
 export default class CustomTable extends Component {
     text = "";
@@ -52,6 +54,13 @@ export default class CustomTable extends Component {
                     value={this.state.query}
                     margin="normal"
                     onChange={this.handleChange}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon />
+                            </InputAdornment>
+                        ),
+                    }}
                 />
                 <Paper className={styles.root}>
                     <Table>
