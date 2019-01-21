@@ -27,7 +27,9 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
       description: ''
   };
 
-  static propTypes = {
+
+
+    static propTypes = {
     zoom: PropTypes.number, // @controllable
     hoverKey: PropTypes.string, // @controllable
     clickKey: PropTypes.string, // @controllable
@@ -50,10 +52,13 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
 
   constructor(props) {
     super(props);
+      this.state = {
+          statusText: ''
+      };
   }
 
   editStatus(cat) {
-    let res = ticketService.setStatus(this.ticket.id, {status: cat, email: this.ticket.submitter_email});
+    let res = ticketService.setStatus(this.ticket.id, {status: cat, statusText: this.state.statusText, email: this.ticket.submitter_email});
     console.log("Response: " + res);
   }
 
@@ -115,7 +120,9 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
                 {this.canSetStatus() && this.ticket.status && <Dropdown options={status} currValue={this.ticket.status} reciever={this.editStatus}/>}
+                {this.canSetStatus() && this.ticket.status && <textarea value={this.state.statusText} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({statusText: event.target.value}))}/>}
                 {!this.canSetStatus() && this.ticket.status && <p>{this.ticket.status}</p>}
+                  {!this.canSetStatus() && this.ticket.status && <p>{this.state.statusText}</p>}
               </div>
 
               <p className="col-lg-8">
@@ -202,6 +209,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
             .getTicket(this.props.match.params.id)
             .then(ticket => {
                 this.ticket = ticket.data[0];
+                this.state.statusText = ticket.data[0].statusText;
                 this.sub_date =
                     this.ticket.submitted_time.split('T', 1)[0] + ' ' + this.ticket.submitted_time.split('T')[1].split('.', 1);
                 console.log(this.props.match.params.id);
