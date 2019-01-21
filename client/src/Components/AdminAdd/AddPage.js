@@ -78,7 +78,7 @@ export default class AddPage extends Component{
                             <br/>
                         </form>
                         <hr/>
-                        <button className="btn btn-primary" onClick={this.addNew}>Opprett ny</button>
+                        <button className="btn customBtn" onClick={this.addNew}>Opprett ny</button>
                         <br/>
                         <br/>
                     </div>
@@ -127,7 +127,7 @@ export default class AddPage extends Component{
                             <br/>
                             <br/>
                             <hr/>
-                            <button className="btn btn-primary" onClick={this.updateExisting}>Opprett fra eksisterende</button>
+                            <button className="btn customBtn" onClick={this.updateExisting}>Opprett fra eksisterende</button>
                     </div>
                 </div>
                 <div style={{height: '150px'}} /> 

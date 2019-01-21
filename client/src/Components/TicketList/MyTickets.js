@@ -7,6 +7,7 @@ import categoryService, { Category } from '../../Services/categoryService';
 import communeService from '../../Services/communeService';
 import SingleTicket from './SingleTicket';
 import Ticket from '../Ticket/Ticket';
+import css from './ticketStyle.css';
 
 //--- This class is not finished. No filter function created. ---\\
 //At the moment, the list displays all tickets, not filtered.
@@ -18,34 +19,27 @@ export default class MyTickets extends Component{
 
     render(){
         return(
-            <div className='container'>
-                <h1>Liste over saker du har sendt inn</h1>
+            <div className={css.aroundTickets}>
                 <br/>
 
                 <div className="row">
-                    <div className="col-md-4" style={{
-                        border: "2px solid lightblue",
-                    }}>
                         <br/>
-                        <input className="form-control" type="text" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.filter = event.target.value)} placeholder="Søk"/>
+                        <input style={{width: "90%", marginLeft: "5%"}} className="form-control" type="text" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.filter = event.target.value)} placeholder="Søk"/>
                         <br/>
-
-                    </div>
-
-                    <div className="col-md-8" style={{
-                        border: "2px solid lightblue",
-                    }}>
-                        <br/>
-                        <div>
-                            {this.tickets.map((ticket, i) => (
-                                <SingleTicket
-                                    key={i}
-                                    theTicket={ticket}
-                                >
-                                    <SingleTicket.Options id={ticket.id}/>
-                                </SingleTicket>
-                            ))}
-                        </div>
+                    <div className="col-md-11 col-sm-offset-2 col-sm-8  float-right" style={{
+                    float: "right",
+                    marginLeft: '5%'}}>
+                    <br />
+                    <ul className={css.ticketList}>
+                        {this.tickets.map((ticket, i) => (
+                            <SingleTicket
+                                key={i}
+                                theTicket={ticket}
+                            >
+                                <SingleTicket.Options id={ticket.id}/>
+                            </SingleTicket>
+                        ))}
+                        </ul>
                     </div>
                 </div>
                 <div style={{height: '150px'}} />

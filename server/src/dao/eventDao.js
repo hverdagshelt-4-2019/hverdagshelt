@@ -43,8 +43,28 @@ export default class EventDao extends Dao {
         );
     }
 
+    setPicture(id, img, callback) {
+        let params = [img, id];
+        super.query("UPDATE event SET picture = ? WHERE id = ?", params, callback);
+    }
+
 
   deleteOne(id, callback) {
     super.query('DELETE FROM happening WHERE id = ?', [id], callback);
   }
+
+  getAllEvents(callback) {
+        super.query("SELECT id, submitter_id, commune_name, category, title, description, picture, happening_time FROM happening", [], callback);
+    }
+
+  getEventsByCommune(communes, callback) {
+      super.query(
+            'SELECT h.id, h.submitter_id, h.commune_name, h.category, h.title, h.description, h.picture, h.happening_time ' +
+            'FROM happening h ' +
+            'JOIN commune c ON h.commune_name = c.name ' +
+            'WHERE c.name in(?);',
+            [communes],
+            callback
+        );
+    }
 }

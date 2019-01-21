@@ -24,7 +24,7 @@ export default class UserDao extends Dao {
     }
 
     getAll(callback) {
-        super.query("SELECT id, email FROM person WHERE id NOT IN (SELECT id FROM admin UNION (SELECT id FROM public_worker) UNION (SELECT id FROM company))", [], callback);
+        super.query("SELECT id, email FROM person WHERE id NOT IN (SELECT id FROM admin UNION (SELECT id FROM public_worker) UNION (SELECT id FROM company)) ORDER BY email", [], callback);
     }
 
     updateEmail(id, json, callback) {

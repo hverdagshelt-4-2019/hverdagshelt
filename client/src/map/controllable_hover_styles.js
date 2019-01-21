@@ -8,11 +8,11 @@ const greatPlaceStyle = {
   left: -K_SIZE / 2,
   top: -K_SIZE / 2,
 
-  border: '5px solid #f44336',
+  border: '5px solid #FF5722',
   borderRadius: K_SIZE,
-  backgroundColor: 'white',
+  backgroundColor: 'rgb(255, 255, 255)',
   textAlign: 'center',
-  color: '#3f51b5',
+  color: '#FF5722',
   fontSize: 16,
   fontWeight: 'bold',
   padding: 4,
@@ -21,8 +21,8 @@ const greatPlaceStyle = {
 
 const greatPlaceStyleHover = {
   ...greatPlaceStyle,
-  border: '5px solid #3f51b5',
-  color: '#f44336'
+  border: '5px solid #1976D2',
+  color: '#1976D2'
 };
 
 export {greatPlaceStyle, greatPlaceStyleHover, K_SIZE};

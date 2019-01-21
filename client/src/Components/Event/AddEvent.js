@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import ticketService from '../../Services/ticketService';
+import eventService from '../../Services/eventService';
 import categoryService from '../../Services/categoryService';
 import GoogleMapReact from 'google-map-react';
 import ControllableHover from './../../map/controllable_hover.js';
@@ -13,7 +13,7 @@ import { Alert } from '../../widgets';
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
-export default class AddTicket extends Component<{ match: { params: { id: number } } }> {
+export default class AddTicket extends Component {
 static propTypes = {
         zoom: PropTypes.number, // @controllable
         hoverKey: PropTypes.string, // @controllable
@@ -48,12 +48,13 @@ static propTypes = {
             title: '',
             description: '',
             picture: '',
+            dateTime: '',
             imageAdded: false
         };
         this.handleImageAdded = this.handleImageAdded.bind(this);
     }
 
-    ticketCategories: Category[] = [];
+    eventCategories: Category[] = [];
 
      _onChange = (center, zoom /* , bounds, marginBounds */) => {
         this.props.onCenterChange(center);
@@ -90,11 +91,10 @@ static propTypes = {
   render() {
     return (
         <div>
-                <div className="container aroundStuff">
+                <div className="container">
                     <div className="row">
-                        <div className="col-lg-10" style={{marginLeft: "8%", marginRight: "8%"}}>
-                            <br />
-                            <h1>Rapporter en ny sak</h1>
+                        <div className="col-lg-8">
+                            <h1>Meld fra om en ny begivenhet</h1>
 
                             <hr />
 
@@ -102,7 +102,7 @@ static propTypes = {
                             <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))}/>
 
                              <h4>Beskrivelse</h4>
-                            <textarea className="form-control" rows="5" style={{width:"100%"}} 
+                            <textarea className="form-control" style={{width:"100%"}} 
                                 onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))}
                             />
 
@@ -115,6 +115,9 @@ static propTypes = {
                                 </option>
                                 ))}
                             </select>
+
+                            <label>Dato og tid</label>
+                            <input type="datetime-local" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({dateTime: event.target.value}))}>
 
 
                             <h4>Bilde</h4>
@@ -140,7 +143,7 @@ static propTypes = {
                             <div style={{height: '10px'}}></div>
                             <hr />
                             
-                            <button type="button" className="btn customBtn" onClick={this.save}>Send</button>
+                            <button type="button" className="btn btn-primary" onClick={this.save}>Send</button>
 
                             <br />
                             <br />
@@ -160,7 +163,7 @@ static propTypes = {
         }else{
             console.log("No token");
         }
-        let url = "/image/";
+        let url = "/imageEvent/";
         console.log("postImage");
         let file = document.getElementById("InputFile").files[0];
         console.log(file);
@@ -186,7 +189,7 @@ static propTypes = {
     }
 
     async save() {
-        if(this.state.title && this.state.description && this.state.category){
+        if(this.state.title && this.state.description && this.state.category && this.state.dateTime){
             let postId: Number;
             await ticketService
             .postTicket(this.state.category, this.state.title, this.state.description, this.state.greatPlaces[0].lat, this.state.greatPlaces[0].lng)

@@ -1,0 +1,38 @@
+.resetPasswordRoot {
+    /*max-width: 1000px;*/
+    /*margin: auto;*/
+    /*padding: 5% 5%;*/
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 100px;
+}
+
+.formDiv {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+}
+
+.filler {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.emptySpace {
+    margin-bottom: 50px;
+}
+
+.divider {
+    width: 95%;
+}
+
+.textfield {
+    padding-top: 100px;
+}
+
+.buttonDiv {
+    display: flex;
+    justify-content: space-between;
+}

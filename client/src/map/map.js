@@ -93,19 +93,14 @@ export default class SimpleMap extends Component {
 
         let communes = [];
         console.log('valid');
-        console.log(communes);
         let list = [];
         ticketService.getAllTickets(communes).then(res => {
             list = res.data;
+            console.log(list);
             list.forEach(commune => {
-            //console.log(commune.lat);
-            //console.log(commune.lng);
             ta.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.id, commune.lat, commune.lng, commune.picture));
-            //console.log(ta);
             })
-            console.log(ta);
             this.setState({greatPlaces: ta});
-            console.log(this.state.greatPlaces);
             this._onChildMouseEnter (1);
             this._onChildMouseLeave();
         })
@@ -162,7 +157,7 @@ export default class SimpleMap extends Component {
         return (
             <div id="aroundMap" className={css.aroundMap}>
                 <div style={{height: '10px'}}></div>
-                <div className = {css.leftSide} style={{height: '87vh'}}>
+                <div className = {"shadow blue "+css.leftSide} style={{height: '87vh'}}>
                     <NavLink id="goToCase" className="nav-link" to={"/sak/"+this.state.cId}>
                     <img id="picture" src="/image/logo.png" className={"img-fluid "+css.ticketImg} alt="Responsive image"/>
                     <br/>
@@ -173,11 +168,11 @@ export default class SimpleMap extends Component {
                     <hr className={css.hr}/>
                     </NavLink>
                     <div className = {css.aroundButton}>
-                        <button id="vote" type="button" className={"btn btn-light " + css.voteB}><i className={"fas "+css["fa-thumbs-up"]}></i></button>
+                        <button id="vote" type="button" className={"btn customBtn " + css.voteB}><i className={"fas "+css["fa-thumbs-up"]}></i></button>
                     </div>
                 </div>
                 
-                <div className={css.map} style={{ height: '87vh'}}>
+                <div className={"shadow "+css.map} style={{ height: '87vh'}}>
                     <GoogleMapReact
                         bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
                         center={this.state.center}
@@ -198,7 +193,6 @@ export default class SimpleMap extends Component {
                         )}
                     </GoogleMapReact>
                 </div>
-                <div style={{height: '85vh'}}></div>
             </div>
             );
         }
