@@ -11,6 +11,7 @@ import Login from './Components/Login/Login.js';
 import Register from './Components/Login/register.js';
 import Ticket from './Components/Ticket/Ticket';
 import AddTicket from './Components/Ticket/AddTicket';
+import AddEvent from './Components/Event/AddEvent';
 import EditTicket from './Components/Ticket/EditTicket';
 import TicketList from './Components/TicketList/TicketList.js';
 import CategoryCreation from './Components/CategoryCreation/CategoryCreation.js';
@@ -48,6 +49,7 @@ if (root) {
                     <Route path="/leggtilsak" component={AddTicket}/>
                     <Route path="/endresak/:id" component={EditTicket}/>
                     <Route path="/begivenhet/:id" component={Event}/>
+                    <Route path="/leggtilbegivenhet" component={AddEvent}/>
                     <Route path="/" component={Footer}/>
                 </div>
             </BrowserRouter>,

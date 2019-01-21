@@ -68,7 +68,7 @@ export default class AddEvent extends Component {
      
                     <div className="form-group">
                     <label className="form-label">Dato og tid</label>
-                    <input className="form-control" type="datetime-local" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({dateTime: event.target.value}))}/>
+                    <input className="form-control" type="datetime-local" max="9999-12-31T23:59" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({dateTime: event.target.value}))}/>
                     </div>
 
 
@@ -120,7 +120,8 @@ export default class AddEvent extends Component {
     }
     
     async save() {
-        //if(this.state.title && this.state.description && this.state.category && this.state.dateTime && this.commune){
+        console.log('Title:' + this.state.title + ', description: ' + this.state.description + ', category: ' + this.state.category + ', datetime: ' + this.state.dateTime + ', commune: ' + this.state.commune);
+        if(this.state.title !== null && this.state.description !== null && this.state.category !== null && this.state.dateTime !== null && this.commune !== null){
             let eventId: Number;
             await eventService
             .postEvent(this.state.commune, this.state.category, this.state.title, this.state.description, this.state.dateTime.split('T', 1)[0] + ' ' + this.state.dateTime.split('T')[1].split('.', 1))
@@ -128,13 +129,11 @@ export default class AddEvent extends Component {
                 eventId = response.data.insertId;
             })
             .catch((error : Error) => console.log(error.message));
-            console.log(eventId);
 
             if(eventId !== null && this.state.imageAdded){
             this.addImage(eventId);
             }
-            console.log('The state of image: ' + this.state.imageAdded);
-        //}
+        }
     }
 
     mounted() {
@@ -142,6 +141,7 @@ export default class AddEvent extends Component {
         .then((categories: Array<Category>) => {
             this.eventCategories = categories.data;
             this.setState({category: this.eventCategories[0].name});
+            console.log(this.state.category);
         })
         .catch((error : Error) => console.log(error.message));
         console.log(this.state.commune);
