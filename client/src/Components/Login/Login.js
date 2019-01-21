@@ -27,7 +27,7 @@ export default class Login extends Component {
                     localStorage.setItem('id', result.data.id);
                     localStorage.setItem('commune', result.data.commune);
                     localStorage.setItem('company', result.data.company);
-                    this.redirect = true;
+                    window.location.href = "http://localhost:3000/hjem";
                 }
             }).catch(err => {
                 // Wrong username/password
@@ -37,9 +37,6 @@ export default class Login extends Component {
     }
 
     render() {
-
-        if(this.redirect) return <Redirect from='/' to='/Hjem'/>
-        else
         return (
             <div className="container" align="center">
                 <div className="container-fluid center-align" style={{width: '40%'}}>
