@@ -8,10 +8,11 @@ export default class UserDao extends Dao {
     };
 
     createOne(json, callback) {
-
-        if (json.password.length < 8) {
-            callback(400, {error: "Password"});
-        } else {
+        let err = password_passes_requirements(json.password);
+        if(err){
+            callback(400, err);
+        }
+        else {
             create_password(json.password).then(password => {
                 var val = [json.email, password];
                 super.query("INSERT INTO person (email, password) VALUES (?,?)",
@@ -33,10 +34,7 @@ export default class UserDao extends Dao {
     }
 
     updatePassword(id, json, callback) {
-
-        if(json.newPassword.length < 8) {
-            callback(400, {error: "Password"});
-        } else {
+        if(password_passes_requirements(json.newPassword)) {
             super.query("SELECT password FROM person WHERE id = ?", id, (code, rows) => {
                 if (code === 200) {
                     validate_password(json.oldPassword, rows[0].password).then(okay => {
@@ -50,9 +48,9 @@ export default class UserDao extends Dao {
                             callback(401, { error: "Old password not valid" })
                         }
                     })
-                        .catch(err =>{
-                            callback(400, {error: "Oopsy woopsy, we did a fucky wucky. Our code monkeys are working WEWWY HARD TO FIX THIS. ^.^"});
-                        });
+                    .catch(err =>{
+                        callback(401, {error: "Old password not valid"});
+                    });
                 } else {
                     callback(400, { error: "Something went wrong in the database" })
                 }
@@ -114,3 +112,9 @@ function validate_password(password: string, hash: string) {
     return argon2.verify(hash, password)
 }
 
+function password_passes_requirements(password: string){
+    if (password < 8) {
+        return {error: "Password too short"};
+    }
+    return true;
+}
