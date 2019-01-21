@@ -9,7 +9,7 @@ class Event {
     title;
     description;
     picture;
-    time; //Was changed from happening_time
+    happening_time; //Was changed from happening_time
     lat;
     long;
 }
@@ -34,7 +34,7 @@ export default class EventService {
         event.category = category;
         event.description = description;
         event.commune_name = commune;
-        event.time = dateTime;
+        event.happening_time = dateTime;
         console.log("Posting event...");
         console.log('Name of commune: ' + event.commune_name);
         return axios.post('/event', event, config());
@@ -55,7 +55,10 @@ export default class EventService {
         event.category = category;
         event.description = description;
         event.happening_time = happening_time;
+
+
         console.log('saving servie event');
+        console.log(happening_time);
         return axios.put('/event/' + eventID, event, config());
     }
 

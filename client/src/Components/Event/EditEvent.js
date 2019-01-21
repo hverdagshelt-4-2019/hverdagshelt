@@ -13,6 +13,11 @@ import {K_SIZE} from './../../map/controllable_hover_styles.js';
 import { Alert } from '../../widgets';
 import Datetime from 'react-datetime'
 
+var yesterday = Datetime.moment().subtract( 1, 'day' );
+var valid = function( current ){
+    return current.isAfter( yesterday );
+};
+
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 export default class EditEvent extends Component<{ match: { params: { id: number } } }> {
@@ -38,8 +43,8 @@ export default class EditEvent extends Component<{ match: { params: { id: number
 
 
 
+
     render() {
-        console.log(this.state.happening_time);
 
         return (
             <div>
@@ -68,7 +73,7 @@ export default class EditEvent extends Component<{ match: { params: { id: number
 
                             <div className="form-group">
                                 <label className="form-label">Dato og tid</label>
-                                <Datetime locale='nb' onChange={this.click} defaultValue={new Date()}/>
+                                <Datetime locale='nb' isValidDate={ valid } value={this.state.happening_time} onChange={this.saveDate} defaultValue={new Date()}/>
                             </div>
 
 
@@ -80,8 +85,6 @@ export default class EditEvent extends Component<{ match: { params: { id: number
                             <small id="fileHelp" className="form-text text-muted"></small>
 
                             <hr />
-
-                            {/* add default value */}
 
                             <div style={{height: '10px'}}></div>
                             <hr />
@@ -96,8 +99,11 @@ export default class EditEvent extends Component<{ match: { params: { id: number
         );
     }
 
-    click(e){
-        console.log(e);
+    saveDate(e){
+        let date = e._d;
+        this.setState({
+            happening_time: date
+        })
     }
 
     addImage(id: number){
@@ -139,10 +145,10 @@ export default class EditEvent extends Component<{ match: { params: { id: number
         if (!this.state.description) this.state.description = this.event.description;
         if (!this.state.category) this.state.category = this.event.category;
         if (!this.state.happening_time) this.state.happening_time = this.event.happening_time;
+        this.state.happening_time = this.state.happening_time.toJSON();
+
 
         this.state.happening_time = this.state.happening_time.split('T', 1)[0] + ' ' + this.state.happening_time.split('T')[1].split('.', 1);
-        console.log(this.state.happening_time);
-
         let postId: Number;
         await eventService
             .editEvent(this.props.match.params.id, this.state.category, this.state.title, this.state.description, this.state.happening_time)
@@ -181,12 +187,13 @@ export default class EditEvent extends Component<{ match: { params: { id: number
                 this.event = event.data[0];
                 this.state.category = event.data[0].category;
                 this.state.description = event.data[0].description;
-                this.state.happening_time = event.data[0].happening_time;
+                this.state.happening_time = new Date(event.data[0].happening_time);
+
                 this.state.title = event.data[0].title;
                 this.getImage(this.event.picture);
-                console.log(this.state)
             })
             .catch((error : Error) => console.log(error.message));
+
 
         categoryService.getEventCategories()
             .then((categories: Array<Category>) => {
