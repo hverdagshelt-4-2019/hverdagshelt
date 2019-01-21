@@ -107,6 +107,10 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
 
     return (
       <div className="aroundStuff">
+        <div style={{height: "1em"}}/>
+        <img id="picture" src="" className={"img-fluid imgMiddle"} alt="Responsive image"/>
+
+        <hr />
         <div className="container">
           <div className="row">
             <div className="col-lg-10" style={{marginLeft: "8%", marginRight: "8%"}}>
@@ -114,38 +118,35 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               <h1>{this.ticket.title}</h1>
 
               <div className={styles.statusDiv}>
-                <p className="lead">Status:</p>
+                <p id={"status"+this.ticket.id}>
+                    <i id={"it"+this.ticket.id}></i>
+                </p>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
                 {this.canSetStatus() && this.ticket.status && <Dropdown options={status} currValue={this.ticket.status} reciever={this.editStatus}/>}
-                {!this.canSetStatus() && this.ticket.status && <p>{this.ticket.status}</p>}
+                {!this.canSetStatus() && this.ticket.status && <p style={{fontWeight: "900", color: "#666B6E"}} id={"statusT"+this.ticket.id}>{this.ticket.status}</p>}
               </div>
 
-              <p className="col-lg-8">
-                Registrert av: {this.ticket.submitter_email}
+              <p>
+                <i class="fas fa-user" style={{marginRight: "4px"}}></i> {this.ticket.submitter_email}
               </p>
 
               <hr />
-
-              <p>
-                <b>Registrert:</b> {this.ticket.submitted_time !== undefined && this.ticket.submitted_time.replace('T', ' ').replace('.000Z', '')}
-              </p>
-
-              <p>
-                <b>Kommune:</b> {this.ticket.responsible_commune}
-              </p>
-
+              <ul className="inlineStuff">
+                <li style={{width: "33%"}}>
+                  <i className="fas fa-calendar" style={{marginRight: "4px"}}></i> {this.ticket.submitted_time !== undefined && this.ticket.submitted_time.replace('T', ' ').replace('.000Z', '')}
+                </li>
+                <li style={{width: "34%"}}>
+                  <i className="fas fa-map-marker-alt" style={{marginRight: "4px"}}></i> {this.ticket.responsible_commune}
+                </li>
+                <li style={{width: "33%"}}>
+                  <i className="fas fa-edit" style={{marginRight: "4px"}}></i> {this.ticket.category}
+                </li>
+              </ul>
+              <hr />
               <p>
                 <b>Bedrift:</b> {this.ticket.company_name} {this.canSetStatus() && this.companies.length > 1 && <Dropdown options={this.companies} currValue={this.ticket.company_name} reciever={this.editCompany}/>}
               </p>
-
-              <p>
-                <b>Kategori:</b> {this.ticket.category}
-              </p>
-
-              <hr />
-
-              <img id="picture" src="" style={{maxHeight: "400px"}} className={"img-fluid "} alt="Responsive image"/>
 
               <hr />
 
@@ -212,7 +213,22 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 this.props.greatPlaces[0].lng=this.ticket.lng;
                 console.log("lat: " + this.ticket.lat + ". lng: " + this.ticket.lng)
                 console.log(this.ticket.picture);
-                this.getImage(this.ticket.picture); //xss
+                this.getImage(this.ticket.picture);
+                let s = document.getElementById("status"+this.ticket.id);
+                let st = document.getElementById("statusT"+this.ticket.id);
+                let i = document.getElementById("it"+this.ticket.id);
+                console.log("hei"+this.ticket.status);
+                if(this.ticket.status == "Fullført"){
+                    s.style.color = "green";
+                    st.style.color = "green";
+                    i.setAttribute("class", "fas fa-check");
+                }else if(this.ticket.status == "Bearbeides"){
+                    s.style.color = "#FFCD24";
+                    st.style.color = "#FFCD24";
+                    i.setAttribute("class", "fas fa-spinner");
+                }else {
+                    i.setAttribute("class", "fas fa-clipboard-list");
+                }
             })
             .catch((error: Error) => Alert.danger(error.message));
         commentService.getAllComments(this.props.match.params.id)
