@@ -68,7 +68,6 @@
 }
 .info > ul > li {
     display: table-cell;
-    cursor: pointer;
     color: rgb(30, 30, 30);
     font-size: 11pt;
     font-weight: 300;

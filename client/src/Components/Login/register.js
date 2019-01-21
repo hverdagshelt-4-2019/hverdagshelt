@@ -57,6 +57,7 @@ export default class Register extends Component {
     register(){
         this.success = null;
         this.warning = null;
+        console.log("register called")
         if(!this.checkFields()) return;
         if(this.password1 === this.password2) {
             userService.createUser(this.email, this.password1, this.commune)

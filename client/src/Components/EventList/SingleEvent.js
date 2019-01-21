@@ -22,6 +22,7 @@ class Options extends Component{
     delete(){
         eventService.deleteEvent(this.props.id)
         .catch((error : Error) => console.log(error.message));
+        window.location.reload();
     }
 }
 

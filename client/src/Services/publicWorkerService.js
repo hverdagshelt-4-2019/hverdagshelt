@@ -25,4 +25,8 @@ export default class PublicWorkerService {
         publicWorker.commune = commune;
         return axios.post('/publicworker', publicWorker, config());
     }
+
+    static getPublicworkers(): Promise<PublicWorker[]> {
+        return axios.get('/publicworkers');
+    }
 }

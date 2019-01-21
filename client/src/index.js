@@ -10,7 +10,10 @@ import UploadImage from './temp/uploadImage'
 import Login from './Components/Login/Login.js';
 import Register from './Components/Login/register.js';
 import Ticket from './Components/Ticket/Ticket';
+import Event from './Components/Event/Event';
+import EditEvent from './Components/Event/EditEvent';
 import AddTicket from './Components/Ticket/AddTicket';
+import AddEvent from './Components/Event/AddEvent';
 import EditTicket from './Components/Ticket/EditTicket';
 import TicketList from './Components/TicketList/TicketList.js';
 import CategoryCreation from './Components/CategoryCreation/CategoryCreation.js';
@@ -26,6 +29,8 @@ import UserArchive from './Components/UserArchive/UserArchive';
 import Statistics from './Components/Statistics/Statistics';
 import ResetPassword from "./Components/Login/ResetPassword";
 import UserPage from "./Components/UserPage/UserPage";
+import Om from './Components/Footer/Om';
+import Hjelp from './Components/Footer/Hjelp';
 
 
 const root = document.getElementById('root');
@@ -44,6 +49,10 @@ if (root) {
                     <Route path="/registrerdeg" component={Register}/>
                     <Route path="/hjem" component={TicketList}/>
                     <Route path="/minesaker" component={MyTickets}/>
+                    <Route path="/om" component={Om} />
+                    <Route path="/resetpassord" component={ResetPassword} />
+                    <Route path="/minside" component={UserPage} />
+                    <Route path="/hjelp" component={Hjelp} />
                     <Route path="/leggtil" component={AddPage}/>
                     {res.data.level === 'admin' && <Route path="/kategorier" component={CategoryCreation}/>}
                     {(res.data.level === 'admin'|| res.data.level === 'publicworker') && <Route path= '/nyttSelskap' component={AddCompany}/>}
@@ -53,9 +62,11 @@ if (root) {
                     <Route path="/endresak/:id" component={EditTicket}/>
                     <Route path="/begivenheter" component={EventList} />
                     <Route exact path="/statistikk" component={Statistics}/>
+                    <Route path="/begivenhet/:id" component={Event}/>
+                    <Route path="/leggtilbegivenhet" component={AddEvent}/>
+                    <Route path="/endrebegivenhet/:id" component={EditEvent}/>
                     <Route path="/" component={Footer}/>
-                    <Route path="/resetpassord" component={ResetPassword} />
-                    <Route path="/minside" component={UserPage} />
+                    
                 </div>
             </BrowserRouter>,
             root

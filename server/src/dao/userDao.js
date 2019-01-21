@@ -10,6 +10,7 @@ export default class UserDao extends Dao {
     createOne(json, callback) {
         let err = password_passes_requirements(json.password);
         if(err){
+            console.log(err);
             callback(400, err);
         }
         else {
@@ -116,5 +117,5 @@ function password_passes_requirements(password: string){
     if (password < 8) {
         return {error: "Password too short"};
     }
-    return true;
+    return false;
 }
