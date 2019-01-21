@@ -10,7 +10,7 @@ class Options extends Component{
         return(
             <div>
                 <NavLink to={"/endresak/" + this.props.id}>
-                    <button className="btn btn-primary">Rediger</button>
+                    <button className="btn customBtn">Rediger</button>
                 </NavLink>    
             </div>
         )
@@ -61,6 +61,7 @@ export default class SingleTicket extends Component<{}>{
             i.setAttribute("class", "fas fa-clipboard-list");
         }
         console.log(s);
+        
     }
 
     componentDidUpdate(){

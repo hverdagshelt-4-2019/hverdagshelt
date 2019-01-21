@@ -36,12 +36,12 @@ export default class TicketList extends Component{
                     <div className="list-group collapse in shadow" id="allOptionsCat">
                         <p className="list-group-item blue" style={{textAlign: "center"}}> <i className="fas fa-folder-open" style={{marginRight: "4px"}}></i>Velg kategorier</p>
                         <li className="list-group-item">
-                            <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input" id="checkAll" defaultChecked/>
+                            <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input cat" id="checkAll" defaultChecked/>
                             <label className="form-check-label" htmlFor="checkAll">Alle kategorier</label>
                         </li>
                         {this.ticketCategories.map(category =>
                         <li key={category.name} className="list-group-item">
-                            <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input markCheck" id={"check"+category.name} defaultChecked/>
+                            <input type="checkbox" style={{width: "15px", height: "15px"}} className="form-check-input markCheck cat" id={"check"+category.name} defaultChecked/>
                             <label className="form-check-label" htmlFor={"check"+category.name}>{category.name}</label>
                         </li>
                         )}
@@ -97,7 +97,7 @@ export default class TicketList extends Component{
         .catch((error : Error) => console.log("Error occured: " + error.message));
         document.getElementById("arrowBtn").click();
         $("#checkAll").click(function () {
-            $(".form-check-input").prop('checked', $(this).prop('checked'));
+            $(".cat").prop('checked', $(this).prop('checked'));
         });
 
         //--Get tickets based on commune and checked categories--
