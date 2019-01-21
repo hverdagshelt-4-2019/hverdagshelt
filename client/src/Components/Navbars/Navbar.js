@@ -63,7 +63,7 @@ export default class Navbar extends Component {
     render() {
         return (
             <nav className="navbar navbar-expand-md navbar-dark blue shadow">
-                <a className="navbar-brand" href="/hjem" style={{color: "white"}}>HverdagsHelt<img style={{marginLeft: "4px"}} src="Skjermbilde.PNG" width="20" height="17" /></a>
+                <NavLink className="navbar-brand" to="/hjem" style={{color: "white"}}>HverdagsHelt<img style={{marginLeft: "4px"}} src="Skjermbilde.PNG" width="20" height="17" /></NavLink>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                         <span className="navbar-toggler-icon"></span>
                     </button>
