@@ -675,6 +675,7 @@ export function create_app(pool) {
     });
 
     app.put("/event/:id", verifyToken, (req, res) =>{
+        console.log(req.body);
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
                 res.sendStatus(401);

@@ -9,7 +9,11 @@ class Event {
     title;
     description;
     picture;
+<<<<<<< HEAD
     happening_time;
+=======
+    happening_time; //Was changed from happening_time
+>>>>>>> 91a6e2e07e60f6b0d864492fbfc12e3d5e432b8d
     lat;
     long;
 }
@@ -55,7 +59,10 @@ export default class EventService {
         event.category = category;
         event.description = description;
         event.happening_time = happening_time;
+
+
         console.log('saving servie event');
+        console.log(happening_time);
         return axios.put('/event/' + eventID, event, config());
     }
 
