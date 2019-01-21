@@ -833,9 +833,11 @@ export function create_app(pool) {
                 res.sendStatus(401);
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
-                    console.log("Deleted event");
-                    res.status(status);
-                    res.json(data);
+                    eventdao.deleteOne(req.params.id, (status,data) => {
+                        console.log("Deleted event");
+                        res.status(status);
+                        res.json(data);
+                    })
                 } else {
                     res.sendStatus(403);
                 }
