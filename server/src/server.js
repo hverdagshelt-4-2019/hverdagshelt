@@ -744,13 +744,13 @@ export function create_app(pool) {
                             from: 'Hverdagsheltene',
                             to: req.body.email,
                             subject: 'Status oppdatering',
-                            text: ('Ditt problem har fått ny status. Sjekk ny status på: '+config.domainname+'/sak/' + req.params.ticket_id)
-                        }
-                        sendEmail(transporter, mailOptions)
+                            text: ('Ditt problem har fått ny status. Sjekk ny status på: ' + req.body.statusText + ' | Gå til: ' + config.domainname+'/sak/' + req.params.ticket_id)
+                        };
+                        sendEmail(transporter, mailOptions);
                         res.status(status);
                         res.json(data);
                     } else {
-                        console.log('Oops...');
+                        console.log('Feil med å oppdatere status i serverfil');
                     }
                 });
             }
@@ -838,6 +838,7 @@ export function create_app(pool) {
                         res.status(status);
                         res.json(data);
                     })
+
                 } else {
                     res.sendStatus(403);
                 }

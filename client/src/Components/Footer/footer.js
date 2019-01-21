@@ -13,11 +13,11 @@ export default class Footer extends Component {
                 <footer className={"blue " + css.footer}>
                 <div className="container">
                     <ul className={css.foote_bottom_ul_amrc}>
-                        <li><a href="/Hjem">Hjem</a></li>
-                        <li><a href="/Om">Om</a></li>
-                        <li><a href="/Hjelp">Hjelp</a></li>
+                        <li><NavLink to="/hjem">Hjem</NavLink></li>
+                        <li><NavLink to="/om">Om</NavLink></li>
+                        <li><NavLink to="/hjelp">Hjelp</NavLink></li>
                     </ul>
-                    <p className="text-center">Copyright @2019 | <a className={css.team} href="#">Team 4</a></p>
+                    <p className="text-center">Copyright @2019 | <span className={css.team}>Team 4</span></p>
                 </div>
 
                 </footer>
