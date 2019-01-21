@@ -11,6 +11,8 @@ import shouldPureComponentUpdate from 'react-pure-render/function';
 import PropTypes from 'prop-types';
 import { Alert } from '../../widgets';
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
+import Datetime from 'react-datetime';
+
 
 export default class AddEvent extends Component {
 
@@ -22,7 +24,7 @@ export default class AddEvent extends Component {
             title: '',
             description: '',
             picture: '',
-            dateTime: '',
+            happening_time: new Date(),
             imageAdded: false
         };
         this.handleImageAdded = this.handleImageAdded.bind(this);
@@ -32,6 +34,13 @@ export default class AddEvent extends Component {
 
    handleImageAdded() {
        this.state.imageAdded ? this.setState({imageAdded: false}) : this.setState({imageAdded: true});
+   }
+
+   handleDate(e) {
+       let date = e._d;
+       this.setState({
+           happening_time: date.toJSON()
+       });
    }
 
 
@@ -68,7 +77,7 @@ export default class AddEvent extends Component {
      
                     <div className="form-group">
                     <label className="form-label">Dato og tid</label>
-                    <input className="form-control" type="datetime-local" max="9999-12-31T23:59" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({dateTime: event.target.value}))}/>
+                    <Datetime locale='nb' onChange={this.handleDate} defaultValue={new Date()}/>
                     </div>
 
 
@@ -120,11 +129,10 @@ export default class AddEvent extends Component {
     }
     
     async save() {
-        console.log('Title:' + this.state.title + ', description: ' + this.state.description + ', category: ' + this.state.category + ', datetime: ' + this.state.dateTime + ', commune: ' + this.state.commune);
-        if(this.state.title !== null && this.state.description !== null && this.state.category !== null && this.state.dateTime !== null && this.commune !== null){
+        if(this.state.title !== null && this.state.description !== null && this.state.category !== null && this.state.happening_time !== null && this.commune !== null){
             let eventId: Number;
             await eventService
-            .postEvent(this.state.commune, this.state.category, this.state.title, this.state.description, this.state.dateTime.split('T', 1)[0] + ' ' + this.state.dateTime.split('T')[1].split('.', 1))
+            .postEvent(this.state.commune, this.state.category, this.state.title, this.state.description, this.state.happening_time.split('T', 1)[0] + ' ' + this.state.happening_time.split('T')[1].split('.', 1))
             .then((response) => {
                 eventId = response.data.insertId;
             })

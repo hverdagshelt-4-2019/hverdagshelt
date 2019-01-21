@@ -410,7 +410,7 @@ export function create_app(pool) {
                         "title": req.body.title,
                         "description": req.body.description,
                         "picture": (req.body.picture != null ? req.body.picture : "./logo.png"),
-                        "happening_time": req.body.time
+                        "happening_time": req.body.happening_time
                     }
                     eventdao.createOne(newEvent, (status, data) =>{
                         res.status(status);
@@ -425,7 +425,7 @@ export function create_app(pool) {
                         "title": req.body.title,
                         "description": req.body.description,
                         "picture": (req.body.picture != null ? req.body.picture : "./logo.png"),
-                        "happening_time": req.body.time
+                        "happening_time": req.body.happening_time
                     }
                     eventdao.createOne(newEvent, (status, data) =>{
                         res.status(status);

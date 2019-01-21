@@ -9,7 +9,7 @@ class Event {
     title;
     description;
     picture;
-    time; //Was changed from happening_time
+    happening_time;
     lat;
     long;
 }
@@ -28,15 +28,15 @@ function config() {
 
 export default class EventService {
 
-    static postEvent(commune: string, category: string, title: string, description: string, dateTime): Promise<Object> {
+    static postEvent(commune: string, category: string, title: string, description: string, happening_time): Promise<Object> {
         let event = new Event();
         event.title = title;
         event.category = category;
         event.description = description;
         event.commune_name = commune;
-        event.time = dateTime;
+        event.happening_time = happening_time;
         console.log("Posting event...");
-        console.log('Name of commune: ' + event.commune_name);
+        console.log('Time: ' + event.happening_time);
         return axios.post('/event', event, config());
     }
 
