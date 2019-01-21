@@ -11,6 +11,13 @@ import shouldPureComponentUpdate from 'react-pure-render/function';
 import PropTypes from 'prop-types';
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
 import { Alert } from '../../widgets';
+import Datetime from 'react-datetime'
+
+var yesterday = Datetime.moment().subtract( 1, 'day' );
+var valid = function( current ){
+    return current.isAfter( yesterday );
+};
+
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 export default class EditEvent extends Component<{ match: { params: { id: number } } }> {
@@ -31,6 +38,10 @@ export default class EditEvent extends Component<{ match: { params: { id: number
         this.state.imageAdded ? this.setState({imageAdded: false}) : this.setState({imageAdded: true});
     }
     event='';
+
+
+
+
 
 
     render() {
@@ -58,9 +69,11 @@ export default class EditEvent extends Component<{ match: { params: { id: number
                                 ))}
                             </select>
 
+
+
                             <div className="form-group">
                                 <label className="form-label">Dato og tid</label>
-                                <input className="form-control" type="datetime-local"/>
+                                <Datetime locale='nb' isValidDate={ valid } value={this.state.happening_time} onChange={this.saveDate} defaultValue={new Date()}/>
                             </div>
 
 
@@ -72,8 +85,6 @@ export default class EditEvent extends Component<{ match: { params: { id: number
                             <small id="fileHelp" className="form-text text-muted"></small>
 
                             <hr />
-
-                            {/* add default value */}
 
                             <div style={{height: '10px'}}></div>
                             <hr />
@@ -88,6 +99,13 @@ export default class EditEvent extends Component<{ match: { params: { id: number
         );
     }
 
+    saveDate(e){
+        let date = e._d;
+        this.setState({
+            happening_time: date
+        })
+    }
+
     addImage(id: number){
         let token = localStorage.getItem('authToken');
         let Authorization = 'none';
@@ -96,7 +114,7 @@ export default class EditEvent extends Component<{ match: { params: { id: number
         }else{
             console.log("No token");
         }
-        let url = "/image/";
+        let url = "/imageEvent/";
         console.log("postImage");
         let file = document.getElementById("InputFile").files[0];
         console.log(file);
@@ -127,9 +145,10 @@ export default class EditEvent extends Component<{ match: { params: { id: number
         if (!this.state.description) this.state.description = this.event.description;
         if (!this.state.category) this.state.category = this.event.category;
         if (!this.state.happening_time) this.state.happening_time = this.event.happening_time;
-        this.state.happening_time = this.state.happening_time.split('T', 1)[0] + ' ' + this.state.happening_time.split('T')[1].split('.', 1);
-        console.log(this.state.happening_time);
+        this.state.happening_time = this.state.happening_time.toJSON();
 
+
+        this.state.happening_time = this.state.happening_time.split('T', 1)[0] + ' ' + this.state.happening_time.split('T')[1].split('.', 1);
         let postId: Number;
         await eventService
             .editEvent(this.props.match.params.id, this.state.category, this.state.title, this.state.description, this.state.happening_time)
@@ -142,9 +161,12 @@ export default class EditEvent extends Component<{ match: { params: { id: number
                 Alert.danger("Noe gikk galt, Sak ikke oppdatert");
             });
 
-        if(postId !== null && this.state.imageAdded){
+        if(this.state.imageAdded){
+            console.log("ADDING IMAGE");
+            console.log(this.state.imageAdded);
             this.addImage(this.props.match.params.id);
         }
+
         console.log(this.state.imageAdded);
         Alert.success("Sak oppdatert");
         document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -165,12 +187,13 @@ export default class EditEvent extends Component<{ match: { params: { id: number
                 this.event = event.data[0];
                 this.state.category = event.data[0].category;
                 this.state.description = event.data[0].description;
-                this.state.happening_time = event.data[0].happening_time;
+                this.state.happening_time = new Date(event.data[0].happening_time);
+
                 this.state.title = event.data[0].title;
                 this.getImage(this.event.picture);
-                console.log(this.state)
             })
             .catch((error : Error) => console.log(error.message));
+
 
         categoryService.getEventCategories()
             .then((categories: Array<Category>) => {

@@ -9,7 +9,11 @@ class Event {
     title;
     description;
     picture;
+<<<<<<< HEAD
     happening_time;
+=======
+    happening_time; //Was changed from happening_time
+>>>>>>> 91a6e2e07e60f6b0d864492fbfc12e3d5e432b8d
     lat;
     long;
 }
@@ -28,15 +32,15 @@ function config() {
 
 export default class EventService {
 
-    static postEvent(commune: string, category: string, title: string, description: string, dateTime): Promise<Object> {
+    static postEvent(commune: string, category: string, title: string, description: string, happening_time): Promise<Object> {
         let event = new Event();
         event.title = title;
         event.category = category;
         event.description = description;
         event.commune_name = commune;
-        event.happening_time = dateTime;
+        event.happening_time = happening_time;
         console.log("Posting event...");
-        console.log('Name of commune: ' + event.commune_name);
+        console.log('Time: ' + event.happening_time);
         return axios.post('/event', event, config());
     }
 
@@ -55,13 +59,16 @@ export default class EventService {
 
 
     static editEvent(eventID: number, category: string, title: string, description: string, happening_time: string): Promise<Object>{
-        console.log('fff')
+        console.log('fff');
         let event = new Event();
         event.title = title;
         event.category = category;
         event.description = description;
         event.happening_time = happening_time;
+
+
         console.log('saving servie event');
+        console.log(happening_time);
         return axios.put('/event/' + eventID, event, config());
     }
 

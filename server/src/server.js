@@ -433,10 +433,9 @@ export function create_app(pool) {
         });
       });
 
-    app.post("/event", (req, res) =>{
+    app.post("/event", verifyToken, (req, res) =>{
 
         jwt.verify(req.token, 'key', (err, authData) =>{
-            console.log('Authentication failed!');
             if(err) {
                 console.log(err);
                 res.sendStatus(401);
@@ -450,7 +449,7 @@ export function create_app(pool) {
                         "title": req.body.title,
                         "description": req.body.description,
                         "picture": (req.body.picture != null ? req.body.picture : "./logo.png"),
-                        "happening_time": req.body.time
+                        "happening_time": req.body.happening_time
                     }
                     eventdao.createOne(newEvent, (status, data) =>{
                         res.status(status);
@@ -465,7 +464,7 @@ export function create_app(pool) {
                         "title": req.body.title,
                         "description": req.body.description,
                         "picture": (req.body.picture != null ? req.body.picture : "./logo.png"),
-                        "happening_time": req.body.time
+                        "happening_time": req.body.happening_time
                     }
                     eventdao.createOne(newEvent, (status, data) =>{
                         res.status(status);
@@ -716,19 +715,16 @@ export function create_app(pool) {
     });
 
     app.put("/event/:id", verifyToken, (req, res) =>{
+        console.log(req.body);
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
                 res.sendStatus(401);
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
-                    console.log(req.params.id);
                     eventdao.updateOne(req.params.id, req.body, (status, data) => {
-                        eventdao.setPicture(req.params.id, req.body, (status, data) =>{
-                            console.log(req.params.id);
                             res.status(status);
                             res.json(data);
                         });
-                    });
                 } else {
                     res.status(403);
                 }
@@ -883,7 +879,6 @@ export function create_app(pool) {
         });
     });
     
-// Verify token
 // Verify token
     function verifyToken(req, res, next) {
         const bearerHeader = req.headers['authorization'];
