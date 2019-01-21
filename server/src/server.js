@@ -394,10 +394,9 @@ export function create_app(pool) {
         });
       });
 
-    app.post("/event", (req, res) =>{
+    app.post("/event", verifyToken, (req, res) =>{
 
         jwt.verify(req.token, 'key', (err, authData) =>{
-            console.log('Authentication failed!');
             if(err) {
                 console.log(err);
                 res.sendStatus(401);
