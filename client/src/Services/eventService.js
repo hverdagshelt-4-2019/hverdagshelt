@@ -28,23 +28,22 @@ function config() {
 
 export default class EventService {
 
-    static async postEvent(category: string, title: string, description: string, lat: number, long: number, datetime): Promise<Object> {
+    static postEvent(commune: string, category: string, title: string, description: string, dateTime): Promise<Object> {
         let event = new Event();
         event.title = title;
         event.category = category;
         event.description = description;
-        event.lat = lat;
-        event.long = long;
-        event.happening_time = datetime;
-        await ticketService.getCommune(lat, long).then((response) => event.commune_name = response.data.kommune).catch((error : Error) => console.log(error.message));
+        event.commune_name = commune;
+        event.happening_time = dateTime;
         console.log("Posting event...");
-        console.log(event.commune);
+        console.log('Name of commune: ' + event.commune_name);
         return axios.post('/event', event, config());
     }
 
     postEvent(event): Promise<Object> {
         return axios.post('/event', event, config());
     }
+
 
     static getEvent(eventID): Promise<Event>{
         return axios.get('/event/' + eventID);
@@ -54,7 +53,15 @@ export default class EventService {
         return axios.get('/events', config());
     }
 
-    static editEvent(eventID, event): Promise<Object> {
+
+    static editEvent(eventID: number, category: string, title: string, description: string, happening_time: string): Promise<Object>{
+        console.log('fff')
+        let event = new Event();
+        event.title = title;
+        event.category = category;
+        event.description = description;
+        event.happening_time = happening_time;
+        console.log('saving servie event');
         return axios.put('/event/' + eventID, event, config());
     }
 

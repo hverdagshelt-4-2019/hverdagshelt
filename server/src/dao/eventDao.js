@@ -33,19 +33,23 @@ export default class EventDao extends Dao {
       val,
       callback
     );
-  }
+    }
 
     updateOne(id, json, callback) {
-        var val = [json.commune_name, json.category, json.title, json.description, json.picture, json.happening_time, id];
-        super.query("UPDATE happening SET commune_name = ?, category = ?, title = ?, description = ?, picture = ?, happening_time = ? WHERE id = ?",
+        var val = [json.category, json.title, json.description, json.picture, json.happening_time, id];
+        console.log(json.picture);
+        super.query("UPDATE happening SET category = ?, title = ?, description = ?, picture = ?, happening_time = ? WHERE id = ?",
             val,
             callback
         );
     }
 
     setPicture(id, img, callback) {
+      console.log('IMAGE UNDER');
+        console.log(img);
+        console.log(id);
         let params = [img, id];
-        super.query("UPDATE event SET picture = ? WHERE id = ?", params, callback);
+        super.query("UPDATE happening SET picture = ? WHERE id = ?", params, callback);
     }
 
 

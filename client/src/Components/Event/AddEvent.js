@@ -12,39 +12,13 @@ import PropTypes from 'prop-types';
 import { Alert } from '../../widgets';
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
 
-@controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
-export default class AddTicket extends Component {
-static propTypes = {
-        zoom: PropTypes.number, // @controllable
-        hoverKey: PropTypes.string, // @controllable
-        clickKey: PropTypes.string, // @controllable
-        onCenterChange: PropTypes.func, // @controllable generated fn
-        onZoomChange: PropTypes.func, // @controllable generated fn
-        onHoverKeyChange: PropTypes.func, // @controllable generated fn
-
-        greatPlaces: PropTypes.array
-    }
-    static defaultProps = {
-        center: {
-            lat: 63.42,
-            lng: 10.38
-        },
-        zoom: 13,
-        greatPlaces:  [
-      {id: 'Temp ex', lat: 63.42, lng: 10.38}
-    ]
-    };
-
-    shouldComponentUpdate = shouldPureComponentUpdate;
+export default class AddEvent extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            greatPlaces:  [
-            {id: 'Temp ex', lat: 63.42, lng: 10.38}
-            ],
             category: '',
-            commune: '',
+            commune: localStorage.getItem('commune'),
             title: '',
             description: '',
             picture: '',
@@ -56,33 +30,6 @@ static propTypes = {
 
     eventCategories: Category[] = [];
 
-     _onChange = (center, zoom /* , bounds, marginBounds */) => {
-        this.props.onCenterChange(center);
-        this.props.onZoomChange(zoom);
-     }
-
-    _onChildClick = (key, childProps) => {
-        this.props.onCenterChange([childProps.lat, childProps.lng]);
-
-    }
-
-    _onChildMouseEnter = (key /*, childProps */) => {
-        this.props.onHoverKeyChange(key);
-    }
-
-    _onChildMouseLeave = (/* key, childProps */) => {
-        this.props.onHoverKeyChange(null);
-    }
-
-   _onClick = ({x, y, lat, lng, event}) => {
-       console.log(lat, lng);
-        let pa = this.state.greatPlaces[0];
-        pa.lat = lat;
-        pa.lng = lng;
-        this.setState({greatPlaces: [pa],
-        });
-   }
-
    handleImageAdded() {
        this.state.imageAdded ? this.setState({imageAdded: false}) : this.setState({imageAdded: true});
    }
@@ -90,72 +37,56 @@ static propTypes = {
 
   render() {
     return (
-        <div>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-8">
-                            <h1>Meld fra om en ny begivenhet</h1>
+        <div className="container">
+            <div className="row">
+                <div className="col-lg-8">
+                    <h1>Meld fra om en ny begivenhet</h1>
+                    <form>
+                    <div className="form-group">
+                        <h4>Tittel</h4>
+                        <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))}/>
+                    </div>
 
-                            <hr />
+                    <div className="form-group">
+                        <h4>Beskrivelse</h4>
+                        <textarea className="form-control" style={{width:"100%"}} 
+                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))}
+                        />
+                    </div>
 
-                            <h4>Tittel</h4>
-                            <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))}/>
+                    <div className="form-group">
+                        <h4>Kategori</h4>    
+                        <select className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({category: event.target.value}))}>
+                            {this.eventCategories.map((categories, i) => (
+                            <option value={categories.name} key={i}>
+                                {categories.name}
+                            </option>
+                            ))}
+                        </select>
+                    </div>
 
-                             <h4>Beskrivelse</h4>
-                            <textarea className="form-control" style={{width:"100%"}} 
-                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))}
-                            />
-
-                            <h4>Kategori</h4>
-                            
-                            <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({category: event.target.value}))}>
-                                {this.ticketCategories.map((categories, i) => (
-                                <option value={categories.name} key={i}>
-                                    {categories.name}
-                                </option>
-                                ))}
-                            </select>
-
-                            <label>Dato og tid</label>
-                            <input type="datetime-local" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({dateTime: event.target.value}))}>
+     
+                    <div className="form-group">
+                    <label className="form-label">Dato og tid</label>
+                    <input className="form-control" type="datetime-local" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({dateTime: event.target.value}))}/>
+                    </div>
 
 
-                            <h4>Bilde</h4>
-                            <label htmlFor="InputFile">Last opp bilde</label>
-                            <input type="file" className="form-control-file" id="InputFile" onChange={this.handleImageAdded}/>
-                            <small id="fileHelp" className="form-text text-muted"></small>
-                            <hr />
-
-                            <div className = "map" style={{ height: '300px', width: '100%'}}>
-                                <GoogleMapReact
-                                    bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
-                                    center={this.props.center}
-                                    zoom={this.props.zoom}
-                                    onClick={this._onClick} 
-                                    >
-                                    <ControllableHover
-                                        key={this.props.greatPlaces[0].id}
-                                        {...this.state.greatPlaces[0]}
-                                        text={this.props.greatPlaces[0].id}
-                                        hover={this.props.hoverKey === this.props.greatPlaces[0].id} />
-                                </GoogleMapReact>
-                            </div>
-                            <div style={{height: '10px'}}></div>
-                            <hr />
-                            
-                            <button type="button" className="btn btn-primary" onClick={this.save}>Send</button>
-
-                            <br />
-                            <br />
-                            <div style={{height: '100px'}}></div>
+                    <div className="form-group">
+                    <h4>Bilde</h4>
+                    <label htmlFor="InputFile">Last opp bilde</label>
+                    <input type="file" className="form-control-file" id="InputFile" onChange={this.handleImageAdded}/>
+                    <small id="fileHelp" className="form-text text-muted"></small>
+                    </div>                            
+                    </form>
+                    <button type="button" className="btn btn-primary" onClick={this.save}>Send</button>
                     </div>
                 </div>
             </div>
-        </div>
-    );
+        );
   }
 
-  addImage(id: number){
+    addImage(id: number){
         let token = localStorage.getItem('authToken');
         let Authorization = 'none';
         if(token){
@@ -187,31 +118,32 @@ static propTypes = {
             console.error("Error: ", error);
         });
     }
-
+    
     async save() {
-        if(this.state.title && this.state.description && this.state.category && this.state.dateTime){
-            let postId: Number;
-            await ticketService
-            .postTicket(this.state.category, this.state.title, this.state.description, this.state.greatPlaces[0].lat, this.state.greatPlaces[0].lng)
+        //if(this.state.title && this.state.description && this.state.category && this.state.dateTime && this.commune){
+            let eventId: Number;
+            await eventService
+            .postEvent(this.state.commune, this.state.category, this.state.title, this.state.description, this.state.dateTime.split('T', 1)[0] + ' ' + this.state.dateTime.split('T')[1].split('.', 1))
             .then((response) => {
-                postId = response.data.insertId;
+                eventId = response.data.insertId;
             })
             .catch((error : Error) => console.log(error.message));
-            console.log(postId);
+            console.log(eventId);
 
-            if(postId !== null && this.state.imageAdded){
-            this.addImage(postId);
+            if(eventId !== null && this.state.imageAdded){
+            this.addImage(eventId);
             }
-            console.log(this.state.imageAdded);
-        }
+            console.log('The state of image: ' + this.state.imageAdded);
+        //}
     }
 
     mounted() {
-        categoryService.getTicketCategories()
+        categoryService.getEventCategories()
         .then((categories: Array<Category>) => {
-            this.ticketCategories = categories.data;
-            this.setState({category: this.ticketCategories[0].name});
+            this.eventCategories = categories.data;
+            this.setState({category: this.eventCategories[0].name});
         })
         .catch((error : Error) => console.log(error.message));
+        console.log(this.state.commune);
     }
 }
