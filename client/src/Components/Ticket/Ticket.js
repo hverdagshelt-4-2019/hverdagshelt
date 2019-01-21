@@ -13,11 +13,8 @@ import Comment from '../Comment/Comment.js';
 import Dropdown from "../Dropdown/Dropdown";
 import styles from "./style.css";
 import CompanyService from '../../Services/companyService'
-
 import { Alert } from '../../widgets';
-
 import { K_SIZE } from './../../map/controllable_hover_styles.js';
-import CompanyDao from "../../../../server/src/dao/companyDao";
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 export default class Ticket extends Component<{ match: { params: { id: number } } }> {

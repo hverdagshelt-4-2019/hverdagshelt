@@ -32,12 +32,14 @@ export default class MyTickets extends Component{
                     <br />
                     <ul className={css.ticketList}>
                         {this.tickets.map((ticket, i) => (
+                            <div>
                             <SingleTicket
                                 key={i}
                                 theTicket={ticket}
                             >
-                                <SingleTicket.Options id={ticket.id}/>
                             </SingleTicket>
+                            <SingleTicket.Options id={ticket.id}/>
+                            </div>
                         ))}
                         </ul>
                     </div>
