@@ -13,6 +13,10 @@ import { Alert } from '../../widgets';
 import {K_SIZE} from './../../map/controllable_hover_styles.js';
 import Datetime from 'react-datetime';
 
+var yesterday = Datetime.moment().subtract( 1, 'day' );
+var valid = function( current ){
+return current.isAfter( yesterday );
+};
 
 export default class AddEvent extends Component {
 
@@ -28,6 +32,7 @@ export default class AddEvent extends Component {
             imageAdded: false
         };
         this.handleImageAdded = this.handleImageAdded.bind(this);
+        //this.handleDate = this.handleDate.bind(this);
     }
 
     eventCategories: Category[] = [];
@@ -39,16 +44,16 @@ export default class AddEvent extends Component {
    handleDate(e) {
        let date = e._d;
        this.setState({
-           happening_time: date.toJSON()
+           happening_time: date
        });
    }
 
 
   render() {
     return (
-        <div className="container">
+        <div className="container aroundStuff">
             <div className="row">
-                <div className="col-lg-8">
+                <div className="col-lg-10">
                     <h1>Meld fra om en ny begivenhet</h1>
                     <form>
                     <div className="form-group">
@@ -58,7 +63,7 @@ export default class AddEvent extends Component {
 
                     <div className="form-group">
                         <h4>Beskrivelse</h4>
-                        <textarea className="form-control" style={{width:"100%"}} 
+                        <textarea className="form-control" style={{width:"100%", resize: "none"}} 
                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))}
                         />
                     </div>
@@ -77,7 +82,7 @@ export default class AddEvent extends Component {
      
                     <div className="form-group">
                     <label className="form-label">Dato og tid</label>
-                    <Datetime locale='nb' onChange={this.handleDate} defaultValue={new Date()}/>
+                    <Datetime locale='nb' isValidDate={ valid } value={this.state.happening_time} onChange={this.handleDate} defaultValue={new Date()}/>
                     </div>
 
 
@@ -88,9 +93,10 @@ export default class AddEvent extends Component {
                     <small id="fileHelp" className="form-text text-muted"></small>
                     </div>                            
                     </form>
-                    <button type="button" className="btn btn-primary" onClick={this.save}>Send</button>
+                    <button type="button" className="btn customBtn" onClick={this.save}>Send</button>
                     </div>
                 </div>
+                <br/>
             </div>
         );
   }
@@ -129,18 +135,28 @@ export default class AddEvent extends Component {
     }
     
     async save() {
-        if(this.state.title !== null && this.state.description !== null && this.state.category !== null && this.state.happening_time !== null && this.commune !== null){
+        if(this.state.title !== '' && this.state.description !== '' && this.state.category !== '' && this.state.happening_time !== null && this.commune !== null){
             let eventId: Number;
+            let sendingDate = this.state.happening_time.toJSON();
             await eventService
-            .postEvent(this.state.commune, this.state.category, this.state.title, this.state.description, this.state.happening_time.split('T', 1)[0] + ' ' + this.state.happening_time.split('T')[1].split('.', 1))
+            .postEvent(this.state.commune, this.state.category, this.state.title, this.state.description, sendingDate.split('T', 1)[0] + ' ' + sendingDate.split('T')[1].split('.', 1))
             .then((response) => {
                 eventId = response.data.insertId;
             })
-            .catch((error : Error) => console.log(error.message));
+            .catch((error : Error) => {
+                console.log(error.message);
+                Alert.danger('Opplasting mislyktes, vennligst prøv igjen!');
+            });
 
             if(eventId !== null && this.state.imageAdded){
             this.addImage(eventId);
             }
+
+            if(eventId !== null) {
+                this.props.history.push('/begivenhet/' + eventId);
+            }
+        } else {
+             Alert.danger('Opplasting mislyktes! Sjekk at du fylte inn alle nødvendige felt (bilde er frivillig).');
         }
     }
 
@@ -152,6 +168,5 @@ export default class AddEvent extends Component {
             console.log(this.state.category);
         })
         .catch((error : Error) => console.log(error.message));
-        console.log(this.state.commune);
     }
 }
