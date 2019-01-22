@@ -124,6 +124,7 @@ static propTypes = {
                             <hr />
 
                             <div className = "map" style={{ height: '300px', width: '100%'}}>
+                                <h6>Velg område på kartet for hendelsen du vil rapportere</h6>
                                 <GoogleMapReact
                                     bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
                                     center={this.props.center}
@@ -193,7 +194,10 @@ static propTypes = {
             .then((response) => {
                 postId = response.data.insertId;
             })
-            .catch((error : Error) => console.log(error.message));
+            .catch((error : Error) => {
+                console.log(error.message);
+                Alert.danger('Opplasting mislyktes, vennligst prøv igjen!');   
+            });
 
             if(postId !== null && this.state.imageAdded){
             this.addImage(postId);
@@ -205,6 +209,8 @@ static propTypes = {
             
             console.log(postId);
             console.log(this.state.imageAdded);
+        } else {
+            Alert.danger('Opplasting mislyktes, sjekk at du har fylt inn alle feltene (bilde er frivillig).');
         }
     }
 
