@@ -415,7 +415,7 @@ export function create_app(pool) {
                 from: 'Hverdagsheltene',
                 to: req.body.email,
                 subject: 'Registrering',
-                text: 'Du er nå registrert i vårt system.\nBrukernavn: ' + req.body.email + '\nPassord: ' + req.body.password + '\nHoved kommune: ' + req.body.commune
+                text: 'Hei ' + req.body.name + '\nDu er nå registrert i vårt system.\nBrukernavn: ' + req.body.email + '\nPassord: ' + req.body.password + '\nHoved kommune: ' + req.body.commune
             };
             if(status == 200) {
                 sendEmail(transporter, mailoptions);
