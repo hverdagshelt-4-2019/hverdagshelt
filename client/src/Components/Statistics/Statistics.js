@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component} from 'react-simplified';
 import { NavLink } from 'react-router-dom';
-import Stats from './Stats';
-import VisualStats from './VisualStats';
 import {Doughnut} from 'react-chartjs-2';
 import {Bar} from 'react-chartjs-2';
 import {Line} from 'react-chartjs-2';
@@ -180,10 +178,6 @@ export default class Statistics extends Component{
         )))
         .catch((error : Error ) => console.log(error.message));
 
-        console.log("----N");
-        console.log(this.categoriesN);
-        console.log(this.ticketsPerCatN);
-
         await statisticsService.getTicketAmountByMonthNationally()
         .then(amounts => amounts.data.map(amount => (
             this.ticketsPerMonthN[(amount.month - 1)] = amount.value
@@ -192,7 +186,6 @@ export default class Statistics extends Component{
 
         //-----LOCAL DATA FETCHING-----\\
         await communeService.getAllCommunes()
-        //.then(communes => console.log(communes.data));
         .then(communes => communes.data.map(commune =>(
             this.communes.push(commune.name)
         )))
@@ -203,7 +196,6 @@ export default class Statistics extends Component{
         .catch((error : Error) => console.log(error.message)); 
 
         await statisticsService.getSolvedTicketsLocally(this.communes[0])
-        //.then(ticketAmount => console.log(ticketAmount))
         .then(ticketAmount => this.ticketsSolvedL = ticketAmount.data[0].amount)
         .catch((error : Error) => console.log(error.message));
 
@@ -243,8 +235,6 @@ export default class Statistics extends Component{
     }
 
     setLocal(){
-        console.log(this.ticketsSentL);
-        console.log("runs...");
         //States below will get data from props
         this.setState({
             ticketsSent : this.ticketsSentL,  
@@ -264,16 +254,13 @@ export default class Statistics extends Component{
         .catch((error : Error) => console.log(error.message));
 
         await statisticsService.getSolvedTicketsLocally(commune)
-        //.then(ticketsAmount => console.log(ticketsAmount))
         .then(ticketAmount => this.ticketsSolvedL = ticketAmount.data[0].amount)
         .catch((error : Error) => console.log(error.message));
 
-        console.log("amounts.data");
         this.categoriesL = [];
         this.ticketsPerCatL = [];
 
         await statisticsService.getTicketAmountByCategoryLocally(commune)
-        //.then(amounts => console.log(amounts.data))
         .then(amounts => amounts.data.map(amount => (
             this.categoriesL.push(amount.category),
             this.ticketsPerCatL.push(amount.tickets_in_categories)
