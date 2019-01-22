@@ -10,7 +10,7 @@ class Options extends Component{
         return(
             <div>
                 <NavLink to={"/endresak/" + this.props.id}>
-                    <button className={"btn customBtn " + css.btnOnTicket}>Rediger</button>
+                    <button className={"btn customBtn " + css.btnOnTicket}><i className="fas fa-marker customIcon"></i>Rediger</button>
                 </NavLink>    
             </div>
         )

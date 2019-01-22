@@ -125,9 +125,11 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 </p>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
+                <p style={{fontWeight: "900", color: "#666B6E", marginTop: "15px"}} id={"statust"+this.ticket.id}>
                 {this.canSetStatus() && this.ticket.status && <Dropdown options={status} currValue={this.ticket.status} reciever={this.editStatus}/>}
                 {this.canSetStatus() && this.ticket.status && <textarea className="form-control-sm" style={{resize: "none"}} value={this.state.statusText} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({statusText: event.target.value}))}/>}
-                {!this.canSetStatus() && this.ticket.status && <p style={{fontWeight: "900", color: "#666B6E"}} id={"statusT"+this.ticket.id}>{this.ticket.status}</p>}
+                {!this.canSetStatus() && this.ticket.status && <p>{this.ticket.status} </p>}
+                </p>
                   {!this.canSetStatus() && this.ticket.status && <p>{this.state.statusText}</p>}
               </div>
 
@@ -220,7 +222,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 console.log(this.ticket.picture);
                 this.getImage(this.ticket.picture);
                 let s = document.getElementById("status"+ticket.id);
-                let st = document.getElementById("statusT"+ticket.id);
+                let st = document.getElementById("statust"+ticket.id);
                 let i = document.getElementById("it"+ticket.id);
                 console.log("hei"+this.ticket.status);
                 if(this.ticket.status == "Fullført"){
