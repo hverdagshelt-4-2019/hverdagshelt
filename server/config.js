@@ -37,7 +37,12 @@ let config =
             password: 'set password in private.config.js',
             database: 'aleksjoh',
             debug: false,
-            timezone: 'utc',
+            typeCast(field, next) {
+                if(field.type == 'DATETIME') {
+                    return new Date(field.string() + 'Z');
+                }
+                return next();
+            }
         },
 
         port: 3001,

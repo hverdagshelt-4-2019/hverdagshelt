@@ -9,6 +9,8 @@ import ChangePassword from "../ChangePassword/ChangePassword";
 // material ui components
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 const customStyles = {
     textFields: {
@@ -20,7 +22,15 @@ export default class UserPage extends Component {
 
 
     componentDidMount() {
+        // TODO: Get fullname of user.
+    }
 
+    State = {
+        name : ''
+    };
+
+    handleClick(){
+        userService.updateName(this.state.name);
     }
 
     render() {
@@ -41,6 +51,14 @@ export default class UserPage extends Component {
                           <div className={styles.changePasswordDiv}>
                               <ChangePassword/>
                           </div>
+                          <form>
+                              <div className='form-group'>
+                                  <h2 variant="h4">Endre brukernavn</h2>
+                                  <br />
+                                  <TextField onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({name: event.target.value}))} label="Nytt brukernavn"/>
+                                  <Button variant="contained" color="primary" onClick={this.handleClick}>Lagre</Button>
+                              </div>
+                          </form>
                           <div className={styles.communeTable}>
                               <FollowCommunesTab/>
                           </div>

@@ -2,7 +2,8 @@ import axios from 'axios';
 
 class Comment {
    description;
-   email
+   name;
+   email;
 }
 
 function config() {

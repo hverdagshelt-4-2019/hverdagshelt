@@ -17,7 +17,8 @@ export default class ChangePassword extends Component {
         oldPass: "",
         newPass: "",
         repeatNewPass: "",
-        warning: ""
+        warning: "",
+        success: ""
     }
 
     handleClick() {
@@ -31,38 +32,55 @@ export default class ChangePassword extends Component {
         });
     }
 
+    setWarning(warning) {
+        this.setState({warning: warning});
+    }
+
+    setSuccess(message){
+        this.setState({success: message});
+    }
+
     verify() {
-        // TODO: Give feedback for different scenarios.
+        this.setWarning("");
+        this.setSuccess("");
         if(this.state.repeatNewPass !== this.state.newPass){
-            this.warning = "Insert meme here";
+            this.setWarning("Det nye passordet du skrev stemmer ikke med hverandre");
             return false;
         }
         else if(this.state.newPass.length < 8){
-            this.warning = "Passordet ditt er fort kort (må minst være 8 tegn langt).";
+            this.setWarning("Passordet ditt er fort kort (må minst være 8 tegn langt).");
             return false;
         }
+        console.log("We got here");
         userService.updatePassword(this.state.oldPass, this.state.newPass).then(res => {
             console.log("Res: " + JSON.stringify(res));
+            this.setSuccess("Passordet ditt er endret!");
             return true;
         }).catch(err => {
-            // TODO: Give feedback if previous password does not match
-            console.log("We got error");
-            console.log(err);
+            this.setWarning("Det gamle passordet du oppga stemmer ikke");
             return false;
         })
     }
 
     render() {
         return (
-            <form>
-                <div className={styles.root}>
-                    <Typography style={header} variant="h4">Endre passord</Typography>
-                    <TextField type="password" onChange={this.handleChange("oldPass")} label="Gammelt passord"/>
-                    <TextField type="password" onChange={this.handleChange("newPass")} label="Nytt passord"/>
-                    <TextField type="password" onChange={this.handleChange("repeatNewPass")} label="Gjenta nytt passord"/>
-                    <Button variant="contained" color="primary" onClick={this.handleClick}>Lagre</Button>
+            <div className={styles.root}>
+                <Typography style={header} variant="h4">Endre passord</Typography>
+                <TextField type="password" onChange={this.handleChange("oldPass")} label="Gammelt passord"/>
+                <TextField type="password" onChange={this.handleChange("newPass")} label="Nytt passord"/>
+                <TextField type="password" onChange={this.handleChange("repeatNewPass")} label="Gjenta nytt passord"/>
+                <Button variant="contained" color="primary" onClick={this.handleClick}>Lagre</Button>
+                {this.state.warning !== "" &&
+                <div className="alert alert-danger">
+                    <Typography>{this.state.warning}</Typography>
                 </div>
-            </form>
+                }
+                {this.state.success !== "" &&
+                <div className="alert alert-success">
+                    <Typography>{this.state.success}</Typography>
+                </div>
+                }
+            </div>
         );
     }
 }
