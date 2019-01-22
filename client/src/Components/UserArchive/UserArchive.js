@@ -48,7 +48,6 @@ export default class UserArchive extends Component {
     }
 
     delUser(email) {
-
         console.log(email)
         userService.delUser(email)
             .then(res => console.log(res.data))
