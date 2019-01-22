@@ -27,6 +27,8 @@
 }
 
 .communeTable {
+    display: flex;
+    margin: 0px auto 0px 3%;
     width: 100%;
 }
 
