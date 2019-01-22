@@ -145,13 +145,15 @@ export default class EditEvent extends Component<{ match: { params: { id: number
         if (!this.state.description) this.state.description = this.event.description;
         if (!this.state.category) this.state.category = this.event.category;
         if (!this.state.happening_time) this.state.happening_time = this.event.happening_time;
-        this.state.happening_time = this.state.happening_time.toJSON();
 
+        let date = this.state.happening_time;
+        date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+        date = date.toJSON();
 
-        this.state.happening_time = this.state.happening_time.split('T', 1)[0] + ' ' + this.state.happening_time.split('T')[1].split('.', 1);
+        date = date.split('T', 1)[0] + ' ' + date.split('T')[1].split('.', 1);
         let postId: Number;
         await eventService
-            .editEvent(this.props.match.params.id, this.state.category, this.state.title, this.state.description, this.state.happening_time)
+            .editEvent(this.props.match.params.id, this.state.category, this.state.title, this.state.description, date)
             .then((response) => {
                 postId = response.data.insertId;
                 console.log(response.data);
@@ -187,7 +189,9 @@ export default class EditEvent extends Component<{ match: { params: { id: number
                 this.event = event.data[0];
                 this.state.category = event.data[0].category;
                 this.state.description = event.data[0].description;
-                this.state.happening_time = new Date(event.data[0].happening_time);
+                let date = new Date(event.data[0].happening_time);
+                date.setMinutes(date.getMinutes() + new Date().getTimezoneOffset());
+                this.state.happening_time = date;
 
                 this.state.title = event.data[0].title;
                 this.getImage(this.event.picture);
