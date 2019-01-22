@@ -56,7 +56,7 @@ export default class userService {
    }
 
     static updateName(name: string): Promise<Object>{
-        return axios.put('/username', {name}, config());
+        return axios.put('/username', {name: name}, config());
     }
 
 
