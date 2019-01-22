@@ -2,7 +2,6 @@ import React from "react";
 import { Component } from "react-simplified";
 import styles from "./style.css";
 import FollowCommunesTab from "../CustomTab/FollowCommunesTab";
-import userService from '../../Services/userService';
 import userService from "../../Services/userService";
 
 import ChangePassword from "../ChangePassword/ChangePassword";
