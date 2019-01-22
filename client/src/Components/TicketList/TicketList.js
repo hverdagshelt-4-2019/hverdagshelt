@@ -52,7 +52,7 @@ export default class TicketList extends Component{
                         {this.followedCommunes.map(commune =>
                         <li key={commune.name} className="list-group-item">
                             <div style={{marginLeft: "6px"}}>
-                                <input type="checkbox" style={{width: "17px", height: "17px"}} className="form-check-input markCheck cat" id={"check"+category.name} defaultChecked/>
+                                <input type="checkbox" style={{width: "17px", height: "17px"}} className="form-check-input markCheck cat" id={"check"+commune.name} defaultChecked/>
                                 <label className="form-check-label" style={{marginTop: "3px"}} htmlFor={"check"+commune.name}>{commune.name}</label>
                             </div>
                         </li>

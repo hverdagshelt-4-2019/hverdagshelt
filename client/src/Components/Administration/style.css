@@ -1,0 +1,14 @@
+.categoryDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.categoryDiv > button {
+    font-size: 18px;
+}
+
+.addCategory {
+    border: 1px solid lightgrey;
+    font-size: 16px;
+}
