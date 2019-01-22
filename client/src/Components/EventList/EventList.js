@@ -50,8 +50,9 @@ export default class EventList extends Component{
                         <li className="list-group-item">
                             <div style={{marginLeft: "6px"}}>
                                 <br/>
-                                <input type="checkbox" style={{width: "17px", height: "17px"}} className="form-check-input" id="arkiverteSaker"/>
-                                <label className="form-check-label" style={{marginTop: "3px"}} htmlFor="arkiverteSaker">Vis bare arkiverte saker</label>
+                                <input type="checkbox" style={{width: "17px", height: "17px"}} className="form-check-input" id="oldEvents"/>
+                                <label className="form-check-label" style={{marginTop: "3px"}} htmlFor="oldEvents">Vis også utgåtte begivenheter</label>
+                                <div style={{height: "15px"}}></div>
                             </div>
                         </li>
                         <button type="submit list-group-item" onClick={this.updateEvents} className="btn customBtn"><i className="fas fa-filter" style={{marginRight: "4px"}}></i>Filtrer</button>
@@ -60,17 +61,15 @@ export default class EventList extends Component{
                 <br />
                 <div id="cases" className="row" style={{height: 'auto', width: '90%'}}>
                     <select id="sorting" className="shadow-sm" style={{marginLeft: '65%', width: '30%'}}  onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.sortBy(event.target.value))}>
-                        <option  id ="optionNyeste" key={"nyeste"}>Nyeste først</option>
-                        <option  id ="optionEldste" key={"eldste"}>Eldste først</option>
-                        <option  id ="optionBearbeides" key={"bearbeides"}>Bearbeides først</option>
-                        <option  id ="optionUbehandlet" key={"ubehandlet"}>Ubehandlet først</option>
+                        <option  id ="optionNyeste" key={"nyeste"}>Førstkommende</option>
+                        <option  id ="optionEldste" key={"eldste"}>Sistkommende</option>
                     </select>
                     <div className="col-md-11 col-sm-offset-2 col-sm-8  float-right" style={{
                         float: "right",
                         marginLeft: '5%'}}>
                         <br />
                         <ul className={css.eventList}>
-                            {this.allEvents.map((event, i) => (
+                            {this.state.events.map((event, i) => (
                                 <div key={i}>
                                     <SingleEvent theEvent={event}>
                                     </SingleEvent>
@@ -96,7 +95,7 @@ export default class EventList extends Component{
             this.allEvents = events.data;
             this.allEvents.sort(function(a,b){return new Date(b.happening_time) - new Date(a.happening_time)});
             let arkEvents = this.allEvents.filter(e => e.status != "Fullført");
-            this.setState({events: arkEvents});
+            this.setState({events: this.allEvents});
         })
         .catch((error : Error) => console.log("Error occured: " + error.message));
         
@@ -156,7 +155,8 @@ export default class EventList extends Component{
     }
 
     updateEvents(){
-        console.log("Updated events");
+        console.log("Updated Events");
+        console.log(new Date());
         let localEvents = [];
         if(!document.getElementById("checkAll").checked){
             this.eventCategories.forEach(categories => {
@@ -164,13 +164,40 @@ export default class EventList extends Component{
                     localEvents = localEvents.concat(this.allEvents.filter(e => e.category == categories.name));
                 }
             });
-            localEvents.sort(function(a,b){return new Date(b.happening_time) - new Date(a.happening_time)});
             console.log(localEvents);
         }else{
-            localEvents = this.allEvents;
-        } 
-         if(document.getElementById("arkiverteSaker").checked){
-            localEvent = localEvents.filter(e => e.status == "Fullført");
+            localEvents= this.allEvents;
+        }
+        if(!document.getElementById("oldEvents").checked){
+            localEvents = localEvents.filter(a => {
+                return((new Date(a.happening_time).getTime() >= new Date().getTime()))
+            });
+        }
+        //this.setState({Events: localEvents});
+        let by = document.getElementById("sorting").value;
+        console.log(by);
+         switch(by) {
+            case "Førstkommende":
+                localEvents.sort(function(a,b){return new Date(a.happening_time) - new Date(b.happening_time)});
+                break;
+            case "Sistkommende":
+                localEvents.sort(function(a,b){return new Date(b.happening_time) - new Date(a.happening_time)});
+                break;
+        }
+        this.setState({events: localEvents});
+
+    }
+
+    sortBy(by: string){
+        let localEvents = this.state.events;
+        console.log(by);
+         switch(by) {
+            case "Førstkommende":
+                localEvents.sort(function(a,b){return new Date(a.happening_time) - new Date(b.happening_time)});
+                break;
+            case "Sistkommende":
+                localEvents.sort(function(a,b){return new Date(b.happening_time) - new Date(a.happening_time)});
+                break;
         }
         this.setState({events: localEvents});
     }
