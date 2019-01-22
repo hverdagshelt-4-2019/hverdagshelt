@@ -62,7 +62,7 @@ export default class EventList extends Component{
                 <div id="cases" className="row" style={{height: 'auto', width: '90%'}}>
                     <select id="sorting" className="shadow-sm" style={{marginLeft: '65%', width: '30%'}}  onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.sortBy(event.target.value))}>
                         <option  id ="optionNyeste" key={"nyeste"}>Førstkommende</option>
-                        <option  id ="optionEldste" key={"eldste"}>SistKommende</option>
+                        <option  id ="optionEldste" key={"eldste"}>Sistkommende</option>
                     </select>
                     <div className="col-md-11 col-sm-offset-2 col-sm-8  float-right" style={{
                         float: "right",
