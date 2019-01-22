@@ -79,11 +79,16 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/user/:id", (req, res) =>{
-        userdao.getOne(req.params.id, (status, data) =>{
-            console.log('data' + JSON.stringify(data));
-            res.status(status);
-            res.json(data);
+    app.get("/user", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                console.log("err");
+            }
+            userdao.getOne(authData.user.id, (status, data) =>{
+                console.log('data' + JSON.stringify(data));
+                res.status(status);
+                res.json(data);
+            });
         });
     });
 
@@ -754,6 +759,19 @@ export function create_app(pool) {
                     } else {
                         res.json(data);
                     }
+                });
+            }
+        })
+    });
+
+    app.put("/username", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(401);
+            } else {
+                userdao.updateName(authData.user.id, req.body, (status, data) => {
+                    console.log("Edited name");
+                    res.status(status);
                 });
             }
         })

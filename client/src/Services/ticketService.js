@@ -2,6 +2,7 @@ import axios from 'axios';
 
 class Ticket {
     submitter_email;
+    name;
     commune;
     category;
     title;

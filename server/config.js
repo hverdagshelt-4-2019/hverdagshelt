@@ -8,7 +8,8 @@ let config =
         user: 'sindrtho',
         password: 'set password in private.config.js',
         database: 'sindrtho',
-        debug: false
+        debug: false,
+        timezone: 'utc'
     },
 
     port: 3000,
@@ -30,7 +31,8 @@ let config =
             user: 'aleksjoh',
             password: 'set password in private.config.js',
             database: 'aleksjoh',
-            debug: false
+            debug: false,
+            timezone: 'utc'
         },
 
         port: 3001,
