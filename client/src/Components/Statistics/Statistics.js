@@ -15,6 +15,8 @@ import DropDown from './DropDown';
 //Possibly refactorize code here. 
 
 export default class Statistics extends Component{
+    allCategories = [];
+
     //National data
     ticketsSentN = '';  
     ticketsSolvedN = '';
@@ -123,6 +125,8 @@ export default class Statistics extends Component{
                             }}
                             />
                             <hr/>
+                            <small>Antall benyttede kategorier: {this.state.categories.length}</small><br/>
+                            <small>Tilgjengelige kategorier i Hverdagshelt: {this.allCategories.length}</small><br/>
                         </div>
                     </div>
                     <br/>
@@ -150,10 +154,6 @@ export default class Statistics extends Component{
                             />
                             <hr/>
                         </div>
-                        {' '}
-                        <div className="col" style={{border:'1px solid lightgrey'}}>
-                            Potensielt mer statistikk
-                        </div>
                     </div>
                 </div>
             </div>
@@ -162,6 +162,10 @@ export default class Statistics extends Component{
     }
 
     async mounted(){
+        categoryService.getTicketCategories()
+        .then(categories => this.allCategories = categories.data)
+        .catch((error : Error) => console.log(error.message));
+
         //-----NATIONAL DATA FETCHING-----\\
         await statisticsService.getTicketAmountNationally()
         .then(ticketAmount => this.ticketsSentN = ticketAmount.data[0].amount)
