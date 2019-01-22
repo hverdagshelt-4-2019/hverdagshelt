@@ -77,11 +77,16 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/user/:id", (req, res) =>{
-        userdao.getOne(req.params.id, (status, data) =>{
-            console.log('data' + JSON.stringify(data));
-            res.status(status);
-            res.json(data);
+    app.get("/user", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) =>{
+            if(err) {
+                console.log("err");
+            }
+            userdao.getOne(authData.user.id, (status, data) =>{
+                console.log('data' + JSON.stringify(data));
+                res.status(status);
+                res.json(data);
+            });
         });
     });
 
