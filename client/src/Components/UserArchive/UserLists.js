@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import userService from "../../Services/userService";
-
+import CustomDialog from "../CustomDialog/CustomDialog";
+import styles from './style.css'
 
 export class UserList extends Component<{props: {people: Object[], title: string, callback: function, tab: string}}> {
 
@@ -16,9 +17,9 @@ export class UserList extends Component<{props: {people: Object[], title: string
                 {
                     this.props.people.map(e => {
                         return (
-                            <div className="card" style={{minWidth: "650px", width: "75%", margin: "auto"}}>
+                            <div className={"card " + styles.myFlex}>
                                 <div className="card-body">
-                                    <div style={{display: "flex", alignItems: "center", flexDirection: "row", justifyContent: "space-between"}}>
+                                    <div className={styles.myFlexContent}>
                                         <div>
                                             <h5 className="card-title">
                                                 E-post: {e.email}
@@ -34,7 +35,16 @@ export class UserList extends Component<{props: {people: Object[], title: string
                                             }
                                         </div>
                                         <div className="p-5">
-                                            <button className="btn btn-danger" onClick={be => this.props.callback(e.email)}><h3>SLETT</h3></button>
+                                            <CustomDialog
+                                                option1Text="Avbryt"
+                                                buttonText="Slett"
+                                                title="Slett bruker"
+                                                buttonType="danger"
+                                                option2Text="Slett"
+                                                option2Method={this.props.callback}
+                                                callbackData={e.email}
+                                                dialogText="Er du sikker på at du vil slette denne brukeren? Handlingen er permanent og kan ikke reverseres."
+                                            />
                                         </div>
                                     </div>
                                 </div>

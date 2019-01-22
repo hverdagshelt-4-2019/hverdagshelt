@@ -1,0 +1,139 @@
+.eventList {
+    list-style: none;
+    font-family: 'Lato', sans-serif;
+    margin: 0px;
+    padding: 0px;
+}
+
+.btnCircle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+    margin-bottom: 3px;
+}
+.btnOnEvent {
+    box-shadow: 0px 0px 5px rgb(51, 51, 51);
+    box-shadow: 0px 0px 5px rgba(51, 51, 51, 0.7);
+    width: 100%;
+}
+.aroundEvents {
+    background-color: #FFFFFF;
+    width: 90%;
+    display: inline-block;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    min-height: 600px;
+}
+.eventList > div > a > li {
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 5px rgb(51, 51, 51);
+    box-shadow: 0px 0px 5px rgba(51, 51, 51, 0.7);
+    padding: 0px;
+    margin: 20px 0px 0px;
+}
+.eventList > div > a > li:hover {
+    box-shadow: 0px 3px 20px rgba(51, 51, 51, 0.7);
+}
+.eventList > div > a > li > img {
+    width: 100%;
+    max-height: 160px;
+}
+.info {
+    padding-top: 5px;
+    text-align: center;
+}
+.info > .title {
+    font-size: 17pt;
+    font-weight: 700;
+    margin: 0px;
+}
+.info > .desc {
+    font-size: 13pt;
+    font-weight: 300;
+    margin: 0px;
+}
+.info > ul {
+    display: table;
+    list-style: none;
+    margin: 10px 0px 0px;
+    padding: 0px;
+    width: 100%;
+    text-align: center;
+}
+.info > ul > li {
+    display: table-cell;
+    color: rgb(30, 30, 30);
+    font-size: 11pt;
+    font-weight: 300;
+    padding: 3px 0px;
+}
+.info > ul > div > a > li {
+    display: block;
+    width: 100%;
+    color: rgb(30, 30, 30);
+    text-decoration: none;
+}
+
+.btnEvent {
+    width: 47%;
+    margin-left: 1%;
+}
+
+@media (min-width: 768px) {
+    .eventList > div > a > li {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 160px;
+        padding: 0px;
+        background-color: rgb(245, 245, 245);
+    }
+    .eventList > div > a > li > img  {
+        display: inline-block;
+    }
+    .eventList > div > a > li > img {
+        width: 160px;
+        float: left;
+    }
+    .eventList > div > a > li > .info {
+        overflow: hidden;
+    }
+    .eventList > div > a > li > img {
+        width: 30%;
+        height: 160px;
+        padding: 0px;
+        margin: 0px;
+    }
+    .eventList > div > a > li > .info {
+        position: relative;
+        height: 160px;
+        text-align: left;
+        padding-right: 40px;
+    }	
+    .eventList > div > a > li > .info > .title, 
+    .eventList > div > a > li > .info > .desc {
+        padding: 0px 10px;
+    }
+    .eventList > div > a > li > .info > ul {
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+    }
+    .btnEvent {
+        width: 48%;
+    }
+}
+.inactive {
+    color: rgb(88, 88, 88);
+}
+
+.inactive:hover {
+    color: rgb(88, 88, 88);
+    text-decoration: none;
+}

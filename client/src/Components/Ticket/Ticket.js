@@ -126,7 +126,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
                 {this.canSetStatus() && this.ticket.status && <Dropdown options={status} currValue={this.ticket.status} reciever={this.editStatus}/>}
-                {this.canSetStatus() && this.ticket.status && <textarea value={this.state.statusText} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({statusText: event.target.value}))}/>}
+                {this.canSetStatus() && this.ticket.status && <textarea className="form-control-sm" style={{resize: "none"}} value={this.state.statusText} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({statusText: event.target.value}))}/>}
                 {!this.canSetStatus() && this.ticket.status && <p style={{fontWeight: "900", color: "#666B6E"}} id={"statusT"+this.ticket.id}>{this.ticket.status}</p>}
                   {!this.canSetStatus() && this.ticket.status && <p>{this.state.statusText}</p>}
               </div>
@@ -138,7 +138,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               <hr />
               <ul className="inlineStuff">
                 <li style={{width: "33%"}}>
-                  <i className="fas fa-calendar" style={{marginRight: "4px"}}></i> {this.ticket.submitted_time !== undefined && this.ticket.submitted_time.replace('T', ' ').replace('.000Z', '')}
+                  <i className="fas fa-calendar" style={{marginRight: "4px"}}></i> {this.ticket.submitted_time !== undefined && this.sub}
                 </li>
                 <li style={{width: "34%"}}>
                   <i className="fas fa-map-marker-alt" style={{marginRight: "4px"}}></i> {this.ticket.responsible_commune}
