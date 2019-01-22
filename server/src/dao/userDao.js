@@ -117,5 +117,5 @@ function password_passes_requirements(password: string){
     if (password < 8) {
         return {error: "Password too short"};
     }
-    return false;
+    return true;
 }

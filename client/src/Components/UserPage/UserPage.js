@@ -20,7 +20,7 @@ export default class UserPage extends Component {
 
 
     componentDidMount() {
-
+        // TODO: Get fullname of user.
     }
 
     render() {

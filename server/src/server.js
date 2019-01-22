@@ -11,6 +11,7 @@ import CommentDao from './dao/commentDao.js'
 import AdminDao from './dao/adminDao.js'
 import CompanyDao from './dao/companyDao.js'
 import PublicWorkerDao from './dao/publicworkerDao.js'
+import StatisticsDao from "./dao/statisticsDao.js"
 
 import path from 'path';
 import fileUpload from 'express-fileupload';
@@ -33,6 +34,7 @@ export function create_app(pool) {
     const admindao = new AdminDao(pool);
     const companydao = new CompanyDao(pool);
     const publicworkerdao = new PublicWorkerDao(pool);
+    const statisticsdao = new StatisticsDao(pool);
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -343,6 +345,64 @@ export function create_app(pool) {
         });
     });
 
+    //Stats
+    //NATIONAL
+    app.get("/ticketAmountNationally", (req, res) => {
+        statisticsdao.getTicketAmountNationally((status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/solvedTicketsNationally", (req, res) => {
+        statisticsdao.getSolvedTicketsNationally((status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/getTicketAmountByCategoryNationally", (req, res) => {
+        statisticsdao.getTicketAmountByCategoryNationally((status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/getTicketAmountByMonthNationally", (req, res) => {
+        statisticsdao.getTicketsByMonthNationally((status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    //LOCAL
+    app.get("/ticketAmountLocally/:commune", (req, res) => {
+        statisticsdao.getTicketAmountLocally(req.params.commune, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/solvedTicketsLocally/:commune", (req, res) => {
+        statisticsdao.getSolvedTicketsLocally(req.params.commune, (status, data) => {
+            res.status(status);
+            res.json(data);
+        })
+    })
+
+    app.get("/getTicketAmountByCategoryLocally/:commune", (req, res) => {
+        statisticsdao.getTicketAmountByCategoryLocally(req.params.commune, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/getTicketAmountByMonthLocally/:commune", (req, res) => {
+        statisticsdao.getTicketsByMonthLocally(req.params.commune, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
 
   /*
     Post-functions

@@ -4,17 +4,18 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 import eventService from '../../Services/eventService';
+import css from './eventStyle.css';
 
 class Options extends Component{
     render(){
         return(
             <div>
                 <NavLink to={"/endrebegivenhet/" + this.props.id}>
-                    <button className="btn btn-primary">Rediger</button>
+                    <button className={"btn customBtn2 "+ css.btnEvent}><i class="fas fa-marker customIcon"></i>Rediger</button>
                 </NavLink>  
                 {' '}  
 
-                <button className="btn btn-danger" onClick={this.delete}>Slett</button> 
+                <button className={"btn btn-danger "+ css.btnEvent} onClick={this.delete}><i class="fas fa-trash-alt customIcon"></i>Slett</button> 
             </div>
         )
     }
@@ -32,34 +33,21 @@ export default class SingleEvent extends Component<{}>{
 
     render(){ 
         return (
-            <div>
-                    <li className="list-group-item shadow p-3 mb-5 rounded" >
-                        <div className="container" >
-                            <NavLink style={{color: 'black'}} to={"/begivenhet/" + this.props.theEvent.id}>
-                                <div className="row">
-
-                                    <div className="col-sm-4">
-                                        <img id={"picture"+this.props.theEvent.id} src="image/temp.jpg" className={"img-fluid "} alt="Responsive image" style={{maxWidth: '100%'}} />
-                                    </div>
-                                    <div className="col-sm-8" >
-                                        <h4>{this.props.theEvent.title}</h4>
-                                        {' '}
-                                        <h6>Arrangeres: {' '} {this.props.theEvent.happening_time !== undefined && this.props.theEvent.happening_time.replace('T', ' ').replace('.000Z', '')}</h6>
-                                        {' '} 
-                                        Kategori:{' '} {this.props.theEvent.category} 
-                                        <br/> 
-                                        Kommune: {' '} {this.props.theEvent.commune_name} 
-                                        
-                                    </div>
-                                </div>
-                            </NavLink>
-                            <hr/>
-                             <div className="row justify-content-md-center">
-                                <div>{this.props.children}</div>
-                             </div>
+                <NavLink className={css.inactive} to={"/begivenhet/"+this.props.theEvent.id}>
+                    <li key={this.props.theEvent.id}>
+                        <img id={"picture"+this.props.theEvent.id} src="image/temp.jpg"/>
+                        <div className={css.info}>
+                            <h2 style={{marginLeft: "6px"}} className={css.title}>{this.props.theEvent.title}</h2>
+                            <br />
+                            <ul>
+                                <li style={{width: "33%"}}> <i className="fas fa-edit" style={{marginRight: "4px"}}></i>{this.props.theEvent.category}  </li>
+                                <li style={{width: "34%"}}> <i className="fas fa-map-marker-alt" style={{marginRight: "4px"}}></i>{this.props.theEvent.commune_name}  </li>
+                                <li style={{width: "33%"}}> <i className="fas fa-calendar" style={{marginRight: "4px"}}></i>{this.props.theEvent.happening_time !== undefined && this.props.theEvent.happening_time.replace('T', ' ').replace('.000Z', '').slice(0, -3)}</li>
+                            </ul>
+                            
                         </div>
                     </li>
-            </div>
+                </NavLink>
         )
     }
 
