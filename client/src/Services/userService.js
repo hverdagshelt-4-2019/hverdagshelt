@@ -3,6 +3,7 @@ import axios from 'axios';
 
 class User {
     email;
+    name;
     password;
     commune;
     id;
@@ -36,11 +37,12 @@ export default class userService {
         return axios.post('/login', user);
     }
 
-    static createUser(email: string, password: string, commune : string): Promise<Object>{
+    static createUser(email: string, name: string, password: string, commune : string): Promise<Object>{
         let user = new User();
         user.email = email;
         user.password = password;
-        user.commune = commune; 
+        user.commune = commune;
+        user.name = name;
         return axios.post('/user', user);
     }
 
@@ -53,7 +55,12 @@ export default class userService {
         return axios.post('/usermail', {email});
    }
 
-   static getUsers() : Promise<User[]>{
+    static updateName(name: string): Promise<Object>{
+        return axios.put('/username', {name}, config());
+    }
+
+
+    static getUsers() : Promise<User[]>{
        return axios.get('/users');
    }
 
@@ -65,9 +72,7 @@ export default class userService {
         return axios.delete('/user/' + email, config())
    }
 
-   // static getUser(id): Promise<Object> {
-   //      return axios.get("/user/" + )
-   // }
+   static getUser(): Promise<Object> {
+        return axios.get("/user", config());
+   }
 }
-
-

@@ -3,14 +3,36 @@ import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component} from 'react-simplified';
 import { NavLink } from 'react-router-dom';
-import Stats from './Stats';
-import VisualStats from './VisualStats';
 import {Doughnut} from 'react-chartjs-2';
 import {Bar} from 'react-chartjs-2';
 import {Line} from 'react-chartjs-2';
+import statisticsService from '../../Services/statisticsService';
+import categoryService from '../../Services/categoryService';
+import communeService from '../../Services/communeService';
+import DropDown from './DropDown';
+
+
+//Possibly refactorize code here. 
 
 export default class Statistics extends Component{
-    title = '';
+    //National data
+    ticketsSentN = '';  
+    ticketsSolvedN = '';
+    ticketsPerCatN = [];
+    ticketsPerMonthN = [0,0,0,0,0,0,0,0,0,0,0,0];
+    categoriesN = [];
+
+    //Local data
+    selectedCommune = '';
+    ticketsSentL = '';  
+    ticketsSolvedL = '';
+    ticketsPerCatL = [];
+    ticketsPerMonthL = [0,0,0,0,0,0,0,0,0,0,0,0];
+    categoriesL = [];
+    communes = [];
+
+    //Common data
+    
 
     constructor(props){
         super(props);
@@ -19,7 +41,8 @@ export default class Statistics extends Component{
             ticketsSolved : '',
             categories : [],
             ticketsPerCat : [],
-            ticketsPerMonth : []
+            ticketsPerMonth : [],
+            isHidden : true
         }
     }
 
@@ -27,7 +50,7 @@ export default class Statistics extends Component{
 
     render(){
         return(
-            <div>
+            <div className="aroundStuff">
                 <ul className="nav nav-tabs">
                     <li className="nav-item"  onClick={this.setNational}>
                         <NavLink 
@@ -47,7 +70,9 @@ export default class Statistics extends Component{
                             Lokalt
                         </NavLink>
                     </li>
+                    {!this.state.isHidden && <DropDown selected={this.selectedCommune} communes={this.communes} clickFunc={this.updateLocal.bind(this)}/>}
                 </ul>
+
 
                 <div>
                 <h1>{this.props.title}</h1>
@@ -71,7 +96,7 @@ export default class Statistics extends Component{
                             <small>Innsendte saker: {this.state.ticketsSent}</small><br/>
                             <small>Løste saker: {this.state.ticketsSolved}</small><br/>
                             <small>Uløste saker: {(this.state.ticketsSent - this.state.ticketsSolved)}</small><br/>
-                            <small>Prosentandel løste saker: {((this.state.ticketsSolved / this.state.ticketsSent)*100).toFixed(2)}{' '}%</small>
+                            <small>Prosentandel løste saker: {(((this.state.ticketsSolved / this.state.ticketsSent)*100).toFixed(2))}{' '}%</small>
                             <br/>
                             <br/>
                         </div>
@@ -86,7 +111,17 @@ export default class Statistics extends Component{
                                     borderColor: 'lightgrey',
                                     data: this.state.ticketsPerCat,
                                 }]
-                            }} />
+                                     
+                            }} options= {{
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero:true
+                                        }
+                                    }]
+                                }
+                            }}
+                            />
                             <hr/>
                         </div>
                     </div>
@@ -101,11 +136,24 @@ export default class Statistics extends Component{
                                     backgroundColor: 'lightblue',
                                     data: this.state.ticketsPerMonth
                                 }]
-                            }}/>
+                            }}
+                            
+                            options= {{
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero:true
+                                        }
+                                    }]
+                                }
+                            }}
+                            />
                             <hr/>
                         </div>
                         {' '}
-                        <div className="col" style={{border:'1px solid lightgrey'}}>d</div>
+                        <div className="col" style={{border:'1px solid lightgrey'}}>
+                            Potensielt mer statistikk
+                        </div>
                     </div>
                 </div>
             </div>
@@ -113,35 +161,121 @@ export default class Statistics extends Component{
         )
     }
 
-    mounted(){
-        //Need functions to get different data from db to set in props
+    async mounted(){
+        //-----NATIONAL DATA FETCHING-----\\
+        await statisticsService.getTicketAmountNationally()
+        .then(ticketAmount => this.ticketsSentN = ticketAmount.data[0].amount)
+        .catch((error : Error) => console.log(error.message));
+
+        await statisticsService.getSolvedTicketsNationally()
+        .then(ticketAmount => this.ticketsSolvedN = ticketAmount.data[0].amount)
+        .catch((error : Error) => console.log(error.message));
+
+        await statisticsService.getTicketAmountByCategoryNationally()
+        .then(amounts => amounts.data.map(amount => (
+            this.categoriesN.push(amount.category),
+            this.ticketsPerCatN.push(amount.tickets_in_categories)
+        )))
+        .catch((error : Error ) => console.log(error.message));
+
+        await statisticsService.getTicketAmountByMonthNationally()
+        .then(amounts => amounts.data.map(amount => (
+            this.ticketsPerMonthN[(amount.month - 1)] = amount.value
+        )))
+        .catch((error : Error) => console.log(error.message));
+
+        //-----LOCAL DATA FETCHING-----\\
+        await communeService.getAllCommunes()
+        .then(communes => communes.data.map(commune =>(
+            this.communes.push(commune.name)
+        )))
+        .catch((error : Error) => console.log(error.message));
+
+        await statisticsService.getTicketAmountLocally(this.communes[0]) 
+        .then(ticketAmount => this.ticketsSentL = ticketAmount.data[0].amount)
+        .catch((error : Error) => console.log(error.message)); 
+
+        await statisticsService.getSolvedTicketsLocally(this.communes[0])
+        .then(ticketAmount => this.ticketsSolvedL = ticketAmount.data[0].amount)
+        .catch((error : Error) => console.log(error.message));
+
+        await statisticsService.getTicketAmountByCategoryLocally(this.communes[0])
+        .then(amounts => amounts.data.map(amount => (
+            this.categoriesL.push(amount.category),
+            this.ticketsPerCatL.push(amount.tickets_in_categories)
+        )))
+        .catch((error : Error ) => console.log(error.message));
+
+        await statisticsService.getTicketAmountByMonthLocally(this.communes[0])
+        .then(amounts => amounts.data.map(amount => (
+            this.ticketsPerMonthL[(amount.month - 1)] = amount.value
+        )))
+        .catch((error : Error) => console.log(error.message));
+        
 
         this.setState({
-            ticketsSent : 4627,  
-            ticketsSolved : 4400,
-            categories : ["Forsøpling", "Vei", "Hærverk"],
-            ticketsPerCat : [12, 3, 6],
-            ticketsPerMonth : [650, 634, 501, 203, 200, 340, 630, 300, 240, 301, 403, 654]
+            ticketsSent : this.ticketsSentN,  
+            ticketsSolved : this.ticketsSolvedN,
+            categories : this.categoriesN,
+            ticketsPerCat : this.ticketsPerCatN,
+            ticketsPerMonth : this.ticketsPerMonthN
         });
     }
 
     setNational(){
         //States below will get data from props 
         this.setState({
-            ticketsSent : 4627,  
-            ticketsSolved : 4400,
-            ticketsPerCat : [12, 3, 6],
-            ticketsPerMonth : [650, 634, 501, 203, 200, 340, 630, 300, 240, 301, 403, 654]
+            ticketsSent : this.ticketsSentN,  
+            ticketsSolved : this.ticketsSolvedN,
+            categories : this.categoriesN,
+            ticketsPerCat : this.ticketsPerCatN,
+            ticketsPerMonth : this.ticketsPerMonthN,
+            isHidden : true
         });
     }
 
     setLocal(){
         //States below will get data from props
         this.setState({
-            ticketsSent : 605,  
-            ticketsSolved : 450,
-            ticketsPerCat : [2, 1, 4],
-            ticketsPerMonth : [65, 63, 50, 20, 20, 34, 63, 30, 24, 30, 40, 64]
+            ticketsSent : this.ticketsSentL,  
+            ticketsSolved : this.ticketsSolvedL,
+            categories : this.categoriesL,
+            ticketsPerCat : this.ticketsPerCatL,
+            ticketsPerMonth : this.ticketsPerMonthL,
+            isHidden : false
         });
+    }
+
+    async updateLocal(commune : string){
+        this.selectedCommune = commune; 
+
+        await statisticsService.getTicketAmountLocally(commune)
+        .then(ticketAmount => this.ticketsSentL = ticketAmount.data[0].amount)
+        .catch((error : Error) => console.log(error.message));
+
+        await statisticsService.getSolvedTicketsLocally(commune)
+        .then(ticketAmount => this.ticketsSolvedL = ticketAmount.data[0].amount)
+        .catch((error : Error) => console.log(error.message));
+
+        this.categoriesL = [];
+        this.ticketsPerCatL = [];
+
+        await statisticsService.getTicketAmountByCategoryLocally(commune)
+        .then(amounts => amounts.data.map(amount => (
+            this.categoriesL.push(amount.category),
+            this.ticketsPerCatL.push(amount.tickets_in_categories)
+        )))
+        .catch((error : Error ) => console.log(error.message));
+
+        this.ticketsPerMonthL = [];    
+        await statisticsService.getTicketAmountByMonthLocally(commune)
+        .then(amounts => amounts.data.map(amount => (
+            this.ticketsPerMonthL[(amount.month - 1)] = amount.value
+        )))
+        .catch((error : Error) => console.log(error.message));
+
+        this.setLocal();
+
+        console.log("Updating commune to " + commune +"...");
     }
 }

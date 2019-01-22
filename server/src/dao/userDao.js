@@ -15,8 +15,8 @@ export default class UserDao extends Dao {
         }
         else {
             create_password(json.password).then(password => {
-                var val = [json.email, password];
-                super.query("INSERT INTO person (email, password) VALUES (?,?)",
+                var val = [json.email, json.name, password];
+                super.query("INSERT INTO person (email,username, password) VALUES (?,?,?)",
                     val,
                     callback
                 );
@@ -31,6 +31,12 @@ export default class UserDao extends Dao {
     updateEmail(id, json, callback) {
         super.query("UPDATE person SET email = ? WHERE id = ?",
             [json.email, id],
+            callback)
+    }
+
+    updateName(id, json, callback) {
+        super.query("UPDATE person SET username = ? WHERE id = ?",
+            [json.name, id],
             callback)
     }
 
@@ -117,5 +123,5 @@ function password_passes_requirements(password: string){
     if (password < 8) {
         return {error: "Password too short"};
     }
-    return false;
+    return true;
 }
