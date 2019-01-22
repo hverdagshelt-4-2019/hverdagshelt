@@ -46,6 +46,16 @@ body {
     background-color: rgb(224, 57, 6);
     color: #666B6E;
 }
+
+.customBtn2 {
+    background-color: #FF5722;
+    color: white;
+}
+.customBtn2:hover {
+    background-color: rgb(224, 57, 6);
+    color: white;
+}
+
 .navbar {
     height: 50px;
 }

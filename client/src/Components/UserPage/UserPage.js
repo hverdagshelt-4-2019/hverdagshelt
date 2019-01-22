@@ -1,8 +1,8 @@
 import React from "react";
 import { Component } from "react-simplified";
 import styles from "./style.css";
-import FollowCommunes from "../CustomTable/FollowCommunes";
 import FollowCommunesTab from "../CustomTab/FollowCommunesTab";
+import userService from "../../Services/userService";
 
 import ChangePassword from "../ChangePassword/ChangePassword";
 
@@ -17,6 +17,12 @@ const customStyles = {
 }
 
 export default class UserPage extends Component {
+
+
+    componentDidMount() {
+        // TODO: Get fullname of user.
+    }
+
     render() {
         return (
           <div className={styles.root}>
