@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import userService from "../../Services/userService";
 import CustomDialog from "../CustomDialog/CustomDialog";
-
+import styles from './style.css'
 
 export class UserList extends Component<{props: {people: Object[], title: string, callback: function, tab: string}}> {
 
@@ -17,9 +17,9 @@ export class UserList extends Component<{props: {people: Object[], title: string
                 {
                     this.props.people.map(e => {
                         return (
-                            <div className="card" style={{minWidth: "650px", width: "75%", margin: "auto"}}>
+                            <div className={"card " + styles.myFlex}>
                                 <div className="card-body">
-                                    <div style={{display: "flex", alignItems: "center", flexDirection: "row", justifyContent: "space-between"}}>
+                                    <div className={styles.myFlexContent}>
                                         <div>
                                             <h5 className="card-title">
                                                 E-post: {e.email}

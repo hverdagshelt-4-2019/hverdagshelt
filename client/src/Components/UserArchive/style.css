@@ -1,0 +1,12 @@
+.myFlex {
+    minWidth: 650px;
+    width: 75%;
+    margin: auto;
+}
+
+.myFlexContent {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+}
