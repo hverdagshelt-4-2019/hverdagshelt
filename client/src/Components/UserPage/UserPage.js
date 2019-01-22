@@ -31,16 +31,15 @@ export default class UserPage extends Component {
                   </div>
                   <div>
                       <Divider style={{marginBottom: "40px"}}/>
-                      <div className={styles.changePasswordDiv}>
-                          <ChangePassword/>
+                      <div className={styles.changePassCommuneDiv}>
+                          <div className={styles.changePasswordDiv}>
+                              <ChangePassword/>
+                          </div>
+                          <div className={styles.communeTable}>
+                              <FollowCommunesTab/>
+                          </div>
                       </div>
                   </div>
-                  <div className={styles.communeTable}>
-                      <FollowCommunesTab/>
-                  </div>
-              </div>
-              <div>
-                  Tienes drogas, mi amigo?
               </div>
           </div>
         );
