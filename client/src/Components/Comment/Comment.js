@@ -9,7 +9,7 @@ export default class Comment extends Component {
             <div>
                 <div className={styles.commentBody}>
                     <div className={styles.header}>
-                        <h4 className="card-title">{this.props.email}</h4>
+                        <h4 className="card-title">{this.props.name}</h4>
                     </div>
                     <div className={styles.description}>
                         <p className="card-text">{this.props.description}</p>

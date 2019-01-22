@@ -699,6 +699,19 @@ export function create_app(pool) {
         })
     });
 
+    app.put("/username", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if(err) {
+                res.sendStatus(401);
+            } else {
+                userdao.updateName(authData.user.id, req.body, (status, data) => {
+                    console.log("Edited name");
+                    res.status(status);
+                });
+            }
+        })
+    });
+
     app.put("/userpass", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {

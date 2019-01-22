@@ -8,6 +8,7 @@ import CustomTable from "../CustomTable/CustomTable";
 //Need route to login site.
 export default class Register extends Component {
     email = "";
+    name = "";
     password1 = "";
     password2 = "";
     warning = "";
@@ -34,6 +35,7 @@ export default class Register extends Component {
                     <form>
                         <div className="form-group">
                             <input type="email" autoComplete="email" className="form-control" placeholder="Email" onChange={(evt) => {this.email = evt.target.value}}></input>
+                            <input className="form-control" placeholder="Navn" onChange={(evt) => {this.name = evt.target.value}}></input>
                             <input type="password" autoComplete="new-password" className="form-control" placeholder="Passord" onChange={(evt) => {this.password1 = evt.target.value}}></input>
                             <input type="password" autoComplete="new-password" className="form-control" placeholder="Gjenta passord" onChange={(evt) => {this.password2 = evt.target.value}}></input>
                         </div>
@@ -60,7 +62,7 @@ export default class Register extends Component {
         console.log("register called")
         if(!this.checkFields()) return;
         if(this.password1 === this.password2) {
-            userService.createUser(this.email, this.password1, this.commune)
+            userService.createUser(this.email,this.name, this.password1, this.commune)
                 .then(res => {
                     if(res.status === 200) {
                         this.success = "Ny bruker er registrert!";

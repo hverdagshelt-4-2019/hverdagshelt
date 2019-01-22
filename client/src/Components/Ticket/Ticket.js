@@ -132,7 +132,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               </div>
 
               <p>
-                <i class="fas fa-user" style={{marginRight: "4px"}}></i> {this.ticket.submitter_email}
+                <i class="fas fa-user" style={{marginRight: "4px"}}></i> {this.ticket.name}
               </p>
 
               <hr />
@@ -149,7 +149,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               </ul>
               <hr />
               <p>
-                <b>Bedrift:</b> {this.ticket.company_name} {this.canSetStatus() && this.companies.length > 1 && <Dropdown options={this.companies} currValue={this.ticket.company_name} reciever={this.editCompany}/>}
+                <b>Ansvarlig bedrift:</b> {this.ticket.company_name} {this.canSetStatus() && this.companies.length > 1 && <Dropdown options={this.companies} currValue={this.ticket.company_name} reciever={this.editCompany}/>}
               </p>
 
               <hr />
@@ -191,7 +191,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               <div className="media mb-4">
                 <div className="media-body">
                     {this.comments.map(e => {
-                        return(<Comment email={e.email} description={e.description}/>
+                        return(<Comment name={e.name} description={e.description}/>
                         )
                     })}
                 </div>
