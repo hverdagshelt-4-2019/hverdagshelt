@@ -38,10 +38,24 @@ body {
     background-color: #9DC8E4;
 }
 
+.customIcon{
+    margin-right: 6px;
+}
+
 .customBtn:hover {
     background-color: rgb(224, 57, 6);
     color: #666B6E;
 }
+
+.customBtn2 {
+    background-color: #FF5722;
+    color: white;
+}
+.customBtn2:hover {
+    background-color: rgb(224, 57, 6);
+    color: white;
+}
+
 .navbar {
     height: 50px;
 }
@@ -59,6 +73,30 @@ label {
     margin-left: auto;
     margin-right: auto;
     margin-top: 30px;
+}
+.inlineStuff{
+    display: table;
+    list-style: none;
+    margin: 10px 0px 0px;
+    padding: 0px;
+    width: 100%;
+    text-align: center;
+}
+.inlineStuff > li {
+    display: table-cell;
+    color: rgb(30, 30, 30);
+    font-size: 11pt;
+    font-weight: 300;
+    padding: 3px 0px;
+}
+
+.imgMiddle {
+    width: 96%;
+    display: inline-block;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 350px;
 }
 @media (max-width:1250px) {
     .navbar{

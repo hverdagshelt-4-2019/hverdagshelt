@@ -8,40 +8,43 @@ import css from './Navbar.css'
 export default class Navbar extends Component {
 
     admin_pages = [
+        ['begivenheter', 'Begivenheter', 'list'],
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['begivenheter', 'Begivenheter', 'list'],
         ['kategorier', 'Kategorier', 'edit'],
-        ['statistikk', 'Statistikk', 'chart-bar'],
+        ['register', 'Administrer Brukere', 'address-card'],
         ['leggtil', 'Legg til admin', 'user-plus'],
+        ['nyttselskap', 'Ny Bedrift', 'suitcase'],
+        ['statistikk', 'Statistikk', 'chart-bar']
     ];
     public_worker_pages = [
+        ['begivenheter', 'Begivenheter', 'list'],
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['begivenheter', 'Begivenheter', 'list'],
         ['leggtilbegivenhet', 'Legg til begivenhet', 'plus'],
-        ['statistikk', 'Statistikk', 'chart-bar'],
+        ['nyttselskap', 'Ny Bedrift', 'suitcase'],
+        ['statistikk', 'Statistikk', 'chart-bar']
     ];
     company_pages = [
+        ['begivenheter', 'Begivenheter', 'list'],
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
     ];
     user_pages = [
+        ['begivenheter', 'Begivenheter', 'list'],
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
     ];
 
     none_pages = [
-        ['kart', 'Kart', 'map-marked-alt'],
         ['begivenheter', 'Begivenheter', 'list'],
+        ['kart', 'Kart', 'map-marked-alt'],
         ['statistikk', 'Statistikk', 'chart-bar'],
     ];
     current_list = [];
@@ -63,7 +66,7 @@ export default class Navbar extends Component {
     render() {
         return (
             <nav className="navbar navbar-expand-md navbar-dark blue shadow">
-                <a className="navbar-brand" href="/hjem" style={{color: "white"}}>HverdagsHelt<img style={{marginLeft: "4px"}} src="Skjermbilde.PNG" width="20" height="17" /></a>
+                <NavLink className="navbar-brand" to="/hjem" style={{color: "white"}}>HverdagsHelt<img style={{marginLeft: "4px"}} src="Skjermbilde.PNG" width="20" height="17" /></NavLink>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -90,13 +93,11 @@ export default class Navbar extends Component {
                     <li className="nav-item">
                         <a style={{color: "white", height: "50px"}}className={"nav-link " + css.customLink} href="/" onClick={this.logout}>
                             <div className="topOfLink">
-                                <i className="fas fa-sign-out-alt"></i> {
-                                    localStorage.getItem('level') === 'none' ? "Logg inn" : "Logg ut"
-                                }
+                                {localStorage.getItem('level') === 'none' ? <i className="fas fa-sign-in-alt"></i> : <i className="fas fa-sign-out-alt"></i>}
+                                {localStorage.getItem('level') === 'none' ? "Logg inn" : "Logg ut"}
                             </div>
                         </a>
                     </li>
-                    
                 </ul>
             </div>  
         </nav>

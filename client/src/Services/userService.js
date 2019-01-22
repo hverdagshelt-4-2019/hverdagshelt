@@ -46,7 +46,7 @@ export default class userService {
 
    static updatePassword(oldPassword: string, newPassword: string): Promise<Object>{
         console.log("oldpassword: " + oldPassword + "\nnewpassword: " + newPassword);
-        return axios.put(url + '/userpass', {oldPassword: oldPassword, newPassword: newPassword}, config());
+        return axios.put('/userpass', {oldPassword: oldPassword, newPassword: newPassword}, config());
    }
 
    static updateEmail(email: string): Promise<Object>{
@@ -58,8 +58,16 @@ export default class userService {
    }
 
    static resetPassword(email, json): Promise<Object>{
-        return axios.put(url + "/forgotPassword/" + email, json);
+        return axios.put("/forgotPassword/" + email, json);
    }
+
+   static delUser(email): Promise<Object> {
+        return axios.delete('/user/' + email, config())
+   }
+
+   // static getUser(id): Promise<Object> {
+   //      return axios.get("/user/" + )
+   // }
 }
 
 

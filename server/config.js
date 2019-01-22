@@ -11,8 +11,8 @@ let config =
         debug: false
     },
 
-    port: 3000,//port: 80,
-    httpsport: 443,
+    port: 3000,
+    httpsport: 8080,
 
     email: {
         user: "hverdagsheltene4@gmail.com",

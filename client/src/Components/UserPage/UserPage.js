@@ -1,6 +1,8 @@
 import React from "react";
 import { Component } from "react-simplified";
 import styles from "./style.css";
+import FollowCommunesTab from "../CustomTab/FollowCommunesTab";
+import userService from "../../Services/userService";
 
 import ChangePassword from "../ChangePassword/ChangePassword";
 
@@ -15,6 +17,12 @@ const customStyles = {
 }
 
 export default class UserPage extends Component {
+
+
+    componentDidMount() {
+
+    }
+
     render() {
         return (
           <div className={styles.root}>
@@ -29,13 +37,15 @@ export default class UserPage extends Component {
                   </div>
                   <div>
                       <Divider style={{marginBottom: "40px"}}/>
-                      <div className={styles.changePasswordDiv}>
-                          <ChangePassword/>
+                      <div className={styles.changePassCommuneDiv}>
+                          <div className={styles.changePasswordDiv}>
+                              <ChangePassword/>
+                          </div>
+                          <div className={styles.communeTable}>
+                              <FollowCommunesTab/>
+                          </div>
                       </div>
                   </div>
-              </div>
-              <div>
-                  Tienes drogas, mi amigo?
               </div>
           </div>
         );
