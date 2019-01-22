@@ -11,11 +11,11 @@ class Options extends Component{
         return(
             <div>
                 <NavLink to={"/endrebegivenhet/" + this.props.id}>
-                    <button className={"btn customBtn2 "+ css.btnEvent}><i class="fas fa-marker customIcon"></i>Rediger</button>
+                    <button className={"btn customBtn2 "+ css.btnEvent}><i className="fas fa-marker customIcon"></i>Rediger</button>
                 </NavLink>  
                 {' '}  
 
-                <button className={"btn btn-danger "+ css.btnEvent} onClick={this.delete}><i class="fas fa-trash-alt customIcon"></i>Slett</button> 
+                <button className={"btn btn-danger "+ css.btnEvent} onClick={this.delete}><i className="fas fa-trash-alt customIcon"></i>Slett</button> 
             </div>
         )
     }
