@@ -27,8 +27,6 @@
 }
 
 .communeTable {
-    display: flex;
-    margin: 0px auto 0px 3%;
     width: 100%;
 }
 
@@ -58,17 +56,9 @@
         max-width: 1000px;
     }
 
-    .communeTable {
-        display: flex;
-        justify-content: center;
-        margin: auto;
-        width: 100%;
-    }
-
     .changePasswordDiv {
         display: flex;
-        margin: auto;
-        justify-content: center;
-        width: 100%;
+        justify-content: space-between;
+        align-items: center;
     }
 }

@@ -14,7 +14,7 @@ import $ from 'jquery';
 //At the moment, the list displays all tickets, not filtered.
 
 export default class TicketList extends Component{
-    communes = [];
+    followedCommunes : Commune[] = [];
     ticketCategories : Category[] = []; //Ticking off input box will add category to the array
     allTickets = [];
     constructor() {
@@ -46,6 +46,14 @@ export default class TicketList extends Component{
                             <div style={{marginLeft: "6px"}}>
                                 <input type="checkbox" style={{width: "17px", height: "17px"}} className="form-check-input markCheck cat" id={"check"+category.name} defaultChecked/>
                                 <label className="form-check-label" style={{marginTop: "3px"}} htmlFor={"check"+category.name}>{category.name}</label>
+                            </div>
+                        </li>
+                        )}
+                        {this.followedCommunes.map(commune =>
+                        <li key={commune.name} className="list-group-item">
+                            <div style={{marginLeft: "6px"}}>
+                                <input type="checkbox" style={{width: "17px", height: "17px"}} className="form-check-input markCheck cat" id={"check"+commune.name} defaultChecked/>
+                                <label className="form-check-label" style={{marginTop: "3px"}} htmlFor={"check"+commune.name}>{commune.name}</label>
                             </div>
                         </li>
                         )}
@@ -107,7 +115,9 @@ export default class TicketList extends Component{
         $("#checkAll").click(function () {
             $(".cat").prop('checked', $(this).prop('checked'));
         });
-
+        communeService.getFollowedCommunes()
+        .then((communes : Communes[]) => this.followedCommunes = communes.data)
+        .catch((error : Error) => console.log("Error occured: " + error.message));
         //--Get tickets based on commune and checked categories--
         //ticketService.getTicketsByCommuneAndCategory(this.communeId, this.categories)
         //.then(tickets => this.tickets = tickets);  

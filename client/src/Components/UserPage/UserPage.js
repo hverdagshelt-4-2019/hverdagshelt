@@ -24,7 +24,6 @@ export default class UserPage extends Component {
     componentDidMount() {
         // TODO: Get the username and display it.
         userService.getUser().then(res => {
-            console.log("Response: " + JSON.stringify(res));
             this.setState({emailInfo: res.data[0].email});
         }).catch(err => console.log(err));
     }
@@ -35,7 +34,10 @@ export default class UserPage extends Component {
     };
 
     handleClick(){
-        userService.updateName(this.state.name);
+        console.log("Lmao");
+        userService.updateName(this.state.name).then(res => {
+            console.log("Response: " + JSON.stringify(res));
+        }).catch(err => console.log(err));
     }
 
     render() {
