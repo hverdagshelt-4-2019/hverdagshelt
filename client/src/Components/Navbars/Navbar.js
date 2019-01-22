@@ -8,40 +8,43 @@ import css from './Navbar.css'
 export default class Navbar extends Component {
 
     admin_pages = [
+        ['begivenheter', 'Begivenheter', 'list'],
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['begivenheter', 'Begivenheter', 'list'],
         ['kategorier', 'Kategorier', 'edit'],
-        ['statistikk', 'Statistikk', 'chart-bar'],
+        ['register', 'Administrer Brukere', 'address-card'],
         ['leggtil', 'Legg til admin', 'user-plus'],
+        ['nyttselskap', 'Ny Bedrift', 'suitcase'],
+        ['statistikk', 'Statistikk', 'chart-bar']
     ];
     public_worker_pages = [
+        ['begivenheter', 'Begivenheter', 'list'],
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['begivenheter', 'Begivenheter', 'list'],
         ['leggtilbegivenhet', 'Legg til begivenhet', 'plus'],
-        ['statistikk', 'Statistikk', 'chart-bar'],
+        ['nyttselskap', 'Ny Bedrift', 'suitcase'],
+        ['statistikk', 'Statistikk', 'chart-bar']
     ];
     company_pages = [
+        ['begivenheter', 'Begivenheter', 'list'],
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
     ];
     user_pages = [
+        ['begivenheter', 'Begivenheter', 'list'],
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['begivenheter', 'Begivenheter', 'list'],
         ['statistikk', 'Statistikk', 'chart-bar'],
     ];
 
     none_pages = [
-        ['kart', 'Kart', 'map-marked-alt'],
         ['begivenheter', 'Begivenheter', 'list'],
+        ['kart', 'Kart', 'map-marked-alt'],
         ['statistikk', 'Statistikk', 'chart-bar'],
     ];
     current_list = [];
@@ -95,7 +98,6 @@ export default class Navbar extends Component {
                             </div>
                         </a>
                     </li>
-                    
                 </ul>
             </div>  
         </nav>

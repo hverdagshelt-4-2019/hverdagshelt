@@ -27,7 +27,7 @@ export default class Login extends Component {
                     localStorage.setItem('id', result.data.id);
                     localStorage.setItem('commune', result.data.commune);
                     localStorage.setItem('company', result.data.company);
-                    window.location.href = "http://localhost:3000/hjem";
+                    window.location.href = "/hjem";
                 }
             }).catch(err => {
                 // Wrong username/password
