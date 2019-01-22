@@ -13,10 +13,10 @@ import Paper from '@material-ui/core/Paper';
 import TextField from "@material-ui/core/TextField";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
-import Switch from "@material-ui/core/Switch";
-import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import SearchIcon from "@material-ui/icons/Search";
 import InputAdornment from '@material-ui/core/InputAdornment';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default class FollowCommunes extends Component {
     state = {
@@ -30,10 +30,9 @@ export default class FollowCommunes extends Component {
     }
 
     componentDidMount() {
-        communeService.getAllCommunes().then(res => {
+        communeService.getFollowedCommunes().then(res => {
             this.setState({
-                data: res.data.map(e => e.name),
-                statusText: res.data.map(e => "Follow")
+                data: res.data.map(e => e.commune_name),
             }, () => this.sortArray());
         }).catch(err => console.log(err))
     }
@@ -52,25 +51,45 @@ export default class FollowCommunes extends Component {
         })
     }
 
-    onClick = id => (event, checked) => {
-        console.log("Id is: " + id);
-        console.log("Checked is: " + checked);
-        if(checked) {
-            this.setState(prevState => ({
-                statusText: {
-                    ...prevState.statusText,
-                    [id]: "Unfollow"
-                }
-            }));
+    removeItem(item) {
+        const index = this.state.data.indexOf(item);
+        if(index >= 0) {
+            let copy = this.state.data.filter(e => e !== item);
+            this.setState({
+                data: copy
+            })
+            this.sortArray();
         }
         else {
-            this.setState(prevState => ({
-                statusText: {
-                    ...prevState.statusText,
-                    [id]: "Follow"
-                }
-            }));
+            console.log("What ze fook");
         }
+    }
+
+    onUnFollow = (value, index, event) => {
+        this.setState({
+            loadingIndex: index
+        }, () => {
+            communeService.unFollowCommune(value).then(res => {
+                if(res.status === 200){
+                    // TODO: Give feedback
+                    this.removeItem(value);
+                    this.sortArray();
+                    console.log("Removed commune");
+                }
+                else {
+                    // TODO: Give feedback
+                    console.log("Rip");
+                }
+                this.setState({
+                    loadingIndex: -1
+                })
+            }).catch(err => {
+                console.log(err);
+                this.setState({
+                    loadingIndex: -1
+                })
+            })
+        })
     }
 
     handleChange = event => {
@@ -90,7 +109,7 @@ export default class FollowCommunes extends Component {
                             <TableRow>
                                 <TableCell>
                                     <div className={styles.tableHeader}>
-                                        Kommune (søk for å få opp flere)
+                                        Kommune
                                         <TextField
                                             label="Search"
                                             value={this.state.query}
@@ -115,8 +134,15 @@ export default class FollowCommunes extends Component {
                                         <div className={styles.rowHolder}>
                                             {row}
                                             <div>
-                                                <Switch onChange={this.onClick(index)} value={row}/>
-                                                <Typography>{this.state.statusText? this.state.statusText[index] : ""}</Typography>
+                                                {this.state.loadingIndex !== index &&
+                                                <Button variant="contained" color="secondary" onClick={this.onUnFollow.bind(this, row, index)}>
+                                                    Unfollow
+                                                </Button>
+                                                }
+
+                                                {this.state.loadingIndex === index &&
+                                                <CircularProgress/>
+                                                }
                                             </div>
                                         </div>
                                     </TableCell>

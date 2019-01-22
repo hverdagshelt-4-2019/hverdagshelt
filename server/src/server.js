@@ -254,28 +254,28 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/users", (req, res) =>{
+    app.get("/users", (req, res) =>{ //todo auth
         userdao.getAll((status, data) =>{
             res.status(status);
             res.json(data);
         });
     });
 
-    app.get("/companies", (req, res) => {
+    app.get("/companies", (req, res) => { //todo auth
         companydao.getAll((status, data) =>{
             res.status(status);
             res.json(data);
         });
     });
 
-    app.get("/admins", (req, res) =>{
+    app.get("/admins", (req, res) =>{ //todo auth
         admindao.getAll((status, data) =>{
             res.status(status);
             res.json(data);
         });
     });
 
-    app.get("/publicworkers", (req, res) =>{
+    app.get("/publicworkers", (req, res) =>{ //todo auth
         publicworkerdao.getAll((status, data) =>{
             res.status(status);
             res.json(data);
@@ -744,13 +744,13 @@ export function create_app(pool) {
                             from: 'Hverdagsheltene',
                             to: req.body.email,
                             subject: 'Status oppdatering',
-                            text: ('Ditt problem har fått ny status. Sjekk ny status på: '+config.domainname+'/sak/' + req.params.ticket_id)
-                        }
-                        sendEmail(transporter, mailOptions)
+                            text: ('Ditt problem har fått ny status. Sjekk ny status på: ' + req.body.statusText + ' | Gå til: ' + config.domainname+'/sak/' + req.params.ticket_id)
+                        };
+                        sendEmail(transporter, mailOptions);
                         res.status(status);
                         res.json(data);
                     } else {
-                        console.log('Oops...');
+                        console.log('Feil med å oppdatere status i serverfil');
                     }
                 });
             }
@@ -833,9 +833,12 @@ export function create_app(pool) {
                 res.sendStatus(401);
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
-                    console.log("Deleted event");
-                    res.status(status);
-                    res.json(data);
+                    eventdao.deleteOne(req.params.id, (status,data) => {
+                        console.log("Deleted event");
+                        res.status(status);
+                        res.json(data);
+                    })
+
                 } else {
                     res.sendStatus(403);
                 }

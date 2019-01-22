@@ -24,12 +24,19 @@ export default class CommuneService{
         return axios.get("/followedCommunes", config());
     }
 
+    static getUnFollowedCommunes(): Promise<void>{
+        return axios.get("/unfollowedCommunes", config());
+    }
+
     static getAllCommunes() : Promise<Commune[]>{
         return axios.get("/communes");
     }
 
-    // TODO: Fix this method.
     static followCommune(communeName): Promise<void>{
-        return axios.post("/followCommune/" + communeName)
+        return axios.post("/followCommune/" + communeName, {}, config());
+    }
+
+    static unFollowCommune(communeName): Promise<void>{
+        return axios.delete("/unfollowCommune/" + communeName, config());
     }
 }

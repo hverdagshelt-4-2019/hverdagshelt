@@ -2,6 +2,7 @@
 import axios from 'axios';
 
 export class Admin {
+    id: number;
     email: string;
 }
 
@@ -25,6 +26,9 @@ export default class AdminService {
         return axios.post('/admin', admin, config());
     }
 
+    static getAdmins(): Promise<Admin[]> {
+        return axios.get('admins');
+    }
 }
 
 

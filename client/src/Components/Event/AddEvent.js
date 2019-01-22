@@ -84,8 +84,6 @@ export default class AddEvent extends Component {
                     <label className="form-label">Dato og tid</label>
                     <Datetime locale='nb' isValidDate={ valid } value={this.state.happening_time} onChange={this.handleDate} defaultValue={new Date()}/>
                     </div>
-
-
                     <div className="form-group">
                     <h4>Bilde</h4>
                     <label htmlFor="InputFile">Last opp bilde</label>
