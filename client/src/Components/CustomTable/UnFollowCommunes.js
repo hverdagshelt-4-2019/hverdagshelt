@@ -13,27 +13,29 @@ import Paper from '@material-ui/core/Paper';
 import TextField from "@material-ui/core/TextField";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
-import Button from "@material-ui/core/Button";
 import SearchIcon from "@material-ui/icons/Search";
 import InputAdornment from '@material-ui/core/InputAdornment';
-import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export default class FollowCommunes extends Component {
     state = {
         rows: [],
         data: [],
-        checkedCommunes: [],
-        statusText: [],
         rowsPerPage: 5,
         page: 0,
-        query: ""
+        query: "",
+        loadingIndex: -1
     }
 
     componentDidMount() {
-        communeService.getFollowedCommunes().then(res => {
+        communeService.getUnFollowedCommunes().then(res => {
             this.setState({
-                data: res.data.map(e => e.commune_name),
-            }, () => this.sortArray());
+                data: res.data.map(e => e.name),
+            }, () => {
+                this.sortArray();
+                console.log(res.data);
+            });
         }).catch(err => console.log(err))
     }
 
@@ -52,43 +54,34 @@ export default class FollowCommunes extends Component {
     }
 
     removeItem(item) {
-        const index = this.state.data.indexOf(item);
-        if(index >= 0) {
-            let copy = this.state.data.filter(e => e !== item);
-            this.setState({
-                data: copy
-            })
-            this.sortArray();
-        }
-        else {
-            console.log("What ze fook");
-        }
+        const copy = this.state.data.filter(e => e !== item);
+        this.setState({
+            data: copy
+        });
+        this.sortArray();
     }
 
-    onUnFollow = (value, index, event) => {
+    onFollow = (value, index, event) => {
+        console.log("Trying to follow");
         this.setState({
             loadingIndex: index
         }, () => {
-            communeService.unFollowCommune(value).then(res => {
+            communeService.followCommune(value).then(res => {
                 if(res.status === 200){
                     // TODO: Give feedback
                     this.removeItem(value);
                     this.sortArray();
-                    console.log("Removed commune");
+                    console.log("We did it bebby");
                 }
                 else {
                     // TODO: Give feedback
-                    console.log("Rip");
                 }
                 this.setState({
                     loadingIndex: -1
                 })
-            }).catch(err => {
-                console.log(err);
-                this.setState({
-                    loadingIndex: -1
-                })
-            })
+            }).catch(err => {this.setState({
+                loadingIndex: -1
+            }); console.log(err)})
         })
     }
 
@@ -135,11 +128,10 @@ export default class FollowCommunes extends Component {
                                             {row}
                                             <div>
                                                 {this.state.loadingIndex !== index &&
-                                                <Button variant="contained" color="secondary" onClick={this.onUnFollow.bind(this, row, index)}>
-                                                    Unfollow
+                                                <Button variant="contained" color="secondary" onClick={this.onFollow.bind(this, row, index)}>
+                                                    Follow
                                                 </Button>
                                                 }
-
                                                 {this.state.loadingIndex === index &&
                                                 <CircularProgress/>
                                                 }

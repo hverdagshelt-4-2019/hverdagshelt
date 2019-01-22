@@ -64,6 +64,10 @@ export default class userService {
    static delUser(email): Promise<Object> {
         return axios.delete('/user/' + email, config())
    }
+
+   // static getUser(id): Promise<Object> {
+   //      return axios.get("/user/" + )
+   // }
 }
 
 

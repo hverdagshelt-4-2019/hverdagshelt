@@ -27,7 +27,15 @@
 }
 
 .communeTable {
-    width: 60%;
+    width: 100%;
+}
+
+.changePassCommuneDiv {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 300px 1fr;
+    margin: auto;
+    align-items: center;
 }
 
 @media only screen and (max-width: 1000px){
@@ -39,7 +47,19 @@
         align-items: center;
     }
 
+    .textHolder {
+        display: grid;
+        grid-template-columns: 100px 100px;
+        grid-gap: 5%;
+        align-items: center;
+        white-space: nowrap;
+        max-width: 1000px;
+    }
+
     .communeTable {
+        display: flex;
+        justify-content: center;
+        margin: auto;
         width: 100%;
     }
 
