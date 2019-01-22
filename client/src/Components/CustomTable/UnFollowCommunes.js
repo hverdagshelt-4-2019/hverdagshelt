@@ -149,7 +149,7 @@ export default class FollowCommunes extends Component {
                                     count={this.state.rows.length}
                                     rowsPerPage={this.state.rowsPerPage}
                                     page={this.state.page}
-                                    selectProps={{native: true}}
+                                    selectprops={{native: true}}
                                     onChangePage={this.handleChangePage}
                                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
                                 />
