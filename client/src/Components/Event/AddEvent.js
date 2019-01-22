@@ -135,7 +135,10 @@ export default class AddEvent extends Component {
     async save() {
         if(this.state.title !== '' && this.state.description !== '' && this.state.category !== '' && this.state.happening_time !== null && this.commune !== null){
             let eventId: Number;
-            let sendingDate = this.state.happening_time.toJSON();
+            let sendingDate = new Date(this.state.happening_time);
+            sendingDate.setMinutes(sendingDate.getMinutes() - sendingDate.getTimezoneOffset());
+            sendingDate = sendingDate.toJSON();
+            console.log(sendingDate);
             await eventService
             .postEvent(this.state.commune, this.state.category, this.state.title, this.state.description, sendingDate.split('T', 1)[0] + ' ' + sendingDate.split('T')[1].split('.', 1))
             .then((response) => {
