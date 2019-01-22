@@ -32,7 +32,7 @@ export default class AddPage extends Component{
             <div className="container" >
                 <hr/>
                 <div className="row">
-                    <div className="col-md-6" style={{border: "2px solid lightblue"}}>
+                    <div className="col-md-6 rounded shadow p-3 mb-5" style={{backgroundColor:'white', border: "1px solid lightgrey"}}>
                         <br/>
                         <h4>Registrer ny admin</h4>
                         <h4>eller</h4>
@@ -77,12 +77,14 @@ export default class AddPage extends Component{
                             <br/>
                             <br/>
                         </form>
-                        <hr/>
-                        <button className="btn customBtn" onClick={this.addNew}>Opprett ny</button>
-                        <br/>
-                        <br/>
+                        <div >
+                            <hr/>
+                            <button className="btn customBtn" onClick={this.addNew}>Opprett ny</button>
+                            <br/>
+                            <br/>
+                        </div>
                     </div>
-                    <div className="col-md-6" style={{border: "2px solid lightblue"}}> 
+                    <div className="col-md-6 rounded" style={{backgroundColor:'white', border: "1px solid lightgrey"}}> 
                         <br/> 
                         <h4>Gi en eksisterende bruker</h4>
                         <h4>admin- eller</h4>
@@ -126,8 +128,12 @@ export default class AddPage extends Component{
                             </select>
                             <br/>
                             <br/>
-                            <hr/>
-                            <button className="btn customBtn" onClick={this.updateExisting}>Opprett fra eksisterende</button>
+                            <div>
+                                <hr/>
+                                <button className="btn customBtn" onClick={this.updateExisting}>Opprett fra eksisterende</button>
+                                <br/>
+                                <br/>
+                            </div>
                     </div>
                 </div>
                 <div style={{height: '150px'}} /> 
