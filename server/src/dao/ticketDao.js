@@ -2,7 +2,7 @@ import Dao from './dao.js';
 
 export default class TicketDao extends Dao {
     getATicket(id, callback) {
-        super.query("SELECT t.id, email as submitter_email, responsible_commune, c2.name as company_name, category, " +
+        super.query("SELECT t.id, username as name, email as submitter_email, responsible_commune, c2.name as company_name, category, " +
             "title, description, picture, submitted_time, finished_time, status, statusText, lat, lng FROM ticket t JOIN person p " +
             "ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id WHERE t.id = ?;",
             [id],
