@@ -25,7 +25,7 @@ import MyTickets from "./Components/TicketList/MyTickets";
 import EventList from "./Components/EventList/EventList";
 import { Alert } from './widgets';
 import AddCompany from './Components/Company/AddCompanjy';
-import UserArchive from './Components/UserArchive/UserArchive';
+import Administration from './Components/Administration/Administration';
 import Statistics from './Components/Statistics/Statistics';
 import ResetPassword from "./Components/Login/ResetPassword";
 import UserPage from "./Components/UserPage/UserPage";
@@ -53,18 +53,16 @@ if (root) {
                     <Route path="/resetpassord" component={ResetPassword} />
                     <Route path="/minside" component={UserPage} />
                     <Route path="/hjelp" component={Hjelp} />
-                    <Route path="/leggtil" component={AddPage}/>
-                    {res.data.level === 'admin' && <Route path="/kategorier" component={CategoryCreation}/>}
                     {(res.data.level === 'admin'|| res.data.level === 'publicworker') && <Route path= '/nyttSelskap' component={AddCompany}/>}
-                    {(res.data.level === 'admin' || res.data.level === 'publicworker') && <Route path='/register' component={UserArchive}/>}
+                    {(res.data.level === 'admin') && <Route path='/administrasjon' component={Administration}/>}
                     <Route path="/sak/:id" component={Ticket}/>
                     <Route path="/leggtilsak" component={AddTicket}/>
                     <Route path="/endresak/:id" component={EditTicket}/>
                     <Route path="/begivenheter" component={EventList} />
                     <Route exact path="/statistikk" component={Statistics}/>
                     <Route path="/begivenhet/:id" component={Event}/>
-                    <Route path="/leggtilbegivenhet" component={AddEvent}/>
-                    <Route path="/endrebegivenhet/:id" component={EditEvent}/>
+                    {(res.data.level === 'publicworker') && <Route path="/leggtilbegivenhet" component={AddEvent}/>}
+                    {(res.data.level === 'publicworker') && <Route path="/endrebegivenhet/:id" component={EditEvent}/>}
                     <Route path="/" component={Footer}/>
                     
                 </div>

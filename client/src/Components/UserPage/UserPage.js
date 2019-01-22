@@ -22,15 +22,22 @@ export default class UserPage extends Component {
 
 
     componentDidMount() {
-        // TODO: Get fullname of user.
+        // TODO: Get the username and display it.
+        userService.getUser().then(res => {
+            this.setState({emailInfo: res.data[0].email});
+        }).catch(err => console.log(err));
     }
 
-    State = {
-        name : ''
+    state = {
+        name : '',
+        emailInfo: ""
     };
 
     handleClick(){
-        userService.updateName(this.state.name);
+        console.log("Lmao");
+        userService.updateName(this.state.name).then(res => {
+            console.log("Response: " + JSON.stringify(res));
+        }).catch(err => console.log(err));
     }
 
     render() {
@@ -39,7 +46,7 @@ export default class UserPage extends Component {
               <div className={styles.infoDiv}>
                   <div className={styles.textHolder}>
                       <div><Typography variant="h5">Email</Typography></div>
-                      <div><Typography style={customStyles.textFields} variant="h5">aleksander.johansen@hotmail.com</Typography></div>
+                      <div><Typography style={customStyles.textFields} variant="h5">{this.state.emailInfo}</Typography></div>
                   </div>
                   <div className={styles.textHolder}>
                       <div><Typography variant="h5">Fullt navn</Typography></div>
@@ -59,10 +66,10 @@ export default class UserPage extends Component {
                                   <Button variant="contained" color="primary" onClick={this.handleClick}>Lagre</Button>
                               </div>
                           </form>
-                          <div className={styles.communeTable}>
-                              <FollowCommunesTab/>
-                          </div>
                       </div>
+                  </div>
+                  <div className={styles.communeTable}>
+                      <FollowCommunesTab/>
                   </div>
               </div>
           </div>

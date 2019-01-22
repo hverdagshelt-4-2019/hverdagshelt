@@ -56,7 +56,7 @@ export default class userService {
    }
 
     static updateName(name: string): Promise<Object>{
-        return axios.put('/username', {name}, config());
+        return axios.put('/username', {name: name}, config());
     }
 
 
@@ -72,9 +72,7 @@ export default class userService {
         return axios.delete('/user/' + email, config())
    }
 
-   // static getUser(id): Promise<Object> {
-   //      return axios.get("/user/" + )
-   // }
+   static getUser(): Promise<Object> {
+        return axios.get("/user", config());
+   }
 }
-
-

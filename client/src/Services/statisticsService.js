@@ -3,12 +3,10 @@ import axios from 'axios';
 export default class StatisticService {
 
     static getTicketAmountNationally(){
-        console.log("getting amount of tickets nationally");
         return axios.get('/ticketAmountNationally');
     }
 
     static getSolvedTicketsNationally(){
-        console.log("getting amount of solved tickets nationally");
         return axios.get('/solvedTicketsNationally');
     }
 
@@ -21,7 +19,6 @@ export default class StatisticService {
     }
 
     static getTicketAmountLocally(commune : string){
-        console.log("Er i service med " + commune);
         return axios.get('/ticketAmountLocally/' + commune);
     }
 
