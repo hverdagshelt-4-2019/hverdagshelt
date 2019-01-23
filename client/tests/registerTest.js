@@ -10,5 +10,4 @@ describe('Register tests', () => {
     it('renders div', () =>{
         expect(wrapper.find('div').length).toEqual(5);
     });
-
 });
