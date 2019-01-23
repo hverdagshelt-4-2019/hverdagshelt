@@ -76,7 +76,7 @@ export default class TicketList extends Component{
                                 </li>
                                 {
                                     this.followedCommunes.map(commune =>
-                                        <li key={commune.name} className="list-group-item">
+                                        <li key={commune.commune_name} className="list-group-item">
                                             <div style={{marginLeft: "6px"}}>
                                                 <input type="checkbox" style={{width: "17px", height: "17px"}}
                                                        className="form-check-input markCheck commune"
@@ -216,7 +216,7 @@ export default class TicketList extends Component{
 
         //this.setState({tickets: localTickets});
         let by = document.getElementById("sorting").value;
-        console.log(by)
+        console.log(by);
          switch(by) {
             case "Nyeste først":
                 localTickets.sort(function(a,b){return new Date(b.submitted_time) - new Date(a.submitted_time)});

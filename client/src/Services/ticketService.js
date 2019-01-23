@@ -46,7 +46,7 @@ export default class TicketService {
         ticket.description = description;
         ticket.lat = lat;
         ticket.long = long;
-        await getCommune(lat, long).then((response) => ticket.commune = response.data.kommune).catch((error : Error) => console.log(error.message));
+        await this.getCommune(lat, long).then((response) => ticket.commune = response.data.kommune).catch((error : Error) => console.log(error.message));
         console.log("Posting ticket...");
         console.log(ticket.commune);
         return axios.post('/ticket', ticket, config());
@@ -75,7 +75,7 @@ export default class TicketService {
         ticket.lat = lat;
         ticket.long = long;
         ticket.submitter_email = submitter_email;
-        await getCommune(lat, long).then((response) => ticket.commune = response.data.kommune).catch((error : Error) => console.log(error.message));
+        await this.getCommune(lat, long).then((response) => ticket.commune = response.data.kommune).catch((error : Error) => console.log(error.message));
         console.log("Posting ticket...");
         console.log(ticket.commune);
         console.log(ticket.long);
