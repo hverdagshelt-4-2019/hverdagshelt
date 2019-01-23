@@ -34,7 +34,11 @@ export default class UserPage extends Component {
     state = {
         name : '',
         emailInfo: "",
-        usernameInfo: ""
+        usernameInfo: "",
+        edit: false,
+        newMail: "",
+        error: false,
+        label: "Email"
     };
 
     handleClick(){
@@ -44,13 +48,82 @@ export default class UserPage extends Component {
         }).catch(err => console.log(err));
     }
 
+    onEdit = () => {
+        this.setState({edit: true});
+    }
+
+    cancelEdit = () => {
+        this.setState({edit: false});
+    }
+
+    handleChange = event => {
+        this.setState({
+            newMail: event.target.value,
+            error: false,
+            label: "Email"
+        });
+    }
+
+    changeEmail = () => {
+        if(!this.verifyField()) return;
+        userService.updateEmail(this.state.emailInfo, this.state.newMail).then(res => {
+            console.log("Res: " + JSON.stringify(res));
+            if(res.status === 200){
+                this.setState({
+                    emailInfo: this.state.newMail,
+                    edit: false
+                });
+            }
+        }).catch(err => {
+            console.log(err);
+            this.setState({
+                label: "Denne eposten er allerede registrert",
+                error: true
+            })
+        })
+    }
+
+    verifyField() {
+        if(this.state.newMail.trim() === ""){
+            this.setState({
+                error: true,
+                label: "Du må skrive inn en ny email"
+            })
+            return false;
+        }
+        else if(!this.state.newMail.includes("@")){
+            this.setState({
+                error: true,
+                label: "Du må skrive inn en gyldig email"
+            })
+            return false;
+        }
+        return true;
+    }
+
     render() {
         return (
           <div className={styles.root}>
               <div className={styles.infoDiv}>
                   <div className={styles.textHolder}>
-                      <div><Typography variant="h5">Email</Typography></div>
-                      <div><Typography style={customStyles.textFields} variant="h5">{this.state.emailInfo}</Typography></div>
+                      <div>
+                          <Typography variant="h5">Email</Typography>
+                      </div>
+                      {!this.state.edit &&
+                      <div className={styles.comboBox}>
+                          <Typography style={customStyles.textFields} variant="h5">{this.state.emailInfo}</Typography>
+                          <div style={{padding: "0px 10px"}}/>
+                          <Button variant="contained" color="primary" onClick={this.onEdit}>Rediger</Button>
+                      </div>
+                      }
+                      {this.state.edit &&
+                      <div className={styles.comboBox}>
+                          <TextField style={{width: "250px"}} label={this.state.label} error={this.state.error} onChange={this.handleChange}/>
+                          <div style={{padding: "0px 10px"}}/>
+                          <Button variant="contained" color="primary" onClick={this.changeEmail}>Lagre</Button>
+                          <Button variant="contained" onClick={this.cancelEdit}>Avbryt</Button>
+                      </div>
+                      }
                   </div>
                   <div className={styles.textHolder}>
                       <div><Typography variant="h5">Fullt navn</Typography></div>
@@ -62,14 +135,6 @@ export default class UserPage extends Component {
                           <div className={styles.changePasswordDiv}>
                               <ChangePassword/>
                           </div>
-                          <form>
-                              <div className='form-group'>
-                                  <h2 variant="h4">Endre brukernavn</h2>
-                                  <br />
-                                  <TextField onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({name: event.target.value}))} label="Nytt brukernavn"/>
-                                  <Button variant="contained" color="primary" onClick={this.handleClick}>Lagre</Button>
-                              </div>
-                          </form>
                       </div>
                   </div>
                   <div className={styles.communeTable}>
