@@ -11,6 +11,7 @@ import css from './styleMap.css';
 import ControllableHover from './controllable_hover.js';
 import CommuneService from "../Services/communeService";
 import axios from 'axios';
+import ReactDOM from 'react-dom';
 
 import {K_SIZE} from './controllable_hover_styles.js';
 import ticketService from "../Services/ticketService";
@@ -36,13 +37,12 @@ class ticket {
         this.pic = p;
     }
 }
-let ta = [];
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 
 export default class SimpleMap extends Component {
-
     crd = null;
+    tickets = [];
 
     static propTypes = {
         zoom: PropTypes.number, // @controllable
@@ -54,9 +54,6 @@ export default class SimpleMap extends Component {
 
         greatPlaces: PropTypes.array
     }
-    static defaultProps = {
-        greatPlaces: ta
-    };
 
     shouldComponentUpdate = shouldPureComponentUpdate;
 
@@ -64,7 +61,6 @@ export default class SimpleMap extends Component {
         super(props);
         this.state = {
             cId: -1,
-            greatPlaces: ta,
             center: {
                 lat: 62.423336,
                 lng: 12.100478
@@ -94,29 +90,27 @@ export default class SimpleMap extends Component {
         let communes = [];
         console.log('valid');
         let list = [];
+        let ta2 = [];
         ticketService.getAllTickets(communes).then(res => {
             list = res.data;
             console.log(list);
             list.forEach(commune => {
-            ta.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.id, commune.lat, commune.lng, commune.picture));
+            ta2.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.id, commune.lat, commune.lng, commune.picture));
             })
-            this.setState({greatPlaces: ta});
-            this._onChildMouseEnter (1);
-            this._onChildMouseLeave();
+            //this.setState({greatPlaces: ta2});
+            this.tickets = ta2;
+            this.props.onHoverKeyChange(1);
+            this.props.onHoverKeyChange(null);
         })
 
     }
 
-    _onChange = (center, zoom /* , bounds, marginBounds */) => {
-        this.props.onCenterChange(center);
-        this.props.onZoomChange(zoom);
-    }
-
     _onChildClick = (key, childProps) => {
+        this.props.onHoverKeyChange(key);
         this.props.onCenterChange([childProps.lat, childProps.lng]);
         console.log(childProps);
-        console.log(this.state.greatPlaces.filter(e => e.id== childProps.id));
-        let lt = this.state.greatPlaces.filter(e => e.id== childProps.id);
+        console.log(this.tickets.filter(e => e.id== childProps.text));
+        let lt = this.tickets.filter(e => e.id== childProps.text);
         let localTicket = lt[0];
         console.log(localTicket);
 
@@ -137,14 +131,6 @@ export default class SimpleMap extends Component {
         this.setState({cId: localTicket.id});
     }
 
-    _onChildMouseEnter = (key /*, childProps */) => {
-        this.props.onHoverKeyChange(key);
-    }
-
-    _onChildMouseLeave = (/* key, childProps */) => {
-        this.props.onHoverKeyChange(null);
-    }
-
     
     getImage(i: String){
         let imageLink="/image/"+i;
@@ -154,6 +140,20 @@ export default class SimpleMap extends Component {
 
 
     render() {
+        if(!this.tickets) return (<></>);
+        const places = this.tickets.map(place => {
+        const { id, ...coords } = place;
+
+        return (
+            <ControllableHover
+            key={id}
+            {...coords}
+            text={id}
+            // use your hover state (from store, react-controllables etc...)
+            hover={this.props.hoverKey === id}
+            />
+        );
+        });
         return (
             <div id="aroundMap" className={css.aroundMap}>
                 <div style={{height: '10px'}}></div>
@@ -174,6 +174,7 @@ export default class SimpleMap extends Component {
                 
                 <div className={"shadow "+css.map} style={{ height: '87vh'}}>
                     <GoogleMapReact
+                        ref="alotOfMarkers"
                         bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
                         center={this.state.center}
                         zoom={this.state.zoom}
@@ -183,14 +184,7 @@ export default class SimpleMap extends Component {
                         onChildMouseEnter={this._onChildMouseEnter}
                         onChildMouseLeave={this._onChildMouseLeave}
                         >
-                        {this.state.greatPlaces.map(greatPlace =>
-                        <ControllableHover
-                            key={greatPlace.id}
-                            {...greatPlace}
-                            text={greatPlace.id}
-                            hover={this.props.hoverKey === greatPlace.id}
-                             />
-                        )}
+                        {places}
                     </GoogleMapReact>
                 </div>
             </div>
