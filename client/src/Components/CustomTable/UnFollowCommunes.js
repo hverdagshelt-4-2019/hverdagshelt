@@ -125,9 +125,9 @@ export default class FollowCommunes extends Component {
                                             {row}
                                             <div>
                                                 {this.state.loadingIndex !== index &&
-                                                <Button variant="contained" color="secondary" onClick={this.onFollow.bind(this, row, index)}>
+                                                <button variant="contained" className="btn customBtn" onClick={this.onFollow.bind(this, row, index)}>
                                                     Follow
-                                                </Button>
+                                                </button>
                                                 }
                                                 {this.state.loadingIndex === index &&
                                                 <CircularProgress/>
