@@ -153,6 +153,7 @@ export function create_app(pool) {
         });
     });
 
+    //TODO: Remove not used (?)
     app.get("/tickets/category", (req, res) =>{
         console.log(req.body);
         ticketdao.getTicketsByCategory(req.body.communes, req.body.categories, (status, data) =>{
@@ -255,7 +256,6 @@ export function create_app(pool) {
 
     app.get("/communes", (req, res) =>{
         communedao.getAll((status, data) =>{
-            console.log('data' + data);
             res.status(status);
             res.json(data);
         });

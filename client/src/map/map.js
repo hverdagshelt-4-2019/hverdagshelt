@@ -21,7 +21,7 @@ class ticket {
     heading: string;
     text: string;
     category: string;
-    votes: number;
+    countcomm: number;
     lat: number;
     lng: number;
     pic: string;
@@ -31,7 +31,7 @@ class ticket {
         this.heading = h;
         this.text = t;
         this.category = c;
-        this.votes = v;
+        this.countcomm = v;
         this.lat = la;
         this.lng = lo;
         this.pic = p;
@@ -95,7 +95,7 @@ export default class SimpleMap extends Component {
             list = res.data;
             console.log(list);
             list.forEach(commune => {
-            ta2.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.id, commune.lat, commune.lng, commune.picture));
+            ta2.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.countcomm, commune.lat, commune.lng, commune.picture));
             })
             //this.setState({greatPlaces: ta2});
             this.tickets = ta2;
@@ -123,9 +123,10 @@ export default class SimpleMap extends Component {
         category.innerHTML = localTicket.category;
 
         let para = document.createElement("i");
-        para.setAttribute("class", "fas fa-thumbs-up " +css.thumbUp)
+        para.setAttribute("class", "fas fa-thumbs-up " +css.thumbUp);
         let vote = document.getElementById("vote");
-        vote.innerHTML = localTicket.votes;
+        console.log(localTicket);
+        vote.innerHTML = localTicket.countcomm;
         vote.appendChild(para);
 
         this.setState({cId: localTicket.id});
