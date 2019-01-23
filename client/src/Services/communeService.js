@@ -3,7 +3,6 @@
 import axios from 'axios';
 
 class Commune{
-    name : string;
     commune_name: string;
 }
 
@@ -33,11 +32,11 @@ export default class CommuneService{
         return axios.get("/communes");
     }
 
-    static followCommune(communeName): Promise<void>{
+    static followCommune(communeName: string): Promise<void>{
         return axios.post("/followCommune/" + communeName, {}, config());
     }
 
-    static unFollowCommune(communeName): Promise<void>{
+    static unFollowCommune(communeName: string): Promise<void>{
         return axios.delete("/unfollowCommune/" + communeName, config());
     }
 }

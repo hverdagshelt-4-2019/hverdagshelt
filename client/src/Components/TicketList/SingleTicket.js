@@ -76,7 +76,6 @@ export default class SingleTicket extends Component<{}>{
         }else {
             i.setAttribute("class", "fas fa-clipboard-list");
         }
-        console.log(s);
     } 
 
     getImage(i: String) {

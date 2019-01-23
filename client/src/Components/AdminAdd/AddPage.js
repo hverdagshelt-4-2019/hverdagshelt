@@ -70,7 +70,7 @@ export default class AddPage extends Component{
                             {' '} 
                             <select className="form-control" style={{width:'100%'}} id="communeSelector" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.communeNew = event.target.value)}>
                                 {this.communes.map((commune, i) => (
-                                    <option value={commune.name} key={i}>{commune.name}</option>
+                                    <option value={commune.name} key={i}>{commune.commune_name}</option>
                                 ))}
                             </select>
                             <br/>
@@ -122,7 +122,7 @@ export default class AddPage extends Component{
                             {' '} 
                             <select className="form-control" style={{width:'100%'}} id="communeSelector" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.communeExist = event.target.value)}>
                                 {this.communes.map((commune, i) => (
-                                    <option value={commune.name} key={i}>{commune.name}</option>
+                                    <option value={commune.commune_name} key={i}>{commune.commune_name}</option>
                                 ))}
                             </select>
                             <br/>

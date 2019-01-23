@@ -191,7 +191,7 @@ export default class Statistics extends Component{
         //-----LOCAL DATA FETCHING-----\\
         await communeService.getAllCommunes()
         .then(communes => communes.data.map(commune =>(
-            this.communes.push(commune.name)
+            this.communes.push(commune.commune_name)
         )))
         .catch((error : Error) => console.log(error.message));
 
