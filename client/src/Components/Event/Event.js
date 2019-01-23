@@ -10,6 +10,7 @@ import { Component } from 'react-simplified';
 import eventService from '../../Services/eventService';
 import { Alert } from '../../widgets';
 import { K_SIZE } from './../../map/controllable_hover_styles.js';
+import css from './style.css';
 
 export default class Event extends Component<{ match: { params: { id: number } } }> {
     event: {picture:any} = {picture: ''};
@@ -19,20 +20,26 @@ export default class Event extends Component<{ match: { params: { id: number } }
     render() {
         if(!this.event) return (<></>);
         return (
-             <div className="aroundStuff">
-                <div className="card">
-                <img id="picture" className="card-img-top" style={{maxWidth: "100%", maxHeight: "300px"}} alt="Responsive image"/>
-                <div className="card-header">
-                <h1>{this.event.title}</h1>
-                </div>
-                <ul className="list-group list-group-flush">
-                    <li className="list-group-item"><b>Dato:</b> {this.event.happening_time !== undefined && this.event.happening_time.replace('T', ' ').replace('.000Z', '').slice(0, -3)}</li>
-                    <li className="list-group-item"><b>Kommune:</b> {this.event.commune_name}</li>
-                    <li className="list-group-item"><b>Kategori:</b> {this.event.category}</li>
-                    <li className="list-group-item"><b>Beskrivelse:</b> {this.event.description}</li>
-                </ul>
-                </div>
-           </div>
+           <div className={css.eventContainer}>
+                    <time dateTime="2014-07-20">
+                        <span className="day">4</span>
+                        <span className="month">Jul</span>
+                        <span className="year">2014</span>
+                    </time>
+                    <img id="picture" alt="Responsive Image" />
+                    <div className={css.eventInfo}>
+                    <h2 className="title">{this.event.title}</h2>
+                    <hr/>
+                    <p><i className="fas fa-map-marker-alt" style={{marginRight: "4px"}}></i> {this.event.commune_name}</p>
+                    <hr/>
+                    <p><i className="fas fa-archive" style={{marginRight: "4px"}}></i> {this.event.category}</p>
+                    <hr/>
+                    <p><i className="fas fa-calendar" style={{marginRight: "8px"}}></i>{this.event.happening_time !== undefined && this.event.happening_time.replace('T', ' ').replace('.000Z', '').slice(0, -3)}</p>
+                    <hr/>
+                    <p>{this.event.description}</p>
+                    </div>
+            </div>
+
         );
     }
 
