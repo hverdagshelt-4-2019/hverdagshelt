@@ -28,9 +28,8 @@ export default class UserArchive extends Component {
                         <button type="button" class="btn btn-secondary" onClick={e => {this.currlist = this.admins; this.title = e.target.innerText; this.currtab = this.tabs[2]}}>Admins</button>
                         <button type="button" class="btn btn-secondary" onClick={e => {this.currlist = this.publicworkers; this.title = e.target.innerText; this.currtab = this.tabs[3]}}>Kommunearbeidere</button>
                     </div>
-                   
-                    
                 </div>
+                <br/>
                 <UserList people={this.currlist} title={this.title} callback={this.delUser} tab={this.currtab}/>
             </div>
         );

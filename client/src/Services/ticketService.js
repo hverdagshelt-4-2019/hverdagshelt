@@ -30,12 +30,14 @@ function config() {
 }
 
 
-function getCommune(lat: number, long: number): Promise<Object> {
-        console.log("Finding commune...");
-        return axios.get('/communeByCoordinates/' + lat + '/' + long, config());
-    }
+
 
 export default class TicketService {
+
+    static getCommune(lat: number, long: number): Promise<Object> {
+        console.log("Finding commune...");
+        return axios.get('/communeByCoordinates/' + lat + '/' + long);
+    }
 
     static async postTicket(category: string, title: string, description: string, lat: number, long: number): Promise<Object> {
         let ticket = new Ticket();
@@ -44,7 +46,7 @@ export default class TicketService {
         ticket.description = description;
         ticket.lat = lat;
         ticket.long = long;
-        await getCommune(lat, long).then((response) => ticket.commune = response.data.kommune).catch((error : Error) => console.log(error.message));
+        await this.getCommune(lat, long).then((response) => ticket.commune = response.data.kommune).catch((error : Error) => console.log(error.message));
         console.log("Posting ticket...");
         console.log(ticket.commune);
         return axios.post('/ticket', ticket, config());
@@ -60,6 +62,11 @@ export default class TicketService {
         return axios.get('/tickets', config());
     }
 
+    static getAllTicketsMap(commune): Promise<Ticket[]>{
+        return axios.get('/ticketsMap/' + commune, config());
+    }
+
+
     static async editTicket(ticketID: number, category: string, title: string, description: string, lat: number, long: number, submitter_email: string): Promise<Object>{
         let ticket = new Ticket();
         ticket.title = title;
@@ -68,7 +75,7 @@ export default class TicketService {
         ticket.lat = lat;
         ticket.long = long;
         ticket.submitter_email = submitter_email;
-        await getCommune(lat, long).then((response) => ticket.commune = response.data.kommune).catch((error : Error) => console.log(error.message));
+        await this.getCommune(lat, long).then((response) => ticket.commune = response.data.kommune).catch((error : Error) => console.log(error.message));
         console.log("Posting ticket...");
         console.log(ticket.commune);
         console.log(ticket.long);

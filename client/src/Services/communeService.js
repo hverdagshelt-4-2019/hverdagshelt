@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 class Commune{
-    name : string; 
+    commune_name: string;
 }
 
 function config() {
@@ -20,11 +20,11 @@ function config() {
 
 
 export default class CommuneService{
-    static getFollowedCommunes() : Promise<void>{
+    static getFollowedCommunes() : Promise<Commune[]>{
         return axios.get("/followedCommunes", config());
     }
 
-    static getUnFollowedCommunes(): Promise<void>{
+    static getUnFollowedCommunes(): Promise<Commune[]>{
         return axios.get("/unfollowedCommunes", config());
     }
 
@@ -32,11 +32,11 @@ export default class CommuneService{
         return axios.get("/communes");
     }
 
-    static followCommune(communeName): Promise<void>{
+    static followCommune(communeName: string): Promise<void>{
         return axios.post("/followCommune/" + communeName, {}, config());
     }
 
-    static unFollowCommune(communeName): Promise<void>{
+    static unFollowCommune(communeName: string): Promise<void>{
         return axios.delete("/unfollowCommune/" + communeName, config());
     }
 }
