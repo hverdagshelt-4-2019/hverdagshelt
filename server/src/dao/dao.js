@@ -6,9 +6,8 @@ export default class Dao {
 
   query(sql, params, callback) {
     this.pool.getConnection((err, connection) => {
-      console.log('dao: connected to database');
       if (err) {
-        console.log('dao: error connecting');
+        console.log('dao: error connecting', err);
         callback(500, { error: 'feil ved ved oppkobling' });
       } else {
         console.log('dao: running sql: ' + sql);
@@ -18,7 +17,6 @@ export default class Dao {
             console.log(err);
             callback(500, { error: 'error querying' });
           } else {
-            console.log('dao: returning rows');
             callback(200, rows);
           }
         });

@@ -4,9 +4,15 @@
     width: 100%;
 }
 
+.comboBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .textHolder {
     display: grid;
-    grid-template-columns: 100px 100px;
+    grid-template-columns: 100px 1fr;
     grid-gap: 5%;
     align-items: center;
     white-space: nowrap;
@@ -49,7 +55,7 @@
 
     .textHolder {
         display: grid;
-        grid-template-columns: 100px 100px;
+        grid-template-columns: 100px 1fr;
         grid-gap: 5%;
         align-items: center;
         white-space: nowrap;

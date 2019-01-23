@@ -12,6 +12,7 @@ class Ticket {
     statusText;
     submitted_time;
     company_name;
+    countcomm;
     lat;
     long;
 }

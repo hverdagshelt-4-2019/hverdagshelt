@@ -110,10 +110,6 @@ INSERT INTO commune (name) VALUES
 ('Grue'),
 ('Gulen'),
 ('Hadsel'),
-
-
-
-
 ('Halsa'),
 ('Hamar'),
 ('Hamarøy'),

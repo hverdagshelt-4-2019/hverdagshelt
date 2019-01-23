@@ -1,4 +1,6 @@
 start transaction;
+DROP TRIGGER IF EXISTS tickettime;
+DROP TRIGGER IF EXISTS ticketfinishtime;
 DROP TABLE IF EXISTS happening;
 DROP TABLE IF EXISTS happening_category;
 DROP TABLE IF EXISTS ticket_comment;
@@ -18,7 +20,7 @@ CREATE TABLE commune(
 CREATE TABLE person(
   id INT PRIMARY KEY AUTO_INCREMENT,
   email VARCHAR(254) UNIQUE NOT NULL,
-  name VARCHAR(254),
+  username VARCHAR(254),
   password VARCHAR(256) NOT NULL
 );
 
@@ -109,18 +111,16 @@ CREATE TABLE happening(
 );
 
 CREATE TRIGGER tickettime BEFORE INSERT ON ticket
-    FOR EACH ROW SET NEW.submitted_time=now()
-;
+FOR EACH ROW
+SET NEW.submitted_time=now();
 
-DELIMITER $$
+
 CREATE TRIGGER ticketfinishtime BEFORE UPDATE ON ticket
     FOR EACH ROW
   BEGIN
     IF NEW.status = 'Fullført' THEN
       SET NEW.finished_time=now();
     END IF;
-END;$$
-
-DROP TRIGGER ticketfinishtime
+END;
 
 commit;
