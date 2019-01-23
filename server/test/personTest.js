@@ -258,6 +258,8 @@ it("can log in and change a users password", done => {
 it("registers a user, and can then log in them", done => {
     let user = {
         email: "testUser@mail.com",
+        name: "testuser",
+        commune: 'Harstad',
         password: "testpassword96"
     };
 

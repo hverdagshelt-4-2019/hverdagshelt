@@ -41,7 +41,10 @@ export default class UserDao extends Dao {
     }
 
     updatePassword(id, json, callback) {
-        if(password_passes_requirements(json.newPassword)) {
+        let err = password_passes_requirements(json.newPassword);
+        if(err) {
+            callback(400, err);
+        }else{
             super.query("SELECT password FROM person WHERE id = ?", id, (code, rows) => {
                 if (code === 200) {
                     validate_password(json.oldPassword, rows[0].password).then(okay => {
