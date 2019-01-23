@@ -30,12 +30,14 @@ function config() {
 }
 
 
-function getCommune(lat: number, long: number): Promise<Object> {
-        console.log("Finding commune...");
-        return axios.get('/communeByCoordinates/' + lat + '/' + long, config());
-    }
+
 
 export default class TicketService {
+
+    static getCommune(lat: number, long: number): Promise<Object> {
+        console.log("Finding commune...");
+        return axios.get('/communeByCoordinates/' + lat + '/' + long);
+    }
 
     static async postTicket(category: string, title: string, description: string, lat: number, long: number): Promise<Object> {
         let ticket = new Ticket();
@@ -59,6 +61,11 @@ export default class TicketService {
     static getAllTickets(): Promise<Ticket[]>{
         return axios.get('/tickets', config());
     }
+
+    static getAllTicketsMap(commune): Promise<Ticket[]>{
+        return axios.get('/ticketsMap/' + commune, config());
+    }
+
 
     static async editTicket(ticketID: number, category: string, title: string, description: string, lat: number, long: number, submitter_email: string): Promise<Object>{
         let ticket = new Ticket();

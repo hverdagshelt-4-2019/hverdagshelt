@@ -53,7 +53,7 @@ export default class SimpleMap extends Component {
         onHoverKeyChange: PropTypes.func, // @controllable generated fn
 
         greatPlaces: PropTypes.array
-    }
+    };
 
     shouldComponentUpdate = shouldPureComponentUpdate;
 
@@ -71,37 +71,40 @@ export default class SimpleMap extends Component {
     }
 
     componentDidMount(){
-        navigator.geolocation.getCurrentPosition(
-            pos => {
-                 this.setState({
-                    center: {
-                        lat: pos.coords.latitude,
-                        lng: pos.coords.longitude,
-                    },
-                     zoom: 13
-                });
-            }
-        );
+
     }
 
 
     componentWillMount(){
+        navigator.geolocation.getCurrentPosition(
+            pos => {
+                ticketService.getCommune(pos.coords.latitude, pos.coords.longitude).then(res =>{
+                    console.log('valid');
+                    let list = [];
+                    let ta2 = [];
+                    ticketService.getAllTicketsMap(res.data.kommune).then(res => {
+                        list = res.data;
+                        console.log(list);
+                        list.forEach(commune => {
+                            ta2.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.countcomm, commune.lat, commune.lng, commune.picture));
+                        });
+                        //this.setState({greatPlaces: ta2});
+                        this.tickets = ta2;
+                        this.props.onHoverKeyChange(1);
+                        this.props.onHoverKeyChange(null);
+                    })
+                });
+                this.setState({
+                    center: {
+                        lat: pos.coords.latitude,
+                        lng: pos.coords.longitude,
+                    },
+                    zoom: 13
+                });
+            }
+        );
 
-        let communes = [];
-        console.log('valid');
-        let list = [];
-        let ta2 = [];
-        ticketService.getAllTickets(communes).then(res => {
-            list = res.data;
-            console.log(list);
-            list.forEach(commune => {
-            ta2.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.countcomm, commune.lat, commune.lng, commune.picture));
-            })
-            //this.setState({greatPlaces: ta2});
-            this.tickets = ta2;
-            this.props.onHoverKeyChange(1);
-            this.props.onHoverKeyChange(null);
-        })
+
 
     }
 
@@ -123,14 +126,13 @@ export default class SimpleMap extends Component {
         category.innerHTML = localTicket.category;
 
         let para = document.createElement("i");
-        para.setAttribute("class", "fas fa-thumbs-up " +css.thumbUp);
         let vote = document.getElementById("vote");
         console.log(localTicket);
         vote.innerHTML = localTicket.countcomm;
         vote.appendChild(para);
 
         this.setState({cId: localTicket.id});
-    }
+    };
 
     
     getImage(i: String){

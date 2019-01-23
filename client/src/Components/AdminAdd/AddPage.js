@@ -1,7 +1,6 @@
 import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import ExistingUser from './ExistingUser';
 import adminService from '../../Services/adminService';
 import publicWorkerService from '../../Services/publicWorkerService';
 import communeService from '../../Services/communeService';
@@ -71,7 +70,7 @@ export default class AddPage extends Component{
                             {' '} 
                             <select className="form-control" style={{width:'100%'}} id="communeSelector" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.communeNew = event.target.value)}>
                                 {this.communes.map((commune, i) => (
-                                    <option value={commune.name} key={i}>{commune.name}</option>
+                                    <option value={commune.name} key={i}>{commune.commune_name}</option>
                                 ))}
                             </select>
                             <br/>
@@ -84,7 +83,7 @@ export default class AddPage extends Component{
                             <br/>
                         </div>
                     </div>
-                    <div className="col-md-6 rounded" style={{backgroundColor:'white', border: "1px solid lightgrey"}}> 
+                    <div className="col-md-6 rounded shadow p-3 mb-5" style={{backgroundColor:'white', border: "1px solid lightgrey"}}> 
                         <br/> 
                         <h4>Gi en eksisterende bruker</h4>
                         <h4>admin- eller</h4>
@@ -123,12 +122,13 @@ export default class AddPage extends Component{
                             {' '} 
                             <select className="form-control" style={{width:'100%'}} id="communeSelector" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.communeExist = event.target.value)}>
                                 {this.communes.map((commune, i) => (
-                                    <option value={commune.name} key={i}>{commune.name}</option>
+                                    <option value={commune.commune_name} key={i}>{commune.commune_name}</option>
                                 ))}
                             </select>
                             <br/>
                             <br/>
                             <div>
+                            <div style={{height: '73px'}} /> 
                                 <hr/>
                                 <button className="btn customBtn" onClick={this.updateExisting}>Opprett fra eksisterende</button>
                                 <br/>

@@ -17,7 +17,7 @@ export default class AddCompany extends Component<{history: string[]}>{
             <div className="container" >
                 <br/>
                 <div className="row">
-                    <div className="col-md-6" style={{border: "2px solid lightblue"}}>
+                    <div className="col-md-6 rounded shadow p-3 mb-5" style={{backgroundColor:'white', border: "2px solid lightblue"}}>
                         <br/>
                         <h4>Registrer nytt selskap</h4>
                         <hr/>
@@ -27,19 +27,18 @@ export default class AddCompany extends Component<{history: string[]}>{
                                 <label>Velg firma bruker:</label>
                                 </div>
                                 <div className="autocomplete">
-                                    <input type="text" id="userSelector" placeholder="Bruker e-post" onChange={(event) => {console.log(event.target.value)}}/>
+                                    <input className="form-control" id="userSelector" placeholder="Bruker e-post" onChange={(event) => {console.log(event.target.value)}}/>
                                 </div>
                                 <br/>
                             </div>
                             <label htmlFor="userSelector">Bedriftsnavn:</label>
                             {' '}
-                            <input id="companyName" placeholder="Bedriftsnavn" type='text' required/>
+                            <input className="form-control" id="companyName" placeholder="Bedriftsnavn" required/>
                             <br/>
                             <br/>
-                            <button type="submit" className="btn btn-primary">Send inn</button>
+                            <button type="button" className="btn customBtn">Send inn</button>
                         </form>
-                        <hr/>
-                        <br/>
+                        
                         <br/>
                     </div>
                 </div>
