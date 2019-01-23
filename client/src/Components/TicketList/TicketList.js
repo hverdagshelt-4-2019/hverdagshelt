@@ -74,6 +74,8 @@ export default class TicketList extends Component{
                         <option  id ="optionEldste" key={"eldste"}>Eldste først</option>
                         <option  id ="optionBearbeides" key={"bearbeides"}>Bearbeides først</option>
                         <option  id ="optionUbehandlet" key={"ubehandlet"}>Ubehandlet først</option>
+                        <option  id ="optionEldste" key={"mestP"}>Mest populær</option>
+                        <option  id ="optionEldste" key={"minstP"}>Minst populær</option>
                     </select>
                     <div className="col-md-11 col-sm-offset-2 col-sm-8  float-right" style={{
                         float: "right",
@@ -195,6 +197,12 @@ export default class TicketList extends Component{
             case "Ubehandlet først":
                 localTickets.sort(function(a,b){return (''+b.status).localeCompare(a.status)});
                 break;
+            case "Mest populær":
+                localTickets.sort(function(a,b){return b.countcomm - a.countcomm});
+                break;
+            case "Minst populær":
+                localTickets.sort(function(a,b){return a.countcomm - b.countcomm});
+                break;
         }
         this.setState({tickets: localTickets})
 
@@ -214,6 +222,12 @@ export default class TicketList extends Component{
                 break;
             case "Ubehandlet først":
                 this.setState({tickets: this.state.tickets.sort(function(a,b){return (''+b.status).localeCompare(a.status)})});
+                break;
+            case "Mest populær":
+                this.setState({tickets: this.state.tickets.sort(function(a,b){return b.countcomm - a.countcomm})});
+                break;
+            case "Minst populær":
+                this.setState({tickets: this.state.tickets.sort(function(a,b){return a.countcomm - b.countcomm})});
                 break;
         }
 

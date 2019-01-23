@@ -79,8 +79,8 @@ export default class TicketDao extends Dao {
 
     getAllTickets(callback) {
         super.query("SELECT t.id, email as submitter_email, responsible_commune, c2.name as company_name, category, " +
-            "title, t.description, picture, submitted_time, finished_time, status, lat, lng, COUNT(co.id) as countcomm FROM ticket t" +
-            "JOIN person p ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id LEFT JOIN" +
+            "title, t.description, picture, submitted_time, finished_time, status, lat, lng, COUNT(co.id) as countcomm FROM ticket t " +
+            "JOIN person p ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id LEFT JOIN " +
             "ticket_comment co ON t.id = co.ticket_id GROUP BY t.id;",
             [],
             callback);
@@ -88,8 +88,9 @@ export default class TicketDao extends Dao {
 
     getTicketsByUser(id, callback) {
         super.query("SELECT t.id, email as submitter_email, responsible_commune, c2.name as company_name, category, " +
-            "title, description, picture, submitted_time, finished_time, status, lat, lng FROM ticket t JOIN person p " +
-            "ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id WHERE submitter_id = ?;",
+            "title, t.description, picture, submitted_time, finished_time, status, lat, lng, COUNT(co.id) as countcomm FROM ticket t JOIN person p " +
+            "ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id " +
+             "LEFT JOIN ticket_comment co ON t.id = co.ticket_id WHERE t.submitter_id = ? GROUP BY t.id;",
             [id],
             callback);
     }
