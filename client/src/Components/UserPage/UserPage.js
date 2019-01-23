@@ -118,7 +118,7 @@ export default class UserPage extends Component {
                       }
                       {this.state.edit &&
                       <div className={styles.comboBox}>
-                          <TextField style={{width: "250px"}} label={this.state.label} error={this.state.error} onChange={this.handleChange}/>
+                          <TextField style={{width: "260px"}} label={this.state.label} error={this.state.error} onChange={this.handleChange}/>
                           <div style={{padding: "0px 10px"}}/>
                           <Button variant="contained" color="primary" onClick={this.changeEmail}>Lagre</Button>
                           <Button variant="contained" onClick={this.cancelEdit}>Avbryt</Button>
