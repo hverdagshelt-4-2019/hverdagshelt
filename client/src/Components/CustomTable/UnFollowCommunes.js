@@ -34,7 +34,6 @@ export default class FollowCommunes extends Component {
                 data: res.data.map(e => e.name),
             }, () => {
                 this.sortArray();
-                console.log(res.data);
             });
         }).catch(err => console.log(err))
     }
@@ -62,7 +61,6 @@ export default class FollowCommunes extends Component {
     }
 
     onFollow = (value, index, event) => {
-        console.log("Trying to follow");
         this.setState({
             loadingIndex: index
         }, () => {
@@ -71,7 +69,6 @@ export default class FollowCommunes extends Component {
                     // TODO: Give feedback
                     this.removeItem(value);
                     this.sortArray();
-                    console.log("We did it bebby");
                 }
                 else {
                     // TODO: Give feedback
