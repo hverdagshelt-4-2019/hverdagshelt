@@ -102,13 +102,13 @@ static propTypes = {
                             <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))}/>
 
                              <h4>Beskrivelse</h4>
-                            <textarea className="form-control" rows="5" style={{width:"100%"}} 
+                            <textarea className="form-control" style={{width:"100%", resize: "none"}} 
                                 onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))}
                             />
 
                             <h4>Kategori</h4>
                             
-                            <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({category: event.target.value}))}>
+                            <select className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({category: event.target.value}))}>
                                 {this.ticketCategories.map((categories, i) => (
                                 <option value={categories.name} key={i}>
                                     {categories.name}

@@ -109,7 +109,7 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                             
                                                         
                             <h4>Kategori</h4>
-                            <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({category: event.target.value}))}>
+                            <select className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({category: event.target.value}))}>
                                 {this.state.categories.map((categories, i) => (
                                     <option selected={categories.name==this.state.category} id ={"option"+categories.name} key={i}>{categories.name}</option>
                                 ))}
