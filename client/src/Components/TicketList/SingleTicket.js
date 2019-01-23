@@ -31,14 +31,15 @@ export default class SingleTicket extends Component<{}>{
                         <div className={css.info}>
                             <h2 style={{marginLeft: "6px"}} className={css.title}>{this.props.theTicket.title}</h2>
 
-                            <p id={"status"+this.props.theTicket.id} style={{marginLeft: "6px", fontWeight: "900", color: "#666B6E"}} className="desc">
+                            <p id={"status"+this.props.theTicket.id} style={{marginLeft: "16px", fontWeight: "900", color: "#666B6E", marginTop: "10px"}} className="desc">
                                 <i id={"it"+this.props.theTicket.id} style={{marginRight: "4px"}}></i>{this.props.theTicket.status}
                             </p>
+                            <p style={{fontSize: "14px", marginLeft: "16px"}}> <i className="fas fa-edit" style={{marginRight: "4px"}}></i>{this.props.theTicket.category} </p>
 
                             <ul>
-                                <li style={{width: "33%"}}> <i className="fas fa-edit" style={{marginRight: "4px"}}></i>{this.props.theTicket.category} </li>
-                                <li style={{width: "34%"}}> <i className="fas fa-map-marker-alt" style={{marginRight: "4px"}}></i>{this.props.theTicket.responsible_commune} </li>
                                 <li style={{width: "33%"}}> <i className="fas fa-calendar" style={{marginRight: "4px"}}></i>{this.props.theTicket.submitted_time !== undefined && this.props.theTicket.submitted_time.replace('T', ' ').replace('.000Z', '').slice(0, -9)}</li>
+                                <li style={{width: "34%"}}> <i className="fas fa-map-marker-alt" style={{marginRight: "4px"}}></i>{this.props.theTicket.responsible_commune} </li>
+                                <li style={{width: "33%"}}> <i className="fas fa-comment" style={{marginRight: "4px"}}></i>{this.props.theTicket.countcomm} </li>
                             </ul>
 
                         </div>

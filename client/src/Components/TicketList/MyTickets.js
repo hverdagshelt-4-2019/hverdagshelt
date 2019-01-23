@@ -14,24 +14,33 @@ import css from './ticketStyle.css';
 
 export default class MyTickets extends Component{
     communes = [];
-    tickets = [];
+    allTickets = [];
     filter = '';
+    constructor() {
+        super();
+        this.state = {
+            tickets: []
+        };
+    } 
 
     render(){
         return(
             <div className={css.aroundTickets}>
-                <br/>
-
+                <br />
                 <div className="row">
-                        <br/>
-                        <input style={{width: "90%", marginLeft: "5%"}} className="form-control" type="text" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.filter = event.target.value)} placeholder="Søk"/>
-                        <br/>
+                    <select id="sorting" className="shadow-sm" style={{marginLeft: '65%', width: '30%'}}  onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.sortBy(event.target.value))}>
+                        <option  id ="optionNyeste" key={"nyeste"}>Nyeste først</option>
+                        <option  id ="optionEldste" key={"eldste"}>Eldste først</option>
+                        <option  id ="optionBearbeides" key={"fullført"}>Fullført først</option>
+                        <option  id ="optionBearbeides" key={"ubehandlet"}>Ubehandlet først</option>
+                        <option  id ="optionEldste" key={"mestP"}>Mest populær</option>
+                        <option  id ="optionEldste" key={"minstP"}>Minst populær</option>
+                    </select>
                     <div className="col-md-11 col-sm-offset-2 col-sm-8  float-right" style={{
                     float: "right",
                     marginLeft: '5%'}}>
-                    <br />
                     <ul className={css.ticketList}>
-                        {this.tickets.map((ticket, i) => (
+                        {this.state.tickets.map((ticket, i) => (
                             <div>
                             <SingleTicket
                                 key={i}
@@ -53,7 +62,11 @@ export default class MyTickets extends Component{
 
         //Then get all the tickets from these communes
         ticketService.getTicketsUser()
-            .then((tickets : {data: Ticket[]}) => this.tickets = tickets.data)
+            .then((tickets : {data: Ticket[]}) => {
+                this.allTickets = tickets.data;
+                this.allTickets.sort(function(a,b){return new Date(b.submitted_time) - new Date(a.submitted_time)});
+                this.setState({tickets: this.allTickets});
+            })
             .catch((error : Error) => console.log("Error occured: " + error.message));
 
         //--Get tickets based on commune and checked categories--
@@ -85,8 +98,50 @@ export default class MyTickets extends Component{
             }
         }
     }
+    
+    sortBy(by: string){
+        //event.target.value
+        switch(by) {
+            case "Nyeste først":
+                this.setState({tickets: this.state.tickets.sort(function(a,b){return new Date(b.submitted_time) - new Date(a.submitted_time)})});
+                break;
+            case "Eldste først":
+                this.setState({tickets: this.state.tickets.sort(function(a,b){return new Date(a.submitted_time) - new Date(b.submitted_time)})});
+                break;
+            case "Fullført først":
+                this.setState({tickets: this.state.tickets.sort(function(a,b){
+                    if(a.status == "Fullført"){
+                        return -10000;
 
+                    }else if(b.status == "Fullført"){
+                        return 10000;
+                    }
+                    else {
+                        return (''+a.status).localeCompare(b.status);
+                    }
+                    })});
+                break;
+            case "Ubehandlet først":
+                this.setState({tickets: this.state.tickets.sort(function(a,b){
+                    if(a.status == "Fullført"){
+                        return 10000;
 
+                    }else if(b.status == "Fullført"){
+                        return -10000;
+                    }
+                    else {
+                        return (''+b.status).localeCompare(a.status);
+                    }
+                    })});
+                break;
+            case "Mest populær":
+                this.setState({tickets: this.state.tickets.sort(function(a,b){return b.countcomm - a.countcomm})});
+                break;
+            case "Minst populær":
+                this.setState({tickets: this.state.tickets.sort(function(a,b){return a.countcomm - b.countcomm})});
+                break;
+        }
 
+    }
 
 }

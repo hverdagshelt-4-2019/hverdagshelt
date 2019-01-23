@@ -58,7 +58,7 @@ export default class TicketList extends Component{
                                     <label className="form-check-label" style={{marginTop: "3px"}} htmlFor="arkiverteSaker">Vis bare arkiverte saker</label>
                                 </div>
                             </li>
-                            <button type="submit list-group-item" onClick={this.updateTickets} className="btn customBtn"><i className="fas fa-filter" style={{marginRight: "4px"}}></i>Filtrer</button>
+                            <button type="submit list-group-item" style={{width: "100%"}} onClick={this.updateTickets} className="btn customBtn"><i className="fas fa-filter" style={{marginRight: "4px"}}></i>Filtrer</button>
                         </li>
                         <p></p>
                         {(localStorage.getItem('level') === 'user' || localStorage.getItem('level') == 'none') &&
@@ -86,7 +86,7 @@ export default class TicketList extends Component{
                                             </div>
                                         </li>
                                     )}
-                                <button type="submit list-group-item" onClick={this.updateTickets} className="btn customBtn"><i className="fas fa-filter" style={{marginRight: "4px"}}></i>Filtrer</button>
+                                <button type="submit list-group-item" style={{width: "100%"}} onClick={this.updateTickets} className="btn customBtn"><i className="fas fa-filter" style={{marginRight: "4px"}}></i>Filtrer</button>
                             </li>
                         }
                     </ul>
@@ -98,6 +98,8 @@ export default class TicketList extends Component{
                         <option  id ="optionEldste" key={"eldste"}>Eldste først</option>
                         <option  id ="optionBearbeides" key={"bearbeides"}>Bearbeides først</option>
                         <option  id ="optionUbehandlet" key={"ubehandlet"}>Ubehandlet først</option>
+                        <option  id ="optionEldste" key={"mestP"}>Mest populær</option>
+                        <option  id ="optionEldste" key={"minstP"}>Minst populær</option>
                     </select>
                     <div className="col-md-11 col-sm-offset-2 col-sm-8  float-right" style={{
                         float: "right",
@@ -230,6 +232,12 @@ export default class TicketList extends Component{
             case "Ubehandlet først":
                 localTickets.sort(function(a,b){return (''+b.status).localeCompare(a.status)});
                 break;
+            case "Mest populær":
+                localTickets.sort(function(a,b){return b.countcomm - a.countcomm});
+                break;
+            case "Minst populær":
+                localTickets.sort(function(a,b){return a.countcomm - b.countcomm});
+                break;
         }
         console.log("TEST!");
         this.setState({tickets: localTickets})
@@ -250,6 +258,12 @@ export default class TicketList extends Component{
                 break;
             case "Ubehandlet først":
                 this.setState({tickets: this.state.tickets.sort(function(a,b){return (''+b.status).localeCompare(a.status)})});
+                break;
+            case "Mest populær":
+                this.setState({tickets: this.state.tickets.sort(function(a,b){return b.countcomm - a.countcomm})});
+                break;
+            case "Minst populær":
+                this.setState({tickets: this.state.tickets.sort(function(a,b){return a.countcomm - b.countcomm})});
                 break;
         }
 
