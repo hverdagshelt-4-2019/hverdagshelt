@@ -12,7 +12,7 @@ export default class Navbar extends Component {
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['administrasjon', 'Administrer Brukere', 'address-card'],
+        ['administrasjon', 'Administrasjon', 'user-secret'],
         ['statistikk', 'Statistikk', 'chart-bar']
     ];
     public_worker_pages = [
@@ -62,7 +62,7 @@ export default class Navbar extends Component {
 
     render() {
         return (
-            <nav className="navbar navbar-expand-md navbar-dark blue shadow">
+            <nav className="navbar navbar-expand-lg navbar-dark blue shadow">
                 <NavLink className="navbar-brand" to="/hjem" style={{color: "white"}}>HverdagsHelt<img style={{marginLeft: "4px"}} src="Skjermbilde.PNG" width="20" height="17" /></NavLink>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                         <span className="navbar-toggler-icon"></span>

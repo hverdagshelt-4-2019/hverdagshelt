@@ -153,6 +153,7 @@ export function create_app(pool) {
         });
     });
 
+    //TODO: Remove not used (?)
     app.get("/tickets/category", (req, res) =>{
         console.log(req.body);
         ticketdao.getTicketsByCategory(req.body.communes, req.body.categories, (status, data) =>{
@@ -255,7 +256,6 @@ export function create_app(pool) {
 
     app.get("/communes", (req, res) =>{
         communedao.getAll((status, data) =>{
-            console.log('data' + data);
             res.status(status);
             res.json(data);
         });
@@ -749,8 +749,15 @@ export function create_app(pool) {
                     res.status(status);
                     let user = authData.user;
                     user.email = req.body.email;
-
+                    console.log(user.email)
                     if(status == 200) {
+                        let mailOptions = {
+                            from: 'Hverdagsheltene',
+                            to: user.email,
+                            subject: 'Ny Epost',
+                            text: 'Din konto hos Hverdagsheltene har fått ny E-post.\nOm du ikke er ansvarlig for dette, vennligst ta kontakt med oss på hverdagsheltene4@gmail.com'
+                        };
+                        sendEmail(transporter, mailOptions);
                         jwt.sign({ user }, 'key', { expiresIn: '30d' }, (err, token) => {
                             res.status(status);
                             data.token = token;
@@ -782,7 +789,6 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(401);
             } else {
-                console.log("Req.body = " + JSON.stringify(req.body));
                 userdao.updatePassword(authData.user.id, req.body, (status, data) => {
                     console.log("Edited password");
                     res.status(status);
@@ -1187,7 +1193,11 @@ function getCommuneByLatLong(latlong, callback) {
             if(kom.filter(i=>i.length != 0)[0][0].Kommune === 'Bø' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Herøy' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Nes' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Os' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Sande' || kom.filter(i=>i.length != 0)[0][0].Kommune ===  'Våler') {
                 kom.filter(i=>i.length != 0)[0][0].Kommune = kom.filter(i=>i.length != 0)[0][0].Kommune + '(' + fyl[0][0].Fylke + ')';
             }
-             callback({kommune: kom.filter(i=>i.length != 0)[0][0].Kommune});
+            if(kom.filter(i=>i.length != 0)[0][0].Kommune === 'Rissa' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Leksvik') {
+                callback({kommune: 'Indre Fosen'});
+            } else {
+                callback({kommune: kom.filter(i=>i.length != 0)[0][0].Kommune});
+            }
 
 
         })

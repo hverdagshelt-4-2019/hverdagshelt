@@ -51,8 +51,8 @@ export default class userService {
         return axios.put('/userpass', {oldPassword: oldPassword, newPassword: newPassword}, config());
    }
 
-   static updateEmail(email: string): Promise<Object>{
-        return axios.post('/usermail', {email});
+   static updateEmail(prevEmail: string, newMail: string): Promise<Object>{
+        return axios.put('/usermail/' + prevEmail, {email: newMail}, config());
    }
 
     static updateName(name: string): Promise<Object>{

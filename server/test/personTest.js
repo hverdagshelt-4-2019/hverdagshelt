@@ -202,62 +202,54 @@ it("can log in and change a users email", done => {
 });
 
 
-it("can log in and change a users password", done => {
+it("can log in and change a users password", async done => {
     let token;
     let user = {
         email: "person1@mail.no",
         password: "password1"
     };
     let newPassword = "password1new";
-    fetch(fetch_url+'login', {
+    let loginRes = await fetch(fetch_url+'login', {
         method: 'POST',
         headers: HEADERS,
         body: JSON.stringify(user)
-    })
-    .then(res => res.json())
-    .then(res => {
-        token = res.token;
-        fetch(fetch_url+'userpass/', {
-            method: 'PUT',
-            headers: {
-                ...HEADERS,
-                Authorization: "Bearer "+token
-            },
-            body: JSON.stringify({newPassword, oldPassword: user.password})
-        })
-        .then(res => {
-            expect(res.status).toBe(200);
-
-            fetch(fetch_url+'login', {
-                method: 'POST',
-                headers: HEADERS,
-                body: JSON.stringify(user)
-            })
-            .then(res => {
-                expect(res.status).toBe(401);
-
-                user.password = newPassword;
-                fetch(fetch_url+'login', {
-                    method: 'POST',
-                    headers: HEADERS,
-                    body: JSON.stringify(user)
-                })
-                .then(res => {
-                    expect(res.status).toBe(200);
-                    return res.json();
-                })
-                .then(res => {
-                    expect(res.token).not.toBeUndefined();
-                    done();
-                });
-            });
-        });
     });
+    let loginRows = await loginRes.json();
+    token = loginRows.token;
+    let userpassRes = await fetch(fetch_url+'userpass/', {
+        method: 'PUT',
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + token
+        },
+        body: JSON.stringify({ newPassword, oldPassword: user.password })
+    });
+    expect(userpassRes.status).toBe(200);
+
+    let loginOldRes = await fetch(fetch_url+'login', {
+        method: 'POST',
+        headers: HEADERS,
+        body: JSON.stringify(user)
+    });
+    expect(loginOldRes.status).toBe(401);
+
+    user.password = newPassword;
+    let loginNewRes = await fetch(fetch_url+'login', {
+        method: 'POST',
+        headers: HEADERS,
+        body: JSON.stringify(user)
+    });
+    expect(loginNewRes.status).toBe(200);
+    let loginNewRows = await loginNewRes.json();
+    expect(loginNewRows.token).not.toBeUndefined();
+    done();
 });
 
 it("registers a user, and can then log in them", done => {
     let user = {
         email: "testUser@mail.com",
+        name: "testuser",
+        commune: 'Harstad',
         password: "testpassword96"
     };
 
