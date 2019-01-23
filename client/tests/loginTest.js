@@ -11,5 +11,4 @@ describe('Login tests', () => {
         expect(wrapper.find('div').length).toEqual(4);
     });
 
-    
 });
