@@ -153,6 +153,7 @@ export function create_app(pool) {
         });
     });
 
+    //TODO: Remove not used (?)
     app.get("/tickets/category", (req, res) =>{
         console.log(req.body);
         ticketdao.getTicketsByCategory(req.body.communes, req.body.categories, (status, data) =>{
