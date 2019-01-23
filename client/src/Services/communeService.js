@@ -3,7 +3,8 @@
 import axios from 'axios';
 
 class Commune{
-    name : string; 
+    name : string;
+    commune_name: string;
 }
 
 function config() {
@@ -20,11 +21,11 @@ function config() {
 
 
 export default class CommuneService{
-    static getFollowedCommunes() : Promise<void>{
+    static getFollowedCommunes() : Promise<Commune[]>{
         return axios.get("/followedCommunes", config());
     }
 
-    static getUnFollowedCommunes(): Promise<void>{
+    static getUnFollowedCommunes(): Promise<Commune[]>{
         return axios.get("/unfollowedCommunes", config());
     }
 

@@ -87,7 +87,7 @@ CREATE TABLE ticket_comment(
   description VARCHAR(256) NOT NULL,
   submitter_id INT,
 
-  FOREIGN KEY (submitter_id) REFERENCES person(id) ON DELETE SET NULL,
+  FOREIGN KEY (submitter_id) REFERENCES person(id) ON DELETE CASCADE,
   FOREIGN KEY (ticket_id) REFERENCES ticket(id) ON DELETE CASCADE
 );
 

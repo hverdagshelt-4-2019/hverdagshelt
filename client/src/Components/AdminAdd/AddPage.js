@@ -1,7 +1,6 @@
 import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import ExistingUser from './ExistingUser';
 import adminService from '../../Services/adminService';
 import publicWorkerService from '../../Services/publicWorkerService';
 import communeService from '../../Services/communeService';
