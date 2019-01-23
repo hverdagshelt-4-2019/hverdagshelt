@@ -8,6 +8,9 @@
   },
   "jest": {
     "testRegex": "./tests/.+Test\\.js$",
+    "setupFiles": [
+      "./tests/setup.js"
+    ],
     "moduleNameMapper": {
       "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
     },
