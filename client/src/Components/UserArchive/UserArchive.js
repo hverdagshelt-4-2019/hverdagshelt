@@ -13,7 +13,7 @@ export default class UserArchive extends Component {
     admins = [];
     publicworkers = [];
     currlist = [];
-    title = 'Users';
+    title = 'Brukere';
 
     tabs = ['u', 'c', 'a', 'p'];
     currtab = this.tabs[0];
@@ -22,10 +22,14 @@ export default class UserArchive extends Component {
         return (
             <div>
                 <div>
-                    <button onClick={e => {this.currlist = this.users; this.title = e.target.innerText; this.currtab = this.tabs[0]}}>Users</button>
-                    <button onClick={e => {this.currlist = this.companies; this.title = e.target.innerText; this.currtab = this.tabs[1]}}>Companies</button>
-                    <button onClick={e => {this.currlist = this.admins; this.title = e.target.innerText; this.currtab = this.tabs[2]}}>Admins</button>
-                    <button onClick={e => {this.currlist = this.publicworkers; this.title = e.target.innerText; this.currtab = this.tabs[3]}}>Public workers</button>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-secondary" onClick={e => {this.currlist = this.users; this.title = e.target.innerText; this.currtab = this.tabs[0]}}>Brukere</button>
+                        <button type="button" class="btn btn-secondary" onClick={e => {this.currlist = this.companies; this.title = e.target.innerText; this.currtab = this.tabs[1]}}>Bedrifter</button>
+                        <button type="button" class="btn btn-secondary" onClick={e => {this.currlist = this.admins; this.title = e.target.innerText; this.currtab = this.tabs[2]}}>Admins</button>
+                        <button type="button" class="btn btn-secondary" onClick={e => {this.currlist = this.publicworkers; this.title = e.target.innerText; this.currtab = this.tabs[3]}}>Kommunearbeidere</button>
+                    </div>
+                   
+                    
                 </div>
                 <UserList people={this.currlist} title={this.title} callback={this.delUser} tab={this.currtab}/>
             </div>
