@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ticketService from './ticketService';
 
-class Event {
+export class Event {
     id;
     submitter_id;
     commune_name;

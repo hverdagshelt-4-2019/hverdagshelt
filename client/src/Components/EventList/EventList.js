@@ -73,7 +73,7 @@ export default class EventList extends Component{
                                 <div key={i}>
                                     <SingleEvent theEvent={event}>
                                     </SingleEvent>
-                                    <SingleEvent.Options id={event.id}/>
+                                    {(localStorage.getItem('level') === 'admin' || localStorage.getItem('commune') === event.commune_name ) && <SingleEvent.Options id={event.id}/>}
                                 </div>
                             ))}
                         </ul>
@@ -94,8 +94,8 @@ export default class EventList extends Component{
         .then((events : {data: Event[]}) => { 
             this.allEvents = events.data;
             this.allEvents.sort(function(a,b){return new Date(b.happening_time) - new Date(a.happening_time)});
+            let arkEvents = this.allEvents.filter(e => e.status != "Fullført");
             this.setState({events: this.allEvents});
-            this.updateEvents();
         })
         .catch((error : Error) => console.log("Error occured: " + error.message));
         
@@ -103,6 +103,7 @@ export default class EventList extends Component{
         categoryService.getEventCategories()
         .then((categories : Category[]) =>  this.eventCategories = categories.data)
         .catch((error : Error) => console.log("Error occured: " + error.message));
+
         document.getElementById("arrowBtn").click();
         $("#checkAll").click(function () {
             $(".cat").prop('checked', $(this).prop('checked'));

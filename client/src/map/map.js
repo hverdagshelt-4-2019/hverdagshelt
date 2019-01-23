@@ -77,15 +77,15 @@ export default class SimpleMap extends Component {
     componentDidMount(){
         navigator.geolocation.getCurrentPosition(
             pos => {
-                this.setState({
+                 this.setState({
                     center: {
                         lat: pos.coords.latitude,
                         lng: pos.coords.longitude,
                     },
-                    zoom : 13
+                     zoom: 13
                 });
             }
-        )
+        );
     }
 
 
