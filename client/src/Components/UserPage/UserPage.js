@@ -24,13 +24,17 @@ export default class UserPage extends Component {
     componentDidMount() {
         // TODO: Get the username and display it.
         userService.getUser().then(res => {
-            this.setState({emailInfo: res.data[0].email});
+            this.setState({
+                emailInfo: res.data[0].email,
+                usernameInfo: res.data[0].username
+            });
         }).catch(err => console.log(err));
     }
 
     state = {
         name : '',
-        emailInfo: ""
+        emailInfo: "",
+        usernameInfo: ""
     };
 
     handleClick(){
@@ -50,7 +54,7 @@ export default class UserPage extends Component {
                   </div>
                   <div className={styles.textHolder}>
                       <div><Typography variant="h5">Fullt navn</Typography></div>
-                      <div><Typography style={customStyles.textFields} variant="h5">Aleksander Johansen</Typography></div>
+                      <div><Typography style={customStyles.textFields} variant="h5">{this.state.usernameInfo}</Typography></div>
                   </div>
                   <div>
                       <Divider style={{marginBottom: "40px"}}/>

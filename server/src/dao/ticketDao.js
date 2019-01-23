@@ -11,9 +11,10 @@ export default class TicketDao extends Dao {
 
     getTicketsByCommune(communes, callback) {
         super.query(
-            'SELECT t.id, email as submitter_email, responsible_commune, c2.name as company_name, category, ' +
-            'title, description, picture, submitted_time, finished_time, status, lat, lng FROM ticket t JOIN person p ' +
-            'ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id WHERE responsible_commune in(?);',
+            'SELECT t.id, email as submitter_email, count(t2.description) as "number_of_comments", responsible_commune,' +
+            ' c2.name as company_name, category, title, t.description, picture, submitted_time, finished_time, status,' +
+            ' lat, lng FROM ticket t JOIN person p ON p.id = t.submitter_id LEFT JOIN company c2 ON' +
+            ' responsible_company_id = c2.id join ticket_comment t2 on t.id = t2.ticket_id WHERE responsible_commune in (?) GROUP BY t.id;'
             [communes],
             callback
         );
@@ -21,9 +22,11 @@ export default class TicketDao extends Dao {
 
     getTicketsByCompany(companyId, callback) {
         super.query(
-            'SELECT t.id, email as submitter_email, responsible_commune, c2.name as company_name, category, ' +
-            'title, description, picture, submitted_time, finished_time, status, lat, lng FROM ticket t JOIN person p ' +
-            'ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id WHERE responsible_company_id = ?;',
+            'SELECT t.id, email as submitter_email, count(t2.description) as "number_of_comments", responsible_commune,' +
+            ' c2.name as company_name, category, title, description, picture, submitted_time, finished_time, status,' +
+            ' lat, lng FROM ticket t JOIN person p ON p.id = t.submitter_id LEFT JOIN company c2 ON' +
+            ' responsible_company_id = c2.id JOIN ticket_comment t2 ON t.id = t2.ticket_id ' +
+            'WHERE responsible_company_id = ? GROUP BY t.id;',
             [companyId],
             callback
         )

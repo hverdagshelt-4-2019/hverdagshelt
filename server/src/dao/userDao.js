@@ -4,7 +4,7 @@ export default class UserDao extends Dao {
 
     getOne(id, callback) {
         console.log("Getting user")
-        super.query("SELECT id, email FROM person WHERE id=?", [id], callback);
+        super.query("SELECT id, email, username FROM person WHERE id=?", [id], callback);
     };
 
     createOne(json, callback) {
@@ -123,5 +123,5 @@ function password_passes_requirements(password: string){
     if (password < 8) {
         return {error: "Password too short"};
     }
-    return true;
+    return false;
 }
