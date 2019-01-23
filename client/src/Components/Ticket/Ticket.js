@@ -134,7 +134,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               </div>
 
               <p>
-                <i class="fas fa-user" style={{marginRight: "4px"}}></i> {this.ticket.name}
+                <i className="fas fa-user" style={{marginRight: "4px"}}></i> {this.ticket.name}
               </p>
 
               <hr />
