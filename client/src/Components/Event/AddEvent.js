@@ -53,8 +53,10 @@ export default class AddEvent extends Component {
     return (
         <div className="container aroundStuff">
             <div className="row">
-                <div className="col-lg-10">
+                <div className="col-lg-10" style={{marginLeft: "8%", marginRight: "8%"}}>
+                <br />
                     <h1>Meld fra om en ny begivenhet</h1>
+                    <hr />
                     <form>
                     <div className="form-group">
                         <h4>Tittel</h4>
@@ -84,6 +86,7 @@ export default class AddEvent extends Component {
                     <label className="form-label">Dato og tid</label>
                     <Datetime locale='nb' isValidDate={ valid } value={this.state.happening_time} onChange={this.handleDate} defaultValue={new Date()}/>
                     </div>
+
                     <div className="form-group">
                     <h4>Bilde</h4>
                     <label htmlFor="InputFile">Last opp bilde</label>
@@ -91,11 +94,15 @@ export default class AddEvent extends Component {
                     <small id="fileHelp" className="form-text text-muted"></small>
                     </div>                            
                     </form>
+                    <hr />
+
                     <button type="button" className="btn customBtn" onClick={this.save}>Send</button>
-                    </div>
+                    <br />
+                    <br />
+                    <div style={{height: '100px'}}></div>
                 </div>
-                <br/>
             </div>
+        </div>
         );
   }
 
