@@ -98,6 +98,21 @@ label {
     margin-right: auto;
     max-height: 350px;
 }
+
+.btn-secondary {
+    background-color: #9DC8E4;
+    color: rgb(30, 30, 30);
+}
+
+.tabse {
+    color: #FF5722;
+}
+
+.tabse:hover {
+    color: rgb(224, 57, 6);
+}
+
+
 @media (max-width:1250px) {
     .navbar{
         font-size: 14px;
