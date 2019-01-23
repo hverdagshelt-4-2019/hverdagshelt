@@ -749,8 +749,15 @@ export function create_app(pool) {
                     res.status(status);
                     let user = authData.user;
                     user.email = req.body.email;
-
+                    console.log(user.email)
                     if(status == 200) {
+                        let mailOptions = {
+                            from: 'Hverdagsheltene',
+                            to: user.email,
+                            subject: 'Ny Epost',
+                            text: 'Din konto hos Hverdagsheltene har fått ny E-post.\nOm du ikke er ansvarlig for dette, vennligst ta kontakt med oss på hverdagsheltene4@gmail.com'
+                        };
+                        sendEmail(transporter, mailOptions);
                         jwt.sign({ user }, 'key', { expiresIn: '30d' }, (err, token) => {
                             res.status(status);
                             data.token = token;
