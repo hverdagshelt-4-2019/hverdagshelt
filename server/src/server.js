@@ -255,7 +255,6 @@ export function create_app(pool) {
 
     app.get("/communes", (req, res) =>{
         communedao.getAll((status, data) =>{
-            console.log('data' + data);
             res.status(status);
             res.json(data);
         });
