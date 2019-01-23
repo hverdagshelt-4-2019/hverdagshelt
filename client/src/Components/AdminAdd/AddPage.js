@@ -30,7 +30,7 @@ export default class AddPage extends Component{
     render(){
         return(
             <div className="container" >
-                <hr/>
+                <br/>
                 <div className="row">
                     <div className="col-md-6 rounded shadow p-3 mb-5" style={{backgroundColor:'white', border: "1px solid lightgrey"}}>
                         <br/>
