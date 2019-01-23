@@ -12,7 +12,7 @@ export default class Navbar extends Component {
         ['kart', 'Kart', 'map-marked-alt'],
         ['minesaker', 'Mine saker', 'folder-open'],
         ['leggtilsak', 'Legg til sak', 'plus'],
-        ['administrasjon', 'Administrer Brukere', 'address-card'],
+        ['administrasjon', 'Administrasjon', 'user-secret'],
         ['statistikk', 'Statistikk', 'chart-bar']
     ];
     public_worker_pages = [

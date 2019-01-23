@@ -15,7 +15,7 @@ export default class AddCompany extends Component<{history: string[]}>{
     render() {
         return (
             <div className="container" >
-                <hr/>
+                <br/>
                 <div className="row">
                     <div className="col-md-6" style={{border: "2px solid lightblue"}}>
                         <br/>

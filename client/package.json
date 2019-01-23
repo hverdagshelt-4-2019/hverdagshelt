@@ -7,7 +7,16 @@
     "test": "jest"
   },
   "jest": {
-    "testRegex": "./tests/.+Test\\.js$"
+    "testRegex": "./tests/.+Test\\.js$",
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+    },
+    "verbose": true,
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "html"
+    ]
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
