@@ -83,7 +83,7 @@ export default class AddPage extends Component{
                             <br/>
                         </div>
                     </div>
-                    <div className="col-md-6 rounded" style={{backgroundColor:'white', border: "1px solid lightgrey"}}> 
+                    <div className="col-md-6 rounded shadow p-3 mb-5" style={{backgroundColor:'white', border: "1px solid lightgrey"}}> 
                         <br/> 
                         <h4>Gi en eksisterende bruker</h4>
                         <h4>admin- eller</h4>
@@ -128,6 +128,7 @@ export default class AddPage extends Component{
                             <br/>
                             <br/>
                             <div>
+                            <div style={{height: '73px'}} /> 
                                 <hr/>
                                 <button className="btn customBtn" onClick={this.updateExisting}>Opprett fra eksisterende</button>
                                 <br/>
