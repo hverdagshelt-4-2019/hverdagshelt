@@ -153,6 +153,66 @@ export function create_app(pool) {
         });
     });
 
+    app.get("/ticketsMap/:commune", verifyToken2, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData) => {
+            if (err) {
+                ticketdao.getTicketsByCommune(req.params.commune, (status, data) => {
+                    console.log("NO TOKEN");
+                    res.status(status);
+                    res.json(data);
+                });
+            } else {
+                console.log(authData.user.publicworkercommune);
+                if(authData.user.publicworkercommune) {
+                    let communes = [authData.user.publicworkercommune];
+                    console.log(authData.user.publicworkercommune);
+                    ticketdao.getTicketsByCommune(communes, (status, data) => {
+                        console.log("BY COMMUYNE");
+
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else if(authData.user.companyname) {
+                    ticketdao.getTicketsByCompany(authData.user.id, (status, data) =>{
+                        console.log("COMPANY");
+
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else if(authData.user.isadmin) {
+                    console.log("ADMIN");
+
+                    ticketdao.getTicketsByCommune(req.params.commune, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    communedao.getFollowed(authData.user.id, (status, data) => {
+                        if (status == 200) {
+                            let communes = data.map(e => e.commune_name);
+                            if (communes.length) {
+                                ticketdao.getTicketsByCommune(communes, (status2, data2) => {
+                                    console.log(data2);
+                                    res.status(status2);
+                                    res.json(data2);
+                                });
+
+                            } else {
+                                ticketdao.getTicketsByCommune(req.params.commune, (status2, data2) => {
+                                    console.log(data2);
+                                    res.status(status2);
+                                    res.json(data2);
+                                })
+                            }
+                        } else {
+                            res.sendStatus(500);
+                        }
+                    });
+                }
+            }
+        });
+    });
+
     //TODO: Remove not used (?)
     app.get("/tickets/category", (req, res) =>{
         console.log(req.body);
@@ -315,17 +375,11 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/communeByCoordinates/:lat/:long", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) => {
-            if(err) {
-                res.sendStatus(401);
-            } else {
-                console.log([req.params.lat, req.params.long]);
+    app.get("/communeByCoordinates/:lat/:long", (req, res) =>{
                 getCommuneByLatLong([req.params.lat, req.params.long], data =>{
+                    console.log(data);
                     res.json(data);
                 });
-            }
-        });
     });
 
     app.get("/comments/:ticket_id", (req, res) =>{
@@ -693,7 +747,7 @@ export function create_app(pool) {
                 from: 'Hverdagsheltene',
                 to: req.params.email,
                 subject: 'Nytt Passord',
-                text: 'Ditt nye passord er: ' + newPass
+                text: 'Ditt nye passord er: ' + newPass +'\nHvis du ikke har bedt om nytt passord, vennligst ta kontakt på hverdagsheltene4@gmail.com'
             };
             sendEmail(transporter, mailOptions);
             res.status(status);
@@ -790,6 +844,14 @@ export function create_app(pool) {
                 res.sendStatus(401);
             } else {
                 userdao.updatePassword(authData.user.id, req.body, (status, data) => {
+                    let mailOptions = {
+                        from: 'Hverdagsheltene',
+                        to: user.email,
+                        subject: 'Nytt Passord',
+                        text: 'Vi har registrert fra din profil har byttet passord.\nDitt nye passord er: ' + req.body.newPassword
+                            + '\nOm du ikke har har skiftet passord, venligst ta konntakt på hverdagsheltene4@gmail.com'
+                    };
+                    if(status == 200) sendEmail(transporter, mailOptions);
                     console.log("Edited password");
                     res.status(status);
                     res.json(data);
@@ -828,7 +890,7 @@ export function create_app(pool) {
                             from: 'Hverdagsheltene',
                             to: req.body.email,
                             subject: 'Status oppdatering',
-                            text: ('Ditt problem har fått ny status. Sjekk ny status på: ' + req.body.statusText + ' | Gå til: ' + config.domainname+'/sak/' + req.params.ticket_id)
+                            text: ('Ditt problem har fått ny status.\n' + req.body.statusText + '\nSe ny status på: ' + config.domainname+'/sak/' + req.params.ticket_id)
                         };
                         sendEmail(transporter, mailOptions);
                         res.status(status);

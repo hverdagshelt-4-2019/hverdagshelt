@@ -69,7 +69,7 @@ export default class ChangePassword extends Component {
                 <TextField type="password" onChange={this.handleChange("oldPass")} label="Gammelt passord"/>
                 <TextField type="password" onChange={this.handleChange("newPass")} label="Nytt passord"/>
                 <TextField type="password" onChange={this.handleChange("repeatNewPass")} label="Gjenta nytt passord"/>
-                <Button variant="contained" color="primary" onClick={this.handleClick}>Lagre</Button>
+                <button className="btn customBtn" onClick={this.handleClick}>LAGRE</button>
                 {this.state.warning !== "" &&
                 <div className="alert alert-danger">
                     <Typography>{this.state.warning}</Typography>

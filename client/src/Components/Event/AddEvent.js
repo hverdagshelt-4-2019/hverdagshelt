@@ -53,8 +53,10 @@ export default class AddEvent extends Component {
     return (
         <div className="container aroundStuff">
             <div className="row">
-                <div className="col-lg-10">
+                <div className="col-lg-10" style={{marginLeft: "8%", marginRight: "8%"}}>
+                <br />
                     <h1>Meld fra om en ny begivenhet</h1>
+                    <hr />
                     <form>
                     <div className="form-group">
                         <h4>Tittel</h4>
@@ -92,6 +94,9 @@ export default class AddEvent extends Component {
                     </div>                            
                     </form>
                     <button type="button" className="btn customBtn" onClick={this.save}>Send</button>
+                    <br />
+                            <br />
+                            <div style={{height: '100px'}}></div>
                     </div>
                 </div>
                 <br/>

@@ -23,7 +23,7 @@ export class Adder extends Component{
 
     renderButton(){
         return(
-            <button className="btn btn-primary btn-block" onClick={this.setAdding}>
+            <button className="btn btn-block customBtn" onClick={this.setAdding}>
                 Legg til kategori
             </button>
         )

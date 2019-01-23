@@ -13,7 +13,7 @@ export default class Administration extends Component {
             <section id="tabs">
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-12 ">
+                        <div class="col-md-12 ">
                             <nav>
                                 <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                                     <a class="nav-item nav-link tabse active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i className="fas fa-address-card"></i> Administrer brukere</a>

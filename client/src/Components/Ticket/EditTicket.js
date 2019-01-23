@@ -93,29 +93,30 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
       };
     return (
             <div>
-                <div className="container">
+                <div className="container aroundStuff">
                     <div className="row">
-                        <div className="col-lg-8">
-                            <h1>Endre sak:</h1>
+                        <div className="col-lg-10" style={{marginLeft: "8%", marginRight: "8%"}}>
+                        <br />
+                            <h1>Endre sak</h1>
 
                             <hr />
 
-                            <h4>Tittel:</h4>
+                            <h4>Tittel</h4>
                             <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))} defaultValue={this.ticket.title}/>
 
-                             <h4>Beskrivelse:</h4>
+                             <h4>Beskrivelse</h4>
                             <textarea className="form-control" value={this.state.description} style={{width:"100%"}} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))} defaultValue={this.ticket.description} />
                             
                                                         
-                            <h4>Kategori:</h4>
-                            <select onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({category: event.target.value}))}>
+                            <h4>Kategori</h4>
+                            <select className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({category: event.target.value}))}>
                                 {this.state.categories.map((categories, i) => (
                                     <option selected={categories.name==this.state.category} id ={"option"+categories.name} key={i}>{categories.name}</option>
                                 ))}
                             </select>
                             
 
-                            <h4>Bilde:</h4>
+                            <h4>Bilde</h4>
                             <img id="picture" src="/image/logo.png" style={{maxWidth: '40%'}} className={"img-fluid"} alt="Responsive image"/>
                             <br />
                             <label htmlFor="InputFile">Last opp nytt bilde om ønsket</label>
@@ -142,12 +143,13 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                             <div style={{height: '10px'}}></div>
                             <hr />
 
-                            <button type="button" className="btn btn-primary" onClick={this.save}>Lagre</button>
-
+                            <button type="button" className="btn customBtn" onClick={this.save}>Lagre</button>
+                            <br />
+                            <br />
+                            <div style={{height: '100px'}}></div>
                         </div>
                     </div>
                 </div>
-                <div style={{height: '150px'}}></div>
             </div>
         );
     }

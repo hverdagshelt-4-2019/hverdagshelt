@@ -113,14 +113,14 @@ export default class UserPage extends Component {
                       <div className={styles.comboBox}>
                           <Typography style={customStyles.textFields} variant="h5">{this.state.emailInfo}</Typography>
                           <div style={{padding: "0px 10px"}}/>
-                          <Button variant="contained" color="primary" onClick={this.onEdit}>Rediger</Button>
+                          <button variant="contained" className="btn customBtn"  onClick={this.onEdit}>REDIGER</button>
                       </div>
                       }
                       {this.state.edit &&
                       <div className={styles.comboBox}>
                           <TextField style={{width: "260px"}} label={this.state.label} error={this.state.error} onChange={this.handleChange}/>
                           <div style={{padding: "0px 10px"}}/>
-                          <Button variant="contained" color="primary" onClick={this.changeEmail}>Lagre</Button>
+                          <button variant="contained" className="btn customBtn" onClick={this.changeEmail}>LAGRE</button>
                           <Button variant="contained" onClick={this.cancelEdit}>Avbryt</Button>
                       </div>
                       }

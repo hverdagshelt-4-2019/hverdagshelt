@@ -100,8 +100,15 @@ label {
 }
 
 .btn-secondary {
-    background-color: #9DC8E4;
-    color: rgb(30, 30, 30);
+    background-color:  #FF5722;
+    color: #eee;
+    border-color: black;
+}
+
+.btn-secondary:hover {
+    background-color:  rgb(224, 57, 6);
+    color: #eee;
+    border-color: black;
 }
 
 section {
@@ -130,7 +137,7 @@ section .section-title {
     border: 1px solid transparent;
     border-top-left-radius: .25rem;
     border-top-right-radius: .25rem;
-    color:  #1976D2;
+    color: #FF5722;
     font-size: 20px;
 }
 
