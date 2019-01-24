@@ -21,6 +21,18 @@ export class UserList extends Component<{props: {people: Object[], title: string
                                 <div className="card-body">
                                     <div className={styles.myFlexContent}>
                                         <div>
+                                            {
+                                                this.props.tab != 'c' &&
+                                                (<h5>
+                                                     Brukernavn: {e.username}
+                                                </h5>)
+                                            }
+                                            {
+                                                this.props.tab === 'c' &&
+                                                (<h5>
+                                                    Bedriftsnavn: {e.name}
+                                                </h5>)
+                                            }
                                             <h5 className="card-title">
                                                 E-post: {e.email}
                                             </h5>
@@ -28,9 +40,9 @@ export class UserList extends Component<{props: {people: Object[], title: string
                                                 Bruker ID: {e.id}
                                             </h5>
                                             {
-                                                this.props.tab === 'c' &&
+                                                this.props.tab === 'p' &&
                                                 (<h5>
-                                                    Bedriftsnavn: {e.name}
+                                                    Arbeidskommune: {e.commune_name}
                                                 </h5>)
                                             }
                                         </div>
