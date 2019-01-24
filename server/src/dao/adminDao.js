@@ -2,7 +2,7 @@ import Dao from './dao.js'
 
 export default class AdminDao extends Dao {
     getAll(callback) {
-        super.query("SELECT id, email FROM person NATURAL JOIN admin", [], callback);
+        super.query("SELECT id, email, username FROM person NATURAL JOIN admin", [], callback);
     }
 
     createAdmin(json, callback) {

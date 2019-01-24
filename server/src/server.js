@@ -282,6 +282,7 @@ export function create_app(pool) {
         });
     });
 
+    // TODO: Delete this?
     app.get("/events/category", (req, res) =>{
         console.log(req.body);
         eventdao.getAllCategoryFilter(req.body.communes, req.body.categories, (status, res) =>{
@@ -366,8 +367,8 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/communeByCoordinates/:lat/:long", (req, res) =>{
-                getCommuneByLatLong([req.params.lat, req.params.long], data =>{
+    app.get("/communeByCoordinates/:lat/:lng", (req, res) =>{
+                getCommuneByLatLng([req.params.lat, req.params.lng], data =>{
                     console.log(data);
                     res.json(data);
                 });
@@ -520,7 +521,7 @@ export function create_app(pool) {
                     description: req.body.description,
                     picture: (req.body.picture != null ? req.body.picture : "logo.png"),
                     lat: req.body.lat,
-                    long: req.body.long
+                    lng: req.body.lng
                 }
                 ticketdao.addTicket(newTicket, (status, data) =>{
                     if(status == 200) {
@@ -1234,8 +1235,8 @@ function genRandPass() {
 
 }
 
-function getCommuneByLatLong(latlong, callback) {
-    fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlong[0]},${latlong[1]}&key=${config.mapskey}`,
+function getCommuneByLatLng(latlng, callback) {
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng[0]},${latlng[1]}&key=${config.mapskey}`,
         {
             method: 'GET',
             headers: {
@@ -1258,5 +1259,5 @@ function getCommuneByLatLong(latlong, callback) {
 
 
         })
-        .catch(err => console.log(latlong[0] + ' ' + latlong[1]))
+        .catch(err => console.log(latlng[0] + ' ' + latlng[1]))
 }
