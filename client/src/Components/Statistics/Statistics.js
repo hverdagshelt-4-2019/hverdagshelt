@@ -69,7 +69,8 @@ export default class Statistics extends Component{
                             <Doughnut data = {{
                                 datasets: [{
                                     data: [(this.state.ticketsSent - this.state.ticketsSolved), this.state.ticketsSolved],
-                                    backgroundColor: ['LightCoral', 'lightblue']
+                                    backgroundColor: ['LightCoral', 'lightblue'],
+                                    hoverBackgroundColor: ['IndianRed', 'SkyBlue']
                                 }],
 
                                 // These labels appear in the legend and in the tooltips when hovering different arcs
@@ -95,7 +96,7 @@ export default class Statistics extends Component{
                                     label: "Antall saker",
                                     backgroundColor: 'lightblue',
                                     borderColor: 'lightgrey',
-                                    data: this.state.ticketsPerCat,
+                                    data: this.state.ticketsPerCat
                                 }]
                                      
                             }} options= {{
