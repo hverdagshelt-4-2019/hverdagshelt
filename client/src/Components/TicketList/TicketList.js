@@ -28,7 +28,8 @@ export default class TicketList extends Component{
     render(){
         return(
             <div className={"shadow " + css.aroundTickets}>
-                <br/>
+                <div style={{height: '10px'}}></div>
+                <h1 className="col-xs-6 col-sm-pull-9" align="center">LISTE OVER SAKER FRA KOMMUNENE DU FØLGER</h1>
                 <div className="col-xs-6 col-sm-pull-9 sidebar-offcanvas" id="sidebar" style={{width: '2%', float: 'left', margin: '1%'}}>
                     <h5 id="tempText">Kategorier:</h5>
                     <button id="arrowBtn" className={"btn customBtn " + css.btnCircle} onClick={this.changeArrow} data-toggle="collapse" href="#allOptionsCat">
