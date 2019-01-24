@@ -37,14 +37,14 @@ const adminMail = "person17@mail.no";
 const publicMail = "person1@mail.no";
 
 beforeAll(async done => {
-    setup_database(pool, async () => {
-        await loginAll();
-        done()
-    });
+    await setup_database(pool);
+    await loginAll();
+    done();
 });
 
-beforeEach( done => {
-    setup_database(pool, done);
+beforeEach( async done => {
+    await setup_database(pool);
+    done();
 });
 
 
@@ -67,7 +67,7 @@ async function loginAll() {
     adminToken = await loginFetch(adminMail, "password17");
     userToken = await loginFetch(userMail, "password2");
     publicToken = await loginFetch(publicMail, "password1");
-    console.log("Admin token: " + adminToken + "\nPublic token: " + publicToken + "\nUser token: " + userToken);
+   // console.log("Admin token: " + adminToken + "\nPublic token: " + publicToken + "\nUser token: " + userToken);
 }
 
 
@@ -183,6 +183,93 @@ it("Public worker cannot edit status for a ticket not located in their respectiv
         body: JSON.stringify(newStatus)
     });
     expect(editStatusRes.status).toBe(403);
+    done();
+})
+
+it("Can get tickets by commune", async done => {
+    const commune = "Sel";
+    let ticketRes = await fetch(fetch_url + "ticketsMap/" + commune, {
+        method: "GET",
+        headers: HEADERS
+    });
+    let ticketData = await ticketRes.json();
+    expect(ticketRes.status).toBe(200);
+    expect(ticketData.length).not.toBeLessThan(1);
+    done();
+})
+
+it("Can get tickets by company", async done =>{
+    // TODO: Sindre needs to fix his shit in ticketDao.
+    const company = "Drogas";
+    let ticketRes = await fetch(fetch_url + "tickets", {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + userToken
+        }
+    });
+    let ticketData = await ticketRes.json();
+    console.log(ticketData);
+    expect(ticketRes.status).toBe(200);
+    done();
+})
+
+it("User can set responsibility", async done => {
+    // TODO: Sindre needs to fix his shit again
+    const comp = "Drogas";
+    const body = {
+        name: comp
+    }
+    const ticketId = 2;
+    let resp = await fetch(fetch_url + "ticketcomp/" + ticketId, {
+        method: "PUT",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + userToken
+        },
+        body: JSON.stringify(body)
+    });
+    let data = await resp.json();
+    expect(resp.status).toBe(200);
+    expect(data.affectedRows).toBe(1);
+
+    let getTicketRes = await fetch(fetch_url + "ticket/" + ticketId, {
+        method: "GET",
+        headers: HEADERS
+    });
+    let ticketData = await getTicketRes.json();
+    console.log(ticketData);
+    expect(getTicketRes.status).toBe(200);
+    expect(ticketData[0].company_name).toBe(comp);
+    done();
+})
+
+it("User can delete his own tickets", async done => {
+    // TODO: Fix this route, it's broken. *Looks at Sindre*
+    const ticketId = 2;
+    let deleteRes = await fetch(fetch_url + "ticket/" + ticketId, {
+        method: "DELETE",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + userToken
+        }
+    });
+    let deleteData = await deleteRes.json();
+    console.log("User token: " + userToken);
+    console.log(deleteData);
+    expect(deleteRes.status).toBe(200);
+    expect(deleteData.affectedRows).toBe(1);
+    done();
+})
+
+it("Get all tickets", async done => {
+    let ticketRes = await fetch(fetch_url + "tickets", {
+        method: "GET",
+        headers: HEADERS
+    });
+    let ticketData = await ticketRes.json();
+    expect(ticketRes.status).toBe(200);
+    expect(ticketData.length).toBe(20);
     done();
 })
 

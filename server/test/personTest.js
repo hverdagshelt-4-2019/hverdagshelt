@@ -33,12 +33,14 @@ server.on('connection', (socket) => {
     });
 });
 
-beforeAll( done => {
-    setup_database(pool, done);
+beforeAll( async done => {
+    await setup_database(pool);
+    done();
 });
 
-beforeEach( done => {
-    setup_database(pool, done);
+beforeEach( async done => {
+    await setup_database(pool);
+    done();
 });
 
 it("gets people", (done) => {

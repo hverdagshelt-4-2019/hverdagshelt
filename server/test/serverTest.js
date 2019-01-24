@@ -33,8 +33,9 @@ server.on('connection', (socket) => {
     });
 });
 
-beforeAll( done => {
-    setup_database(pool, done);
+beforeAll( async done => {
+    await setup_database(pool);
+    done();
 });
 
 test("create app", done => {

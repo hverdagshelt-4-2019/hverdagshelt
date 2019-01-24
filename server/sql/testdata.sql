@@ -103,13 +103,13 @@ INSERT INTO ticket_comment(ticket_id, description, submitter_id) VALUES
 
 -- Random companies
 
-INSERT INTO company (name) VALUES
-("Legit A/S"),
-("We Fix"),
-("GråGubben"),
-("MongoSQL"),
-("Guugel"),
-("Drogas");
+INSERT INTO company (id, name) VALUES
+(1, "Legit A/S"),
+(6, "We Fix"),
+(3, "GråGubben"),
+(4, "MongoSQL"),
+(5, "Guugel"),
+(2, "Drogas");
 
 -- Random public workers
 
