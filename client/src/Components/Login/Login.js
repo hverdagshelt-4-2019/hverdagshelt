@@ -44,15 +44,15 @@ export default class Login extends Component {
                     <form>
                         <div className="form-group">
                             <label>E-post</label>
-                            <input type="email" autoComplete="current-email" placeholder="E-post" className="form-control" name="email" onChange={e => {this.email = e.target.value; this.loginFail = false;}} />
+                            <input type="email" autoComplete="current-email" placeholder="E-post" className="form-control" name="email" onChange={e => {this.email = e.target.value; this.loginFail = false;}} onKeyPress={this.handleKeyPress} />
                         </div>
                         <div className="form-group">
                             <label>Passord</label>
-                            <input type="password" autoComplete="current-password" placeholder="Passord" className="form-control" name="password" onChange={e => {this.password = e.target.value; this.loginFail = false;}} />
+                            <input type="password" autoComplete="current-password" placeholder="Passord" className="form-control" name="password" onChange={e => {this.password = e.target.value; this.loginFail = false;}} onKeyPress={this.handleKeyPress} />
                             <NavLink to="registrerdeg">Registrer deg som bruker</NavLink>
                         </div>
                     </form>
-                    <button type="submit" className="btn customBtn" onClick={this.login}><i className="fas fa-sign-in-alt customIcon"></i>Logg inn </button>
+                    <button id="btnSubmit" type="submit" className="btn customBtn" onClick={this.login}><i className="fas fa-sign-in-alt customIcon"></i>Logg inn </button>
                     {this.loginFail &&
                     <div className="alert alert-danger">
                         <strong>Feil!</strong> Kontoen din eller passordet er feil. Hvis du ikke husker passordet, <NavLink to="resetpassord">tilbakestill det nå.</NavLink>
@@ -61,6 +61,12 @@ export default class Login extends Component {
                 </div>
             </div>
         );
+    }
+
+    handleKeyPress(e){
+        if(e.key === 'Enter'){
+            document.getElementById("btnSubmit").click();
+        }
     }
 }
 
