@@ -247,16 +247,19 @@ it("User can set responsibility", async done => {
 it("User can delete his own tickets", async done => {
     // TODO: Fix this route, it's broken. *Looks at Sindre*
     const ticketId = 2;
+    const body = {
+        submitter_id: 2
+    }
     let deleteRes = await fetch(fetch_url + "ticket/" + ticketId, {
         method: "DELETE",
         headers: {
             ...HEADERS,
             Authorization: "Bearer " + userToken
-        }
+        },
+        body: JSON.stringify(body)
     });
+    console.log(deleteRes);
     let deleteData = await deleteRes.json();
-    console.log("User token: " + userToken);
-    console.log(deleteData);
     expect(deleteRes.status).toBe(200);
     expect(deleteData.affectedRows).toBe(1);
     done();
@@ -272,6 +275,8 @@ it("Get all tickets", async done => {
     expect(ticketData.length).toBe(20);
     done();
 })
+
+
 
 afterAll((done) => {
     server.close(async () => {
