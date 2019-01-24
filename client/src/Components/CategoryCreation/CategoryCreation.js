@@ -31,7 +31,7 @@ export default class CategoryCreation extends Component<P, S>{
         return(
             <div className="container">
                 <div className="row">
-                    <div className="col-md-6" style={{width: '50%'}}>
+                    <div className="col-md-6 " style={{width: '50%'}}>
                         <h3>Ticket categories</h3>
                         <Adder addFunction={this.addTicketCategory.bind(this)} />
                             {this.ticketCategories.map((category, i) => (
