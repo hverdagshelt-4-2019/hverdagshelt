@@ -125,16 +125,16 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 </p>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
-                <div style={{fontWeight: "900", color: "#666B6E", marginTop: "15px"}} id={"statust"+this.ticket.id}>
+                <div style={{fontWeight: "900", color: "#666B6E"}} id={"statust"+this.ticket.id}>
                 {this.canSetStatus() && this.ticket.status && <Dropdown options={status} currValue={this.ticket.status} reciever={this.editStatus}/>}
                 {this.canSetStatus() && this.ticket.status && <textarea className="form-control-sm" style={{resize: "none"}} value={this.state.statusText} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({statusText: event.target.value}))}/>}
                 {!this.canSetStatus() && this.ticket.status && <p>{this.ticket.status} </p>}
                 </div>
-                  {!this.canSetStatus() && this.ticket.status && <p>{this.state.statusText}</p>}
               </div>
+              {!this.canSetStatus() && this.ticket.status && <p>{this.state.statusText}</p>}
 
               <p>
-                <i className="fas fa-user" style={{marginRight: "4px"}}></i> {this.ticket.name}
+                <i className="fas fa-user" style={{marginRight: "4px"}}></i> {this.ticket.name+""}
               </p>
 
               <hr />
