@@ -93,8 +93,7 @@ export default class EventList extends Component{
         eventService.getAllEvents() 
         .then((events : {data: Event[]}) => { 
             this.allEvents = events.data;
-            this.allEvents.sort(function(a,b){return new Date(b.happening_time) - new Date(a.happening_time)});
-            let arkEvents = this.allEvents.filter(e => e.status != "Fullført");
+            this.allEvents.sort(function(a,b){return new Date(a.happening_time) - new Date(b.happening_time)});
             this.setState({events: this.allEvents});
         })
         .catch((error : Error) => console.log("Error occured: " + error.message));
