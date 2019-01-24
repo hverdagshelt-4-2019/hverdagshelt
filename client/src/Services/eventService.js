@@ -10,8 +10,6 @@ export class Event {
     description;
     picture;
     happening_time;
-    lat;
-    long;
 }
 
 function config() {

@@ -75,7 +75,7 @@ it("Can add a ticket and edit it", async done => {
     let ticket = {
         commune: "Vik",
         lat: 63.42972,
-        long: 10.39333,
+        lng: 10.39333,
         title: "Tezt",
         description: "This is a description",
         category: "Sykkel"
@@ -110,7 +110,7 @@ it("Can add a ticket and edit it", async done => {
         title: "Ost",
         description: "Changed desc",
         lat: 20.3,
-        long: 50.2
+        lng: 50.2
     }
 
     let editTicketRes = await fetch(fetch_url + "ticketedit/" + insertId, {
@@ -136,7 +136,7 @@ it("Can add a ticket and edit it", async done => {
     expect(ticketData[0].category).toBe(newTicket.category);
     expect(ticketData[0].description).toBe(newTicket.description);
     expect(ticketData[0].lat).toBe(newTicket.lat);
-    expect(ticketData[0].lng).toBe(newTicket.long);
+    expect(ticketData[0].lng).toBe(newTicket.lng);
     done();
 })
 

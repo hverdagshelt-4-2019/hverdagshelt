@@ -49,7 +49,7 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                 description: '',
                 picture: '',
                 lat: '',
-                long: '',
+                lng: '',
                 imageAdded: false,
                 categories: []
             };
@@ -199,7 +199,7 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
         if (!this.state.title) this.state.title = this.ticket.title;
         if (!this.state.description) this.state.description = this.ticket.description;
         if (!this.state.category) this.state.category = this.ticket.category;
-        if (!this.state.long) this.state.long = this.ticket.long;
+        if (!this.state.lng) this.state.lng = this.ticket.lng;
         if (!this.state.lat) this.state.lat = this.ticket.lat;
         let postId: Number;
         let posted = true;
