@@ -199,8 +199,7 @@ it("Can get tickets by commune", async done => {
 })
 
 it("Can get tickets by company", async done =>{
-    // TODO: Sindre needs to fix his shit in ticketDao.
-    const company = "Drogas";
+    // TODO: Fix this method, gives empty array
     let ticketRes = await fetch(fetch_url + "tickets", {
         method: "GET",
         headers: {
@@ -211,11 +210,11 @@ it("Can get tickets by company", async done =>{
     let ticketData = await ticketRes.json();
     console.log(ticketData);
     expect(ticketRes.status).toBe(200);
+    expect(ticketData.length).toBe(2);
     done();
 })
 
 it("User can set responsibility", async done => {
-    // TODO: Sindre needs to fix his shit again
     const comp = "Drogas";
     const body = {
         name: comp
@@ -245,7 +244,6 @@ it("User can set responsibility", async done => {
 })
 
 it("User can delete his own tickets", async done => {
-    // TODO: Fix this route, it's broken. *Looks at Sindre*
     const ticketId = 2;
     const body = {
         submitter_id: 2
@@ -262,6 +260,14 @@ it("User can delete his own tickets", async done => {
     let deleteData = await deleteRes.json();
     expect(deleteRes.status).toBe(200);
     expect(deleteData.affectedRows).toBe(1);
+
+    let getTicketRes = await fetch(fetch_url + "ticket/" + ticketId, {
+        method: "GET",
+        headers: HEADERS
+    });
+    let getTicketData = await getTicketRes.json();
+    expect(getTicketRes.status).toBe(200);
+    expect(getTicketData).toEqual([])
     done();
 })
 
@@ -273,6 +279,29 @@ it("Get all tickets", async done => {
     let ticketData = await ticketRes.json();
     expect(ticketRes.status).toBe(200);
     expect(ticketData.length).toBe(20);
+    done();
+})
+
+it("Can get tickets by user", async done => {
+    let ticketRes = await fetch(fetch_url + "ticketsByUser", {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + userToken
+        }
+    })
+    let ticketData = await ticketRes.json();
+    expect(ticketData.length).toBe(2);
+    expect(ticketRes.status).toBe(200);
+    done();
+})
+
+it("Cant get ticket if not logged in", async done => {
+    let ticketRes = await fetch(fetch_url + "ticketsByUser", {
+        method: "GET",
+        headers: HEADERS
+    })
+    expect(ticketRes.status).toBe(401);
     done();
 })
 
