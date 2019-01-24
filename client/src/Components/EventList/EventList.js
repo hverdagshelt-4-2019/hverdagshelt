@@ -8,12 +8,16 @@ import communeService from '../../Services/communeService';
 import SingleEvent from './SingleEvent';
 import css from './eventStyle.css';
 import $ from 'jquery';
+import PageNavigator from "../PageNavigator/PageNavigator";
 
 export default class EventList extends Component{
     communes = [];
     communesArray = [];
     eventCategories : Category[] = []; 
     allEvents = [];
+    level = '';
+    base = 0;
+    pageLim = 20;
 
     constructor() {
         super();
@@ -68,8 +72,9 @@ export default class EventList extends Component{
                         float: "right",
                         marginLeft: '5%'}}>
                         <br />
+                        <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.allEvents.length}/>
                         <ul className={css.eventList}>
-                            {this.state.events.map((event, i) => (
+                            {this.state.events.slice(this.base*this.pageLim, (this.base+1)*this.pageLim).map((event, i) => (
                                 <div key={i}>
                                     <SingleEvent theEvent={event}>
                                     </SingleEvent>
@@ -77,6 +82,7 @@ export default class EventList extends Component{
                                 </div>
                             ))}
                         </ul>
+                        <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.allEvents.length}/>
                     </div>
                 </div>
                 <div style={{height: '80px'}} />
@@ -120,6 +126,14 @@ export default class EventList extends Component{
         }
         ));*/ 
             
+    }
+
+    increment() {
+        this.base++;
+    }
+
+    decrement() {
+        this.base--;
     }
 
     changeArrow(){

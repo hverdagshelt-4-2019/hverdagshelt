@@ -9,6 +9,7 @@ import SingleTicket from './SingleTicket';
 import Ticket from '../Ticket/Ticket';
 import css from './ticketStyle.css';
 import $ from 'jquery';
+import PageNavigator from '../PageNavigator/PageNavigator'
 
 //--- This class is not finished. No filter function created. ---\\
 //At the moment, the list displays all tickets, not filtered.
@@ -19,7 +20,7 @@ export default class TicketList extends Component{
     allTickets = [];
     level = '';
     base = 0;
-    pageLim = 25;
+    pageLim = 20;
 
     constructor() {
         super();
@@ -27,8 +28,6 @@ export default class TicketList extends Component{
             tickets: []
         };
     }
-
-
 
     render(){
         return(
@@ -111,7 +110,10 @@ export default class TicketList extends Component{
                         float: "right",
                         marginLeft: '5%'}}>
                         <br />
-                        <ul className={css.ticketList}>
+                        {this.allTickets.length > this.pageLim &&
+                            <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.allTickets.length}/>
+                        }
+                                  <ul className={css.ticketList}>
                             {this.state.tickets.slice(this.pageLim*this.base, this.pageLim*(this.base + 1)).map((ticket, i) => (
                                     <div key={ticket.id}>
                                     <SingleTicket 
@@ -121,6 +123,9 @@ export default class TicketList extends Component{
                                     </div>
                             ))}
                         </ul>
+                        {this.allTickets.length > this.pageLim &&
+                            <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.allTickets.length}/>
+                        }
                     </div>
                 </div>
                 <div style={{height: '80px'}} />
@@ -171,6 +176,14 @@ export default class TicketList extends Component{
         }
         ));*/ 
             
+    }
+
+    increment() {
+        this.base++;
+    }
+
+    decrement() {
+        this.base--;
     }
 
     changeArrow(){
