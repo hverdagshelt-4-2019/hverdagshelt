@@ -16,25 +16,32 @@ export default class Event extends Component<{ match: { params: { id: number } }
     event: {picture:any} = {picture: ''};
     sub_date = null;
 
-
     render() {
         if(!this.event) return (<></>);
         return (
            <div className={css.eventContainer}>
-                    <time dateTime="2014-07-20">
-                        <span className="day">4</span>
-                        <span className="month">Jul</span>
-                        <span className="year">2014</span>
+                    <time>
+                        <span>{
+                            this.event.happening_time !== undefined && this.event.happening_time.replace('T', ' ').replace('.000Z', '').slice(0, -9)
+                        }</span>
                     </time>
                     <img id="picture" alt="Responsive Image" />
                     <div className={css.eventInfo}>
                     <h2 className="title">{this.event.title}</h2>
                     <hr/>
-                    <p><i className="fas fa-map-marker-alt" style={{marginRight: "4px"}}></i> {this.event.commune_name}</p>
-                    <hr/>
-                    <p><i className="fas fa-archive" style={{marginRight: "4px"}}></i> {this.event.category}</p>
-                    <hr/>
-                    <p><i className="fas fa-calendar" style={{marginRight: "8px"}}></i>{this.event.happening_time !== undefined && this.event.happening_time.replace('T', ' ').replace('.000Z', '').slice(0, -3)}</p>
+                    
+                    <ul className="inlineStuff">
+                    <li style={{width: "33%"}}>
+                    <i className="fas fa-clock" style={{marginRight: "4px"}}></i> {this.event.happening_time !== undefined && this.event.happening_time.replace('T', ' ').replace('.000Z', '').slice(10, -3)}
+                    </li>
+                    <li style={{width: "34%"}}>
+                    <i className="fas fa-map-marker-alt" style={{marginRight: "4px"}}></i> {this.event.commune_name}
+                    </li>
+                    <li style={{width: "33%"}}>
+                    <i className="fas fa-archive" style={{marginRight: "4px"}}></i> {this.event.category}
+                    </li>
+                    </ul>
+                    
                     <hr/>
                     <p>{this.event.description}</p>
                     </div>
@@ -44,13 +51,12 @@ export default class Event extends Component<{ match: { params: { id: number } }
     }
 
     mounted() {
+        this.formatDate;
         eventService.
             getEvent(this.props.match.params.id)
             .then(event => {
                 this.event = event.data[0];
-                this.sub_date = this.event.happening_time.split('T', 1)[0] + ' ' + this.event.happening_time.split('T')[1].split('.', 1);
-                console.log(this.props.match.params.id);
-                console.log(this.event.picture);
+                this.sub_date = this.event.happening_time;
                 this.getImage(this.event.picture);
             })
             .catch((error: Error) => console.log(error.message));
