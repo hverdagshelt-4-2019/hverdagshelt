@@ -7,6 +7,10 @@ import { shallow, mount } from 'enzyme';
 describe('Statistics tests', () => {
     const wrapper = shallow(<Statistics />);
 
+    it('renders Statistics', () => {
+        expect(wrapper.exists()).toBe(true);
+    });
+
     it('renders div', () =>{
         expect(wrapper.find('div').length).toEqual(8);
     });

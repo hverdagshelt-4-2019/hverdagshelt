@@ -7,6 +7,10 @@ import { shallow, mount } from 'enzyme';
 describe('ChangePassword tests', () => {
     const wrapper = shallow(<ChangePassword />);
 
+    it('renders ChangePassword', () => {
+         expect(wrapper.exists()).toBe(true);
+    });
+
     it('renders a single div initially', () => {
          expect(wrapper.find('div').length).toEqual(1);
     });

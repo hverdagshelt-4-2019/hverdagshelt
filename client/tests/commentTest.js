@@ -7,7 +7,11 @@ import { shallow, mount } from 'enzyme';
 describe('Comment tests', () => {
     const wrapper = shallow(<Comment name="Navn" description="Beskrivelse" />);
 
-    it('renders a four divs initially', () => {
+    it('renders Comment', () => {
+        expect(wrapper.exists()).toBe(true);
+    });
+
+    it('renders four divs initially', () => {
          expect(wrapper.find('div').length).toEqual(4);
     });
 });
