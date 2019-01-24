@@ -9,15 +9,14 @@ jobs:
   - stage: test
     name: test_server
     before_script:
-    - 'cd server; echo " export default
-    { mysql: { password: ''"$SINDRTHO_MYSQL_PASS"''},
-    email: { user:  "hverdagsheltene4@gmail.com", password: ''"$MAIL_PASSWORD"'' },
-    mapskey: ''"MAPS_KEY"''",
+    - cd server; echo "export default
+    { mysql: { password: "$SINDRTHO_MYSQL_PASS"},
+    email: { user:  "hverdagsheltene4@gmail.com", password: "$MAIL_PASSWORD" },
+    mapskey: "$MAPS_KEY",
     test: {
-      mysql: { password: ''"$ALEKSJOH_MYSQL_PASS"''},
-      email: { user:  "hverdagsheltene4@gmail.com", password: ''"$MAIL_TEST_PASSWORD"'' } } }
-      " > private.config.js;
-      npm install'
+      mysql: { password: "$ALEKSJOH_MYSQL_PASS"},
+      email: { user:  "hverdagsheltene4@gmail.com", password: "$MAIL_TEST_PASSWORD" } } }
+      " > private.config.js; npm install
     script:
     - npm test
   - stage: test
