@@ -83,7 +83,10 @@ export default class Navbar extends Component {
                     <li className="nav-item">
                         <NavLink style={{color: "white", height: "50px"}} className={"nav-link " + css.customLink} activeClassName={css.active} exact to="/minside">
                             <div className="topOfLink">
-                                <i className="fas fa-user"></i> Min Side
+                                {localStorage.getItem('level') === 'none' ? '' : <i className="fas fa-user"></i>}
+                                {' '}
+                                {localStorage.getItem('level') === 'none' ? "" : "Min Side"}
+                                
                             </div>
                         </NavLink>
                     </li>
