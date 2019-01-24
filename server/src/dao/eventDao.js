@@ -1,9 +1,6 @@
 import Dao from './dao.js';
 
 export default class EventDao extends Dao {
-  getAll(communes, callback) {
-    super.query('SELECT * FROM happening WHERE commune_name IN (?)', [communes], callback);
-  }
 
   getAllCategoryFilter(communes, categories, callback) {
     super.query(

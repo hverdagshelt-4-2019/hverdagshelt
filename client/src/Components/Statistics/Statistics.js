@@ -60,8 +60,6 @@ export default class Statistics extends Component{
                         {!this.state.isHidden && <DropDown selected={this.selectedCommune} communes={this.communes} clickFunc={this.updateLocal.bind(this)}/>}
                     </div>
                 </nav>
-                <div>
-                <h1>{this.props.title}</h1>
                 <div className="container">
                     <div className="row">
                         <div className="col" style={{border:'1px solid lightgrey'}}>
@@ -83,7 +81,7 @@ export default class Statistics extends Component{
                             <small>Innsendte saker: {this.state.ticketsSent}</small><br/>
                             <small>Løste saker: {this.state.ticketsSolved}</small><br/>
                             <small>Uløste saker: {(this.state.ticketsSent - this.state.ticketsSolved)}</small><br/>
-                            <small>Prosentandel løste saker: {(((this.state.ticketsSolved / this.state.ticketsSent)*100).toFixed(2))}{' '}%</small>
+                            <small>Prosentandel løste saker: {(this.state.ticketsSent == 0) ? 'Ingen saker innsendt.' : (((this.state.ticketsSolved / this.state.ticketsSent)*100).toFixed(2) + ' %')}</small>
                             <br/>
                             <br/>
                         </div>
@@ -142,7 +140,7 @@ export default class Statistics extends Component{
                     </div>
                 </div>
             </div>
-            </div>
+    
         )
     }
 
