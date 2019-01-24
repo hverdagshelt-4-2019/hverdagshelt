@@ -48,9 +48,7 @@ static propTypes = {
             title: '',
             description: '',
             picture: '',
-            imageAdded: false
         };
-        this.handleImageAdded = this.handleImageAdded.bind(this);
     }
 
     ticketCategories: Category[] = [];
@@ -80,10 +78,6 @@ static propTypes = {
         pa.lng = lng;
         this.setState({greatPlaces: [pa],
         });
-   }
-
-   handleImageAdded() {
-       this.state.imageAdded ? this.setState({imageAdded: false}) : this.setState({imageAdded: true});
    }
 
 
@@ -123,7 +117,7 @@ static propTypes = {
 
                             <h4>Bilde</h4>
                             <label htmlFor="InputFile">Last opp bilde</label>
-                            <input type="file" className="form-control-file" id="InputFile" onChange={this.handleImageAdded}/>
+                            <input type="file" className="form-control-file" id="InputFile" />
                             <small id="fileHelp" className="form-text text-muted"></small>
                             </div>
                             <hr />
@@ -206,20 +200,21 @@ static propTypes = {
             .catch((error : Error) => {
                 console.log(error.message);
                 Alert.danger('Opplasting mislyktes, vennligst prøv igjen!');   
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
             });
 
-            if(postId !== null && this.state.imageAdded){
+            if(postId !== null && document.getElementById("InputFile").files[0] !== undefined){
             this.addImage(postId);
             }
 
             if(this.state.title && this.state.description && this.state.category && postId !== null){
-                this.props.history.push('/sak/' + postId)
+                this.props.history.push('/');
+                Alert.success("Sak lagt til");
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
             }
-            
-            console.log(postId);
-            console.log(this.state.imageAdded);
         } else {
             Alert.danger('Opplasting mislyktes, sjekk at du har fylt inn alle feltene (bilde er frivillig).');
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
         }
     }
 
