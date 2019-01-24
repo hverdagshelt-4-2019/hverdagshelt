@@ -32,15 +32,6 @@ export default class TicketDao extends Dao {
         )
     }
 
-    getTicketsByCategory(communes, categories, callback) {
-        super.query("SELECT t.id, email as submitter_email, responsible_commune, c2.name as company_name, category, \n" +
-            "title, description, picture, submitted_time, finished_time, status, lat, lng FROM ticket t JOIN person p \n" +
-            "ON p.id = t.submitter_id LEFT JOIN company c2 ON responsible_company_id = c2.id WHERE responsible_commune in(?) AND \n" +
-            "category IN (?);",
-            [communes, categories],
-            callback)
-    }
-
     addTicket(json, callback) {
         let params = [json.userid, json.commune, json.category, json.title, json.description, json.picture, json.lat, json.long]
         super.query("INSERT INTO ticket (submitter_id, responsible_commune, category, title, description, picture, lat, lng) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",

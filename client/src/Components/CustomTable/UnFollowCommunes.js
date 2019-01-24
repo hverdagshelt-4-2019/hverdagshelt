@@ -31,7 +31,7 @@ export default class FollowCommunes extends Component {
     componentDidMount() {
         communeService.getUnFollowedCommunes().then(res => {
             this.setState({
-                data: res.data.map(e => e.name),
+                data: res.data.map(e => e.commune_name),
             }, () => {
                 this.sortArray();
             });

@@ -24,8 +24,8 @@ export default class CustomTable extends Component {
 
     componentDidMount() {
         communeService.getAllCommunes().then(res => this.setState({
-            data: res.data.map(e => e.name),
-            rows: res.data.map(e => e.name).slice(0, 8)
+            data: res.data.map(e => e.commune_name),
+            rows: res.data.map(e => e.commune_name).slice(0, 8)
         })).catch(err => console.log(err))
     }
 
