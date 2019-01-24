@@ -28,8 +28,14 @@ export default class TicketList extends Component{
     render(){
         return(
             <div className={"shadow " + css.aroundTickets}>
-                <div style={{height: '10px'}}></div>
-                <h3 className="col-xs-6 col-sm-pull-9" align="center" style={{fontFamily: "Lato, sans-serif", fontWeight: "600", opacity: "0.7"}}>LISTE OVER SAKER FRA KOMMUNENE DU FØLGER</h3>
+                <br/>
+                <h3 className="col-xs-6 col-sm-pull-9" align="center" style={{fontFamily: "Lato, sans-serif", fontWeight: "600", opacity: "0.7"}}>
+                    Liste over saker 
+                    {(localStorage.getItem('level') == 'admin' || localStorage.getItem('level') == 'none') && '' }
+                    {(localStorage.getItem('level') == 'publicworker') && ' fra din kommune' }
+                    {(localStorage.getItem('level') == 'user') && ' fra kommunene du følger' }
+                </h3>
+                <hr/>
                 <div className="col-xs-6 col-sm-pull-9 sidebar-offcanvas" id="sidebar" style={{width: '2%', float: 'left', margin: '1%'}}>
                     <h5 id="tempText">Kategorier:</h5>
                     <button id="arrowBtn" className={"btn customBtn " + css.btnCircle} onClick={this.changeArrow} data-toggle="collapse" href="#allOptionsCat">
