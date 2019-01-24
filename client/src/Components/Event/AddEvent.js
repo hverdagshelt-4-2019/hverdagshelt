@@ -29,17 +29,10 @@ export default class AddEvent extends Component {
             description: '',
             picture: '',
             happening_time: new Date(),
-            imageAdded: false
         };
-        this.handleImageAdded = this.handleImageAdded.bind(this);
-        //this.handleDate = this.handleDate.bind(this);
     }
 
     eventCategories: Category[] = [];
-
-   handleImageAdded() {
-       this.state.imageAdded ? this.setState({imageAdded: false}) : this.setState({imageAdded: true});
-   }
 
    handleDate(e) {
        let date = e._d;
@@ -90,7 +83,7 @@ export default class AddEvent extends Component {
                     <div className="form-group">
                     <h4>Bilde</h4>
                     <label htmlFor="InputFile">Last opp bilde</label>
-                    <input type="file" className="form-control-file" id="InputFile" onChange={this.handleImageAdded}/>
+                    <input type="file" className="form-control-file" id="InputFile" />
                     <small id="fileHelp" className="form-text text-muted"></small>
                     </div>                            
                     </form>
@@ -154,17 +147,21 @@ export default class AddEvent extends Component {
             .catch((error : Error) => {
                 console.log(error.message);
                 Alert.danger('Opplasting mislyktes, vennligst prøv igjen!');
+                document.documentElement.scrollTop = 0;
             });
 
-            if(eventId !== null && this.state.imageAdded){
+            if(eventId !== null && document.getElementById("InputFile").files[0] !== undefined){
             this.addImage(eventId);
             }
 
             if(eventId !== null) {
-                this.props.history.push('/begivenhet/' + eventId);
+                this.props.history.push('/begivenheter');
+                Alert.success('Begivenhet opplastet!');
+                document.documentElement.scrollTop = 0;
             }
         } else {
              Alert.danger('Opplasting mislyktes! Sjekk at du fylte inn alle nødvendige felt (bilde er frivillig).');
+             document.documentElement.scrollTop = 0;
         }
     }
 
