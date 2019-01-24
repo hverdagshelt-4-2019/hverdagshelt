@@ -14,7 +14,7 @@ export class SpecificCategory extends Component{
             <li className="list-group-item">
                 <div className={styles.categoryDiv}>
                     <h3 to=''>{this.props.theCategory.name}</h3>
-                    <button className="btn btn-danger btn-sm" onClick={this.delete}>Slett</button>
+                    <button className="btn btn-danger btn-sm" onClick={this.delete}><i class="fa fa-trash"></i> {' '} Slett</button>
                 </div>
             </li>
         )

@@ -29,6 +29,7 @@
     margin-right: auto;
     margin-top: 30px;
     min-height: 600px;
+    overflow: hidden;
 }
 .ticketList > div > a > li {
     background-color: rgb(255, 255, 255);
