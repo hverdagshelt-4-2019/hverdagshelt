@@ -125,11 +125,13 @@ export default class SimpleMap extends Component {
         let category = document.getElementById("category");
         category.innerHTML = localTicket.category;
 
+        let comments = document.getElementById("comments");
+        comments.innerHTML = localTicket.countcomm;
         let para = document.createElement("i");
-        let vote = document.getElementById("vote");
+        para.style.marginRight = "4px"
+        para.setAttribute("class", "fas fa-comment");
+        comments.appendChild(para);
         console.log(localTicket);
-        vote.innerHTML = localTicket.countcomm;
-        vote.appendChild(para);
 
         this.setState({cId: localTicket.id});
     };
@@ -165,14 +167,12 @@ export default class SimpleMap extends Component {
                     <img id="picture" src="/image/logo.png" className={"img-fluid "+css.ticketImg} alt="Responsive image"/>
                     <br/>
                     <br/>
-                    <h5 id="header" className={css.header}>Velkommen til hverdagshelt</h5>
+                    <h5 id="header" className={css.header}>Hvis du ikke er innlogget, gi tilgang til posisjons tjeneste</h5>
                     <hr className={css.hr}/>
                     <p id="category" style={{color: 'white', fontSize: 'small', marginLeft: '10px', marginRight: '10px'}}></p>
+                    <p id="comments" style={{color: 'white', fontSize: 'small', float: "right"}}></p>
                     <hr className={css.hr}/>
                     </NavLink>
-                    <div className = {css.aroundButton}>
-                        <button id="vote" type="button" className={"btn customBtn " + css.voteB}><i className={"fas "+css["fa-thumbs-up"]}></i></button>
-                    </div>
                 </div>
                 
                 <div className={"shadow "+css.map} style={{ height: '87vh'}}>
