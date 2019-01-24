@@ -95,17 +95,20 @@ static propTypes = {
                         <div className="col-lg-10" style={{marginLeft: "8%", marginRight: "8%"}}>
                             <br />
                             <h1>Rapporter en ny sak</h1>
-
                             <hr />
+                            <form>
+                            <div className="form-group">
 
                             <h4>Tittel</h4>
                             <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))}/>
-
+</div>
+<div className="form-group">
                              <h4>Beskrivelse</h4>
                             <textarea className="form-control" style={{width:"100%", resize: "none"}} 
                                 onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))}
                             />
-
+</div>
+<div className="form-group">
                             <h4>Kategori</h4>
                             
                             <select className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({category: event.target.value}))}>
@@ -115,13 +118,16 @@ static propTypes = {
                                 </option>
                                 ))}
                             </select>
-
+</div>
+<div className="form-group">
 
                             <h4>Bilde</h4>
                             <label htmlFor="InputFile">Last opp bilde</label>
                             <input type="file" className="form-control-file" id="InputFile" onChange={this.handleImageAdded}/>
                             <small id="fileHelp" className="form-text text-muted"></small>
+                            </div>
                             <hr />
+                            <div className="form-group">
 
                             <div className = "map" style={{ height: '300px', width: '100%'}}>
                                 <h6>Velg område på kartet for hendelsen du vil rapportere</h6>
@@ -138,6 +144,9 @@ static propTypes = {
                                         hover={this.props.hoverKey === this.props.greatPlaces[0].id} />
                                 </GoogleMapReact>
                             </div>
+                            </div>
+                            </form>
+
                             <div style={{height: '10px'}}></div>
                             <hr />
                             

@@ -53,27 +53,16 @@ export default class Statistics extends Component{
     render(){
         return(
             <div className="aroundStuff">
-                <ul className="nav nav-tabs">
-                    <li className="nav-item"  onClick={this.setNational}>
-                        <NavLink 
-                            className="nav-link active" 
-                            data-toggle="tab" 
-                            to="/National"
-                        >
-                            Nasjonalt
-                        </NavLink>
-                    </li> 
-                    <li className="nav-item" onClick={this.setLocal}>                            
-                        <NavLink 
-                            className="nav-link" 
-                            data-toggle="tab" 
-                            to="Lokal"
-                        >
-                            Lokalt
-                        </NavLink>
-                    </li>
-                    {!this.state.isHidden && <DropDown selected={this.selectedCommune} communes={this.communes} clickFunc={this.updateLocal.bind(this)}/>}
-                </ul>
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-selected="true"  onClick={this.setNational}>Nasjonalt</a>
+                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-home" role="tab" aria-selected="false" onClick={this.setLocal}>Lokalt</a>
+                        {!this.state.isHidden && <DropDown selected={this.selectedCommune} communes={this.communes} clickFunc={this.updateLocal.bind(this)}/>}
+                    </div>
+                </nav>
+
+
+                
 
 
                 <div>

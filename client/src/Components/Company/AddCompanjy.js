@@ -17,7 +17,7 @@ export default class AddCompany extends Component<{history: string[]}>{
             <div className="container" >
                 <br/>
                 <div className="row">
-                    <div className="col-md-6 rounded shadow p-3 mb-5" style={{backgroundColor:'white', border: "2px solid lightblue"}}>
+                    <div className="col-md-6 rounded shadow p-3 mb-5" style={{backgroundColor:'white', border: "2px solid white"}}>
                         <br/>
                         <h4>Registrer nytt selskap</h4>
                         <hr/>

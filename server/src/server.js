@@ -213,15 +213,6 @@ export function create_app(pool) {
         });
     });
 
-    //TODO: Remove not used (?)
-    app.get("/tickets/category", (req, res) =>{
-        console.log(req.body);
-        ticketdao.getTicketsByCategory(req.body.communes, req.body.categories, (status, data) =>{
-            res.status(status);
-            res.json(data);
-        });
-    });
-
     app.get("/ticketsByUser", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
@@ -883,22 +874,26 @@ export function create_app(pool) {
             if(err) {
                 console.log(err);
             } else {
-                ticketdao.setStatus(req.params.ticket_id, req.body, (status, data) =>{
-                    if(status == 200) {
-                        console.log(req.body.email);
-                        let mailOptions = {
-                            from: 'Hverdagsheltene',
-                            to: req.body.email,
-                            subject: 'Status oppdatering',
-                            text: ('Ditt problem har fått ny status.\n' + req.body.statusText + '\nSe ny status på: ' + config.domainname+'/sak/' + req.params.ticket_id)
-                        };
-                        sendEmail(transporter, mailOptions);
-                        res.status(status);
-                        res.json(data);
-                    } else {
-                        console.log('Feil med å oppdatere status i serverfil');
-                    }
-                });
+                if(authData.user.publicworkercommune === req.body.responsible_commune) {
+                    ticketdao.setStatus(req.params.ticket_id, req.body, (status, data) =>{
+                        if(status == 200) {
+                            console.log(req.body.email);
+                            let mailOptions = {
+                                from: 'Hverdagsheltene',
+                                to: req.body.email,
+                                subject: 'Status oppdatering',
+                                text: ('Ditt problem har fått ny status.\n' + req.body.statusText + '\nSe ny status på: ' + config.domainname+'/sak/' + req.params.ticket_id)
+                            };
+                            sendEmail(transporter, mailOptions);
+                            res.status(status);
+                            res.json(data);
+                        } else {
+                            console.log('Feil med å oppdatere status i serverfil');
+                        }
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
             }
         });
     });

@@ -28,7 +28,8 @@ export default class TicketList extends Component{
     render(){
         return(
             <div className={"shadow " + css.aroundTickets}>
-                <br/>
+                <div style={{height: '10px'}}></div>
+                <h1 className="col-xs-6 col-sm-pull-9" align="center">LISTE OVER SAKER FRA KOMMUNENE DU FØLGER</h1>
                 <div className="col-xs-6 col-sm-pull-9 sidebar-offcanvas" id="sidebar" style={{width: '2%', float: 'left', margin: '1%'}}>
                     <h5 id="tempText">Kategorier:</h5>
                     <button id="arrowBtn" className={"btn customBtn " + css.btnCircle} onClick={this.changeArrow} data-toggle="collapse" href="#allOptionsCat">
@@ -77,7 +78,7 @@ export default class TicketList extends Component{
                                 {
                                     this.followedCommunes.map(commune =>
                                         <li key={commune.commune_name} className="list-group-item">
-                                            <div style={{marginLeft: "6px"}}>
+                                            <div key={commune.commune_name} style={{marginLeft: "6px"}}>
                                                 <input type="checkbox" style={{width: "17px", height: "17px"}}
                                                        className="form-check-input markCheck commune"
                                                        id={"check" + commune.commune_name} defaultChecked/>
@@ -107,7 +108,7 @@ export default class TicketList extends Component{
                         <br />
                         <ul className={css.ticketList}>
                             {this.state.tickets.map((ticket, i) => (
-                                    <div>
+                                    <div key={ticket.id}>
                                     <SingleTicket 
                                         key={i}
                                         theTicket={ticket}
