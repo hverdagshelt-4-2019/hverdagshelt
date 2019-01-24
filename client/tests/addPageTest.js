@@ -8,6 +8,6 @@ describe('AddPage tests', () => {
     const wrapper = shallow(<AddPage />);
 
     it('renders all divs', () => {
-        expect(wrapper.find('div').length).toEqual(8);
+        expect(wrapper.find('div').length).toEqual(9);
     });      
 });
