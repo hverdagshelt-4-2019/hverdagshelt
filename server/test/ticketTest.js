@@ -305,8 +305,6 @@ it("Cant get ticket if not logged in", async done => {
     done();
 })
 
-
-
 afterAll((done) => {
     server.close(async () => {
         let promises = Object.keys(socketMap).map((key) => {

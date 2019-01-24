@@ -9,15 +9,15 @@ export default class DropDown extends Component{
 
     render(){
         return(
-                <select 
-                    value={this.props.selected}
-                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.commune = event.target.value)} 
-                    onClick={this.handleSelect}
-                >
-                    {this.props.communes.map((commune, i) => (
-                        <option key={i}  value={commune}>{commune}</option>
-                    ))}
-                </select>
+            <select 
+                value={this.props.selected}
+                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.commune = event.target.value)} 
+                onClick={this.handleSelect}
+            >
+                {this.props.communes.map((commune, i) => (
+                    <option key={i}  value={commune}>{commune}</option>
+                ))}
+            </select>
         )
     }
 
