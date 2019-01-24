@@ -77,7 +77,7 @@ export default class TicketList extends Component{
                                 {
                                     this.followedCommunes.map(commune =>
                                         <li key={commune.commune_name} className="list-group-item">
-                                            <div style={{marginLeft: "6px"}}>
+                                            <div key={commune.commune_name} style={{marginLeft: "6px"}}>
                                                 <input type="checkbox" style={{width: "17px", height: "17px"}}
                                                        className="form-check-input markCheck commune"
                                                        id={"check" + commune.commune_name} defaultChecked/>
@@ -107,7 +107,7 @@ export default class TicketList extends Component{
                         <br />
                         <ul className={css.ticketList}>
                             {this.state.tickets.map((ticket, i) => (
-                                    <div>
+                                    <div key={ticket.id}>
                                     <SingleTicket 
                                         key={i}
                                         theTicket={ticket}

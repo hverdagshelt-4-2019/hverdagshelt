@@ -2,7 +2,7 @@ import Dao from './dao.js'
 
 export default class CommentDao extends Dao {
     getAll(id, callback) {
-        super.query("SELECT description, person.username as name FROM ticket_comment JOIN person ON ticket_comment.submitter_id = person.id WHERE ticket_id = ?", [id], callback);
+        super.query("SELECT ticket_comment.id, description, person.username as name FROM ticket_comment JOIN person ON ticket_comment.submitter_id = person.id WHERE ticket_id = ?", [id], callback);
     }
 
     addComment(json, callback) {
