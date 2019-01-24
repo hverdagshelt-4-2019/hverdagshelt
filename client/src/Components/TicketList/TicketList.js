@@ -18,12 +18,17 @@ export default class TicketList extends Component{
     ticketCategories : Category[] = []; //Ticking off input box will add category to the array
     allTickets = [];
     level = '';
+    base = 0;
+    pageLim = 25;
+
     constructor() {
         super();
         this.state = {
             tickets: []
         };
     }
+
+
 
     render(){
         return(
@@ -107,7 +112,7 @@ export default class TicketList extends Component{
                         marginLeft: '5%'}}>
                         <br />
                         <ul className={css.ticketList}>
-                            {this.state.tickets.map((ticket, i) => (
+                            {this.state.tickets.slice(this.pageLim*this.base, this.pageLim*(this.base + 1)).map((ticket, i) => (
                                     <div key={ticket.id}>
                                     <SingleTicket 
                                         key={i}
