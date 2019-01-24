@@ -14,4 +14,8 @@ describe('Register tests', () => {
     it('renders div', () =>{
         expect(wrapper.find('div').length).toEqual(5);
     });
+
+    it('renders the CustomTable', () => {
+        expect(wrapper.find('CustomTable').length).toEqual(1);
+    })
 });

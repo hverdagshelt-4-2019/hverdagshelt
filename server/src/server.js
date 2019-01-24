@@ -282,6 +282,7 @@ export function create_app(pool) {
         });
     });
 
+    // TODO: Delete this?
     app.get("/events/category", (req, res) =>{
         console.log(req.body);
         eventdao.getAllCategoryFilter(req.body.communes, req.body.categories, (status, res) =>{

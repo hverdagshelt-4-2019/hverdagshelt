@@ -34,14 +34,14 @@ export default class TicketList extends Component{
         return(
             <div className={"shadow " + css.aroundTickets}>
                 <div style={{height: '10px'}}></div>
-                <h1 className="col-xs-6 col-sm-pull-9" align="center">LISTE OVER SAKER FRA KOMMUNENE DU FØLGER</h1>
+                <h3 className="col-xs-6 col-sm-pull-9" align="center" style={{fontFamily: "Lato, sans-serif", fontWeight: "600", opacity: "0.7"}}>LISTE OVER SAKER FRA KOMMUNENE DU FØLGER</h3>
                 <div className="col-xs-6 col-sm-pull-9 sidebar-offcanvas" id="sidebar" style={{width: '2%', float: 'left', margin: '1%'}}>
                     <h5 id="tempText">Kategorier:</h5>
                     <button id="arrowBtn" className={"btn customBtn " + css.btnCircle} onClick={this.changeArrow} data-toggle="collapse" href="#allOptionsCat">
                         <i id="arrow" data-temp="false" className="fa fa-arrow-right"></i> 
                     </button>
                     <ul className="list-group collapse in shadow" id="allOptionsCat">
-                        <li className="list-group-item">
+                        <li className="list-group">
                             <p className="list-group-item blue" style={{textAlign: "center"}}> <i className="fas fa-edit" style={{marginRight: "4px"}}></i>Velg kategorier</p>
                             <li className="list-group-item">
                                 <div style={{marginLeft: "6px"}}>
@@ -67,8 +67,8 @@ export default class TicketList extends Component{
                             <button type="submit list-group-item" style={{width: "100%"}} onClick={this.updateTickets} className="btn customBtn"><i className="fas fa-filter" style={{marginRight: "4px"}}></i>Filtrer</button>
                         </li>
                         <p></p>
-                        {(localStorage.getItem('level') === 'user' || localStorage.getItem('level') == 'none') &&
-                            <li className="list-group-item">
+                        {(localStorage.getItem('level') === 'user' || localStorage.getItem('level') == 'none' || localStorage.getItem('admin')) &&
+                            <li className="list-group">
                                 <p className="list-group-item blue" style={{textAlign: "center"}}><i
                                     className="fas fa-edit" style={{marginRight: "4px"}}></i>Velg Kommuner</p>
                                 <li className="list-group-item">
@@ -210,17 +210,17 @@ export default class TicketList extends Component{
          if(document.getElementById("arkiverteSaker").checked){
              localTickets = localTickets.filter(e => e.status == "Fullført");
          }
-
-        let temp = [];
-        this.followedCommunes.forEach(commune => {
-            console.log(commune.commune_name);
-            if(document.getElementById("check" + commune.commune_name).checked){
-                temp = temp.concat(localTickets.filter(e => e.responsible_commune == commune.commune_name));
-                console.log(commune)
-            }
-        });
-
-        localTickets = temp;
+        if(localStorage.getItem("level") == "user" ||  localStorage.getItem("level") == "admin" || localStorage.getItem('level') == 'none'){
+            let temp = [];
+            this.followedCommunes.forEach(commune => {
+                console.log(commune.commune_name);
+                if(document.getElementById("check" + commune.commune_name).checked){
+                    temp = temp.concat(localTickets.filter(e => e.responsible_commune == commune.commune_name));
+                    console.log(commune)
+                }
+            });
+            localTickets = temp;
+        }
 
         //this.setState({tickets: localTickets});
         let by = document.getElementById("sorting").value;
