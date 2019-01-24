@@ -11,10 +11,6 @@ describe('Statistics tests', () => {
         expect(wrapper.exists()).toBe(true);
     });
 
-    it('renders div', () =>{
-        expect(wrapper.find('div').length).toEqual(8);
-    });
-
     it('renders all three statistics types', () => {
         expect(wrapper.find('Doughnut').length).toEqual(1);
         expect(wrapper.find('Bar').length).toEqual(1);
