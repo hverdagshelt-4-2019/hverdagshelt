@@ -72,7 +72,7 @@ export default class TicketList extends Component{
                             <button type="submit list-group-item" style={{width: "100%"}} onClick={this.updateTickets} className="btn customBtn"><i className="fas fa-filter" style={{marginRight: "4px"}}></i>Filtrer</button>
                         </li>
                         <p></p>
-                        {(localStorage.getItem('level') === 'user' || localStorage.getItem('level') == 'none' || localStorage.getItem('admin')) &&
+                        {(localStorage.getItem('level') === 'user' || localStorage.getItem('level') == 'none' || localStorage.getItem('level') == 'admin') &&
                             <li className="list-group">
                                 <p className="list-group-item blue" style={{textAlign: "center"}}><i
                                     className="fas fa-edit" style={{marginRight: "4px"}}></i>Velg Kommuner</p>
@@ -129,6 +129,7 @@ export default class TicketList extends Component{
                                     </div>
                             ))}
                         </ul>
+                        <br />
                         {this.allTickets.length > this.pageLim &&
                             <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.allTickets.length}/>
                         }
@@ -161,7 +162,7 @@ export default class TicketList extends Component{
         $("#checkAllCommunes").click(function () {
             $(".commune").prop('checked', $(this).prop('checked'));
         });
-        if(localStorage.getItem('level') === 'none') {
+        if(localStorage.getItem('level') === 'none'|| localStorage.getItem('level') === 'admin') {
             communeService.getAllCommunes()
                 .then(communes => this.followedCommunes = communes.data)
                 .catch(err => console.log(err))
