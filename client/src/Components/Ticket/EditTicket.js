@@ -100,13 +100,17 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                             <h1>Endre sak</h1>
 
                             <hr />
+                            <form>
+                    <div className="form-group">
 
                             <h4>Tittel</h4>
                             <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))} defaultValue={this.ticket.title}/>
-
+</div>
+<div className="form-group">
                              <h4>Beskrivelse</h4>
                             <textarea className="form-control" value={this.state.description} style={{width:"100%"}} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))} defaultValue={this.ticket.description} />
-                            
+                            </div>
+                            <div className="form-group">
                                                         
                             <h4>Kategori</h4>
                             <select className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({category: event.target.value}))}>
@@ -114,6 +118,8 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                                     <option selected={categories.name==this.state.category} id ={"option"+categories.name} key={i}>{categories.name}</option>
                                 ))}
                             </select>
+                            </div>
+                            <div className="form-group">
                             
 
                             <h4>Bilde</h4>
@@ -122,10 +128,10 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                             <label htmlFor="InputFile">Last opp nytt bilde om ønsket</label>
                             <input type="file" className="form-control-file" id="InputFile" onChange={this.handleImageAdded}/>
                             <small id="fileHelp" className="form-text text-muted"></small>
-                            
+                            </div>
                             <hr />
-
-                            {/* add default value */}
+<div className="form-group">
+                            
                             <div className = "map" style={{ height: '300px', width: '100%'}}>
                                 <GoogleMapReact
                                     bootstrapURLKeys={{ key: 'AIzaSyC1y6jIJl96kjDPFRoMeQscJqXndKpVrN0' }}
@@ -140,6 +146,8 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                                         hover={this.props.hoverKey === this.props.greatPlaces[0].id} />
                                 </GoogleMapReact>
                             </div>
+                            </div>
+                            </form>
                             <div style={{height: '10px'}}></div>
                             <hr />
 
