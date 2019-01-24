@@ -49,6 +49,7 @@ export default class Login extends Component {
                         <div className="form-group">
                             <label>Passord</label>
                             <input type="password" autoComplete="current-password" placeholder="Passord" className="form-control" name="password" onChange={e => {this.password = e.target.value; this.loginFail = false;}} onKeyPress={this.handleKeyPress} />
+                            <br/>
                             <NavLink to="registrerdeg">Registrer deg som bruker</NavLink>
                         </div>
                     </form>
