@@ -65,7 +65,7 @@ export default class SimpleMap extends Component {
                 lat: 62.423336,
                 lng: 12.100478
             },
-            zoom: 5
+            zoom: 13
         };
 
     }
@@ -79,6 +79,13 @@ export default class SimpleMap extends Component {
         navigator.geolocation.getCurrentPosition(
             pos => {
                 ticketService.getCommune(pos.coords.latitude, pos.coords.longitude).then(res =>{
+                    this.setState({
+                    center: {
+                        lat: pos.coords.latitude,
+                        lng: pos.coords.longitude,
+                    },
+                    zoom: 13
+                    });
                     console.log('valid');
                     let list = [];
                     let ta2 = [];
@@ -93,13 +100,6 @@ export default class SimpleMap extends Component {
                         this.props.onHoverKeyChange(1);
                         this.props.onHoverKeyChange(null);
                     })
-                });
-                this.setState({
-                    center: {
-                        lat: pos.coords.latitude,
-                        lng: pos.coords.longitude,
-                    },
-                    zoom: 13
                 });
             }
         );
