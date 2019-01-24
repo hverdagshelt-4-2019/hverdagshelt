@@ -45,9 +45,9 @@ if (root) {
                     <Alert />
                     <Route exact path="/uploadImage" component={UploadImage}/>
                     <Route exact path="/kart" component={SimpleMap}/>
-                    <Route exact path="/" component={Login}/>
+                    <Route path="/loginn" component={Login}/>
                     <Route path="/registrerdeg" component={Register}/>
-                    <Route path="/hjem" component={TicketList}/>
+                    <Route exact path="/" component={TicketList}/>
                     <Route path="/minesaker" component={MyTickets}/>
                     <Route path="/om" component={Om} />
                     <Route path="/resetpassord" component={ResetPassword} />
