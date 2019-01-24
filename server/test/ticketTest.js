@@ -37,14 +37,14 @@ const adminMail = "person17@mail.no";
 const publicMail = "person1@mail.no";
 
 beforeAll(async done => {
-    setup_database(pool, async () => {
-        await loginAll();
-        done()
-    });
+    await setup_database(pool);
+    await loginAll();
+    done();
 });
 
-beforeEach( done => {
-    setup_database(pool, done);
+beforeEach( async done => {
+    await setup_database(pool);
+    done();
 });
 
 
