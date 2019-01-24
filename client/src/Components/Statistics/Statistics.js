@@ -60,8 +60,6 @@ export default class Statistics extends Component{
                         {!this.state.isHidden && <DropDown selected={this.selectedCommune} communes={this.communes} clickFunc={this.updateLocal.bind(this)}/>}
                     </div>
                 </nav>
-                <div>
-                <h1>{this.props.title}</h1>
                 <div className="container">
                     <div className="row">
                         <div className="col" style={{border:'1px solid lightgrey'}}>
@@ -142,7 +140,7 @@ export default class Statistics extends Component{
                     </div>
                 </div>
             </div>
-            </div>
+    
         )
     }
 
