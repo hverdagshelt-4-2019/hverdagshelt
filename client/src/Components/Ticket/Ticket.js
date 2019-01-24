@@ -125,11 +125,11 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 </p>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
-                <p style={{fontWeight: "900", color: "#666B6E", marginTop: "15px"}} id={"statust"+this.ticket.id}>
+                <div style={{fontWeight: "900", color: "#666B6E", marginTop: "15px"}} id={"statust"+this.ticket.id}>
                 {this.canSetStatus() && this.ticket.status && <Dropdown options={status} currValue={this.ticket.status} reciever={this.editStatus}/>}
                 {this.canSetStatus() && this.ticket.status && <textarea className="form-control-sm" style={{resize: "none"}} value={this.state.statusText} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({statusText: event.target.value}))}/>}
                 {!this.canSetStatus() && this.ticket.status && <p>{this.ticket.status} </p>}
-                </p>
+                </div>
                   {!this.canSetStatus() && this.ticket.status && <p>{this.state.statusText}</p>}
               </div>
 
@@ -140,7 +140,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               <hr />
               <ul className="inlineStuff">
                 <li style={{width: "33%"}}>
-                  <i className="fas fa-calendar" style={{marginRight: "4px"}}></i> {this.ticket.submitted_time !== undefined && this.sub}
+                  <i className="fas fa-calendar" style={{marginRight: "4px"}}></i> {this.ticket.submitted_time !== undefined && this.ticket.submitted_time.replace('T', ' ').replace('.000Z', '').slice(0, -3)}
                 </li>
                 <li style={{width: "34%"}}>
                   <i className="fas fa-map-marker-alt" style={{marginRight: "4px"}}></i> {this.ticket.responsible_commune}
@@ -193,7 +193,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
               <div className="media mb-4">
                 <div className="media-body">
                     {this.comments.map(e => {
-                        return(<Comment name={e.name} description={e.description}/>
+                        return(<Comment key={e.id} name={e.name} description={e.description}/>
                         )
                     })}
                 </div>
