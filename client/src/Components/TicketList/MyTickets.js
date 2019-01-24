@@ -41,7 +41,7 @@ export default class MyTickets extends Component{
                     marginLeft: '5%'}}>
                     <ul className={css.ticketList}>
                         {this.state.tickets.map((ticket, i) => (
-                            <div>
+                            <div key={ticket.id}>
                             <SingleTicket
                                 key={i}
                                 theTicket={ticket}

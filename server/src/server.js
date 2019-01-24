@@ -213,15 +213,6 @@ export function create_app(pool) {
         });
     });
 
-    //TODO: Remove not used (?)
-    app.get("/tickets/category", (req, res) =>{
-        console.log(req.body);
-        ticketdao.getTicketsByCategory(req.body.communes, req.body.categories, (status, data) =>{
-            res.status(status);
-            res.json(data);
-        });
-    });
-
     app.get("/ticketsByUser", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData) =>{
             if(err) {
