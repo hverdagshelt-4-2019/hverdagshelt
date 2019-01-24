@@ -7,7 +7,11 @@ import { shallow, mount } from 'enzyme';
 describe('AddPage tests', () => {
     const wrapper = shallow(<AddPage />);
 
+    it('renders the AddPage', () => {
+        expect(wrapper.exists()).toBe(true);
+    });
+
     it('renders all divs', () => {
-        expect(wrapper.find('div').length).toEqual(8);
-    });      
+        expect(wrapper.find('div').length).toEqual(9);
+    });     
 });

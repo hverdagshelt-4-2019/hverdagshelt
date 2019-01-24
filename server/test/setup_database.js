@@ -23,7 +23,7 @@ async function queryFile(fileContent, pool){
         });
     });
 }
-export default async function(pool: mysql.Pool, done) {
+export default async function(pool: mysql.Pool) {
     let setup = fs.readFileSync(path.join(__dirname, '..', 'sql','setup.sql'));
     await queryFile(setup, pool);
 
@@ -35,7 +35,5 @@ export default async function(pool: mysql.Pool, done) {
 
     let testdata = fs.readFileSync(path.join(__dirname, '..', 'sql','testdata.sql'));
     await queryFile(testdata, pool);
-
-    done();
 
 }

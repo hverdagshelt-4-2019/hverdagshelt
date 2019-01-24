@@ -11,6 +11,11 @@ import styles from './style.css';
 
 export default class AddCompany extends Component<{history: string[]}>{
     users = [];
+    userSelectorCompany;
+    constructor(props: any) {
+        super(props);
+        this.userSelectorCompany = React.createRef();
+    }
 
     render() {
         return (
@@ -27,7 +32,7 @@ export default class AddCompany extends Component<{history: string[]}>{
                                 <label>Velg firma bruker:</label>
                                 </div>
                                 <div className="autocomplete">
-                                    <input className="form-control" id="userSelector" placeholder="Bruker e-post" onChange={(event) => {console.log(event.target.value)}}/>
+                                    <input className="form-control" id="userSelectorCompany" ref={this.userSelectorCompany} placeholder="Bruker e-post" onChange={(event) => {console.log(event.target.value); console.log(event.target.id)}} required/>
                                 </div>
                                 <br/>
                             </div>
@@ -36,7 +41,7 @@ export default class AddCompany extends Component<{history: string[]}>{
                             <input className="form-control" id="companyName" placeholder="Bedriftsnavn" required/>
                             <br/>
                             <br/>
-                            <button type="button" className="btn customBtn">Send inn</button>
+                            <button type="submit" className="btn customBtn">Send inn</button>
                         </form>
                         
                         <br/>
@@ -52,14 +57,14 @@ export default class AddCompany extends Component<{history: string[]}>{
             .then(res => {
                 this.users = res.data.map(e => e.email);
                 console.log(this.users.length)
-                autocomplete(document.getElementById("userSelector"), this.users);
+                autocomplete(this.userSelectorCompany.current, this.users);
             })
             .catch(err => console.log(err))
     }
 
     validation() {
-        if(this.users.includes(document.getElementById('userSelector').value)){
-            CompanyService.addOne(document.getElementById('userSelector').value, document.getElementById('companyName').value)
+        if(this.users.includes(document.getElementById('userSelectorCompany').value)){
+            CompanyService.addOne(document.getElementById('userSelectorCompany').value, document.getElementById('companyName').value)
                 .then(res => {if(res.status == 200)this.props.history.push('/register')})
                 .catch(err => console.log(err))
         } else {

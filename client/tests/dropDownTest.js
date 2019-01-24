@@ -7,6 +7,10 @@ import { shallow, mount } from 'enzyme';
 describe('DropDown tests', () => {
     const wrapper = shallow(<DropDown communes={['Trondheim']} />);
 
+    it('renders DropDown', () => {
+        expect(wrapper.exists()).toBe(true);
+    });
+
     it('then renders the drop down menu', () => {
         expect(wrapper.find('select')).toHaveLength(1);
     });

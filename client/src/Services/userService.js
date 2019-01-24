@@ -3,7 +3,7 @@ import axios from 'axios';
 
 class User {
     email;
-    name;
+    username;
     password;
     commune;
     id;

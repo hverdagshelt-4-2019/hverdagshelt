@@ -3,7 +3,8 @@ import axios from 'axios';
 
 class PublicWorker {
     email;
-    commune;
+    username;
+    commune_name;
 }
 
 function config() {
