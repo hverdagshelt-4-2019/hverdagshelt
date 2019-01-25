@@ -3,7 +3,6 @@ import Dao from './dao.js';
 export default class UserDao extends Dao {
 
     getOne(id, callback) {
-        console.log("Getting user")
         super.query("SELECT id, email, username FROM person WHERE id=?", [id], callback);
     };
 
@@ -85,7 +84,6 @@ export default class UserDao extends Dao {
 
     login(json, callback)
     {
-        console.log("logging in dao");
         super.query("SELECT person.id, admin.id as isAdmin, commune_name, company.name as companyname, password FROM person LEFT JOIN admin on person.id = admin.id LEFT JOIN public_worker on public_worker.id = person.id LEFT JOIN company ON company.id = person.id WHERE email = ?",
             json.email,
             (status, data) => {
