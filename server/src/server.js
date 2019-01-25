@@ -838,7 +838,7 @@ export function create_app(pool) {
                 userdao.updatePassword(authData.user.id, req.body, (status, data) => {
                     let mailOptions = {
                         from: 'Hverdagsheltene',
-                        to: user.email,
+                        to: authData.user.email,
                         subject: 'Nytt Passord',
                         text: 'Vi har registrert fra din profil har byttet passord.\nDitt nye passord er: ' + req.body.newPassword
                             + '\nOm du ikke har har skiftet passord, venligst ta konntakt på hverdagsheltene4@gmail.com'
