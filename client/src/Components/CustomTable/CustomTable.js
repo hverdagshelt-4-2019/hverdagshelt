@@ -67,7 +67,7 @@ export default class CustomTable extends Component {
                         <TableHead>
                             <TableRow>
                                 <TableCell>
-                                    Kommune (søk for å få opp flere)
+                                    Velg din hovedkommune (søk for å få opp flere)
                                 </TableCell>
                             </TableRow>
                         </TableHead>

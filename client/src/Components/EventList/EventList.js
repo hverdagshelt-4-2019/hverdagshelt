@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Component,} from 'react-simplified';
 import eventService from '../../Services/eventService';
 import categoryService from '../../Services/categoryService';
-import communeService from '../../Services/communeService';
 import SingleEvent from './SingleEvent';
 import css from './eventStyle.css';
 import $ from 'jquery';
@@ -150,9 +149,9 @@ export default class EventList extends Component{
 
     changeArrow(){
         let e: HTMLElement|null = document.getElementById("arrow");
-        let c = document.getElementById("cases");
-        let s = document.getElementById("sidebar");
-        if(e) {
+        let c: HTMLElement|null = document.getElementById("cases");
+        let s: HTMLElement|null = document.getElementById("sidebar");
+        if(e && c && s) {
             if (e.getAttribute("data-temp") === "false") {
                 e.setAttribute("data-temp", "true");
                 let temptext = document.getElementById("tempText");
