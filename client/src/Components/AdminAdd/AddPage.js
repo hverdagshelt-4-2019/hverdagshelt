@@ -137,7 +137,7 @@ export default class AddPage extends Component{
                             <br/>
                             <br/>
                             <div>
-                            <div style={{height: '73px'}} /> 
+                            <div style={{height: '111px'}} /> 
                                 <hr/>
                                 <button className="btn customBtn" onClick={this.updateExisting}>Opprett fra eksisterende</button>
                                 <br/>
