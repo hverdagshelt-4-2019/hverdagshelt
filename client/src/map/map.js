@@ -62,50 +62,86 @@ export default class SimpleMap extends Component {
         this.state = {
             cId: -1,
             center: {
-                lat: 62.423336,
-                lng: 12.100478
+                lat: this.getLat(),
+                lng: this.getLng()
             },
-            zoom: 13
+            zoom: this.getZoom()
         };
+        this.beforeMount();
 
     }
 
-    componentDidMount(){
-
-    }
-
-
-    componentWillMount(){
+    getLat(){
+        if(navigator.geoloction){
         navigator.geolocation.getCurrentPosition(
-            pos => {
-                ticketService.getCommune(pos.coords.latitude, pos.coords.longitude).then(res =>{
-                    this.setState({
-                    center: {
-                        lat: pos.coords.latitude,
-                        lng: pos.coords.longitude,
-                    },
-                    zoom: 13
-                    });
-                    console.log('valid');
-                    let list = [];
-                    let ta2 = [];
-                    ticketService.getAllTicketsMap(res.data.kommune).then(res => {
-                        list = res.data;
-                        console.log(list);
-                        list.forEach(commune => {
-                            ta2.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.countcomm, commune.lat, commune.lng, commune.picture));
+            pos => {return pos.coords.latitude})
+        }else {
+            return 62.423336
+        }
+    }
+
+    getLng(){
+        if(navigator.geoloction){
+        navigator.geolocation.getCurrentPosition(
+            pos => {return pos.coords.longitude})
+        }else {
+            return 12.100478
+        }
+    }
+
+    getZoom(){
+        if(navigator.geoloction){
+         return 13;
+        }else {
+            return 5;
+        }
+    }
+
+    beforeMount(){
+        if(navigator.geoloction){
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    ticketService.getCommune(pos.coords.latitude, pos.coords.longitude).then(res =>{
+                        this.setState({
+                        center: {
+                            lat: pos.coords.latitude,
+                            lng: pos.coords.longitude,
+                        },
+                        zoom: 13
                         });
-                        //this.setState({greatPlaces: ta2});
-                        this.tickets = ta2;
-                        this.props.onHoverKeyChange(1);
-                        this.props.onHoverKeyChange(null);
-                    })
+                        console.log('valid');
+                        let list = [];
+                        let ta2 = [];
+                        ticketService.getAllTicketsMap(res.data.kommune).then(res => {
+                            list = res.data.filter(e => e.status != "Fullført");
+                            console.log(list);
+                            list.forEach(commune => {
+                                ta2.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.countcomm, commune.lat, commune.lng, commune.picture));
+                            });
+                            //this.setState({greatPlaces: ta2});
+                            this.tickets = ta2;
+                            this.props.onHoverKeyChange(1);
+                            this.props.onHoverKeyChange(null);
+                        })
+                    });
+                }
+            );
+        }else {
+            console.log('valid');
+            let list = [];
+            let ta2 = [];
+            ticketService.getAllTickets().then(res => {
+                list = res.data.filter(e => e.status != "Fullført");
+                console.log(list);
+                list.forEach(commune => {
+                    ta2.push(new ticket(commune.id.toString(), commune.title, commune.description, commune.category, commune.countcomm, commune.lat, commune.lng, commune.picture));
                 });
-            }
-        );
-
-
-
+                //this.setState({greatPlaces: ta2});
+                this.tickets = ta2;
+                this.props.onHoverKeyChange(1);
+                this.props.onHoverKeyChange(null);
+           })
+        }
     }
 
     _onChildClick = (key, childProps) => {
