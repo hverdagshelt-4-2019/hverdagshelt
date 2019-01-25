@@ -938,7 +938,7 @@ export function create_app(pool) {
             if(err) {
                 res.sendStatus(401);
             } else {
-                if(req.body.submitter_id == authData.user.id) {
+                if(authData.user.isadmin) {
                     ticketdao.deleteTicket(req.params.id, (status, data) => {
                         console.log("Deleted ticket");
                         res.status(status);
