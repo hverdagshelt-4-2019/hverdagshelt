@@ -23,7 +23,6 @@ export default class ChangePassword extends Component {
 
     handleClick() {
         if (!this.verify()) return;
-        alert("Eyyyy");
     }
 
     handleChange = name => event => {

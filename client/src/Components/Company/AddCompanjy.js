@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import CompanyService from "../../Services/companyService";
 import autocomplete from '../../Autocomplete';
 import styles from './style.css';
+import { Alert } from '../../widgets';
 
 export default class AddCompany extends Component<{history: string[]}>{
     users = [];
@@ -62,7 +63,7 @@ export default class AddCompany extends Component<{history: string[]}>{
                 .then(res => {if(res.status == 200)this.props.history.push('/register')})
                 .catch(err => console.log(err))
         } else {
-            alert("Vennligst skriv inn en gyldig bruker.");
+            Alert.danger("Vennligst skriv inn en gyldig bruker.");
             document.getElementById('userSelector').value = '';
         }
     }

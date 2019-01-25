@@ -73,7 +73,10 @@ async function loginAll() {
 it("Get all admins", async done => {
     let adminRes = await fetch(fetch_url + "admins", {
         method: "GET",
-        headers: HEADERS
+        headers: {
+            ...HEADERS,
+            Authorization: 'BEARER '+adminToken
+        }
     });
     let adminData = await adminRes.json();
     expect(adminRes.status).toBe(200);
@@ -85,7 +88,7 @@ it("Get all admins", async done => {
 it("Can create admin", async done => {
     const newAdmin = {
         email: "person1@mail.no"
-    }
+    };
 
     let adminRes = await fetch(fetch_url + "admin", {
         method: "POST",
@@ -102,10 +105,13 @@ it("Can create admin", async done => {
     const userId = 1;
     let userRes = await fetch(fetch_url + "admins", {
         method: "GET",
-        headers: HEADERS
+        headers: {
+            ...HEADERS,
+            Authorization: 'Bearer ' + adminToken
+        }
     });
-    let userData = await userRes.json();
     expect(userRes.status).toBe(200);
+    let userData = await userRes.json();
     expect(userData).toEqual(expect.arrayContaining([expect.objectContaining({id: userId})]));
     done();
 })

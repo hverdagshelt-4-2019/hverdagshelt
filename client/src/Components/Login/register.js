@@ -21,7 +21,7 @@ export default class Register extends Component {
     }
 
     render(){
-        if(this.redirect) return <Redirect from='/registrerdeg' to='/loginn'/>
+        if(this.redirect) return <Redirect from='/registrerdeg' to='/logginn'/>
         else
         return(
             <div className="aroundStuff">
@@ -47,7 +47,7 @@ export default class Register extends Component {
                     <label className="text-danger">{this.warning}</label>
                     <br/>
                     <label>Har du allerede en bruker?</label>{' '}
-                    <NavLink exact to={'/loginn'}>Logg inn her!</NavLink>
+                    <NavLink exact to={'/logginn'}>Logg inn her!</NavLink>
                 </div>
                 <div style={{height: '200px'}}></div>
             </div>

@@ -59,13 +59,15 @@ async function loginFetch(email, password) {
     const user = {
         email: email,
         password: password
-    }
+    };
+
     let loginRes = await fetch(fetch_url+'login', {
         method: 'POST',
         headers: HEADERS,
         body: JSON.stringify(user)
     });
     let loginRows = await loginRes.json();
+    console.log(loginRows);
     return loginRows.token;
 }
 
@@ -78,17 +80,28 @@ async function loginAll() {
     // console.log("Admin token: " + adminToken + "\nPublic token: " + publicToken + "\nUser token: " + userToken);
 }
 
-it("gets people", (done) => {
+it("getsn't people", (done) => {
     fetch(fetch_url+'users', fetch_get)
         .then(res => {
-            expect(res.status).toBe(200);
-            return res.json()
+            expect(res.status).toBe(401);
+            fetch(fetch_url+'users', {
+                method: 'GET',
+                headers: {
+                    ...HEADERS,
+                    Authorization: "Bearer "+adminToken
+                }
+            })
+            .then(res => {
+                expect(res.status).toBe(200);
+                return res.json();
+            })
+            .then(res => {
+                expect(res.length).toBeGreaterThan(5);
+                expect(res[0].email).toContain('@');
+                done();
+            });
         })
-        .then(res => {
-            expect(res.length).toBeGreaterThan(5);
-            expect(res[0].email).toContain('@');
-            done();
-        });
+
 });
 
 it("can log in and delete itself", done => {
@@ -380,7 +393,10 @@ it("User can get level", async done => {
 it("Can get all public workers", async done => {
     let workRes = await fetch(fetch_url + "publicworkers", {
         method: "GET",
-        headers: HEADERS
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer "+adminToken
+        }
     });
     let workData = await workRes.json();
     expect(workRes.status).toBe(200);
@@ -408,10 +424,13 @@ it("Admin can create a new public worker", async done => {
 
     workRes = await fetch(fetch_url + "publicworkers", {
         method: "GET",
-        headers: HEADERS
+        headers: {
+            ...HEADERS,
+            Authorization: 'Bearer '+adminToken
+        }
     });
-    workData = await workRes.json();
     expect(workRes.status).toBe(200);
+    workData = await workRes.json();
     expect(workData.length).toBe(6);
     expect(workData).toEqual(expect.arrayContaining([expect.objectContaining({commune_name: newWorker.commune})]));
     done();

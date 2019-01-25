@@ -5,17 +5,27 @@ import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 import eventService, {Event} from '../../Services/eventService';
 import css from './eventStyle.css';
+import CustomDialog from "../CustomDialog/CustomDialog";
 
 class Options extends Component<{id: string}>{
     render(){
         return(
-            <div>
+            <div className={css.buttonHolder}>
                 <NavLink to={"/endrebegivenhet/" + this.props.id}>
-                    <button className={"btn customBtn2 "+ css.btnEvent}><i className="fas fa-marker customIcon"></i>Rediger</button>
+                    <button className={"btn customBtn2 "} style={{width: "100%"}}><i className="fas fa-marker customIcon"></i>Rediger</button>
                 </NavLink>  
                 {' '}
 
-                <button className={"btn btn-danger "+ css.btnEvent} onClick={this.delete}><i className="fas fa-trash-alt customIcon"></i>Slett</button>
+                <CustomDialog                  
+                    custom = {{width: "100%"}} 
+                    option1Text="Avbryt"
+                    buttonText="Slett"
+                    title="Slett begivenhet"
+                    buttonType="danger"
+                    option2Text="Slett"
+                    option2Method={this.delete}
+                    dialogText="Er du sikker på at du vil slette denne begivenheten? Handlingen er permanent og kan ikke reverseres."
+                />
             </div>
         )
     }

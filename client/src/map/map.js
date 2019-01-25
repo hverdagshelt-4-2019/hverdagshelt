@@ -60,7 +60,7 @@ export default class SimpleMap extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cId: -1,
+            cId: '/kart',
             center: {
                 lat: this.getLat(),
                 lng: this.getLng()
@@ -169,7 +169,7 @@ export default class SimpleMap extends Component {
         comments.appendChild(para);
         console.log(localTicket);
 
-        this.setState({cId: localTicket.id});
+        this.setState({cId: '/sak/'+localTicket.id});
     };
 
     
@@ -199,7 +199,7 @@ export default class SimpleMap extends Component {
             <div id="aroundMap" className={css.aroundMap}>
                 <div style={{height: '10px'}}></div>
                 <div className = {"shadow blue "+css.leftSide} style={{height: '87vh'}}>
-                    <NavLink id="goToCase" className="nav-link" to={"/sak/"+this.state.cId}>
+                    <NavLink id="goToCase" className="nav-link" to={this.state.cId}>
                     <img id="picture" src="/image/logo.png" className={"img-fluid "+css.ticketImg} alt="Responsive image"/>
                     <br/>
                     <br/>

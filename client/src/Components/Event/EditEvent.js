@@ -6,7 +6,7 @@ import eventService from '../../Services/eventService';
 import categoryService from '../../Services/categoryService';
 import controllable from 'react-controllables';
 import { Alert } from '../../widgets';
-import Datetime from 'react-datetime'
+import Datetime from 'react-datetime';
 
 let yesterday = Datetime.moment().subtract( 1, 'day' );
 let valid = function( current ){
@@ -42,7 +42,7 @@ export default class EditEvent extends Component<{ match: { params: { id: number
                     <div className="row">
                         <div className="col-lg-10" style={{marginLeft: "8%", marginRight: "8%"}}>
                         <br />
-                            <h1>Endre sak:</h1>
+                            <h1>Endre begivenhet</h1>
 
                             <hr />
                             <form>
@@ -142,13 +142,17 @@ export default class EditEvent extends Component<{ match: { params: { id: number
         if (!this.state.happening_time) this.state.happening_time = this.event.happening_time;
 
         let date = this.state.happening_time;
-        if(date === null || date === undefined || (typeof(date) !== Date)) {
+
+        try {
+            date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+            date = date.toJSON();
+        } catch(error) {
+            console.log(typeof(date));
             Alert.danger('Opplasting mislyktes, sjekk at du har lagt inn dato/tidspunkt riktig.');
             document.documentElement.scrollTop = 0;
+            return;
         }
-        date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-        date = date.toJSON();
-
+        
         date = date.split('T', 1)[0] + ' ' + date.split('T')[1].split('.', 1);
         let postId: Number;
         await eventService
