@@ -13,7 +13,7 @@ export default class Footer extends Component {
                 <footer className={"blue " + css.footer}>
                 <div className="container">
                     <ul className={css.foote_bottom_ul_amrc}>
-                        <li><NavLink to="/hjem">Hjem</NavLink></li>
+                        <li><NavLink to="/">Hjem</NavLink></li>
                         <li><NavLink to="/om">Om</NavLink></li>
                         <li><NavLink to="/hjelp">Hjelp</NavLink></li>
                     </ul>
