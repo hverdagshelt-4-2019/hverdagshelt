@@ -26,11 +26,11 @@ export default class ResetPassword extends Component{
     }
 
     handleChange = event => {
-        this.setState({emai: event.target.value});
+        this.setState({email: event.target.value});
     }
 
     resetPassword() {
-        userService.resetPassword(this.email, {email: this.state.email}).then(res => {
+        userService.resetPassword(this.state.email, {email: this.state.email}).then(res => {
             console.log("Response: " + JSON.stringify(res));
             this.setState({sent: true});
         }).catch(err => console.log(err));
