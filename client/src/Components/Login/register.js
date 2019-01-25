@@ -5,7 +5,6 @@ import userService from '../../Services/userService';
 import {NavLink, Redirect,} from 'react-router-dom';
 import CustomTable from "../CustomTable/CustomTable";
 
-//Need route to login site.
 export default class Register extends Component {
     email = "";
     name = "";
@@ -71,7 +70,7 @@ export default class Register extends Component {
                     else {
                         this.warning = "Kunne ikke legge til bruker fordi grunner.";
                     }
-                })//OK
+                })
                 .catch(err => {
                     // TODO: Skille mellom forskjellige server feil. F.eks. forskjellen mellom at emailen er tatt eller at brukeren har et ugyldig tegn i mailen sin (emojis etc.)
                     console.log(err)
