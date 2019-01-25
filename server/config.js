@@ -29,6 +29,7 @@ let config =
     mapskey: "set API key in private.config.js",
 
     test: {
+        emailRecipient: 'odderikf@stud.ntnu.no',
         mysql: {
             connectionLimit: 20,
             multipleStatements: true,

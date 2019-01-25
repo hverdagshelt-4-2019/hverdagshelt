@@ -81,7 +81,7 @@ export default class SimpleMap extends Component {
     }
 
     getLng(){
-        if(navigator.geoloction){
+        if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(
             pos => {return pos.coords.longitude})
         }else {
@@ -90,7 +90,7 @@ export default class SimpleMap extends Component {
     }
 
     getZoom(){
-        if(navigator.geoloction){
+        if(navigator.geolocation){
          return 13;
         }else {
             return 5;
@@ -98,7 +98,7 @@ export default class SimpleMap extends Component {
     }
 
     beforeMount(){
-        if(navigator.geoloction){
+        if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(
                 pos => {
                     ticketService.getCommune(pos.coords.latitude, pos.coords.longitude).then(res =>{

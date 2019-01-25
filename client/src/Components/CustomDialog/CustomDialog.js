@@ -50,7 +50,7 @@ export default class CustomDialog extends Component {
         return (
             <div>
                 {this.props.buttonType === "danger" &&
-                <button className="btn btn-danger" onClick={this.handleClickOpen}><i class="fa fa-trash"></i> {' '} {this.props.buttonText}</button>
+                <button className="btn btn-danger" onClick={this.handleClickOpen}><i className="fa fa-trash"></i> {' '} {this.props.buttonText}</button>
                 }
 
                 {this.props.buttonType !== "danger" &&

@@ -53,12 +53,12 @@ export default class AddEvent extends Component {
                     <form>
                     <div className="form-group">
                         <h4>Tittel</h4>
-                        <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))}/>
+                        <input className="form-control" maxlength="128" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))}/>
                     </div>
 
                     <div className="form-group">
                         <h4>Beskrivelse</h4>
-                        <textarea className="form-control" style={{width:"100%", resize: "none"}} 
+                        <textarea className="form-control" maxlength="512" style={{width:"100%", resize: "none"}} 
                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))}
                         />
                     </div>
@@ -138,7 +138,10 @@ export default class AddEvent extends Component {
             let sendingDate = new Date(this.state.happening_time);
             sendingDate.setMinutes(sendingDate.getMinutes() - sendingDate.getTimezoneOffset());
             sendingDate = sendingDate.toJSON();
-            console.log(sendingDate);
+            if(sendingDate === null || sendingDate === undefined) {
+                Alert.danger('Opplasting mislyktes, sjekk at du har lagt inn dato/tidspunkt riktig.');
+                document.documentElement.scrollTop = 0;
+            }
             await eventService
             .postEvent(this.state.commune, this.state.category, this.state.title, this.state.description, sendingDate.split('T', 1)[0] + ' ' + sendingDate.split('T')[1].split('.', 1))
             .then((response) => {

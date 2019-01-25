@@ -1,4 +1,4 @@
-//@flow
+//@flo
 import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component,} from 'react-simplified';
@@ -8,7 +8,6 @@ import communeService from '../../Services/communeService';
 import SingleTicket from './SingleTicket';
 import Ticket from '../Ticket/Ticket';
 import css from './ticketStyle.css';
-import $ from 'jquery';
 import PageNavigator from '../PageNavigator/PageNavigator'
 
 //--- This class is not finished. No filter function created. ---\\
@@ -21,6 +20,10 @@ export default class TicketList extends Component{
     level = '';
     base = 0;
     pageLim = 20;
+    checkAllCommunes = true;
+    checkedCommunes = []
+    checkAllCategories = true;
+    checkedCategories = []
 
     constructor() {
         super();
@@ -34,8 +37,7 @@ export default class TicketList extends Component{
             <div className={"shadow " + css.aroundTickets}>
                 <br/>
                 <h3 className="col-xs-6 col-sm-pull-9" align="center" style={{fontFamily: "Lato, sans-serif", fontWeight: "600", opacity: "0.7"}}>
-                    Liste over saker 
-                    {(localStorage.getItem('level') == 'admin' || localStorage.getItem('level') == 'none') && '' }
+                    Liste over saker
                     {(localStorage.getItem('level') == 'publicworker') && ' fra din kommune' }
                     {(localStorage.getItem('level') == 'user') && ' fra kommunene du følger' }
                 </h3>
@@ -46,18 +48,18 @@ export default class TicketList extends Component{
                         <i id="arrow" data-temp="false" className="fa fa-arrow-right"></i> 
                     </button>
                     <ul className="list-group collapse in shadow" id="allOptionsCat">
-                        <li className="list-group">
+                        <div className="list-group">
                             <p className="list-group-item blue" style={{textAlign: "center"}}> <i className="fas fa-edit" style={{marginRight: "4px"}}></i>Velg kategorier</p>
                             <li className="list-group-item">
                                 <div style={{marginLeft: "6px"}}>
-                                    <input type="checkbox" style={{width: "17px", height: "17px"}} className="form-check-input cat" id="checkAll" defaultChecked/>
+                                    <input type="checkbox" onChange={() => this.toggleIt('cat')} style={{width: "17px", height: "17px"}} className="form-check-input cat" checked={this.checkAllCategories}/>
                                     <label className="form-check-label" style={{marginTop: "3px"}} htmlFor="checkAll">Alle kategorier</label>
                                 </div>
                             </li>
-                            {this.ticketCategories.map(category =>
+                            {this.ticketCategories.map((category, index) =>
                             <li key={category.name} className="list-group-item">
                                 <div style={{marginLeft: "6px"}}>
-                                    <input type="checkbox" style={{width: "17px", height: "17px"}} className="form-check-input markCheck cat" id={"check"+category.name} defaultChecked/>
+                                    <input type="checkbox" style={{width: "17px", height: "17px"}} onChange={() => this.checkIt(index, 'cat')} className="form-check-input markCheck cat" checked={this.checkedCategories[index]} defaultChecked/>
                                     <label className="form-check-label" style={{marginTop: "3px"}} htmlFor={"check"+category.name}>{category.name}</label>
                                 </div>
                             </li>
@@ -70,35 +72,39 @@ export default class TicketList extends Component{
                                 </div>
                             </li>
                             <button type="submit list-group-item" style={{width: "100%"}} onClick={this.updateTickets} className="btn customBtn"><i className="fas fa-filter" style={{marginRight: "4px"}}></i>Filtrer</button>
-                        </li>
+                        </div>
                         <p></p>
                         {(localStorage.getItem('level') === 'user' || localStorage.getItem('level') == 'none' || localStorage.getItem('level') == 'admin') &&
-                            <li className="list-group">
-                                <p className="list-group-item blue" style={{textAlign: "center"}}><i
-                                    className="fas fa-edit" style={{marginRight: "4px"}}></i>Velg Kommuner</p>
+                            <div>
+                            <p className="list-group-item blue" style={{textAlign: "center"}}><i
+                                className="fas fa-edit" style={{marginRight: "4px"}}></i>Velg Kommuner</p>
                                 <li className="list-group-item">
                                     <div style={{marginLeft: "6px"}}>
                                         <input type="checkbox" style={{width: "17px", height: "17px"}}
-                                               className="form-check-input commune" id="checkAllCommunes"
-                                               defaultChecked/>
+                                               className="form-check-input commune"
+                                               onChange={() => this.toggleIt('com')}
+                                               checked={this.checkAllCommunes}/>
                                         <label className="form-check-label" style={{marginTop: "3px"}}
                                                htmlFor="checkAllCommunes">Alle Kommuner</label>
                                     </div>
                                 </li>
-                                {
-                                    this.followedCommunes.map(commune =>
-                                        <li key={commune.commune_name} className="list-group-item">
-                                            <div key={commune.commune_name} style={{marginLeft: "6px"}}>
-                                                <input type="checkbox" style={{width: "17px", height: "17px"}}
-                                                       className="form-check-input markCheck commune"
-                                                       id={"check" + commune.commune_name} defaultChecked/>
-                                                <label className="form-check-label" style={{marginTop: "3px"}}
-                                                       htmlFor={"check" + commune.commune_name}>{commune.commune_name}</label>
-                                            </div>
-                                        </li>
-                                    )}
+                                <div style={{maxHeight: "500px", overflow: "scroll"}}>
+                                    {
+                                        this.followedCommunes.map((commune, index) =>
+                                            <li key={commune.commune_name} className="list-group-item">
+                                                <div key={commune.commune_name} style={{marginLeft: "6px"}}>
+                                                    <input type="checkbox" style={{width: "17px", height: "17px"}}
+                                                           className="form-check-input markCheck commune"
+                                                           checked={this.checkedCommunes[index]}
+                                                           onChange={() => this.checkIt(index, 'com')} defaultChecked/>
+                                                    <label className="form-check-label" style={{marginTop: "3px"}}
+                                                           htmlFor={"check" + commune.commune_name}>{commune.commune_name}</label>
+                                                </div>
+                                            </li>
+                                        )}
+                                </div>
                                 <button type="submit list-group-item" style={{width: "100%"}} onClick={this.updateTickets} className="btn customBtn"><i className="fas fa-filter" style={{marginRight: "4px"}}></i>Filtrer</button>
-                            </li>
+                            </div>
                         }
                     </ul>
                 </div>
@@ -153,36 +159,50 @@ export default class TicketList extends Component{
         .catch((error : Error) => console.log("Error occured: " + error.message));
         //Get categories for the possibility to filter //OK
         categoryService.getTicketCategories()
-        .then((categories : Category[]) =>  this.ticketCategories = categories.data)
+        .then((categories : Category[]) =>  {this.ticketCategories = categories.data; categories.data.map(() => this.checkedCategories.push(true))})
         .catch((error : Error) => console.log("Error occured: " + error.message));
         document.getElementById("arrowBtn").click();
-        $("#checkAll").click(function () {
-            $(".cat").prop('checked', $(this).prop('checked'));
-        });
-        $("#checkAllCommunes").click(function () {
-            $(".commune").prop('checked', $(this).prop('checked'));
-        });
-        if(localStorage.getItem('level') === 'none'|| localStorage.getItem('level') === 'admin') {
-            communeService.getAllCommunes()
-                .then(communes => this.followedCommunes = communes.data)
-                .catch(err => console.log(err))
-        } else {
-            communeService.getFollowedCommunes()
-                .then(communes =>{ this.followedCommunes = communes.data; console.log(communes.data)})
-                .catch((error : Error) => console.log("Error occured: " + error.message));
+
+        setTimeout(() =>{
+            let start = performance.now();
+            if(localStorage.getItem('level') === 'none'|| localStorage.getItem('level') === 'admin') {
+                communeService.getAllCommunes()
+                    .then(communes => {this.followedCommunes = communes.data; this.checkedCommunes = new Array(this.followedCommunes.length).fill(true, 0); console.log(performance.now() - start)})
+                    .catch(err => console.log(err))
+            } else {
+                communeService.getFollowedCommunes()
+                    .then(communes =>{ this.followedCommunes = communes.data; this.checkedCommunes = new Array(this.followedCommunes.length).fill(true, 0);})
+                    .catch((error : Error) => console.log("Error occured: " + error.message));
+            }
+        }, 200);
+    }
+
+    checkIt(i, flag) {
+        if(flag === 'com') {
+            this.checkedCommunes[i] = !this.checkedCommunes[i];
+            this.checkAllCommunes = !this.checkedCommunes.includes(false);
+        } else if(flag === 'cat') {
+            this.checkedCategories[i] = !this.checkedCategories[i];
+            this.checkAllCategories = !this.checkedCategories.includes(false);
         }
-        //--Get tickets based on commune and checked categories--
-        //ticketService.getTicketsByCommuneAndCategory(this.communeId, this.categories)
-        //.then(tickets => this.tickets = tickets);
-        /*ticketService.getAllTickets() //this.communes
-        .then((tickets: Ticket[]) => this.setState({tickets}, () => {
-        console.log('Tickets fetched...', tickets);
-        this.allTickets = [];
-        this.allTickets = this.allTickets.concat(tickets);
-        console.log(this.allTickets);
+    }
+
+    toggleIt(flag) {
+        if (flag === 'com') {
+            this.checkAllCommunes = !this.checkAllCommunes;
+            if (this.checkAllCommunes) {
+                this.checkedCommunes = this.checkedCommunes.map(() => true);
+            } else {
+                this.checkedCommunes = this.checkedCommunes.map(() => false);
+            }
+        } else if(flag === 'cat') {
+            this.checkAllCategories = !this.checkAllCategories;
+            if (this.checkAllCategories) {
+                this.checkedCategories = this.checkedCategories.map(() => true);
+            } else {
+                this.checkedCategories = this.checkedCategories.map(() => false);
+            }
         }
-        ));*/ 
-            
     }
 
     increment() {
@@ -215,29 +235,26 @@ export default class TicketList extends Component{
         }
     }
     updateTickets(){
-        console.log("Updated tickets");
         let localTickets = [];
-        if(!document.getElementById("checkAll").checked){
-            this.ticketCategories.forEach(categories => {
-                if(document.getElementById("check"+categories.name).checked){
-                    localTickets = localTickets.concat(this.allTickets.filter(e => e.category == categories.name));
+        if(!this.checkAllCategories) {
+            this.checkedCategories.forEach((categoryChecked, index) => {
+                if(categoryChecked) {
+                    localTickets = localTickets.concat(this.allTickets.filter(e => e.category == this.ticketCategories[index].name));
                 }
             });
-        }else{
+        } else {
             localTickets = this.allTickets;
         }
         if(document.getElementById("arkiverteSaker").checked){
             localTickets = localTickets.filter(e => e.status == "Fullført");
         }else {
-            localTickets = this.allTickets.filter(e => e.status != "Fullført");
+            localTickets = localTickets.filter(e => e.status != "Fullført");
         }
         if(localStorage.getItem("level") == "user" ||  localStorage.getItem("level") == "admin" || localStorage.getItem('level') == 'none'){
             let temp = [];
-            this.followedCommunes.forEach(commune => {
-                console.log(commune.commune_name);
-                if(document.getElementById("check" + commune.commune_name).checked){
-                    temp = temp.concat(localTickets.filter(e => e.responsible_commune == commune.commune_name));
-                    console.log(commune)
+            this.checkedCommunes.forEach((communeChecked, index) => {
+                if(communeChecked){
+                    temp = temp.concat(localTickets.filter(e => e.responsible_commune == this.followedCommunes[index].commune_name));
                 }
             });
             localTickets = temp;
@@ -245,7 +262,6 @@ export default class TicketList extends Component{
 
         //this.setState({tickets: localTickets});
         let by = document.getElementById("sorting").value;
-        console.log(by);
          switch(by) {
             case "Nyeste først":
                 localTickets.sort(function(a,b){return new Date(b.submitted_time) - new Date(a.submitted_time)});
@@ -266,7 +282,6 @@ export default class TicketList extends Component{
                 localTickets.sort(function(a,b){return a.countcomm - b.countcomm});
                 break;
         }
-        console.log("TEST!");
         this.base=0;
         this.setState({tickets: localTickets})
 

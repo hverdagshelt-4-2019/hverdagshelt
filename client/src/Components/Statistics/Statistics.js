@@ -174,14 +174,15 @@ export default class Statistics extends Component{
         )))
         .catch((error : Error) => console.log(error.message));
 
-        this.updateLocal(this.communes[0]);
+        await this.updateLocal(this.communes[0]);
         
         this.setState({
             ticketsSent : this.ticketsSentN,  
             ticketsSolved : this.ticketsSolvedN,
             categories : this.categoriesN,
             ticketsPerCat : this.ticketsPerCatN,
-            ticketsPerMonth : this.ticketsPerMonthN
+            ticketsPerMonth : this.ticketsPerMonthN,
+            isHidden : true
         });
     }
 

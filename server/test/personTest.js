@@ -284,7 +284,7 @@ it("can log in and change a users password", async done => {
 
 it("registers a user, and can then log in them", done => {
     let user = {
-        email: "testUser@mail.com",
+        email: config.test.emailRecipient,
         name: "testuser",
         commune: 'Harstad',
         password: "testpassword96"

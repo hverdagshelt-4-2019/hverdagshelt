@@ -22,11 +22,11 @@ export default class UserArchive extends Component {
         return (
             <div>
                 <div>
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-secondary" onClick={e => {this.currlist = this.users; this.title = e.target.innerText; this.currtab = this.tabs[0]}}>Brukere</button>
-                        <button type="button" class="btn btn-secondary" onClick={e => {this.currlist = this.companies; this.title = e.target.innerText; this.currtab = this.tabs[1]}}>Bedrifter</button>
-                        <button type="button" class="btn btn-secondary" onClick={e => {this.currlist = this.admins; this.title = e.target.innerText; this.currtab = this.tabs[2]}}>Admins</button>
-                        <button type="button" class="btn btn-secondary" onClick={e => {this.currlist = this.publicworkers; this.title = e.target.innerText; this.currtab = this.tabs[3]}}>Kommunearbeidere</button>
+                    <div className="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" className="btn btn-secondary" onClick={e => {this.currlist = this.users; this.title = e.target.innerText; this.currtab = this.tabs[0]}}>Brukere</button>
+                        <button type="button" className="btn btn-secondary" onClick={e => {this.currlist = this.companies; this.title = e.target.innerText; this.currtab = this.tabs[1]}}>Bedrifter</button>
+                        <button type="button" className="btn btn-secondary" onClick={e => {this.currlist = this.admins; this.title = e.target.innerText; this.currtab = this.tabs[2]}}>Admins</button>
+                        <button type="button" className="btn btn-secondary" onClick={e => {this.currlist = this.publicworkers; this.title = e.target.innerText; this.currtab = this.tabs[3]}}>Kommunearbeidere</button>
                     </div>
                 </div>
                 <br/>
