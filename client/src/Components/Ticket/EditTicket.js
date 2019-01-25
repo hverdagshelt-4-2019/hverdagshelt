@@ -101,11 +101,11 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                     <div className="form-group">
 
                             <h4>Tittel</h4>
-                            <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))} defaultValue={this.ticket.title}/>
+                            <input className="form-control" maxlength="64" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))} defaultValue={this.ticket.title}/>
 </div>
 <div className="form-group">
                              <h4>Beskrivelse</h4>
-                            <textarea className="form-control" value={this.state.description} style={{width:"100%"}} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))} defaultValue={this.ticket.description} />
+                            <textarea className="form-control" maxlength="512" value={this.state.description} style={{width:"100%"}} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))} defaultValue={this.ticket.description} />
                             </div>
                             <div className="form-group">
                                                         

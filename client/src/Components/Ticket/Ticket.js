@@ -181,7 +181,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 <div className="card-body">
                   <form onSubmit={this.postComment}>
                     <div className="form-group">
-                      <textarea className="form-control" rows="3" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.comment.description = event.target.value)} />
+                      <textarea className="form-control" maxlength="256" rows="3" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.comment.description = event.target.value)} />
                     </div>
                     <button type="submit" className="btn customBtn">
                       Send
@@ -273,8 +273,13 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
       if(!this.comment.description) return null;
       console.log('posting');
 
-      commentService.postComment(this.props.match.params.id, this.comment.description);
-      window.location.reload();
+      if(localStorage.getItem('level') !== 'none'){
+          commentService.postComment(this.props.match.params.id, this.comment.description);
+          window.location.reload();
+      } else {
+          Alert.danger('Du må registrere en bruker for å kommentere.');
+          document.body.scrollTop = document.documentElement.scrollTop = 0;
+      }  
   }
 
   getImage(i: String) {
