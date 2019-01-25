@@ -174,7 +174,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 </GoogleMapReact>
               </div>
               <hr />
-
+              {(localStorage.getItem('level') === 'admin') && <button className="btn btn-danger" onClick={this.deleteTicket}>Slett</button> }
               <div>
                 <br />
                 <h5 className="card-header">Kommenter:</h5>
@@ -205,6 +205,20 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
       </div>
     );
   }
+
+    deleteTicket() {
+        ticketService.deleteTicket(this.props.match.params.id)
+        .then(a => {
+            this.props.history.push('/');
+            Alert.success("Saken ble slettet.");
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+        })
+        .catch((error: Error) => {
+            console.log("Error deleting ticket.");
+            Alert.danger("Sletting feilet.");
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+        })
+    }
 
     mounted() {
         console.log('mounting');
