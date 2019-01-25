@@ -5,7 +5,8 @@
     "start": "nodemon --exec babel-node src/index.js",
     "start2": "nodemon --exec babel-node test/dao/fetchtesting.js",
     "start-prod": "cross-env NODE_ENV=production babel-node src/index.js",
-    "test": "jest --detectOpenHandles --forceExit --runInBand"
+    "test": "jest --detectOpenHandles --forceExit --runInBand",
+    "coveralls": "npm test && cat ./tests/coverage/lcov.info | coveralls"
   },
   "jest": {
     "transform": {
@@ -46,6 +47,7 @@
     "flow-bin": "^0.90.0",
     "jest": "^23.6.0",
     "node-fetch": "^2.3.0",
-    "nodemon": "^1.18.4"
+    "nodemon": "^1.18.4",
+    "coveralls": "^3.0.2"
   }
 }
