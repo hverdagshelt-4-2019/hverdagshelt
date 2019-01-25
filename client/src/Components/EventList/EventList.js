@@ -98,11 +98,6 @@ export default class EventList extends Component{
     }
 
     mounted(){
-        //eventService.getAllEvents()
-        //.then(events => console.log(events.data));
-        //.then(events => this.allEvents = events.data);
-
-
         eventService.getAllEvents() 
         .then((events : {data: Event[]}) => { 
             this.allEvents = events.data;
@@ -115,7 +110,7 @@ export default class EventList extends Component{
         })
         .catch((error : Error) => console.log("Error occured: " + error.message));
         
-        //Get categories for the possibility to filter //OK
+        //Get categories for the possibility to filter
         categoryService.getEventCategories()
         .then((categories : Category[]) =>  this.eventCategories = categories.data)
         .catch((error : Error) => console.log("Error occured: " + error.message));
@@ -123,20 +118,7 @@ export default class EventList extends Component{
         document.getElementById("arrowBtn").click();
         $("#checkAll").click(function () {
             $(".cat").prop('checked', $(this).prop('checked'));
-        });
-
-        //--Get tickets based on commune and checked categories--
-        //ticketService.getTicketsByCommuneAndCategory(this.communeId, this.categories)
-        //.then(tickets => this.tickets = tickets);  
-        /*ticketService.getAllTickets() //this.communes
-        .then((tickets: Ticket[]) => this.setState({tickets}, () => {
-        console.log('Tickets fetched...', tickets);
-        this.allTickets = [];
-        this.allTickets = this.allTickets.concat(tickets);
-        console.log(this.allTickets);
-        }
-        ));*/ 
-            
+        }); 
     }
 
     increment() {
@@ -169,15 +151,6 @@ export default class EventList extends Component{
         }
     }
 
-    itemChecked(){
-        
-        //When unchecking a category, tickets refreshed
-        /*
-        ticketService.getTicketsByCommuneAndCategory(this.communeId, this.categories)
-        .then(tickets => this.tickets = tickets);
-        */
-    }
-
     updateEvents(){
         console.log("Updated Events");
         console.log(new Date());
@@ -197,7 +170,6 @@ export default class EventList extends Component{
                 return((new Date(a.happening_time).getTime() >= new Date().getTime()))
             });
         }
-        //this.setState({Events: localEvents});
         let by = document.getElementById("sorting").value;
         console.log(by);
          switch(by) {
