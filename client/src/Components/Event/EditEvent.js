@@ -4,24 +4,18 @@ import * as React from 'react';
 import { Component,} from 'react-simplified';
 import eventService from '../../Services/eventService';
 import categoryService from '../../Services/categoryService';
-import GoogleMapReact from 'google-map-react';
-import ControllableHover from './../../map/controllable_hover.js';
 import controllable from 'react-controllables';
-import shouldPureComponentUpdate from 'react-pure-render/function';
-import PropTypes from 'prop-types';
-import {K_SIZE} from './../../map/controllable_hover_styles.js';
 import { Alert } from '../../widgets';
 import Datetime from 'react-datetime'
 
-var yesterday = Datetime.moment().subtract( 1, 'day' );
-var valid = function( current ){
+let yesterday = Datetime.moment().subtract( 1, 'day' );
+let valid = function( current ){
     return current.isAfter( yesterday );
 };
 
-
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 export default class EditEvent extends Component<{ match: { params: { id: number } } }> {
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.state = {
             category: '',

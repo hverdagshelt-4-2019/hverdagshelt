@@ -33,9 +33,6 @@ export default class Statistics extends Component{
     categoriesL = [];
     communes = [];
 
-    //Common data
-    
-
     constructor(props){
         super(props);
         this.state = {
@@ -71,7 +68,6 @@ export default class Statistics extends Component{
                                     hoverBackgroundColor: ['IndianRed', 'SkyBlue']
                                 }],
 
-                                // These labels appear in the legend and in the tooltips when hovering different arcs
                                 labels: [
                                     'Uløste saker',
                                     'Løste saker'
@@ -178,28 +174,8 @@ export default class Statistics extends Component{
         )))
         .catch((error : Error) => console.log(error.message));
 
-        await statisticsService.getTicketAmountLocally(this.communes[0]) 
-        .then(ticketAmount => this.ticketsSentL = ticketAmount.data[0].amount)
-        .catch((error : Error) => console.log(error.message)); 
-
-        await statisticsService.getSolvedTicketsLocally(this.communes[0])
-        .then(ticketAmount => this.ticketsSolvedL = ticketAmount.data[0].amount)
-        .catch((error : Error) => console.log(error.message));
-
-        await statisticsService.getTicketAmountByCategoryLocally(this.communes[0])
-        .then(amounts => amounts.data.map(amount => (
-            this.categoriesL.push(amount.category),
-            this.ticketsPerCatL.push(amount.tickets_in_categories)
-        )))
-        .catch((error : Error ) => console.log(error.message));
-
-        await statisticsService.getTicketAmountByMonthLocally(this.communes[0])
-        .then(amounts => amounts.data.map(amount => (
-            this.ticketsPerMonthL[(amount.month - 1)] = amount.value
-        )))
-        .catch((error : Error) => console.log(error.message));
+        this.updateLocal(this.communes[0]);
         
-
         this.setState({
             ticketsSent : this.ticketsSentN,  
             ticketsSolved : this.ticketsSolvedN,
@@ -262,7 +238,5 @@ export default class Statistics extends Component{
         .catch((error : Error) => console.log(error.message));
 
         this.setLocal();
-
-        console.log("Updating commune to " + commune +"...");
     }
 }
