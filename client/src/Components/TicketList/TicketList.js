@@ -240,14 +240,15 @@ export default class TicketList extends Component{
             this.checkedCategories.forEach((categoryChecked, index) => {
                 if(categoryChecked) {
                     localTickets = localTickets.concat(this.allTickets.filter(e => e.category == this.ticketCategories[index].name));
-                    localTickets = localTickets.filter(e => e.status != "Fullført");
                 }
             });
         } else {
-            localTickets = this.allTickets.filter(e => e.status != "Fullført");
+            localTickets = this.allTickets;
         }
         if(document.getElementById("arkiverteSaker").checked){
             localTickets = localTickets.filter(e => e.status == "Fullført");
+        }else {
+            localTickets = localTickets.filter(e => e.status != "Fullført");
         }
         if(localStorage.getItem("level") == "user" ||  localStorage.getItem("level") == "admin" || localStorage.getItem('level') == 'none'){
             let temp = [];
