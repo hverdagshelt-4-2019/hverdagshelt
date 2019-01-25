@@ -145,7 +145,8 @@ it("Public worker can edit status on ticket if from correct commune", async done
     const newStatus = {
         status: "Fullført",
         statusText: "Git gud",
-        responsible_commune: "Vik"
+        responsible_commune: "Vik",
+        email: config.test.emailRecipient
     }
     let editStatusRes = await fetch(fetch_url + "ticketstatus/" + ticketId, {
         method: "PUT",

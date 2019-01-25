@@ -94,7 +94,6 @@ export function create_app(pool) {
 
     app.get("/ticket/:id", (req, res) =>{
         ticketdao.getATicket(req.params.id, (status, data) =>{
-            console.log('data' + data);
             res.status(status);
             res.json(data);
         });
@@ -475,7 +474,6 @@ export function create_app(pool) {
     });
 
     app.post("/login", (req, res) => {
-        console.log("login request");
         userdao.login(req.body, (status, data) => {
             if (status == 200) {
                 const user = {
@@ -485,7 +483,6 @@ export function create_app(pool) {
                     companyname: (data[0].companyname != null ? data[0].companyname : false),
                     publicworkercommune: (data[0].commune_name != null ? data[0].commune_name : false)    // Null if not a publicworker
                 };
-                console.log(JSON.stringify(user));
                 let level = 'user';
                 if(user.isadmin) level = 'admin';
                 else if (user.publicworkercommune) level = 'publicworker';
@@ -538,7 +535,6 @@ export function create_app(pool) {
                     res.status(status);
                     res.json(data);
                 });
-                console.log("ok");
             }
 
         });
@@ -878,7 +874,6 @@ export function create_app(pool) {
                 if(authData.user.publicworkercommune === req.body.responsible_commune) {
                     ticketdao.setStatus(req.params.ticket_id, req.body, (status, data) =>{
                         if(status == 200) {
-                            console.log(req.body.email);
                             let mailOptions = {
                                 from: 'Hverdagsheltene',
                                 to: req.body.email,
@@ -1216,6 +1211,7 @@ export function create_app(pool) {
 }
 
 function sendEmail(transport, mailOptions) {
+    console.log(JSON.stringify(mailOptions));
     transport.sendMail(mailOptions, function(err, info) {
         if(err) {
             console.log(err)
