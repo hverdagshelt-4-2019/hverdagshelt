@@ -6,7 +6,6 @@ export default class CategoryDao extends Dao {
   }
 
   createOneTicket(name, callback) {
-    console.log("WTF!?")
     super.query('INSERT INTO ticket_category (name) VALUES (?)', [name], callback);
   }
 

@@ -4,6 +4,9 @@ node_js:
 - '11'
 stages:
 - test
+cache:
+    directories:
+    - node_modules
 jobs:
   include:
   - stage: test
@@ -11,13 +14,15 @@ jobs:
     before_script:
     - cd server; source ./setup_private_config.sh; npm install
     script:
-    - npm test
+    - npm test; npm run coveralls;
   - stage: test
     name: test_client
     before_script:
     - cd client; npm install
     script:
     - npm test
+
+
 env:
   global:
   - secure: 2BJtJgUIYd6j9ILWXllpuCCmunTnNoHxLagmOEr52AHleUBJ4Z3ydmd9HAq7byBluZNConaf7pc9LrDh4a5mTXLt2xOXV+NZdiH1j5QU8XlTgJM1ywGgFdTmxAXc2eK1l80qzWmvVzVl/32vlAI+Fbb6cHXD/GIkge7/2c6nRvlwr+E5K34w5JR7R827hHQCNkLNHYYcYra9SC2ILpI7P33gHu+VEM6CWD95YzPg4lGp89QMf3jdtCYcuvkfQ4MmV4WeP2MER+BG210IqiUVjC6CmwV3terpnt2Bvq7SEABQ3eZ7Hh/vIcd1MCvuEKiOKMbgmiDWrSQ0yY25+yTN/WIWNKCMA04PoEB3Me+raztjNM1SOClJdgKbZPZFkwg/vU0S4z3AByWoo4x454qOtvY8VZ8HSQ3mzMUHAWyf3K0H2SlN81wrEFTxXRcpjIFADvxtONIRWZP+EKKAVUoHyVrKBlQRt3UdexoRQ6GUSGFfb8XvHuJiHZ6DYwSNiYTOoX/urXPMmsOA/jTkzo/4mVVqB9rme58EhKu6WzvGq9UTg5A5QZ4AmnY95D6rGNcjShN1Lj5Ur8ZDk83qDEAyPgxTpRfSnzx1/sjU9hwh4F8G8WzF7e9s14hXkb76hLklRCrLaaY/Qd4dvukkSyChZ1vsOL2z1YFZLaEjiA54A8g=

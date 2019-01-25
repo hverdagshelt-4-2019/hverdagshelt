@@ -34,7 +34,6 @@ export default class EventDao extends Dao {
 
     updateOne(id, json, callback) {
         var val = [json.category, json.title, json.description, json.happening_time, id];
-        console.log(json.happening_time);
         super.query("UPDATE happening SET category = ?, title = ?, description = ?, happening_time = ? WHERE id = ?",
             val,
             callback
