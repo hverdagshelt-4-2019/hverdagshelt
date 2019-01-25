@@ -78,7 +78,12 @@ export default class EventList extends Component{
                         float: "right",
                         marginLeft: '5%'}}>
                         <br />
-                        <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.state.events.length}/>
+                        {this.state.events.length ===0 &&
+                            <h5 style={{marginLeft: "30%"}}>Ingen begivenheter</h5>
+                        }
+                        {this.state.events.length > this.pageLim &&
+                            <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.state.events.length}/>
+                        }
                         <ul className={css.eventList}>
                             {this.state.events.slice(this.base*this.pageLim, (this.base+1)*this.pageLim).map((event, i) => (
                                 <div key={i}>
@@ -89,7 +94,9 @@ export default class EventList extends Component{
                             ))}
                         </ul>
                         <br />
-                        <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.state.events.length}/>
+                        {this.state.events.length > this.pageLim &&
+                            <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.state.events.length}/>
+                        }
                     </div>
                 </div>
                 <div style={{height: '80px'}} />
