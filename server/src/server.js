@@ -466,6 +466,8 @@ export function create_app(pool) {
                     res.status(status2);
                     res.json(data2);
                 })
+            } else {
+                res.status(422).send("E-post allerede registrert");
             }
         });
     });

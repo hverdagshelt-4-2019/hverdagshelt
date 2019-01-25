@@ -66,18 +66,19 @@ export default class Register extends Component {
                     if(res.status === 200) {
                         this.success = "Ny bruker er registrert!";
                         this.redirect = true;
-                    }
-                    else {
+                    } else {
                         this.warning = "Kunne ikke legge til bruker fordi grunner.";
                     }
                 })
                 .catch(err => {
                     // TODO: Skille mellom forskjellige server feil. F.eks. forskjellen mellom at emailen er tatt eller at brukeren har et ugyldig tegn i mailen sin (emojis etc.)
-                    console.log(err)
-                    this.warning = "Intern server error. Ikke gi oss mindre enn perfekt data."
+                    if(err.response.status === 422) {
+                        this.warning = err.response.data
+                    } else {
+                        this.warning = "Intern server error. Ikke gi oss mindre enn perfekt data."
+                    }
                 });
-        }
-        else{
+        } else {
             this.warning = "Passordene du skrev inn stemmer ikke overens.";
         }
     }
