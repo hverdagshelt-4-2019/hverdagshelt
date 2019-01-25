@@ -61,8 +61,8 @@ if (root) {
                     <Route path="/begivenheter" component={EventList} />
                     <Route exact path="/statistikk" component={Statistics}/>
                     <Route path="/begivenhet/:id" component={Event}/>
-                    {(res.data.level === 'publicworker') && <Route path="/leggtilbegivenhet" component={AddEvent}/>}
-                    {(res.data.level === 'publicworker') && <Route path="/endrebegivenhet/:id" component={EditEvent}/>}
+                    {(res.data.level === 'admin'|| res.data.level === 'publicworker') && <Route path="/leggtilbegivenhet" component={AddEvent}/>}
+                    {(res.data.level === 'admin'|| res.data.level === 'publicworker') && <Route path="/endrebegivenhet/:id" component={EditEvent}/>}
                     <Route path="/" component={Footer}/>
                     
                 </div>
