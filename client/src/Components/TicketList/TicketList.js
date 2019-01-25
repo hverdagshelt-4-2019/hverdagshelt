@@ -171,7 +171,7 @@ export default class TicketList extends Component{
                     .catch(err => console.log(err))
             } else {
                 communeService.getFollowedCommunes()
-                    .then(communes =>{ this.followedCommunes = communes.data; this.checkedCommunes = this.communes.data.map(() => true);})
+                    .then(communes =>{ this.followedCommunes = communes.data; this.checkedCommunes = new Array(this.followedCommunes.length).fill(true, 0);})
                     .catch((error : Error) => console.log("Error occured: " + error.message));
             }
         }, 200);
