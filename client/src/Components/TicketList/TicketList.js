@@ -221,15 +221,16 @@ export default class TicketList extends Component{
             this.ticketCategories.forEach(categories => {
                 if(document.getElementById("check"+categories.name).checked){
                     localTickets = localTickets.concat(this.allTickets.filter(e => e.category == categories.name));
-                    localTickets = localTickets.filter(e => e.status != "Fullført");
                 }
             });
         }else{
+            localTickets = this.allTickets;
+        }
+        if(document.getElementById("arkiverteSaker").checked){
+            localTickets = localTickets.filter(e => e.status == "Fullført");
+        }else {
             localTickets = this.allTickets.filter(e => e.status != "Fullført");
         }
-         if(document.getElementById("arkiverteSaker").checked){
-             localTickets = localTickets.filter(e => e.status == "Fullført");
-         }
         if(localStorage.getItem("level") == "user" ||  localStorage.getItem("level") == "admin" || localStorage.getItem('level') == 'none'){
             let temp = [];
             this.followedCommunes.forEach(commune => {
