@@ -81,14 +81,12 @@ export default class Navbar extends Component {
                     </ul>
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
+                        {(localStorage.getItem('level') !== 'none') && 
                         <NavLink style={{color: "white", height: "50px"}} className={"nav-link " + css.customLink} activeClassName={css.active} exact to="/minside">
                             <div className="topOfLink">
-                                {localStorage.getItem('level') === 'none' ? '' : <i className="fas fa-user"></i>}
-                                {' '}
-                                {localStorage.getItem('level') === 'none' ? "" : "Min Side"}
-                                
+                                 <i className="fas fa-user"></i> {"Min Side"}
                             </div>
-                        </NavLink>
+                        </NavLink>}
                     </li>
                     <li className="nav-item">
                         <a style={{color: "white", height: "50px"}}className={"nav-link " + css.customLink} href="/loginn" onClick={this.logout}>

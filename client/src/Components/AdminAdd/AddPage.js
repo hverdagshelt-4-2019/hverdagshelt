@@ -1,3 +1,5 @@
+//@flow 
+
 import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
@@ -5,26 +7,29 @@ import adminService from '../../Services/adminService';
 import publicWorkerService from '../../Services/publicWorkerService';
 import communeService from '../../Services/communeService';
 import userService from '../../Services/userService';
-
-//TODO: Fix so you can enter email and promote user to admin
+import {Alert} from '../../widgets';
 
 export default class AddPage extends Component{
     //Common
-    communes = []; //Test values
+    communes : Commune[] = []; 
     
     //New user variables
-    newEmail = '';
-    password1 = '';
-    password2 = '';
-    typeNew = '';
-    communeNew = '';
+    newName : string = '';
+    newEmail : string = '';
+    password1 : string = '';
+    password2 : string= '';
+    typeNew : string = '';
+    communeNew : string = '';
 
     //Existing user variables
-    existingEmail = '';
-    communeExist = '';
-    typeExist = '';
-    users =  [];    
-    user = '';
+    existingEmail : string = '';
+    communeExist : string = '';
+    typeExist : string = '';
+    users : User[] =  [];    
+    user : string = '';
+
+    warningNew = "";
+    warningExist = "";
 
     render(){
         return(
@@ -40,9 +45,10 @@ export default class AddPage extends Component{
                         <hr/>
                         <form>
                             <div className="form-group">
+                                <input className="form-control" placeholder="Fullt navn" onChange={(evt) => {this.newName = evt.target.value}}></input>
                                 <input className="form-control" placeholder="Email" onChange={(evt) => {this.newEmail = evt.target.value}}></input>
-                                <input className="form-control" placeholder="Passord" onChange={(evt) => {this.password1 = evt.target.value}}></input>
-                                <input className="form-control" placeholder="Gjenta passord" onChange={(evt) => {this.password2 = evt.target.value}}></input>
+                                <input className="form-control" type="password" placeholder="Passord" onChange={(evt) => {this.password1 = evt.target.value}}></input>
+                                <input className="form-control" type="password" placeholder="Gjenta passord" onChange={(evt) => {this.password2 = evt.target.value}}></input>
                                 <br/>
                                 <input name="type"
                                 type="radio"
@@ -70,7 +76,7 @@ export default class AddPage extends Component{
                             {' '} 
                             <select className="form-control" style={{width:'100%'}} id="communeSelector" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.communeNew = event.target.value)}>
                                 {this.communes.map((commune, i) => (
-                                    <option value={commune.name} key={i}>{commune.commune_name}</option>
+                                    <option value={commune.commune_name} key={i}>{commune.commune_name}</option>
                                 ))}
                             </select>
                             <br/>
@@ -79,6 +85,9 @@ export default class AddPage extends Component{
                         <div >
                             <hr/>
                             <button className="btn customBtn" onClick={this.addNew}>Opprett ny</button>
+                            <br/>
+                            <br/>
+                            <label className="text-danger">{this.warningNew}</label>
                             <br/>
                             <br/>
                         </div>
@@ -133,6 +142,9 @@ export default class AddPage extends Component{
                                 <button className="btn customBtn" onClick={this.updateExisting}>Opprett fra eksisterende</button>
                                 <br/>
                                 <br/>
+                                <label className="text-danger">{this.warningExist}</label>
+                                <br/>
+                                <br/>
                             </div>
                     </div>
                 </div>
@@ -142,13 +154,14 @@ export default class AddPage extends Component{
     }
 
     async addNew(){
-        if(this.password1 == this.password2 && this.typeNew){
-            console.log(this.newEmail + " " + this.password1);
-            await userService.createUser(this.newEmail, this.password1, this.communeNew)
+        if(!this.checkFieldsNew()) return;
+        if(this.password1 == this.password2){
+            console.log("Oppretter en ny...");
+            await userService.createUser(this.newEmail, this.newName, this.password1, this.communeNew)
                 .then(res => {
                     if(res.status === 200) console.log("Ny bruker er registrert!");
                     else {
-                        console.log("Kunne ikke legge til bruker fordi grunner.");
+                        console.log("Kunne ikke legge til bruker, error " + res.status);
                         return;
                     };
                 })  
@@ -157,17 +170,18 @@ export default class AddPage extends Component{
                 window.location.reload();
             }
             else if (this.typeNew == 2 ){
-                console.log("New commune worker: " + this.newEmail);
                 publicWorkerService.createPublicWorker(this.newEmail);
                 window.location.reload();
             }
         }
         else{
-            alert("Feil");
+            this.warningNew = "Passordene du skrev inn stemmer ikke overens.";
+            return; 
         }
     }
 
     updateExisting(){
+        if(!this.checkFieldsExist()) return;
         if(this.typeExist == 1){
             console.log("Admin from existing user: " + this.existingEmail);
             adminService.createAdmin(this.existingEmail);
@@ -178,20 +192,20 @@ export default class AddPage extends Component{
             publicWorkerService.createPublicWorker(this.existingEmail, this.communeExist);
             window.location.reload();
         }
-        else{
-            alert("Velg type");
-        }
     }
 
     setExistingEmail(email){
         this.existingEmail = email;
     }
 
-    mounted(){
+    async mounted(){
         //Get all communes
-        communeService.getAllCommunes()
+        await communeService.getAllCommunes()
         .then(communes => this.communes = communes.data)
         .catch((error : Error) => console.log(error.message));
+
+        this.communeNew = this.communes[0].commune_name;
+        this.communeExist = this.communes[0].commune_name;
 
         //Get all users 
         userService.getUsers() 
@@ -199,8 +213,47 @@ export default class AddPage extends Component{
         .catch((error : Error) => console.log(error.message));
     }
 
-    componentDidMount(){
-        this.communeNew = communes[0].name;
+    checkFieldsNew(){
+        if(this.newName.trim() === "" || this.newEmail.trim() === "" || this.password1.trim() === "" || this.password2.trim() === "") {
+            this.warningNew = "Du må fylle ut alle feltene";
+            return false;
+        }
+        else if(this.newName.length > 254){
+            this.warningNew = "Navnet ditt er for langt";
+            return false; 
+        }
+        else if(this.newEmail.length > 254){
+            this.warningNew = "Emailen din er for lang.";
+            return false;
+        }
+        else if(!this.newEmail.includes("@")){
+            this.warningNew = "Emailen din er ikke gyldig.";
+            return false;
+        }
+        else if(this.password1.length < 8 || this.password2.length < 8){
+            this.warningNew = "Passordet ditt er ikke langt nok (må bestå av minst 8 tegn).";
+            return false;
+        }
+        else if(!this.typeNew){
+            this.warningNew = "Du må velge en admin eller kommunearbeider.";
+            return false; 
+        }
+        else if(this.communeNew.trim() === ""){
+            this.warningNew = "Du må velge en kommune";
+            return false;
+        }
+        return true;
     }
 
+    checkFieldsExist(){
+        if(this.existingEmail === "") {
+            this.warningExist = "Du må velge en bruker fra listen.";
+            return false;
+        }
+        else if(this.typeExist === ''){
+            this.warningExist = "Du må velge en admin eller kommunearbeider.";
+            return false; 
+        }
+        return true;
+    }
 }

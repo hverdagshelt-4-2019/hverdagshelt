@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Component,} from 'react-simplified';
 import eventService from '../../Services/eventService';
 import categoryService from '../../Services/categoryService';
-import communeService from '../../Services/communeService';
 import SingleEvent from './SingleEvent';
 import css from './eventStyle.css';
 import $ from 'jquery';
@@ -99,11 +98,6 @@ export default class EventList extends Component{
     }
 
     mounted(){
-        //eventService.getAllEvents()
-        //.then(events => console.log(events.data));
-        //.then(events => this.allEvents = events.data);
-
-
         eventService.getAllEvents() 
         .then((events : {data: Event[]}) => { 
             this.allEvents = events.data;
@@ -116,7 +110,7 @@ export default class EventList extends Component{
         })
         .catch((error : Error) => console.log("Error occured: " + error.message));
         
-        //Get categories for the possibility to filter //OK
+        //Get categories for the possibility to filter
         categoryService.getEventCategories()
         .then((categories : Category[]) =>  this.eventCategories = categories.data)
         .catch((error : Error) => console.log("Error occured: " + error.message));
@@ -124,20 +118,7 @@ export default class EventList extends Component{
         document.getElementById("arrowBtn").click();
         $("#checkAll").click(function () {
             $(".cat").prop('checked', $(this).prop('checked'));
-        });
-
-        //--Get tickets based on commune and checked categories--
-        //ticketService.getTicketsByCommuneAndCategory(this.communeId, this.categories)
-        //.then(tickets => this.tickets = tickets);  
-        /*ticketService.getAllTickets() //this.communes
-        .then((tickets: Ticket[]) => this.setState({tickets}, () => {
-        console.log('Tickets fetched...', tickets);
-        this.allTickets = [];
-        this.allTickets = this.allTickets.concat(tickets);
-        console.log(this.allTickets);
-        }
-        ));*/ 
-            
+        }); 
     }
 
     increment() {
@@ -150,9 +131,9 @@ export default class EventList extends Component{
 
     changeArrow(){
         let e: HTMLElement|null = document.getElementById("arrow");
-        let c = document.getElementById("cases");
-        let s = document.getElementById("sidebar");
-        if(e) {
+        let c: HTMLElement|null = document.getElementById("cases");
+        let s: HTMLElement|null = document.getElementById("sidebar");
+        if(e && c && s) {
             if (e.getAttribute("data-temp") === "false") {
                 e.setAttribute("data-temp", "true");
                 let temptext = document.getElementById("tempText");
@@ -168,15 +149,6 @@ export default class EventList extends Component{
                 s.style.width = "2%";
             }
         }
-    }
-
-    itemChecked(){
-        
-        //When unchecking a category, tickets refreshed
-        /*
-        ticketService.getTicketsByCommuneAndCategory(this.communeId, this.categories)
-        .then(tickets => this.tickets = tickets);
-        */
     }
 
     updateEvents(){
@@ -198,7 +170,6 @@ export default class EventList extends Component{
                 return((new Date(a.happening_time).getTime() >= new Date().getTime()))
             });
         }
-        //this.setState({Events: localEvents});
         let by = document.getElementById("sorting").value;
         console.log(by);
          switch(by) {

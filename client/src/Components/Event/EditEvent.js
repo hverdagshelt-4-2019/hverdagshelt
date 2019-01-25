@@ -4,24 +4,18 @@ import * as React from 'react';
 import { Component,} from 'react-simplified';
 import eventService from '../../Services/eventService';
 import categoryService from '../../Services/categoryService';
-import GoogleMapReact from 'google-map-react';
-import ControllableHover from './../../map/controllable_hover.js';
 import controllable from 'react-controllables';
-import shouldPureComponentUpdate from 'react-pure-render/function';
-import PropTypes from 'prop-types';
-import {K_SIZE} from './../../map/controllable_hover_styles.js';
 import { Alert } from '../../widgets';
 import Datetime from 'react-datetime'
 
-var yesterday = Datetime.moment().subtract( 1, 'day' );
-var valid = function( current ){
+let yesterday = Datetime.moment().subtract( 1, 'day' );
+let valid = function( current ){
     return current.isAfter( yesterday );
 };
 
-
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 export default class EditEvent extends Component<{ match: { params: { id: number } } }> {
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.state = {
             category: '',
@@ -54,12 +48,12 @@ export default class EditEvent extends Component<{ match: { params: { id: number
                             <form>
                             <div className="form-group">
                             <h4>Tittel</h4>
-                            <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))} defaultValue={this.event.title}/>
+                            <input className="form-control" maxlength="128" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))} defaultValue={this.event.title}/>
                             </div>
 
                             <div className="form-group">
                             <h4>Beskrivelse</h4>
-                            <textarea className="form-control" value={this.state.description} style={{width:"100%"}} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))} defaultValue={this.event.description} />
+                            <textarea className="form-control" maxlength="512" value={this.state.description} style={{width:"100%"}} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))} defaultValue={this.event.description} />
                             </div>
 
                             <div className="form-group">

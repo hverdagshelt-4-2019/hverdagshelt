@@ -70,53 +70,74 @@ async function loginAll() {
 // console.log("Admin token: " + adminToken + "\nPublic token: " + publicToken + "\nUser token: " + userToken);
 }
 
-it("Can get all comments", async done => {
-    const ticketId = 2;
-    let commentRes = await fetch(fetch_url + "comments/" + ticketId, {
+it("Can get all companies", async done => {
+    let compRes = await fetch(fetch_url + "companies", {
         method: "GET",
         headers: HEADERS
     });
-    let commentData = await commentRes.json();
-    expect(commentRes.status).toBe(200);
-    expect(commentData.length).toBe(10);
-    const desc = "This trailer really starts at 3:00";
-    expect(commentData).toEqual(expect.arrayContaining([expect.objectContaining({description: desc})]));
+    let compData = await compRes.json();
+    expect(compRes.status).toBe(200);
+    expect(compData.length).toBe(6);
+    expect(compData).toEqual(expect.arrayContaining([expect.objectContaining({name: "Guugel"})]));
     done();
 })
 
-it("User can add comment", async done => {
-    const id = 2;
-    let commentRes = await fetch(fetch_url + "comments/" + id, {
+it("Admin can create a company", async done => {
+    const newComp = {
+        email: "person10@mail.no",
+        companyName: "Ey lmao xD lol haha foni"
+    }
+    let compRes = await fetch(fetch_url + "company", {
+        method: "POST",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + adminToken
+        },
+        body: JSON.stringify(newComp)
+    });
+    let compData = await compRes.json();
+    expect(compRes.status).toBe(200);
+    expect(compData.affectedRows).toBe(1);
+
+    compRes = await fetch(fetch_url + "companies", {
         method: "GET",
         headers: HEADERS
     });
-    let commentData = await commentRes.json();
-    expect(commentRes.status).toBe(200);
-    const prevLength = commentData.length;
+    compData = await compRes.json();
+    expect(compRes.status).toBe(200);
+    expect(compData.length).toBe(7);
+    expect(compData).toEqual(expect.arrayContaining([expect.objectContaining({name: newComp.companyName})]))
+    done();
+})
 
-    const newComment = {
-        description: "Best description since Shakespeare"
+it("Can't add company if not logged in", async done => {
+    const newComp = {
+        email: "person10@mail.no",
+        companyName: "Ey lmao xD lol haha foni"
     }
-    commentRes = await fetch(fetch_url + "comment/" + id, {
+    let compRes = await fetch(fetch_url + "company", {
+        method: "POST",
+        headers: HEADERS,
+        body: JSON.stringify(newComp)
+    });
+    expect(compRes.status).toBe(401);
+    done();
+})
+
+it("Can't add company as normal user", async done => {
+    const newComp = {
+        email: "person10@mail.no",
+        companyName: "Ey lmao xD lol haha foni"
+    }
+    let compRes = await fetch(fetch_url + "company", {
         method: "POST",
         headers: {
             ...HEADERS,
             Authorization: "Bearer " + userToken
         },
-        body: JSON.stringify(newComment)
+        body: JSON.stringify(newComp)
     });
-    commentData = await commentRes.json();
-    expect(commentRes.status).toBe(200);
-    expect(commentData.affectedRows).toBe(1);
-
-    commentRes = await fetch(fetch_url + "comments/" + id, {
-        method: "GET",
-        headers: HEADERS
-    });
-    commentData = await commentRes.json();
-    expect(commentRes.status).toBe(200);
-    expect(commentData.length).toBe(prevLength + 1);
-    expect(commentData).toEqual(expect.arrayContaining([expect.objectContaining({description: newComment.description})]));
+    expect(compRes.status).toBe(403);
     done();
 })
 
