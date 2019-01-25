@@ -6,7 +6,7 @@
     "start2": "nodemon --exec babel-node test/dao/fetchtesting.js",
     "start-prod": "cross-env NODE_ENV=production babel-node src/index.js",
     "test": "jest --detectOpenHandles --forceExit --runInBand",
-    "coveralls": "cat ./tests/coverage/lcov.info | coveralls"
+    "coveralls": "cat coverage/lcov.info | coveralls"
   },
   "jest": {
     "transform": {

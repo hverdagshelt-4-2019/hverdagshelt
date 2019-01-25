@@ -28,6 +28,6 @@ export default class PublicWorkerService {
     }
 
     static getPublicworkers(): Promise<PublicWorker[]> {
-        return axios.get('/publicworkers');
+        return axios.get('/publicworkers', config());
     }
 }
