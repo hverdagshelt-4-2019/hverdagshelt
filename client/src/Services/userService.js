@@ -65,6 +65,7 @@ export default class userService {
    }
 
    static resetPassword(email, json): Promise<Object>{
+        console.log(email);
         return axios.put("/forgotPassword/" + email, json);
    }
 
