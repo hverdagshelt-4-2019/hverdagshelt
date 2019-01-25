@@ -138,7 +138,10 @@ export default class AddEvent extends Component {
             let sendingDate = new Date(this.state.happening_time);
             sendingDate.setMinutes(sendingDate.getMinutes() - sendingDate.getTimezoneOffset());
             sendingDate = sendingDate.toJSON();
-            console.log(sendingDate);
+            if(sendingDate === null || sendingDate === undefined) {
+                Alert.danger('Opplasting mislyktes, sjekk at du har lagt inn dato/tidspunkt riktig.');
+                document.documentElement.scrollTop = 0;
+            }
             await eventService
             .postEvent(this.state.commune, this.state.category, this.state.title, this.state.description, sendingDate.split('T', 1)[0] + ' ' + sendingDate.split('T')[1].split('.', 1))
             .then((response) => {

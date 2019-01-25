@@ -142,6 +142,10 @@ export default class EditEvent extends Component<{ match: { params: { id: number
         if (!this.state.happening_time) this.state.happening_time = this.event.happening_time;
 
         let date = this.state.happening_time;
+        if(date === null || date === undefined || (typeof(date) !== Date)) {
+            Alert.danger('Opplasting mislyktes, sjekk at du har lagt inn dato/tidspunkt riktig.');
+            document.documentElement.scrollTop = 0;
+        }
         date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
         date = date.toJSON();
 
