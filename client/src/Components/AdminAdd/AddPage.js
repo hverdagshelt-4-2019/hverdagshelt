@@ -5,8 +5,7 @@ import adminService from '../../Services/adminService';
 import publicWorkerService from '../../Services/publicWorkerService';
 import communeService from '../../Services/communeService';
 import userService from '../../Services/userService';
-
-//TODO: Fix so you can enter email and promote user to admin
+import {Alert} from '../../widgets';
 
 export default class AddPage extends Component{
     //Common
@@ -143,12 +142,11 @@ export default class AddPage extends Component{
 
     async addNew(){
         if(this.password1 == this.password2 && this.typeNew){
-            console.log(this.newEmail + " " + this.password1);
             await userService.createUser(this.newEmail, this.password1, this.communeNew)
                 .then(res => {
                     if(res.status === 200) console.log("Ny bruker er registrert!");
                     else {
-                        console.log("Kunne ikke legge til bruker fordi grunner.");
+                        console.log("Kunne ikke legge til bruker, error " + res.status);
                         return;
                     };
                 })  
@@ -157,13 +155,12 @@ export default class AddPage extends Component{
                 window.location.reload();
             }
             else if (this.typeNew == 2 ){
-                console.log("New commune worker: " + this.newEmail);
                 publicWorkerService.createPublicWorker(this.newEmail);
                 window.location.reload();
             }
         }
         else{
-            alert("Feil");
+            Alert.danger("Noe gikk galt.");
         }
     }
 
@@ -179,7 +176,7 @@ export default class AddPage extends Component{
             window.location.reload();
         }
         else{
-            alert("Velg type");
+            Alert.danger("Vennligst velg type.");
         }
     }
 
