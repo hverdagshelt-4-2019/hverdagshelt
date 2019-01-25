@@ -33,6 +33,7 @@ server.on('connection', (socket) => {
     });
 });
 
+let normalToken;
 let adminToken;
 let userToken;
 let publicToken;
@@ -40,6 +41,7 @@ let publicToken;
 const userMail = "person2@mail.no";
 const adminMail = "person17@mail.no";
 const publicMail = "person1@mail.no";
+const normalMail = "person10@mail.no";
 
 beforeAll(async done => {
     await setup_database(pool);
@@ -72,6 +74,7 @@ async function loginAll() {
     adminToken = await loginFetch(adminMail, "password17");
     userToken = await loginFetch(userMail, "password2");
     publicToken = await loginFetch(publicMail, "password1");
+    normalToken = await loginFetch(normalMail, "password10");
     // console.log("Admin token: " + adminToken + "\nPublic token: " + publicToken + "\nUser token: " + userToken);
 }
 
@@ -281,7 +284,7 @@ it("can log in and change a users password", async done => {
 
 it("registers a user, and can then log in them", done => {
     let user = {
-        email: "testUser@mail.com",
+        email: config.test.emailRecipient,
         name: "testuser",
         commune: 'Harstad',
         password: "testpassword96"
@@ -313,6 +316,66 @@ it("registers a user, and can then log in them", done => {
         })
     })
 });
+
+it("Can get user info when logged in", async done => {
+    let userRes = await fetch(fetch_url + "user", {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + userToken
+        }
+    });
+    let userData = await userRes.json();
+    expect(userRes.status).toBe(200);
+    expect(userData.length).toBe(1);
+    expect(userData[0].email).toBe("person2@mail.no");
+    done();
+})
+
+it("Can't get user info when not logged in", async done => {
+    let userRes = await fetch(fetch_url + "user", {
+        method: "GET",
+        headers: HEADERS
+    });
+    expect(userRes.status).toBe(401);
+    done();
+})
+
+it("User can get level", async done => {
+    let userRes = await fetch(fetch_url + "level", {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + userToken
+        }
+    });
+    let userData = await userRes.json();
+    expect(userRes.status).toBe(200);
+    expect(userData.level).toBe("company");
+
+    userRes = await fetch(fetch_url + "level", {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + publicToken
+        }
+    });
+    userData = await userRes.json();
+    expect(userRes.status).toBe(200);
+    expect(userData.level).toBe("publicworker");
+
+    userRes = await fetch(fetch_url + "level", {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + adminToken
+        }
+    });
+    userData = await userRes.json();
+    expect(userRes.status).toBe(200);
+    expect(userData.level).toBe("admin");
+    done();
+})
 
 it("Can get all public workers", async done => {
     let workRes = await fetch(fetch_url + "publicworkers", {

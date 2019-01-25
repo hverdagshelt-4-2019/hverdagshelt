@@ -18,7 +18,6 @@ import { K_SIZE } from './../../map/controllable_hover_styles.js';
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 export default class Ticket extends Component<{ match: { params: { id: number } } }> {
-  ticket: {lat:any, lng:any, picture:any} = {lat: '', lng: '', picture: ''};
   sub_date = null;
   comments = [];
   companies = ['Ingen'];
@@ -53,17 +52,18 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
   constructor(props) {
     super(props);
       this.state = {
-          statusText: ''
+          statusText: '',
+          ticket: {lat: '', lng: '', picture: ''}
       };
   }
 
   editStatus(cat) {
-    let res = ticketService.setStatus(this.ticket.id, {status: cat, statusText: this.state.statusText, email: this.ticket.submitter_email, responsible_commune: this.ticket.responsible_commune});
+    let res = ticketService.setStatus(this.state.ticket.id, {status: cat, statusText: this.state.statusText, email: this.state.ticket.submitter_email, responsible_commune: this.state.ticket.responsible_commune});
     console.log("Response: " + res);
   }
 
   editCompany(cat) {
-    ticketService.setCompany(this.ticket.id, {name: cat})
+    ticketService.setCompany(this.state.ticket.id, {name: cat})
         .then(e => console.log(e))
         .catch(err => console.log(err))
   }
@@ -86,10 +86,10 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
   };
 
   render() {
-      if(!this.ticket) return (<></>);
+      if(!this.state.ticket) return (<></>);
       const ctr = {
-          lat: this.ticket.lat,
-          lng: this.ticket.lng
+          lat: this.state.ticket.lat,
+          lng: this.state.ticket.lng
       };
     const places = this.props.greatPlaces.map(place => {
       const { id, ...coords } = place;
@@ -117,46 +117,46 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
           <div className="row">
             <div className="col-lg-10" style={{marginLeft: "8%", marginRight: "8%"}}>
               <br />
-              <h1>{this.ticket.title}</h1>
+              <h1>{this.state.ticket.title}</h1>
 
               <div className={styles.statusDiv}>
-                <p id={"status"+this.ticket.id} style={{marginBottom: "65px"}}>
-                    <i id={"it"+this.ticket.id}></i>
+                <p id={"status"+this.state.ticket.id} style={{marginBottom: "65px"}}>
+                    <i id={"it"+this.state.ticket.id}></i>
                 </p>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
-                <div style={{fontWeight: "900", color: "#666B6E", width: "100%"}} id={"statust"+this.ticket.id}>
-                {this.canSetStatus() && this.ticket.status && <Dropdown options={status} currValue={this.ticket.status} reciever={this.editStatus}/>}
-                {this.canSetStatus() && this.ticket.status && <textarea className="form-control" style={{width: "100%", resize: "none"}} value={this.state.statusText} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({statusText: event.target.value}))}/>}
-                {!this.canSetStatus() && this.ticket.status && <p>{this.ticket.status} </p>}
+                <div style={{fontWeight: "900", color: "#666B6E", width: "100%"}} id={"statust"+this.state.ticket.id}>
+                {this.canSetStatus() && this.state.ticket.status && <Dropdown options={status} currValue={this.state.ticket.status} reciever={this.editStatus}/>}
+                {this.canSetStatus() && this.state.ticket.status && <textarea className="form-control" maxlength="512" style={{width: "100%", resize: "none"}} value={this.state.statusText} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({statusText: event.target.value}))}/>}
+                {!this.canSetStatus() && this.state.ticket.status && <p>{this.state.ticket.status} </p>}
                 </div>
               </div>
-              {!this.canSetStatus() && this.ticket.status && <p>{this.state.statusText}</p>}
+              {!this.canSetStatus() && this.state.ticket.status && <p>{this.state.statusText}</p>}
               <div id="cbr" style={{height: "20px"}}></div>
               <p>
-                <i className="fas fa-user" style={{marginRight: "4px"}}></i> {this.ticket.name+""}
+                <i className="fas fa-user" style={{marginRight: "4px"}}></i> {this.state.ticket.name+""}
               </p>
 
               <hr />
               <ul className="inlineStuff">
                 <li style={{width: "33%"}}>
-                  <i className="fas fa-calendar" style={{marginRight: "4px"}}></i> {this.ticket.submitted_time !== undefined && this.ticket.submitted_time.replace('T', ' ').replace('.000Z', '').slice(0, -3)}
+                  <i className="fas fa-calendar" style={{marginRight: "4px"}}></i> {this.state.ticket.submitted_time !== undefined && this.state.ticket.submitted_time.replace('T', ' ').replace('.000Z', '').slice(0, -3)}
                 </li>
                 <li style={{width: "34%"}}>
-                  <i className="fas fa-map-marker-alt" style={{marginRight: "4px"}}></i> {this.ticket.responsible_commune}
+                  <i className="fas fa-map-marker-alt" style={{marginRight: "4px"}}></i> {this.state.ticket.responsible_commune}
                 </li>
                 <li style={{width: "33%"}}>
-                  <i className="fas fa-edit" style={{marginRight: "4px"}}></i> {this.ticket.category}
+                  <i className="fas fa-edit" style={{marginRight: "4px"}}></i> {this.state.ticket.category}
                 </li>
               </ul>
               <hr />
               <p>
-                <b>Ansvarlig bedrift:</b> {this.ticket.company_name} {this.canSetStatus() && this.companies.length > 1 && <Dropdown options={this.companies} currValue={this.ticket.company_name} reciever={this.editCompany}/>}
+                <b>Ansvarlig bedrift:</b> {this.state.ticket.company_name} {this.canSetStatus() && this.companies.length > 1 && <Dropdown options={this.companies} currValue={this.state.ticket.company_name} reciever={this.editCompany}/>}
               </p>
 
               <hr />
 
-              <label>{this.ticket.description}</label>
+              <label>{this.state.ticket.description}</label>
 
               <hr />
               <div className="map" style={{ height: '300px', width: '100%' }}>
@@ -174,14 +174,14 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 </GoogleMapReact>
               </div>
               <hr />
-              {(localStorage.getItem('level') === 'admin') && <button className="btn btn-danger" onClick={this.deleteTicket}>Slett</button> }
+              {(localStorage.getItem('level') === 'admin' || localStorage.getItem('level') === 'publicworker') && <button className="btn btn-danger" onClick={this.deleteTicket}><i className="fas fa-trash"></i> Slett</button> }
               <div>
                 <br />
                 <h5 className="card-header">Kommenter:</h5>
                 <div className="card-body">
                   <form onSubmit={this.postComment}>
                     <div className="form-group">
-                      <textarea className="form-control" rows="3" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.comment.description = event.target.value)} />
+                      <textarea className="form-control" maxlength="256" rows="3" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.comment.description = event.target.value)} />
                     </div>
                     <button type="submit" className="btn customBtn">
                       Send
@@ -225,32 +225,32 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
         ticketService
             .getTicket(this.props.match.params.id)
             .then(ticket => {
-                this.ticket = ticket.data[0];
+                this.state.ticket = ticket.data[0];
                 this.state.statusText = ticket.data[0].statusText;
                 this.sub_date =
-                    this.ticket.submitted_time.split('T', 1)[0] + ' ' + this.ticket.submitted_time.split('T')[1].split('.', 1);
+                    this.state.ticket.submitted_time.split('T', 1)[0] + ' ' + this.state.ticket.submitted_time.split('T')[1].split('.', 1);
                 console.log(this.props.match.params.id);
-                this.props.greatPlaces[0].lat=this.ticket.lat;
-                this.props.greatPlaces[0].lng=this.ticket.lng;
-                console.log("lat: " + this.ticket.lat + ". lng: " + this.ticket.lng)
-                console.log(this.ticket.picture);
-                this.getImage(this.ticket.picture);
+                this.props.greatPlaces[0].lat=this.state.ticket.lat;
+                this.props.greatPlaces[0].lng=this.state.ticket.lng;
+                console.log("lat: " + this.state.ticket.lat + ". lng: " + this.state.ticket.lng)
+                console.log(this.state.ticket.picture);
+                this.getImage(this.state.ticket.picture);
                 let s = document.getElementById("status"+ticket.id);
                 let st = document.getElementById("statust"+ticket.id);
                 let i = document.getElementById("it"+ticket.id);
-                console.log("hei"+this.ticket.status);
-                if(this.ticket.status == "Fullført"){
+                console.log("hei"+this.state.ticket.status);
+                if(this.state.ticket.status == "Fullført"){
                     s.style.color = "green";
                     st.style.color = "green";
                     i.setAttribute("class", "fas fa-check");
-                }else if(this.ticket.status == "Bearbeides"){
+                }else if(this.state.ticket.status == "Bearbeides"){
                     s.style.color = "#FFCD24";
                     st.style.color = "#FFCD24";
                     i.setAttribute("class", "fas fa-spinner");
                 }else {
                     i.setAttribute("class", "fas fa-clipboard-list");
                 }
-                if(!(localStorage.getItem("level") == "publicworker" || localStorage.getItem("level") == "admin")){
+                if(!(localStorage.getItem("level") == "publicworker" || localStorage.getItem("level") == "company")){
                     s.style.marginBottom = "14px";
                     document.getElementById("cbr").style.height = "0px"
                 }
@@ -273,8 +273,13 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
       if(!this.comment.description) return null;
       console.log('posting');
 
-      commentService.postComment(this.props.match.params.id, this.comment.description);
-      window.location.reload();
+      if(localStorage.getItem('level') !== 'none'){
+          commentService.postComment(this.props.match.params.id, this.comment.description);
+          window.location.reload();
+      } else {
+          Alert.danger('Du må registrere en bruker for å kommentere.');
+          document.body.scrollTop = document.documentElement.scrollTop = 0;
+      }  
   }
 
   getImage(i: String) {
@@ -287,7 +292,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
   componentDidMount() {
     console.log('did mount');
     {
-      this.getImage(this.ticket.picture);
+      this.getImage(this.state.ticket.picture);
     }
   }
 

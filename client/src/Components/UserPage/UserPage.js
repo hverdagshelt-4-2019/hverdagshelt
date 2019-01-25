@@ -121,7 +121,7 @@ export default class UserPage extends Component {
                           <TextField style={{width: "260px"}} label={this.state.label} error={this.state.error} onChange={this.handleChange}/>
                           <div style={{padding: "0px 10px"}}/>
                           <button variant="contained" className="btn customBtn" onClick={this.changeEmail}>LAGRE</button>
-                          <Button variant="contained" onClick={this.cancelEdit}>Avbryt</Button>
+                          <button variant="contained" className="btn btn-danger" onClick={this.cancelEdit}>AVBRYT</button>
                       </div>
                       }
                   </div>

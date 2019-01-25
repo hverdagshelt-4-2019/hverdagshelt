@@ -53,12 +53,12 @@ export default class AddEvent extends Component {
                     <form>
                     <div className="form-group">
                         <h4>Tittel</h4>
-                        <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))}/>
+                        <input className="form-control" maxlength="128" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))}/>
                     </div>
 
                     <div className="form-group">
                         <h4>Beskrivelse</h4>
-                        <textarea className="form-control" style={{width:"100%", resize: "none"}} 
+                        <textarea className="form-control" maxlength="512" style={{width:"100%", resize: "none"}} 
                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))}
                         />
                     </div>

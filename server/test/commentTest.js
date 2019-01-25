@@ -90,7 +90,6 @@ it("User can add comment", async done => {
         method: "GET",
         headers: HEADERS
     });
-    console.log(commentRes)
     let commentData = await commentRes.json();
     expect(commentRes.status).toBe(200);
     const prevLength = commentData.length;

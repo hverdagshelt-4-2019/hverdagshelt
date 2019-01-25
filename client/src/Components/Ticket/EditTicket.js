@@ -101,11 +101,11 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                     <div className="form-group">
 
                             <h4>Tittel</h4>
-                            <input className="form-control" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))} defaultValue={this.ticket.title}/>
+                            <input className="form-control" maxlength="64" onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({title: event.target.value}))} defaultValue={this.ticket.title}/>
 </div>
 <div className="form-group">
                              <h4>Beskrivelse</h4>
-                            <textarea className="form-control" value={this.state.description} style={{width:"100%"}} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))} defaultValue={this.ticket.description} />
+                            <textarea className="form-control" maxlength="512" value={this.state.description} style={{width:"100%"}} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({description: event.target.value}))} defaultValue={this.ticket.description} />
                             </div>
                             <div className="form-group">
                                                         
@@ -233,11 +233,11 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
         .getTicket(this.props.match.params.id)
         .then(ticket => {
             this.ticket = ticket.data[0];
-            this.state.category = ticket.data[0].category;
             this.state.description = ticket.data[0].description;
             this.state.greatPlaces[0].lat= this.ticket.lat;
             this.state.greatPlaces[0].lng= this.ticket.lng;
             this.getImage(this.ticket.picture);
+            this.setState({category: ticket.data[0].category});
             })
         .catch((error : Error) => console.log(error.message));
 
