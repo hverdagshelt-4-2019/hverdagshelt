@@ -63,7 +63,7 @@ export default class Navbar extends Component {
     render() {
         return (
             <nav className="navbar navbar-expand-lg navbar-dark blue shadow">
-                <NavLink className="navbar-brand" to="/hjem" style={{color: "white"}}>HverdagsHelt<img style={{marginLeft: "4px"}} src="Skjermbilde.PNG" width="20" height="17" /></NavLink>
+                <NavLink className="navbar-brand" to="/" style={{color: "white"}}>HverdagsHelt<img style={{marginLeft: "4px"}} src="Skjermbilde.PNG" width="20" height="17" /></NavLink>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -83,12 +83,15 @@ export default class Navbar extends Component {
                     <li className="nav-item">
                         <NavLink style={{color: "white", height: "50px"}} className={"nav-link " + css.customLink} activeClassName={css.active} exact to="/minside">
                             <div className="topOfLink">
-                                <i className="fas fa-user"></i> Min Side
+                                {localStorage.getItem('level') === 'none' ? '' : <i className="fas fa-user"></i>}
+                                {' '}
+                                {localStorage.getItem('level') === 'none' ? "" : "Min Side"}
+                                
                             </div>
                         </NavLink>
                     </li>
                     <li className="nav-item">
-                        <a style={{color: "white", height: "50px"}}className={"nav-link " + css.customLink} href="/" onClick={this.logout}>
+                        <a style={{color: "white", height: "50px"}}className={"nav-link " + css.customLink} href="/loginn" onClick={this.logout}>
                             <div className="topOfLink">
                                 {localStorage.getItem('level') === 'none' ? <i className="fas fa-sign-in-alt"></i> : <i className="fas fa-sign-out-alt"></i>}
                                 {' '}

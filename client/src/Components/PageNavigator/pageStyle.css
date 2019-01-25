@@ -1,0 +1,13 @@
+.side {
+    color: #1976D2;
+    font-family: Lato, sans-serif;
+    font-weight: 600;
+    margin-top: 10px;
+}
+.aroundPage {
+    display: inline-block;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 150px;
+}

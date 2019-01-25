@@ -54,19 +54,12 @@ export default class Statistics extends Component{
         return(
             <div className="aroundStuff">
                 <nav>
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-selected="true"  onClick={this.setNational}>Nasjonalt</a>
-                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-home" role="tab" aria-selected="false" onClick={this.setLocal}>Lokalt</a>
+                    <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-selected="true"  onClick={this.setNational}>Nasjonalt</a>
+                        <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-home" role="tab" aria-selected="false" onClick={this.setLocal}>Lokalt</a>
                         {!this.state.isHidden && <DropDown selected={this.selectedCommune} communes={this.communes} clickFunc={this.updateLocal.bind(this)}/>}
                     </div>
                 </nav>
-
-
-                
-
-
-                <div>
-                <h1>{this.props.title}</h1>
                 <div className="container">
                     <div className="row">
                         <div className="col" style={{border:'1px solid lightgrey'}}>
@@ -74,7 +67,8 @@ export default class Statistics extends Component{
                             <Doughnut data = {{
                                 datasets: [{
                                     data: [(this.state.ticketsSent - this.state.ticketsSolved), this.state.ticketsSolved],
-                                    backgroundColor: ['LightCoral', 'lightblue']
+                                    backgroundColor: ['LightCoral', 'lightblue'],
+                                    hoverBackgroundColor: ['IndianRed', 'SkyBlue']
                                 }],
 
                                 // These labels appear in the legend and in the tooltips when hovering different arcs
@@ -87,7 +81,7 @@ export default class Statistics extends Component{
                             <small>Innsendte saker: {this.state.ticketsSent}</small><br/>
                             <small>Løste saker: {this.state.ticketsSolved}</small><br/>
                             <small>Uløste saker: {(this.state.ticketsSent - this.state.ticketsSolved)}</small><br/>
-                            <small>Prosentandel løste saker: {(((this.state.ticketsSolved / this.state.ticketsSent)*100).toFixed(2))}{' '}%</small>
+                            <small>Prosentandel løste saker: {(this.state.ticketsSent == 0) ? 'Ingen saker innsendt.' : (((this.state.ticketsSolved / this.state.ticketsSent)*100).toFixed(2) + ' %')}</small>
                             <br/>
                             <br/>
                         </div>
@@ -100,7 +94,7 @@ export default class Statistics extends Component{
                                     label: "Antall saker",
                                     backgroundColor: 'lightblue',
                                     borderColor: 'lightgrey',
-                                    data: this.state.ticketsPerCat,
+                                    data: this.state.ticketsPerCat
                                 }]
                                      
                             }} options= {{
@@ -118,7 +112,7 @@ export default class Statistics extends Component{
                             <small>Tilgjengelige kategorier i Hverdagshelt: {this.allCategories.length}</small><br/>
                         </div>
                     </div>
-                    <br/>
+                    
                     <div className="row">
                         <div className="col" style={{border:'1px solid lightgrey'}}>
                             <br/>
@@ -141,12 +135,12 @@ export default class Statistics extends Component{
                                 }
                             }}
                             />
-                            <hr/>
+                            <br/>
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
+    
         )
     }
 

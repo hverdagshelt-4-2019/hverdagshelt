@@ -22,15 +22,11 @@ export default class EditEvent extends Component<{ match: { params: { id: number
             title: '',
             description: '',
             picture: '',
-            imageAdded: false,
             happening_time: '',
             categories: []
         };
     }
 
-    handleImageAdded() {
-        this.state.imageAdded ? this.setState({imageAdded: false}) : this.setState({imageAdded: true});
-    }
     event='';
 
 
@@ -79,7 +75,7 @@ export default class EditEvent extends Component<{ match: { params: { id: number
                             <img id="picture" src="/image/logo.png" style={{maxWidth: '40%'}} className={"img-fluid"} alt="Responsive image"/>
                             <br />
                             <label htmlFor="InputFile">Last opp nytt bilde om ønsket</label>
-                            <input type="file" className="form-control-file" id="InputFile" onChange={this.handleImageAdded}/>
+                            <input type="file" className="form-control-file" id="InputFile" />
                             <small id="fileHelp" className="form-text text-muted"></small>
                             </div>
                             </form>
@@ -159,19 +155,16 @@ export default class EditEvent extends Component<{ match: { params: { id: number
             })
             .catch((error : Error) => {
                 console.log(error.message);
-                Alert.danger("Noe gikk galt, Sak ikke oppdatert");
+                Alert.danger("Noe gikk galt, begivenhet ikke oppdatert");
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
             });
 
-        if(this.state.imageAdded){
-            console.log("ADDING IMAGE");
-            console.log(this.state.imageAdded);
+        if(document.getElementById("InputFile").files[0] !== undefined){
             this.addImage(this.props.match.params.id);
         }
-
-        console.log(this.state.imageAdded);
-        Alert.success("Sak oppdatert");
+        this.props.history.push('/begivenheter');
+        Alert.success("Begivenhet oppdatert");
         document.body.scrollTop = document.documentElement.scrollTop = 0;
-        console.log("done")
     }
 
     getImage(i: String){

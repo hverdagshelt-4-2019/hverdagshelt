@@ -23,7 +23,7 @@ export default class TicketDao extends Dao {
     getTicketsByCompany(companyId, callback) {
         super.query(
             'SELECT t.id, email as submitter_email, count(t2.description) as countcomm, responsible_commune,\n' +
-            ' c2.name as company_name, category, title, description, picture, submitted_time, finished_time, status,\n' +
+            ' c2.name as company_name, category, title, t.description, picture, submitted_time, finished_time, status,\n' +
             ' lat, lng FROM ticket t JOIN person p ON p.id = t.submitter_id LEFT JOIN company c2 ON\n' +
             ' responsible_company_id = c2.id LEFT JOIN ticket_comment t2 ON t.id = t2.ticket_id\n' +
             ' WHERE responsible_company_id = ? GROUP BY t.id;',
@@ -33,14 +33,14 @@ export default class TicketDao extends Dao {
     }
 
     addTicket(json, callback) {
-        let params = [json.userid, json.commune, json.category, json.title, json.description, json.picture, json.lat, json.long]
+        let params = [json.userid, json.commune, json.category, json.title, json.description, json.picture, json.lat, json.lng]
         super.query("INSERT INTO ticket (submitter_id, responsible_commune, category, title, description, picture, lat, lng) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
             params,
             callback)
     }
 
     editTicket(id, json, callback) {
-        let params = [json.category, json.title, json.description, json.lat, json.long, id]
+        let params = [json.category, json.title, json.description, json.lat, json.lng, id]
         super.query(
             "UPDATE ticket SET category = ?, title = ?, description = ?, lat = ?, lng = ? WHERE id = ?;",
             params,

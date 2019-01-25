@@ -49,8 +49,7 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                 description: '',
                 picture: '',
                 lat: '',
-                long: '',
-                imageAdded: false,
+                lng: '',
                 categories: []
             };
         }
@@ -80,9 +79,7 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
             pa.lng = lng;
             this.setState({greatPlaces: [pa]});
     }
-    handleImageAdded() {
-       this.state.imageAdded ? this.setState({imageAdded: false}) : this.setState({imageAdded: true});
-   }
+    
     ticket='';
 
 
@@ -126,7 +123,7 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
                             <img id="picture" src="/image/logo.png" style={{maxWidth: '40%'}} className={"img-fluid"} alt="Responsive image"/>
                             <br />
                             <label htmlFor="InputFile">Last opp nytt bilde om ønsket</label>
-                            <input type="file" className="form-control-file" id="InputFile" onChange={this.handleImageAdded}/>
+                            <input type="file" className="form-control-file" id="InputFile" />
                             <small id="fileHelp" className="form-text text-muted"></small>
                             </div>
                             <hr />
@@ -199,7 +196,7 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
         if (!this.state.title) this.state.title = this.ticket.title;
         if (!this.state.description) this.state.description = this.ticket.description;
         if (!this.state.category) this.state.category = this.ticket.category;
-        if (!this.state.long) this.state.long = this.ticket.long;
+        if (!this.state.lng) this.state.lng = this.ticket.lng;
         if (!this.state.lat) this.state.lat = this.ticket.lat;
         let postId: Number;
         let posted = true;
@@ -212,16 +209,16 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
             console.log(error.message);
             Alert.danger("Noe gikk galt, Sak ikke oppdatert");
             posted = false;
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
             });
         if(posted){
-            if(postId !== null && this.state.imageAdded){
+            if(postId !== null && document.getElementById("InputFile").files[0] !== undefined){
                 this.addImage(this.props.match.params.id);
             }
-            console.log(this.state.imageAdded);
+            this.props.history.push('/');
             Alert.success("Sak oppdatert");
-            console.log("done");
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
         }
-        document.body.scrollTop = document.documentElement.scrollTop = 0;
     }
 
     getImage(i: String){

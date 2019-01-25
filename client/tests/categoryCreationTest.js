@@ -7,11 +7,11 @@ import { shallow, mount } from 'enzyme';
 describe('CategoryCreation tests', () => {
     const wrapper = shallow(<CategoryCreation />);
 
-    it('then renders the drop down menu', () => {
-         expect(wrapper.find('div').length).toEqual(5);
+    it('renders CategoryCreation', () => {
+         expect(wrapper.exists()).toBe(true);
     });
 
     it('renders the two Adder components', () => {
         expect(wrapper.find('Adder').length).toEqual(2);
-    })
+    });
 });

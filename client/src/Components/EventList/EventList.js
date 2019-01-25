@@ -7,12 +7,16 @@ import categoryService from '../../Services/categoryService';
 import SingleEvent from './SingleEvent';
 import css from './eventStyle.css';
 import $ from 'jquery';
+import PageNavigator from "../PageNavigator/PageNavigator";
 
 export default class EventList extends Component{
     communes = [];
     communesArray = [];
     eventCategories : Category[] = []; 
     allEvents = [];
+    level = '';
+    base = 0;
+    pageLim = 20;
 
     constructor() {
         super();
@@ -25,6 +29,13 @@ export default class EventList extends Component{
         return(
             <div className={"shadow " + css.aroundEvents}>
                 <br/>
+                <h3 className="col-xs-6 col-sm-pull-9" align="center" style={{fontFamily: "Lato, sans-serif", fontWeight: "600", opacity: "0.7"}}>
+                    Liste over begivenheter 
+                    {(localStorage.getItem('level') == 'admin' || localStorage.getItem('level') == 'none') && '' }
+                    {(localStorage.getItem('level') == 'publicworker') && ' fra din kommune' }
+                    {(localStorage.getItem('level') == 'user') && ' fra kommunene du følger' }
+                </h3>
+                <hr/>
                 <div className="col-xs-6 col-sm-pull-9 sidebar-offcanvas" id="sidebar" style={{width: '2%', float: 'left', margin: '1%'}}>
                     <h5 id="tempText">Kategorier:</h5>
                     <button id="arrowBtn" className={"btn customBtn " + css.btnCircle} onClick={this.changeArrow} data-toggle="collapse" href="#allOptionsCat">
@@ -67,8 +78,9 @@ export default class EventList extends Component{
                         float: "right",
                         marginLeft: '5%'}}>
                         <br />
+                        <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.state.events.length}/>
                         <ul className={css.eventList}>
-                            {this.state.events.map((event, i) => (
+                            {this.state.events.slice(this.base*this.pageLim, (this.base+1)*this.pageLim).map((event, i) => (
                                 <div key={i}>
                                     <SingleEvent theEvent={event}>
                                     </SingleEvent>
@@ -76,6 +88,8 @@ export default class EventList extends Component{
                                 </div>
                             ))}
                         </ul>
+                        <br />
+                        <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.state.events.length}/>
                     </div>
                 </div>
                 <div style={{height: '80px'}} />
@@ -92,9 +106,12 @@ export default class EventList extends Component{
         eventService.getAllEvents() 
         .then((events : {data: Event[]}) => { 
             this.allEvents = events.data;
-            this.allEvents.sort(function(a,b){return new Date(b.happening_time) - new Date(a.happening_time)});
-            let arkEvents = this.allEvents.filter(e => e.status != "Fullført");
-            this.setState({events: this.allEvents});
+            this.allEvents.sort(function(a,b){return new Date(a.happening_time) - new Date(b.happening_time)});
+            let le = this.allEvents
+            le = le.filter(a => {
+                return((new Date(a.happening_time).getTime() >= new Date().getTime()))
+            });
+            this.setState({events: le});
         })
         .catch((error : Error) => console.log("Error occured: " + error.message));
         
@@ -120,6 +137,14 @@ export default class EventList extends Component{
         }
         ));*/ 
             
+    }
+
+    increment() {
+        this.base++;
+    }
+
+    decrement() {
+        this.base--;
     }
 
     changeArrow(){
@@ -183,6 +208,7 @@ export default class EventList extends Component{
                 localEvents.sort(function(a,b){return new Date(b.happening_time) - new Date(a.happening_time)});
                 break;
         }
+        this.base = 0;
         this.setState({events: localEvents});
 
     }
@@ -198,6 +224,7 @@ export default class EventList extends Component{
                 localEvents.sort(function(a,b){return new Date(b.happening_time) - new Date(a.happening_time)});
                 break;
         }
+        this.base=0;
         this.setState({events: localEvents});
     }
 

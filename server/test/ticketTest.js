@@ -75,7 +75,7 @@ it("Can add a ticket and edit it", async done => {
     let ticket = {
         commune: "Vik",
         lat: 63.42972,
-        long: 10.39333,
+        lng: 10.39333,
         title: "Tezt",
         description: "This is a description",
         category: "Sykkel"
@@ -110,7 +110,7 @@ it("Can add a ticket and edit it", async done => {
         title: "Ost",
         description: "Changed desc",
         lat: 20.3,
-        long: 50.2
+        lng: 50.2
     }
 
     let editTicketRes = await fetch(fetch_url + "ticketedit/" + insertId, {
@@ -136,7 +136,7 @@ it("Can add a ticket and edit it", async done => {
     expect(ticketData[0].category).toBe(newTicket.category);
     expect(ticketData[0].description).toBe(newTicket.description);
     expect(ticketData[0].lat).toBe(newTicket.lat);
-    expect(ticketData[0].lng).toBe(newTicket.long);
+    expect(ticketData[0].lng).toBe(newTicket.lng);
     done();
 })
 
@@ -199,8 +199,7 @@ it("Can get tickets by commune", async done => {
 })
 
 it("Can get tickets by company", async done =>{
-    // TODO: Sindre needs to fix his shit in ticketDao.
-    const company = "Drogas";
+    // TODO: Fix this method, gives empty array
     let ticketRes = await fetch(fetch_url + "tickets", {
         method: "GET",
         headers: {
@@ -211,11 +210,11 @@ it("Can get tickets by company", async done =>{
     let ticketData = await ticketRes.json();
     console.log(ticketData);
     expect(ticketRes.status).toBe(200);
+    expect(ticketData.length).toBe(2);
     done();
 })
 
 it("User can set responsibility", async done => {
-    // TODO: Sindre needs to fix his shit again
     const comp = "Drogas";
     const body = {
         name: comp
@@ -245,20 +244,30 @@ it("User can set responsibility", async done => {
 })
 
 it("User can delete his own tickets", async done => {
-    // TODO: Fix this route, it's broken. *Looks at Sindre*
     const ticketId = 2;
+    const body = {
+        submitter_id: 2
+    }
     let deleteRes = await fetch(fetch_url + "ticket/" + ticketId, {
         method: "DELETE",
         headers: {
             ...HEADERS,
             Authorization: "Bearer " + userToken
-        }
+        },
+        body: JSON.stringify(body)
     });
+    console.log(deleteRes);
     let deleteData = await deleteRes.json();
-    console.log("User token: " + userToken);
-    console.log(deleteData);
     expect(deleteRes.status).toBe(200);
     expect(deleteData.affectedRows).toBe(1);
+
+    let getTicketRes = await fetch(fetch_url + "ticket/" + ticketId, {
+        method: "GET",
+        headers: HEADERS
+    });
+    let getTicketData = await getTicketRes.json();
+    expect(getTicketRes.status).toBe(200);
+    expect(getTicketData).toEqual([])
     done();
 })
 
@@ -270,6 +279,29 @@ it("Get all tickets", async done => {
     let ticketData = await ticketRes.json();
     expect(ticketRes.status).toBe(200);
     expect(ticketData.length).toBe(20);
+    done();
+})
+
+it("Can get tickets by user", async done => {
+    let ticketRes = await fetch(fetch_url + "ticketsByUser", {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + userToken
+        }
+    })
+    let ticketData = await ticketRes.json();
+    expect(ticketData.length).toBe(2);
+    expect(ticketRes.status).toBe(200);
+    done();
+})
+
+it("Cant get ticket if not logged in", async done => {
+    let ticketRes = await fetch(fetch_url + "ticketsByUser", {
+        method: "GET",
+        headers: HEADERS
+    })
+    expect(ticketRes.status).toBe(401);
     done();
 })
 

@@ -45,9 +45,9 @@ if (root) {
                     <Alert />
                     <Route exact path="/uploadImage" component={UploadImage}/>
                     <Route exact path="/kart" component={SimpleMap}/>
-                    <Route exact path="/" component={Login}/>
+                    <Route path="/loginn" component={Login}/>
                     <Route path="/registrerdeg" component={Register}/>
-                    <Route path="/hjem" component={TicketList}/>
+                    <Route exact path="/" component={TicketList}/>
                     <Route path="/minesaker" component={MyTickets}/>
                     <Route path="/om" component={Om} />
                     <Route path="/resetpassord" component={ResetPassword} />
@@ -56,6 +56,7 @@ if (root) {
                     {(res.data.level === 'admin'|| res.data.level === 'publicworker') && <Route path= '/nyttSelskap' component={AddCompany}/>}
                     {(res.data.level === 'admin') && <Route path='/administrasjon' component={Administration}/>}
                     <Route path="/sak/:id" component={Ticket}/>
+                    <Route exact path="/sak/-1" component={SimpleMap}/>
                     <Route path="/leggtilsak" component={AddTicket}/>
                     <Route path="/endresak/:id" component={EditTicket}/>
                     <Route path="/begivenheter" component={EventList} />
