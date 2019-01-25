@@ -13,6 +13,8 @@ import { Alert } from '../../widgets';
 export default class AddCompany extends Component<{history: string[]}>{
     users = [];
     userSelectorCompany;
+    company = "";
+    email = "";
     constructor(props: any) {
         super(props);
         this.userSelectorCompany = React.createRef();
@@ -29,14 +31,19 @@ export default class AddCompany extends Component<{history: string[]}>{
                             <div>
                             <label>Velg bedrift bruker fra eksisterende brukere:</label>
                             </div>
-                            <div className="autocomplete">
-                                <input className="form-control" id="userSelectorCompany" ref={this.userSelectorCompany} placeholder="Bruker e-post" onChange={(event) => {console.log(event.target.value); console.log(event.target.id)}} required/>
-                            </div>
+                            {/*<div className="autocomplete">*/}
+                                {/*<input className="form-control" id="userSelectorCompany" ref={this.userSelectorCompany} placeholder="Bruker e-post" onChange={(event) => {console.log(event.target.value); console.log(event.target.id)}} required/>*/}
+                            {/*</div>*/}
+                            <select onChange={this.changeEmail} className="form-control" style={{width:'100%'}}>
+                                {this.users.map((user, i) => (
+                                    <option value={user} key={i}>{user}</option>
+                                ))}
+                            </select>
                             <br/>
                         </div>
                         <label htmlFor="userSelector">Bedriftsnavn:</label>
                         {' '}
-                        <input className="form-control" id="companyName" placeholder="Bedriftsnavn" required/>
+                        <input className="form-control" onChange={this.changeCompany} id="companyName" placeholder="Bedriftsnavn" required/>
                         <br/>
                         <br/>
                         <button type="submit" className="btn customBtn">Send inn</button>
@@ -47,24 +54,38 @@ export default class AddCompany extends Component<{history: string[]}>{
         );
     }
 
+    changeCompany = event => {
+        this.company = event.target.value;
+    }
+
+    changeEmail = event => {
+        this.email = event.target.value;
+    }
+
     mounted() {
         userService.getUsers()
             .then(res => {
                 this.users = res.data.map(e => e.email);
-                console.log(this.users.length)
-                autocomplete(this.userSelectorCompany.current, this.users);
+                this.email = this.users.length > 0? this.users[0] : "";
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err)
+            })
     }
 
-    validation() {
-        if(this.users.includes(document.getElementById('userSelectorCompany').value)){
-            CompanyService.addOne(document.getElementById('userSelectorCompany').value, document.getElementById('companyName').value)
-                .then(res => {if(res.status == 200)this.props.history.push('/register')})
-                .catch(err => console.log(err))
+    validation(event) {
+        event.preventDefault();
+        if(this.users.includes(this.email)){
+            CompanyService.addOne(this.email, this.company)
+                .then(res => {
+                    Alert.success("Ny bedrift lagt til");
+                    if(res.status == 200)window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         } else {
             Alert.danger("Vennligst skriv inn en gyldig bruker.");
-            document.getElementById('userSelector').value = '';
         }
     }
 }
