@@ -201,7 +201,7 @@ it("Can get tickets by commune", async done => {
     done();
 })
 
-it("User can set responsibility and get tickets by responsible company", async done => {
+it("Public worker can set responsibility and get tickets by responsible company", async done => {
     const comp = "Drogas";
     const body = {
         name: comp
@@ -211,7 +211,7 @@ it("User can set responsibility and get tickets by responsible company", async d
         method: "PUT",
         headers: {
             ...HEADERS,
-            Authorization: "Bearer " + userToken
+            Authorization: "Bearer " + publicToken
         },
         body: JSON.stringify(body)
     });
@@ -232,7 +232,7 @@ it("User can set responsibility and get tickets by responsible company", async d
         method: "GET",
         headers: {
             ...HEADERS,
-            Authorization: "Bearer " + userToken
+            Authorization: "Bearer " + publicToken
         }
     });
     ticketData = await ticketRes.json();
@@ -366,6 +366,66 @@ it("Cant get ticket if not logged in", async done => {
         headers: HEADERS
     })
     expect(ticketRes.status).toBe(401);
+    done();
+})
+
+it("Get tickets by company given commune", async done => {
+    const commune = "Vik";
+    let ticketRes = await fetch(fetch_url + "ticketsMap/" + commune, {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + userToken
+        }
+    });
+    let ticketData = await ticketRes.json();
+    expect(ticketRes.status).toBe(200);
+    expect(ticketData.length).toBe(0);
+    done();
+})
+
+it("Get tickets by company given commune", async done => {
+    const commune = "Vik";
+    let ticketRes = await fetch(fetch_url + "ticketsMap/" + commune, {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + userToken
+        }
+    });
+    let ticketData = await ticketRes.json();
+    expect(ticketRes.status).toBe(200);
+    expect(ticketData.length).toBe(0);
+    done();
+})
+
+it("Get tickets as public worker given commune", async done => {
+    const commune = "Vik";
+    let ticketRes = await fetch(fetch_url + "ticketsMap/" + commune, {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + publicToken
+        }
+    });
+    let ticketData = await ticketRes.json();
+    expect(ticketRes.status).toBe(200);
+    expect(ticketData.length).toBe(1);
+    done();
+})
+
+it("Get tickets as admin given commune", async done => {
+    const commune = "Vik";
+    let ticketRes = await fetch(fetch_url + "ticketsMap/" + commune, {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + adminToken
+        }
+    });
+    let ticketData = await ticketRes.json();
+    expect(ticketRes.status).toBe(200);
+    expect(ticketData.length).toBe(1);
     done();
 })
 
