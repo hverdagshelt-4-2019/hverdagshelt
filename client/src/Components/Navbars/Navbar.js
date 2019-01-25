@@ -89,7 +89,7 @@ export default class Navbar extends Component {
                         </NavLink>}
                     </li>
                     <li className="nav-item">
-                        <a style={{color: "white", height: "50px"}}className={"nav-link " + css.customLink} href="/loginn" onClick={this.logout}>
+                        <a style={{color: "white", height: "50px"}}className={"nav-link " + css.customLink} href="/logginn" onClick={this.logout}>
                             <div className="topOfLink">
                                 {localStorage.getItem('level') === 'none' ? <i className="fas fa-sign-in-alt"></i> : <i className="fas fa-sign-out-alt"></i>}
                                 {' '}
