@@ -148,7 +148,8 @@ it("Public worker can edit status on ticket if from correct commune", async done
     const newStatus = {
         status: "Fullført",
         statusText: "Git gud",
-        responsible_commune: "Vik"
+        responsible_commune: "Vik",
+        email: config.test.emailRecipient
     }
     let editStatusRes = await fetch(fetch_url + "ticketstatus/" + ticketId, {
         method: "PUT",
@@ -255,7 +256,6 @@ it("Admin can delete tickets", async done => {
         },
         body: JSON.stringify(body)
     });
-    console.log(deleteRes);
     let deleteData = await deleteRes.json();
     expect(deleteRes.status).toBe(200);
     expect(deleteData.affectedRows).toBe(1);
