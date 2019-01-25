@@ -46,9 +46,9 @@ test("create app", done => {
             server.close();
             done();
         }).then(() => {
-        server.close();
-        done()
-    });
+            server.close();
+            done()
+        });
 });
 
 afterAll((done) => {

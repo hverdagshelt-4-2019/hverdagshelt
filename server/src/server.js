@@ -226,7 +226,6 @@ export function create_app(pool) {
     });
 
     app.get("/event/:id", (req, res) =>{
-        console.log(req.params.id);
         eventdao.getOne(req.params.id, (status, data) =>{
             res.status(status);
             res.json(data);
@@ -241,10 +240,8 @@ export function create_app(pool) {
                     res.json(data);
                 });
             } else {
-                console.log(authData.user.publicworkercommune);
                 if(authData.user.publicworkercommune) {
                     let communes = [authData.user.publicworkercommune];
-                    console.log(authData.user.publicworkercommune);
                     eventdao.getEventsByCommune(communes, (status, data) => {
                         res.status(status);
                         res.json(data);
@@ -548,7 +545,6 @@ export function create_app(pool) {
                 res.sendStatus(401);
             } else {
                 if(authData.user.isadmin) {
-                    console.log("admin");
                     let newEvent = {
                         "submitter_id": authData.user.id,
                         "commune_name": req.body.commune_name,
@@ -563,7 +559,6 @@ export function create_app(pool) {
                         res.json(data);
                     });
                 } else if(authData.user.publicworkercommune) {
-                    console.log("public worker");
                     let newEvent = {
                         "submitter_id": authData.user.id,
                         "commune_name": authData.user.publicworkercommune,
@@ -610,7 +605,6 @@ export function create_app(pool) {
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
                     categorydao.createOneEvent(req.body.name, (status, data) => {
-                        console.log('Added');
                         res.status(status);
                         res.json(data);
                     });
@@ -628,7 +622,6 @@ export function create_app(pool) {
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
                     categorydao.createOneTicket(req.body.name, (status, data) => {
-                        console.log('Added');
                         res.status(status);
                         res.json(data);
                     });
@@ -840,7 +833,6 @@ export function create_app(pool) {
                             + '\nOm du ikke har har skiftet passord, venligst ta konntakt på hverdagsheltene4@gmail.com'
                     };
                     if(status == 200) sendEmail(transporter, mailOptions);
-                    console.log("Edited password");
                     res.status(status);
                     res.json(data);
                 });
@@ -849,7 +841,6 @@ export function create_app(pool) {
     });
 
     app.put("/event/:id", verifyToken, (req, res) =>{
-        console.log(req.body);
         jwt.verify(req.token, 'key', (err, authData) => {
             if(err) {
                 res.sendStatus(401);
@@ -1211,7 +1202,6 @@ export function create_app(pool) {
 }
 
 function sendEmail(transport, mailOptions) {
-    console.log(JSON.stringify(mailOptions));
     transport.sendMail(mailOptions, function(err, info) {
         if(err) {
             console.log(err)

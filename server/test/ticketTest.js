@@ -256,7 +256,6 @@ it("Admin can delete tickets", async done => {
         },
         body: JSON.stringify(body)
     });
-    console.log(deleteRes);
     let deleteData = await deleteRes.json();
     expect(deleteRes.status).toBe(200);
     expect(deleteData.affectedRows).toBe(1);
