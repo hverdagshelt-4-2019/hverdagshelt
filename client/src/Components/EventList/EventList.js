@@ -79,7 +79,7 @@ export default class EventList extends Component{
                         float: "right",
                         marginLeft: '5%'}}>
                         <br />
-                        <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.allEvents.length}/>
+                        <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.state.events.length}/>
                         <ul className={css.eventList}>
                             {this.state.events.slice(this.base*this.pageLim, (this.base+1)*this.pageLim).map((event, i) => (
                                 <div key={i}>
@@ -89,7 +89,8 @@ export default class EventList extends Component{
                                 </div>
                             ))}
                         </ul>
-                        <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.allEvents.length}/>
+                        <br />
+                        <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.state.events.length}/>
                     </div>
                 </div>
                 <div style={{height: '80px'}} />
@@ -107,7 +108,11 @@ export default class EventList extends Component{
         .then((events : {data: Event[]}) => { 
             this.allEvents = events.data;
             this.allEvents.sort(function(a,b){return new Date(a.happening_time) - new Date(b.happening_time)});
-            this.setState({events: this.allEvents});
+            let le = this.allEvents
+            le = le.filter(a => {
+                return((new Date(a.happening_time).getTime() >= new Date().getTime()))
+            });
+            this.setState({events: le});
         })
         .catch((error : Error) => console.log("Error occured: " + error.message));
         
@@ -204,6 +209,7 @@ export default class EventList extends Component{
                 localEvents.sort(function(a,b){return new Date(b.happening_time) - new Date(a.happening_time)});
                 break;
         }
+        this.base = 0;
         this.setState({events: localEvents});
 
     }
@@ -219,6 +225,7 @@ export default class EventList extends Component{
                 localEvents.sort(function(a,b){return new Date(b.happening_time) - new Date(a.happening_time)});
                 break;
         }
+        this.base=0;
         this.setState({events: localEvents});
     }
 
