@@ -28,7 +28,7 @@ export default class AdminService {
     }
 
     static getAdmins(): Promise<Admin[]> {
-        return axios.get('admins');
+        return axios.get('admins', config());
     }
 }
 

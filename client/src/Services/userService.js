@@ -61,15 +61,22 @@ export default class userService {
 
 
     static getUsers() : Promise<User[]>{
-       return axios.get('/users');
+       return axios.get('/users', config());
    }
 
-   static resetPassword(email, json): Promise<Object>{
+   static resetPassword(email: string, json: Object): Promise<Object>{
         return axios.put("/forgotPassword/" + email, json);
    }
 
-   static delUser(email): Promise<Object> {
-        return axios.delete('/user/' + email, config())
+   static delUser(email: string): Promise<Object> {
+        return new Promise(async (resolve, rej) => {
+            let res = await axios.delete('/user/' + email, config())
+            if(res.status === 401 && res.error === 'Token invalid'){
+                localStorage.removeItem('token');
+                rej(res.error);
+            }
+            else resolve(res)
+        });
    }
 
    static getUser(): Promise<Object> {

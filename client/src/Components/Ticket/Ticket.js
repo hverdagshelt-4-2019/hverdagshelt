@@ -61,10 +61,11 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
   editStatus(cat) {
     let res = ticketService.setStatus(this.state.ticket.id, {status: cat, statusText: this.state.statusText, email: this.state.ticket.submitter_email, responsible_commune: this.state.ticket.responsible_commune});
     console.log("Response: " + res);
+    window.location.reload();
   }
 
-  editCompany(cat) {
-    ticketService.setCompany(this.state.ticket.id, {name: cat})
+  editCompany(com) {
+    ticketService.setCompany(this.state.ticket.id, {name: com})
         .then(e => console.log(e))
         .catch(err => console.log(err))
   }
