@@ -21,12 +21,12 @@ export default class AddCompany extends Component<{history: string[]}>{
         return (
                 <div className="aroundStuff rounded shadow p-3 mb-5" style={{backgroundColor:'white', border: "2px solid white"}}>
                     <br/>
-                    <h4>Registrer nytt selskap</h4>
+                    <h4>Registrer ny bedrift</h4>
                     <hr/>
                     <form onSubmit={this.validation} autoComplete="off">
                         <div className="form-group">
                             <div>
-                            <label>Velg firma bruker:</label>
+                            <label>Velg bedrift bruker fra eksisterende brukere:</label>
                             </div>
                             <div className="autocomplete">
                                 <input className="form-control" id="userSelectorCompany" ref={this.userSelectorCompany} placeholder="Bruker e-post" onChange={(event) => {console.log(event.target.value); console.log(event.target.id)}} required/>
