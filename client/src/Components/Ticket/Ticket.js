@@ -127,7 +127,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 <p>&nbsp;</p>
                 <div style={{fontWeight: "900", color: "#666B6E", width: "100%"}} id={"statust"+this.state.ticket.id}>
                 {this.canSetStatus() && this.state.ticket.status && <Dropdown options={status} currValue={this.state.ticket.status} reciever={this.editStatus}/>}
-                {this.canSetStatus() && this.state.ticket.status && <textarea className="form-control" style={{width: "100%", resize: "none"}} value={this.state.statusText} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({statusText: event.target.value}))}/>}
+                {this.canSetStatus() && this.state.ticket.status && <textarea className="form-control" maxlength="512" style={{width: "100%", resize: "none"}} value={this.state.statusText} onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.setState({statusText: event.target.value}))}/>}
                 {!this.canSetStatus() && this.state.ticket.status && <p>{this.state.ticket.status} </p>}
                 </div>
               </div>
