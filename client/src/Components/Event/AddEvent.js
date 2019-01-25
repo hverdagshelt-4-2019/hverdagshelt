@@ -136,12 +136,14 @@ export default class AddEvent extends Component {
         if(this.state.title !== '' && this.state.description !== '' && this.state.category !== '' && this.state.happening_time !== null && this.commune !== null){
             let eventId: Number;
             let sendingDate = new Date(this.state.happening_time);
-            sendingDate.setMinutes(sendingDate.getMinutes() - sendingDate.getTimezoneOffset());
-            sendingDate = sendingDate.toJSON();
-            if(sendingDate === null || sendingDate === undefined) {
+            try {
+                sendingDate.setMinutes(sendingDate.getMinutes() - sendingDate.getTimezoneOffset());
+                sendingDate = sendingDate.toJSON();
+            } catch(error) {
                 Alert.danger('Opplasting mislyktes, sjekk at du har lagt inn dato/tidspunkt riktig.');
                 document.documentElement.scrollTop = 0;
             }
+            
             await eventService
             .postEvent(this.state.commune, this.state.category, this.state.title, this.state.description, sendingDate.split('T', 1)[0] + ' ' + sendingDate.split('T')[1].split('.', 1))
             .then((response) => {
