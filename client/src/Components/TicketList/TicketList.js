@@ -117,7 +117,7 @@ export default class TicketList extends Component{
                         marginLeft: '5%'}}>
                         <br />
                         {this.allTickets.length > this.pageLim &&
-                            <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.allTickets.length}/>
+                            <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.state.tickets.length}/>
                         }
                                   <ul className={css.ticketList}>
                             {this.state.tickets.slice(this.pageLim*this.base, this.pageLim*(this.base + 1)).map((ticket, i) => (
@@ -131,7 +131,7 @@ export default class TicketList extends Component{
                         </ul>
                         <br />
                         {this.allTickets.length > this.pageLim &&
-                            <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.allTickets.length}/>
+                            <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.state.tickets.length}/>
                         }
                     </div>
                 </div>
@@ -266,6 +266,7 @@ export default class TicketList extends Component{
                 break;
         }
         console.log("TEST!");
+        this.base=0;
         this.setState({tickets: localTickets})
 
     }
@@ -292,6 +293,7 @@ export default class TicketList extends Component{
                 this.setState({tickets: this.state.tickets.sort(function(a,b){return a.countcomm - b.countcomm})});
                 break;
         }
+        this.base=0;
 
     }
 

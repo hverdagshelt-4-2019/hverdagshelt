@@ -19,34 +19,28 @@ export default class AddCompany extends Component<{history: string[]}>{
 
     render() {
         return (
-            <div className="container" >
-                <br/>
-                <div className="row">
-                    <div className="col-md-6 rounded shadow p-3 mb-5" style={{backgroundColor:'white', border: "2px solid white"}}>
-                        <br/>
-                        <h4>Registrer nytt selskap</h4>
-                        <hr/>
-                        <form onSubmit={this.validation} autoComplete="off">
-                            <div className="form-group">
-                                <div>
-                                <label>Velg firma bruker:</label>
-                                </div>
-                                <div className="autocomplete">
-                                    <input className="form-control" id="userSelectorCompany" ref={this.userSelectorCompany} placeholder="Bruker e-post" onChange={(event) => {console.log(event.target.value); console.log(event.target.id)}} required/>
-                                </div>
-                                <br/>
+                <div className="aroundStuff rounded shadow p-3 mb-5" style={{backgroundColor:'white', border: "2px solid white"}}>
+                    <br/>
+                    <h4>Registrer nytt selskap</h4>
+                    <hr/>
+                    <form onSubmit={this.validation} autoComplete="off">
+                        <div className="form-group">
+                            <div>
+                            <label>Velg firma bruker:</label>
                             </div>
-                            <label htmlFor="userSelector">Bedriftsnavn:</label>
-                            {' '}
-                            <input className="form-control" id="companyName" placeholder="Bedriftsnavn" required/>
+                            <div className="autocomplete">
+                                <input className="form-control" id="userSelectorCompany" ref={this.userSelectorCompany} placeholder="Bruker e-post" onChange={(event) => {console.log(event.target.value); console.log(event.target.id)}} required/>
+                            </div>
                             <br/>
-                            <br/>
-                            <button type="submit" className="btn customBtn">Send inn</button>
-                        </form>
-                        
+                        </div>
+                        <label htmlFor="userSelector">Bedriftsnavn:</label>
+                        {' '}
+                        <input className="form-control" id="companyName" placeholder="Bedriftsnavn" required/>
                         <br/>
-                    </div>
-                </div>
+                        <br/>
+                        <button type="submit" className="btn customBtn">Send inn</button>
+                    </form>  
+                    <br/>
                 <div style={{height: '150px'}} />
             </div>
         );

@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Component,} from 'react-simplified';
 import eventService from '../../Services/eventService';
 import categoryService from '../../Services/categoryService';
-import communeService from '../../Services/communeService';
 import SingleEvent from './SingleEvent';
 import css from './eventStyle.css';
 import $ from 'jquery';
@@ -79,7 +78,7 @@ export default class EventList extends Component{
                         float: "right",
                         marginLeft: '5%'}}>
                         <br />
-                        <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.allEvents.length}/>
+                        <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.state.events.length}/>
                         <ul className={css.eventList}>
                             {this.state.events.slice(this.base*this.pageLim, (this.base+1)*this.pageLim).map((event, i) => (
                                 <div key={i}>
@@ -90,7 +89,7 @@ export default class EventList extends Component{
                             ))}
                         </ul>
                         <br />
-                        <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.allEvents.length}/>
+                        <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.state.events.length}/>
                     </div>
                 </div>
                 <div style={{height: '80px'}} />
@@ -150,9 +149,9 @@ export default class EventList extends Component{
 
     changeArrow(){
         let e: HTMLElement|null = document.getElementById("arrow");
-        let c = document.getElementById("cases");
-        let s = document.getElementById("sidebar");
-        if(e) {
+        let c: HTMLElement|null = document.getElementById("cases");
+        let s: HTMLElement|null = document.getElementById("sidebar");
+        if(e && c && s) {
             if (e.getAttribute("data-temp") === "false") {
                 e.setAttribute("data-temp", "true");
                 let temptext = document.getElementById("tempText");
@@ -209,6 +208,7 @@ export default class EventList extends Component{
                 localEvents.sort(function(a,b){return new Date(b.happening_time) - new Date(a.happening_time)});
                 break;
         }
+        this.base = 0;
         this.setState({events: localEvents});
 
     }
@@ -224,6 +224,7 @@ export default class EventList extends Component{
                 localEvents.sort(function(a,b){return new Date(b.happening_time) - new Date(a.happening_time)});
                 break;
         }
+        this.base=0;
         this.setState({events: localEvents});
     }
 
