@@ -233,11 +233,11 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
         .getTicket(this.props.match.params.id)
         .then(ticket => {
             this.ticket = ticket.data[0];
-            this.state.category = ticket.data[0].category;
             this.state.description = ticket.data[0].description;
             this.state.greatPlaces[0].lat= this.ticket.lat;
             this.state.greatPlaces[0].lng= this.ticket.lng;
             this.getImage(this.ticket.picture);
+            this.setState({category: ticket.data[0].category});
             })
         .catch((error : Error) => console.log(error.message));
 
