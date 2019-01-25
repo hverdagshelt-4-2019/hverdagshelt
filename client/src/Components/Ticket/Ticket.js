@@ -63,8 +63,8 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
     window.location.reload();
   }
 
-  editCompany(cat) {
-    ticketService.setCompany(this.state.ticket.id, {name: cat})
+  editCompany(com) {
+    ticketService.setCompany(this.state.ticket.id, {name: com})
         .then(e => console.log(e))
         .catch(err => console.log(err))
   }
