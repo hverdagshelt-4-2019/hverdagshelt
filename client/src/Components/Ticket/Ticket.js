@@ -174,7 +174,7 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 </GoogleMapReact>
               </div>
               <hr />
-              {(localStorage.getItem('level') === 'admin') && <button className="btn btn-danger" onClick={this.deleteTicket}>Slett</button> }
+              {(localStorage.getItem('level') === 'admin' || localStorage.getItem('level') === 'publicworker') && <button className="btn btn-danger" onClick={this.deleteTicket}>Slett</button> }
               <div>
                 <br />
                 <h5 className="card-header">Kommenter:</h5>
