@@ -56,6 +56,7 @@ if (root) {
                     {(res.data.level === 'admin'|| res.data.level === 'publicworker') && <Route path= '/nyttSelskap' component={AddCompany}/>}
                     {(res.data.level === 'admin') && <Route path='/administrasjon' component={Administration}/>}
                     <Route path="/sak/:id" component={Ticket}/>
+                    <Route exact path="/sak/-1" component={SimpleMap}/>
                     <Route path="/leggtilsak" component={AddTicket}/>
                     <Route path="/endresak/:id" component={EditTicket}/>
                     <Route path="/begivenheter" component={EventList} />

@@ -89,6 +89,7 @@ export default class EventList extends Component{
                                 </div>
                             ))}
                         </ul>
+                        <br />
                         <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.allEvents.length}/>
                     </div>
                 </div>
@@ -107,7 +108,11 @@ export default class EventList extends Component{
         .then((events : {data: Event[]}) => { 
             this.allEvents = events.data;
             this.allEvents.sort(function(a,b){return new Date(a.happening_time) - new Date(b.happening_time)});
-            this.setState({events: this.allEvents});
+            let le = this.allEvents
+            le = le.filter(a => {
+                return((new Date(a.happening_time).getTime() >= new Date().getTime()))
+            });
+            this.setState({events: le});
         })
         .catch((error : Error) => console.log("Error occured: " + error.message));
         
