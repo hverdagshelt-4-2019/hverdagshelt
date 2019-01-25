@@ -28,6 +28,7 @@ server.on('connection', (socket) => {
     });
 });
 
+let normalToken;
 let adminToken;
 let userToken;
 let publicToken;
@@ -35,6 +36,7 @@ let publicToken;
 const userMail = "person2@mail.no";
 const adminMail = "person17@mail.no";
 const publicMail = "person1@mail.no";
+const normalMail = "person10@mail.no";
 
 beforeAll(async done => {
     await setup_database(pool);
@@ -67,7 +69,8 @@ async function loginAll() {
     adminToken = await loginFetch(adminMail, "password17");
     userToken = await loginFetch(userMail, "password2");
     publicToken = await loginFetch(publicMail, "password1");
-   // console.log("Admin token: " + adminToken + "\nPublic token: " + publicToken + "\nUser token: " + userToken);
+    normalToken = await loginFetch(normalMail, "password10");
+    // console.log("Admin token: " + adminToken + "\nPublic token: " + publicToken + "\nUser token: " + userToken);
 }
 
 
@@ -198,23 +201,7 @@ it("Can get tickets by commune", async done => {
     done();
 })
 
-it("Can get tickets by company", async done =>{
-    // TODO: Fix this method, gives empty array
-    let ticketRes = await fetch(fetch_url + "tickets", {
-        method: "GET",
-        headers: {
-            ...HEADERS,
-            Authorization: "Bearer " + userToken
-        }
-    });
-    let ticketData = await ticketRes.json();
-    console.log(ticketData);
-    expect(ticketRes.status).toBe(200);
-    expect(ticketData.length).toBe(2);
-    done();
-})
-
-it("User can set responsibility", async done => {
+it("User can set responsibility and get tickets by responsible company", async done => {
     const comp = "Drogas";
     const body = {
         name: comp
@@ -240,10 +227,22 @@ it("User can set responsibility", async done => {
     console.log(ticketData);
     expect(getTicketRes.status).toBe(200);
     expect(ticketData[0].company_name).toBe(comp);
+
+    let ticketRes = await fetch(fetch_url + "tickets", {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + userToken
+        }
+    });
+    ticketData = await ticketRes.json();
+    console.log(ticketData);
+    expect(ticketRes.status).toBe(200);
+    expect(ticketData.length).toBe(1);
     done();
 })
 
-it("User can delete his own tickets", async done => {
+it("Admin can delete tickets", async done => {
     const ticketId = 2;
     const body = {
         submitter_id: 2
@@ -252,7 +251,7 @@ it("User can delete his own tickets", async done => {
         method: "DELETE",
         headers: {
             ...HEADERS,
-            Authorization: "Bearer " + userToken
+            Authorization: "Bearer " + adminToken
         },
         body: JSON.stringify(body)
     });
@@ -279,6 +278,71 @@ it("Get all tickets", async done => {
     let ticketData = await ticketRes.json();
     expect(ticketRes.status).toBe(200);
     expect(ticketData.length).toBe(20);
+    done();
+})
+
+it("Get all tickets as public worker", async done => {
+    let ticketRes = await fetch(fetch_url + "tickets", {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + publicToken
+        }
+    });
+    let ticketData = await ticketRes.json();
+    expect(ticketRes.status).toBe(200);
+    expect(ticketData.length).toBe(1);
+    done();
+})
+
+it("Get all tickets as admin", async done => {
+    let ticketRes = await fetch(fetch_url + "tickets", {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + adminToken
+        }
+    });
+    let ticketData = await ticketRes.json();
+    expect(ticketRes.status).toBe(200);
+    expect(ticketData.length).toBe(20);
+    done();
+})
+
+it("Can get all tickets from the communes the user is following", async done => {
+    let ticketRes = await fetch(fetch_url + "tickets", {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + normalToken
+        }
+    });
+    let ticketData = await ticketRes.json();
+    expect(ticketRes.status).toBe(200);
+    expect(ticketData.length).toBe(0);
+
+    const commune = "Sel";
+    ticketRes = await fetch(fetch_url + "followCommune/" + commune, {
+        method: "POST",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + normalToken
+        }
+    });
+    ticketData = await ticketRes.json();
+    expect(ticketRes.status).toBe(200);
+    expect(ticketData.affectedRows).toBe(1);
+
+    ticketRes = await fetch(fetch_url + "tickets", {
+        method: "GET",
+        headers: {
+            ...HEADERS,
+            Authorization: "Bearer " + normalToken
+        }
+    });
+    ticketData = await ticketRes.json();
+    expect(ticketRes.status).toBe(200);
+    expect(ticketData.length).toBe(1);
     done();
 })
 

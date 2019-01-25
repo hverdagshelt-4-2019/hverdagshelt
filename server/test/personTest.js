@@ -33,6 +33,7 @@ server.on('connection', (socket) => {
     });
 });
 
+let normalToken;
 let adminToken;
 let userToken;
 let publicToken;
@@ -40,6 +41,7 @@ let publicToken;
 const userMail = "person2@mail.no";
 const adminMail = "person17@mail.no";
 const publicMail = "person1@mail.no";
+const normalMail = "person10@mail.no";
 
 beforeAll(async done => {
     await setup_database(pool);
@@ -72,6 +74,7 @@ async function loginAll() {
     adminToken = await loginFetch(adminMail, "password17");
     userToken = await loginFetch(userMail, "password2");
     publicToken = await loginFetch(publicMail, "password1");
+    normalToken = await loginFetch(normalMail, "password10");
     // console.log("Admin token: " + adminToken + "\nPublic token: " + publicToken + "\nUser token: " + userToken);
 }
 
@@ -373,8 +376,6 @@ it("User can get level", async done => {
     expect(userData.level).toBe("admin");
     done();
 })
-
-
 
 it("Can get all public workers", async done => {
     let workRes = await fetch(fetch_url + "publicworkers", {
