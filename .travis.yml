@@ -14,7 +14,7 @@ jobs:
     before_script:
     - cd server; source ./setup_private_config.sh; npm install
     script:
-    - npm test; npm run coveralls;
+    - npm run coveralls;
   - stage: test
     name: test_client
     before_script:

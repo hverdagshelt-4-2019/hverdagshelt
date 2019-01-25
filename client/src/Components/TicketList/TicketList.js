@@ -122,7 +122,10 @@ export default class TicketList extends Component{
                         float: "right",
                         marginLeft: '5%'}}>
                         <br />
-                        {this.allTickets.length > this.pageLim &&
+                        {this.state.tickets.length ===0 &&
+                            <h5 style={{marginLeft: "30%"}}>Ingen saker</h5>
+                        }
+                        {this.state.tickets.length > this.pageLim &&
                             <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.state.tickets.length}/>
                         }
                                   <ul className={css.ticketList}>
@@ -136,7 +139,7 @@ export default class TicketList extends Component{
                             ))}
                         </ul>
                         <br />
-                        {this.allTickets.length > this.pageLim &&
+                        {this.state.tickets.length > this.pageLim &&
                             <PageNavigator increment={this.increment} decrement={this.decrement} pageLim={this.pageLim} pageNumber={this.base+1} base={this.base} totalLimit={this.state.tickets.length}/>
                         }
                     </div>

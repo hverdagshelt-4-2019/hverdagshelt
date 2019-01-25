@@ -241,7 +241,7 @@ it("Public worker can set responsibility and get tickets by responsible company"
     expect(ticketRes.status).toBe(200);
     expect(ticketData.length).toBe(1);
     done();
-})
+});
 
 it("Admin can delete tickets", async done => {
     const ticketId = 2;

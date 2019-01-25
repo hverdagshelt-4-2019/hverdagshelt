@@ -15,6 +15,7 @@ import styles from "./style.css";
 import CompanyService from '../../Services/companyService'
 import { Alert } from '../../widgets';
 import { K_SIZE } from './../../map/controllable_hover_styles.js';
+import CustomDialog from "../CustomDialog/CustomDialog";
 
 @controllable(['center', 'zoom', 'hoverKey', 'clickKey'])
 export default class Ticket extends Component<{ match: { params: { id: number } } }> {
@@ -60,10 +61,11 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
   editStatus(cat) {
     let res = ticketService.setStatus(this.state.ticket.id, {status: cat, statusText: this.state.statusText, email: this.state.ticket.submitter_email, responsible_commune: this.state.ticket.responsible_commune});
     console.log("Response: " + res);
+    window.location.reload();
   }
 
-  editCompany(cat) {
-    ticketService.setCompany(this.state.ticket.id, {name: cat})
+  editCompany(com) {
+    ticketService.setCompany(this.state.ticket.id, {name: com})
         .then(e => console.log(e))
         .catch(err => console.log(err))
   }
@@ -174,7 +176,15 @@ export default class Ticket extends Component<{ match: { params: { id: number } 
                 </GoogleMapReact>
               </div>
               <hr />
-              {(localStorage.getItem('level') === 'admin' || localStorage.getItem('level') === 'publicworker') && <button className="btn btn-danger" onClick={this.deleteTicket}><i className="fas fa-trash"></i> Slett</button> }
+              {(localStorage.getItem('level') === 'admin' || localStorage.getItem('level') === 'publicworker') && <CustomDialog
+                                                option1Text="Avbryt"
+                                                buttonText="Slett"
+                                                title="Slett sak"
+                                                buttonType="danger"
+                                                option2Text="Slett"
+                                                option2Method={this.deleteTicket}
+                                                dialogText="Er du sikker på at du vil slette denne saken? Handlingen er permanent og kan ikke reverseres."
+                                            /> }
               <div>
                 <br />
                 <h5 className="card-header">Kommenter:</h5>

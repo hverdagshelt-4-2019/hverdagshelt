@@ -1,5 +1,3 @@
-import mysql from 'mysql2'
-import fs from 'fs'
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import UserDao from './dao/userDao'
@@ -22,7 +20,7 @@ import fetch from "node-fetch";
 
 
 export function create_app(pool) {
-  let app = express();
+    let app: {use: function, get: function, post: function, put: function, delete: function} = express();
 
 
     const categorydao = new CategoryDao(pool);
@@ -55,7 +53,7 @@ export function create_app(pool) {
      */
 
     app.get('/level', verifyToken, (req, res) => {
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             let level = 'none';
             let commune = 'false';
             let company = 'false';
@@ -73,19 +71,17 @@ export function create_app(pool) {
                 }
                 else level = 'user';
             }
-            console.log(authData);
             res.status(200);
             res.json({level, id, commune, company})
         });
     });
 
     app.get("/user", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 console.log("err");
             }
             userdao.getOne(authData.user.id, (status, data) =>{
-                console.log('data' + JSON.stringify(data));
                 res.status(status);
                 res.json(data);
             });
@@ -100,7 +96,7 @@ export function create_app(pool) {
     });
 
     app.get("/tickets", verifyToken2, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) => {
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
             if (err) {
                 ticketdao.getAllTickets((status, data) => {
                     res.status(status);
@@ -127,7 +123,7 @@ export function create_app(pool) {
                     });
                 } else {
                     communedao.getFollowed(authData.user.id, (status, data) => {
-                        if (status == 200) {
+                        if (status === 200) {
                             let communes = data.map(e => e.commune_name);
                             if (communes.length) {
                                 ticketdao.getTicketsByCommune(communes, (status2, data2) => {
@@ -153,7 +149,7 @@ export function create_app(pool) {
     });
 
     app.get("/ticketsMap/:commune", verifyToken2, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) => {
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
             if (err) {
                 ticketdao.getTicketsByCommune(req.params.commune, (status, data) => {
                     console.log("NO TOKEN");
@@ -187,7 +183,7 @@ export function create_app(pool) {
                     });
                 } else {
                     communedao.getFollowed(authData.user.id, (status, data) => {
-                        if (status == 200) {
+                        if (status === 200) {
                             let communes = data.map(e => e.commune_name);
                             if (communes.length) {
                                 ticketdao.getTicketsByCommune(communes, (status2, data2) => {
@@ -213,7 +209,7 @@ export function create_app(pool) {
     });
 
     app.get("/ticketsByUser", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 res.sendStatus(401);
             } else {
@@ -233,7 +229,7 @@ export function create_app(pool) {
     });
 
     app.get("/events", verifyToken2, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) => {
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
             if (err) {
                 eventdao.getAllEvents((status, data) => {
                     res.status(status);
@@ -246,14 +242,14 @@ export function create_app(pool) {
                         res.status(status);
                         res.json(data);
                     });
-                } else if(authData.user.isadmin || authData.user.companyName) {
+                } else if(authData.user.isadmin || authData.user.companyname) {
                     eventdao.getAllEvents((status, data) =>{
                         res.status(status);
                         res.json(data);
                     });
                 } else {
                     communedao.getFollowed(authData.user.id, (status, data) => {
-                        if (status == 200) {
+                        if (status === 200) {
                             let communes = data.map(e => e.commune_name);
                             if (communes.length) {
                                 eventdao.getEventsByCommune(communes, (status2, data2) => {
@@ -279,8 +275,7 @@ export function create_app(pool) {
     });
 
     // TODO: Delete this?
-    app.get("/events/category", (req, res) =>{
-        console.log(req.body);
+    app.get("/events/category", (req) =>{
         eventdao.getAllCategoryFilter(req.body.communes, req.body.categories, (status, res) =>{
             res.status(status);
             res.json(data);
@@ -309,36 +304,56 @@ export function create_app(pool) {
         });
     });
 
-    app.get("/users", (req, res) =>{ //todo auth
-        userdao.getAll((status, data) =>{
-            res.status(status);
-            res.json(data);
+    app.get("/users", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
+            if(err)
+                res.sendStatus(401);
+            else if(authData.user.isadmin || authData.user.commune){
+                userdao.getAll((status, data) =>{
+                    res.status(status);
+                    res.json(data);
+                });
+            } else res.sendStatus(403);
         });
     });
 
-    app.get("/companies", (req, res) => { //todo auth
+    app.get("/companies", (req, res) => {
         companydao.getAll((status, data) =>{
             res.status(status);
             res.json(data);
         });
     });
 
-    app.get("/admins", (req, res) =>{ //todo auth
-        admindao.getAll((status, data) =>{
-            res.status(status);
-            res.json(data);
+    app.get("/admins", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
+            if (err) res.sendStatus(401);
+            else if (authData.user.isadmin || authData.user.commune){
+                admindao.getAll((status, data) =>{
+                    res.status(status);
+                    res.json(data);
+                });
+            }
+            else res.sendStatus(403);
         });
+
     });
 
-    app.get("/publicworkers", (req, res) =>{ //todo auth
-        publicworkerdao.getAll((status, data) =>{
-            res.status(status);
-            res.json(data);
+    app.get("/publicworkers", verifyToken, (req, res) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
+            if(err) res.sendStatus(401);
+            else if (authData.user.isadmin || authData.user.commune) {
+                publicworkerdao.getAll((status, data) =>{
+                    res.status(status);
+                    res.json(data);
+                });
+            }
+            else res.sendStatus(403);
         });
+
     });
 
     app.get("/followedCommunes", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 res.sendStatus(401);
             } else {
@@ -351,7 +366,7 @@ export function create_app(pool) {
     });
 
     app.get("/unfollowedCommunes", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 res.sendStatus(401);
             } else {
@@ -378,7 +393,7 @@ export function create_app(pool) {
     });
 
     app.get("/tokenValid", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err) =>{
             if(err) {
                 res.sendStatus(418);
             } else {
@@ -430,7 +445,7 @@ export function create_app(pool) {
             res.status(status);
             res.json(data);
         })
-    })
+    });
 
     app.get("/getTicketAmountByCategoryLocally/:commune", (req, res) => {
         statisticsdao.getTicketAmountByCategoryLocally(req.params.commune, (status, data) => {
@@ -459,21 +474,23 @@ export function create_app(pool) {
                 subject: 'Registrering',
                 text: 'Hei ' + req.body.name + '\nDu er nå registrert i vårt system.\nBrukernavn: ' + req.body.email + '\nPassord: ' + req.body.password + '\nHoved kommune: ' + req.body.commune
             };
-            if(status == 200) {
+            if(status === 200) {
                 sendEmail(transporter, mailoptions);
 
                 communedao.followCommune(data.insertId, req.body.commune, (status2, data2) => {
                     res.status(status2);
                     res.json(data2);
                 })
+            } else {
+                res.status(422).send("E-post allerede registrert");
             }
         });
     });
 
     app.post("/login", (req, res) => {
         userdao.login(req.body, (status, data) => {
-            if (status == 200) {
-                const user = {
+            if (status === 200) {
+                const user: User = {
                     email: req.body.email,
                     id: data[0].id,
                     isadmin: (data[0].isAdmin != null),
@@ -502,7 +519,7 @@ export function create_app(pool) {
     });
 
     app.post("/ticket", verifyToken, (req, res) => {
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err){
                 console.log(err);
                 res.sendStatus(401);
@@ -516,9 +533,9 @@ export function create_app(pool) {
                     picture: (req.body.picture != null ? req.body.picture : "logo.png"),
                     lat: req.body.lat,
                     lng: req.body.lng
-                }
+                };
                 ticketdao.addTicket(newTicket, (status, data) =>{
-                    if(status == 200) {
+                    if(status === 200) {
                         userdao.getOne(authData.user.id, (userstatus, userdata) =>{
                             let mailOptions = {
                                 from: 'Hverdagsheltene',
@@ -538,8 +555,7 @@ export function create_app(pool) {
       });
 
     app.post("/event", verifyToken, (req, res) =>{
-
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 console.log(err);
                 res.sendStatus(401);
@@ -553,7 +569,7 @@ export function create_app(pool) {
                         "description": req.body.description,
                         "picture": (req.body.picture != null ? req.body.picture : "./logo.png"),
                         "happening_time": req.body.happening_time
-                    }
+                    };
                     eventdao.createOne(newEvent, (status, data) =>{
                         res.status(status);
                         res.json(data);
@@ -567,7 +583,7 @@ export function create_app(pool) {
                         "description": req.body.description,
                         "picture": (req.body.picture != null ? req.body.picture : "./logo.png"),
                         "happening_time": req.body.happening_time
-                    }
+                    };
                     eventdao.createOne(newEvent, (status, data) =>{
                         res.status(status);
                         res.json(data);
@@ -580,7 +596,7 @@ export function create_app(pool) {
     });
 
     app.post("/comment/:id", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 res.sendStatus(401);
             } else {
@@ -599,7 +615,7 @@ export function create_app(pool) {
     });
 
     app.post("/eventcat", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 res.sendStatus(401);
             } else {
@@ -616,7 +632,7 @@ export function create_app(pool) {
     });
 
     app.post("/ticketcat", verifyToken, (req, res) => {
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 res.sendStatus(401);
             } else {
@@ -633,7 +649,7 @@ export function create_app(pool) {
     });
 
     app.post("/admin", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 res.sendStatus(401);
             } else {
@@ -650,7 +666,7 @@ export function create_app(pool) {
     });
 
     app.post("/company", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 res.sendStatus(401);
             } else {
@@ -667,7 +683,7 @@ export function create_app(pool) {
     });
 
     app.post("/publicworker", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 res.sendStatus(401);
             } else {
@@ -684,7 +700,7 @@ export function create_app(pool) {
     });
 
     app.post("/followCommune/:commune", verifyToken, (req, res) => {
-        jwt.verify(req.token, 'key', (err, authData) => {
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
             if(err) {
                 res.sendStatus(401);
             } else {
@@ -700,26 +716,6 @@ export function create_app(pool) {
   /*
     Put-functions
      */
-
-    app.put("/ticket/:id", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) => {
-            if(err) {
-                res.sendStatus(401);
-            } else {
-                console.log(req.body.submitter_id);
-                console.log(authData.user.id);
-                if(req.body.email == authData.user.id) {
-                    ticketdao.editTicket(req.params.id, req.body, (status, data) => {
-                       console.log("Edited ticket");
-                       res.status(status);
-                       res.json(data);
-                    });
-                } else {
-                    res.sendStatus(403);
-                }
-            }
-        })
-    });
 
     app.put("/forgotPassword/:email", (req, res) =>{
         let newPass = genRandPass();
@@ -737,45 +733,24 @@ export function create_app(pool) {
     });
 
     app.put("/ticketedit/:id", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 res.sendStatus(401);
             } else {
-                userdao.getOne(authData.user.id, (userstatus, userdata) =>{
-                    if(req.body.submitter_email == userdata[0].email) {
-                        ticketdao.editTicket(req.params.id, req.body, (status, data) =>{
-                            res.status(status);
-                            res.json(data);
-                        });
-                    } else {
-                        res.sendStatus(403);
-                    }
-                });
-            }
-        });
-    });
-
-    app.put("/ticket_picture/:ticket_it", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
-            if(err) {
-                console.log(err);
-            } else {
-                userdao.getOne(authData.user.id, (userstatus, userdata) =>{
-                    if(req.body.email == userdata[0].email) {
-                        ticketdao.setPicture(req.params.ticket_id, req.body, (status, data) =>{
-                            res.status(status);
-                            res.json(data);
-                        });
-                    } else {
-                        res.sendStatus(403);
-                    }
-                });
+                if(req.body.submitter_email === authData.user.email) {
+                    ticketdao.editTicket(req.params.id, req.body, (status, data) =>{
+                        res.status(status);
+                        res.json(data);
+                    });
+                } else {
+                    res.sendStatus(403);
+                }
             }
         });
     });
 
     app.put("/usermail/:email", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) => {
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
             if(err) {
                 res.sendStatus(401);
             } else {
@@ -784,8 +759,7 @@ export function create_app(pool) {
                     res.status(status);
                     let user = authData.user;
                     user.email = req.body.email;
-                    console.log(user.email)
-                    if(status == 200) {
+                    if(status === 200) {
                         let mailOptions = {
                             from: 'Hverdagsheltene',
                             to: user.email,
@@ -807,12 +781,11 @@ export function create_app(pool) {
     });
 
     app.put("/username", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) => {
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
             if(err) {
                 res.sendStatus(401);
             } else {
-                userdao.updateName(authData.user.id, req.body, (status, data) => {
-                    console.log("Edited name");
+                userdao.updateName(authData.user.id, req.body, (status) => {
                     res.status(status);
                 });
             }
@@ -820,7 +793,7 @@ export function create_app(pool) {
     });
 
     app.put("/userpass", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) => {
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
             if(err) {
                 res.sendStatus(401);
             } else {
@@ -832,7 +805,7 @@ export function create_app(pool) {
                         text: 'Vi har registrert fra din profil har byttet passord.\nDitt nye passord er: ' + req.body.newPassword
                             + '\nOm du ikke har har skiftet passord, venligst ta konntakt på hverdagsheltene4@gmail.com'
                     };
-                    if(status == 200) sendEmail(transporter, mailOptions);
+                    if(status === 200) sendEmail(transporter, mailOptions);
                     res.status(status);
                     res.json(data);
                 });
@@ -841,7 +814,7 @@ export function create_app(pool) {
     });
 
     app.put("/event/:id", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) => {
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
             if(err) {
                 res.sendStatus(401);
             } else {
@@ -858,13 +831,13 @@ export function create_app(pool) {
     });
 
     app.put("/ticketstatus/:ticket_id", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 console.log(err);
             } else {
                 if(authData.user.publicworkercommune === req.body.responsible_commune) {
                     ticketdao.setStatus(req.params.ticket_id, req.body, (status, data) =>{
-                        if(status == 200) {
+                        if(status === 200) {
                             let mailOptions = {
                                 from: 'Hverdagsheltene',
                                 to: req.body.email,
@@ -886,12 +859,12 @@ export function create_app(pool) {
     });
 
     app.put("/ticketcomp/:ticket_id", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 console.log(err);
             } else {
+                if(authData.user.isadmin || authData.user.publicworkercommune)
                 companydao.getByMail(req.body.name, (status, data) =>{
-                    console.log(data[0].id)
                     ticketdao.setResponsibility(req.params.ticket_id, data[0], (status2, data2) =>{
                         res.status(status2);
                         res.json(data2);
@@ -907,7 +880,7 @@ export function create_app(pool) {
 
 
     app.delete("/unfollowCommune/:commune", verifyToken, (req, res) => {
-       jwt.verify(req.token, 'key', (err, authData) => {
+       jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
            if(err) {
                res.sendStatus(401);
            } else {
@@ -920,13 +893,12 @@ export function create_app(pool) {
     });
 
     app.delete("/ticket/:id", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) => {
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
             if(err) {
                 res.sendStatus(401);
             } else {
                 if(authData.user.isadmin || authData.user.publicworkercommune) {
                     ticketdao.deleteTicket(req.params.id, (status, data) => {
-                        console.log("Deleted ticket");
                         res.status(status);
                         res.json(data);
                     });
@@ -938,16 +910,23 @@ export function create_app(pool) {
     });
 
     app.delete("/user/:email", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) => {
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
             if(err) {
                 res.sendStatus(401);
             } else {
-                if (req.params.email == authData.user.email || authData.user.isadmin) {
-                    userdao.deleteOne(req.params.email, (status, data) => {
-                        console.log("Deleted user");
-                        res.status(status);
-                        res.json(data);
-                    })
+                if (req.params.email === authData.user.email || authData.user.isadmin) {
+                    userdao.getOne(authData.user.id, ((status, data) => {
+                        if(data[0].email !== authData.user.email){
+                            res.status(401);
+                            res.json({error: 'Token invalid'})
+                        } else {
+                            userdao.deleteOne(req.params.email, (status, data) => {
+                                res.status(status);
+                                res.json(data);
+                            })
+                        }
+                    }));
+
                 } else {
                     res.sendStatus(403);
                 }
@@ -956,7 +935,7 @@ export function create_app(pool) {
     });
 
     app.delete("/event/:id", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) => {
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
             if(err) {
                 res.sendStatus(401);
             } else {
@@ -975,7 +954,7 @@ export function create_app(pool) {
     });
 
     app.delete("/ticketCategory/:name", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 console.log(err);
                 res.sendStatus(401);
@@ -993,7 +972,7 @@ export function create_app(pool) {
     });
 
     app.delete("/happeningCategory/:name", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 console.log(err);
                 res.sendStatus(401);
@@ -1016,8 +995,7 @@ export function create_app(pool) {
 
         if(typeof bearerHeader !== 'undefined') {
             const bearer = bearerHeader.split(' ');
-            const bearerToken = bearer[1];
-            req.token = bearerToken;
+            req.token = bearer[1];
             next();
         }else {
             res.sendStatus(401);
@@ -1029,8 +1007,7 @@ export function create_app(pool) {
 
         if(typeof bearerHeader !== 'undefined') {
             const bearer = bearerHeader.split(' ');
-            const bearerToken = bearer[1];
-            req.token = bearerToken;
+            req.token = bearer[1];
             next();
         }else {
             req.token = 'abcdefghijklmnopqrstuvwxyz';
@@ -1042,7 +1019,7 @@ export function create_app(pool) {
     /* Upload image with the ticetkId for the ticket that the image
     is connected to. This is to upload Image
     app.put("/ticket_picture/:ticket_it", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData) =>{
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
             if(err) {
                 console.log(err);
             } else {
@@ -1061,121 +1038,113 @@ export function create_app(pool) {
     });
     */ 
     app.post("/image", verifyToken, (req, res) => {
-        jwt.verify(req.token, 'key', (err, authData) =>{
-            console.log("Got POST-request from client");
-            console.log(req.headers['authorization']);
-            console.log("id: " + req.body.id);//temp delete
-            console.log(req.files);//temp delete
+        jwt.verify(req.token, 'key', (err) =>{
 
-            if (!req.files) {
-                console.log("no files were uploaded");
-                return res.status(400).send("No files were uploaded.");
-            }
+            if(err) res.status(401);
+            else {
+                if (!req.files) {
+                    return res.status(400).send("No files were uploaded.");
+                }
 
-            console.log("files where uploaded");
-            let file = req.files.uploaded_image;
-            let img_name = file.name;
-            img_name = req.body.id + img_name;
-            console.log(img_name);
-            if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
-                console.log("Correct type of image");
-                file.mv(path.join(client_public,'images', img_name), function (err) {
+                let file = req.files.uploaded_image;
+                let img_name = file.name;
+                img_name = req.body.id + img_name;
+                if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+                    file.mv(path.join(client_public, 'images', img_name), function(err) {
 
-                    if (err) {
-                        console.log("Something went wrong");
-                        return res.status(500).send(err);
-                    }
+                        if (err) {
+                            return res.status(500).send(err);
+                        }
 
-                    ticketdao.setPicture(req.body.id, img_name, (status, data) =>{
-                        res.status(status);
-                        res.json(data);
+                        ticketdao.setPicture(req.body.id, img_name, (status, data) => {
+                            res.status(status);
+                            res.json(data);
+                        });
                     });
-                });
-            }else{
-                console.log("Wrong type if image");
-                return res.status(400).send();
+                } else {
+                    console.log("Wrong type of image");
+                    return res.status(400).send();
+                }
             }
         });
     });
 
     //Upload image for an event/happening
 
-     app.post("/imageEvent", verifyToken, (req, res) => {
-        jwt.verify(req.token, 'key', (err, authData) =>{
-            console.log("Got POST-request from client");
-            console.log(req.headers['authorization']);
-            console.log("id: " + req.body.id);//temp delete
-            console.log(req.files);//temp delete
+    app.post("/imageEvent", verifyToken, (req, res) => {
+        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
 
-            if (!req.files) {
-                console.log("no files were uploaded");
-                return res.status(400).send("No files were uploaded.");
-            }
+            if(err) res.status(400);
+            else {
+                if (!req.files) {
+                    console.log("no files were uploaded");
+                    return res.status(400).send("No files were uploaded.");
+                }
 
-            console.log("files where uploaded");
-            let file = req.files.uploaded_image;
-            let img_name = file.name;
-            img_name = "e" + req.body.id + img_name;
-            console.log(img_name);
-            if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
-                console.log("Correct type of image");
-                file.mv(path.join(client_public,'images', img_name), function (err) {
+                console.log("files where uploaded");
+                let file = req.files.uploaded_image;
+                let img_name = file.name;
+                img_name = "e" + req.body.id + img_name;
+                console.log(img_name);
+                if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+                    file.mv(path.join(client_public, 'images', img_name), function(err) {
 
-                    if (err) {
-                        console.log("Something went wrong");
-                        return res.status(500).send(err);
-                    }
+                        if (err) {
+                            console.log(err);
+                            return res.status(500).send(err);
+                        }
 
-                    eventdao.setPicture(req.body.id, img_name, (status, data) =>{
-                        res.status(status);
-                        res.json(data);
+                        eventdao.setPicture(req.body.id, img_name, (status, data) => {
+                            res.status(status);
+                            res.json(data);
+                        });
                     });
-                });
-            }else{
-                console.log("Wrong type if image");
-                return res.status(400).send();
+                } else {
+                    return res.status(400).send();
+                }
             }
         });
     });
 
-    /* Upload image with the ticetkId for the ticket that the image
+    /* Upload image with the ticketkId for the ticket that the image
     is connected to. This is to edit Image*/ 
-    app.put("/image", (req, res) => {
-        console.log("Got POST-request from client");
-        console.log("id: " + req.body.id);//temp delete
-        console.log(req.files);//temp delete
-
-        if (!req.files) {
-            console.log("no files were uploaded");
-            return res.status(400).send("No files were uploaded.");
-        }
-
-        console.log("files where uploaded");
-        let file = req.files.uploaded_image;
-        let img_name = file.name;
-        img_name = req.body.id + img_name;
-        console.log(img_name);
-        if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
-            console.log("Correct type of image");
-            file.mv(path.join(client_public,'images', img_name), function (err) {
-
-                if (err) {
-                    console.log("Something went wrong");
-                    return res.status(500).send(err);
+    app.put("/image", verifyToken, (req, res) => {
+        jwt.verify(req.token, 'key', (err) => {
+            if(err) res.sendStatus(401);
+            else{
+                if (!req.files) {
+                    console.log("no files were uploaded");
+                    return res.status(400).send("No files were uploaded.");
                 }
 
-                /*
-                Here you have to add how the path will be saved in database. Some example code under
-                let val = [overskrift, innhold, kategori, viktighet, img_name];
-                caseDao.createOne(val, (status, data) => {
-                    res.status(status);
-                    res.json(data);
-                });*/
-            });
-        }else{
-            console.log("Wrong type if image");
-            return res.status(400).send();
-        }
+                console.log("files where uploaded");
+                let file = req.files.uploaded_image;
+                let img_name = file.name;
+                img_name = req.body.id + img_name;
+                console.log(img_name);
+                if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+                    console.log("Correct type of image");
+                    file.mv(path.join(client_public,'images', img_name), function (err) {
+
+                        if (err) {
+                            console.log("Something went wrong");
+                            return res.status(500).send(err);
+                        }
+
+                        /*
+                        Here you have to add how the path will be saved in database. Some example code under
+                        let val = [overskrift, innhold, kategori, viktighet, img_name];
+                        caseDao.createOne(val, (status, data) => {
+                            res.status(status);
+                            res.json(data);
+                        });*/
+                    });
+                }else{
+                    console.log("Wrong type if image");
+                    return res.status(400).send();
+                }
+            }
+        });
     });
 
     //get image from server side and send to frontend
@@ -1234,16 +1203,24 @@ function getCommuneByLatLng(latlng, callback) {
             let kom = res.results.map(e => e.address_components.filter(d => d.types[0] === 'administrative_area_level_2').map(final_res => ({"Kommune" : final_res.short_name.replace(' kommune', '').replace(' Municipality', '')})));
             let fyl = res.results.map(e => e.address_components.filter(d => d.types[0] === 'administrative_area_level_1').map(final_res => ({"Fylke" : final_res.short_name})));
 
-            if(kom.filter(i=>i.length != 0)[0][0].Kommune === 'Bø' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Herøy' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Nes' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Os' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Sande' || kom.filter(i=>i.length != 0)[0][0].Kommune ===  'Våler') {
-                kom.filter(i=>i.length != 0)[0][0].Kommune = kom.filter(i=>i.length != 0)[0][0].Kommune + '(' + fyl[0][0].Fylke + ')';
+            if(kom.filter(i=>i.length !== 0)[0][0].Kommune === 'Bø' || kom.filter(i=>i.length !== 0)[0][0].Kommune === 'Herøy' || kom.filter(i=>i.length !== 0)[0][0].Kommune === 'Nes' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Os' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Sande' || kom.filter(i=>i.length != 0)[0][0].Kommune ===  'Våler') {
+                kom.filter(i=>i.length !== 0)[0][0].Kommune = kom.filter(i=>i.length !== 0)[0][0].Kommune + '(' + fyl[0][0].Fylke + ')';
             }
-            if(kom.filter(i=>i.length != 0)[0][0].Kommune === 'Rissa' || kom.filter(i=>i.length != 0)[0][0].Kommune === 'Leksvik') {
+            if(kom.filter(i=>i.length !== 0)[0][0].Kommune === 'Rissa' || kom.filter(i=>i.length !== 0)[0][0].Kommune === 'Leksvik') {
                 callback({kommune: 'Indre Fosen'});
             } else {
-                callback({kommune: kom.filter(i=>i.length != 0)[0][0].Kommune});
+                callback({kommune: kom.filter(i=>i.length !== 0)[0][0].Kommune});
             }
 
 
         })
-        .catch(err => console.log(latlng[0] + ' ' + latlng[1]))
+        .catch(err => console.log(err, latlng[0], latlng[1]))
+}
+
+class User{
+    email: string;
+    id: string|number;
+    isadmin: string|boolean;
+    companyname: string|boolean;
+    publicworkercommune: string|boolean;    // Null if not a publicworker
 }
