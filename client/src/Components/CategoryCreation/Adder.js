@@ -24,7 +24,7 @@ export class Adder extends Component{
     renderButton(){
         return(
             <button className="btn btn-block customBtn" onClick={this.setAdding}>
-                <i class="fa fa-plus"></i> {' '} Legg til kategori
+                <i className="fa fa-plus"></i> {' '} Legg til kategori
             </button>
         )
 
@@ -38,9 +38,9 @@ export class Adder extends Component{
                 <label className="text-danger">{this.warning}</label>
                 }
                 <br/>
-                <button className="btn btn-primary" onClick={this.save}>Lagre</button>
+                <button className="btn customBtn" onClick={this.save}>Lagre</button>
                 {' '}
-                <button className="btn btn-secondary" onClick={this.setButton}>Avbryt</button>
+                <button className="btn btn-danger" onClick={this.setButton}>Avbryt</button>
                 <br/>
             </div>
         )
