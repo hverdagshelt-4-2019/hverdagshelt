@@ -1,4 +1,8 @@
-//@flow 
+//@flow
+
+/**
+ * Page for creating admins and public workers
+ */
 
 import ReactDOM from 'react-dom';
 import * as React from 'react';

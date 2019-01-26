@@ -58,6 +58,9 @@ export default class MyTickets extends Component{
         )
     }
 
+    /**
+     * Gets all tickets from DB and save them to the tickets array in state
+     */
     mounted(){
 
         //Then get all the tickets from these communes
@@ -74,14 +77,9 @@ export default class MyTickets extends Component{
         //.then(tickets => this.tickets = tickets);
     }
 
-    itemChecked(){
-
-        //When unchecking a category, tickets refreshed
-        /*
-        ticketService.getTicketsByCommuneAndCategory(this.communeId, this.categories)
-        .then(tickets => this.tickets = tickets);
-        */
-    }
+    /**
+     * Method for hiding and showing the category filter
+     */
 
     changeArrow(){
         let e: HTMLElement|null = document.getElementById("arrow");
@@ -98,7 +96,11 @@ export default class MyTickets extends Component{
             }
         }
     }
-    
+
+    /**
+     * Method for sorting tickets given a filter string
+     * @param by filter string
+     */
     sortBy(by: string){
         //event.target.value
         switch(by) {

@@ -1,3 +1,6 @@
+/**
+ * Component for following a new commune
+ */
 import React from "react";
 import { Component } from "react-simplified";
 import styles from "./style.css";
@@ -65,19 +68,21 @@ export default class FollowCommunes extends Component {
         }
     }
 
+
+    /**
+     * Handling unfollow commune, calling the service object passing the commune
+     */
     onUnFollow = (value, index, event) => {
         this.setState({
             loadingIndex: index
         }, () => {
             communeService.unFollowCommune(value).then(res => {
                 if(res.status === 200){
-                    // TODO: Give feedback
                     this.removeItem(value);
                     this.sortArray();
                     console.log("Removed commune");
                 }
                 else {
-                    // TODO: Give feedback
                     console.log("Rip");
                 }
                 this.setState({
@@ -97,6 +102,7 @@ export default class FollowCommunes extends Component {
             this.sortArray();
         });
     }
+
 
     render() {
         const page = this.state.page;

@@ -1,5 +1,7 @@
 //@flow
-
+/**
+ * Component for editing an already exsisting event
+ */
 import * as React from 'react';
 import { Component,} from 'react-simplified';
 import eventService from '../../Services/eventService';
@@ -89,8 +91,8 @@ export default class EditEvent extends Component<{ match: { params: { id: number
                     </div>
                 </div>
                 </div>
-                
-           
+
+
         );
     }
 
@@ -101,6 +103,10 @@ export default class EditEvent extends Component<{ match: { params: { id: number
         })
     }
 
+    /**
+     * Taken the image uploaded and uses it to call the post image api to override exsisting event picture
+     * @param id
+     */
     addImage(id: number){
         let token = localStorage.getItem('authToken');
         let Authorization = 'none';
@@ -134,6 +140,10 @@ export default class EditEvent extends Component<{ match: { params: { id: number
             });
     }
 
+    /**
+     * Saves the event object in the state ton the server
+     * @returns {Promise<void>} void
+     */
     async save() {
         console.log('save');
         if (!this.state.title) this.state.title = this.event.title;
@@ -152,7 +162,7 @@ export default class EditEvent extends Component<{ match: { params: { id: number
             document.documentElement.scrollTop = 0;
             return;
         }
-        
+
         date = date.split('T', 1)[0] + ' ' + date.split('T')[1].split('.', 1);
         let postId: Number;
         await eventService
@@ -181,6 +191,9 @@ export default class EditEvent extends Component<{ match: { params: { id: number
         picture.setAttribute("src", imageLink);
     }
 
+    /**
+     * Gets the event i question from backend and saves it in state
+     */
     mounted() {
 
         eventService

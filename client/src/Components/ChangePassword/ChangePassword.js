@@ -1,3 +1,6 @@
+/**
+ * Component for chaning a password
+ */
 import React from "react";
 import { Component } from "react-simplified";
 import styles from "./style.css";
@@ -39,6 +42,10 @@ export default class ChangePassword extends Component {
         this.setState({success: message});
     }
 
+    /**
+     * Verifies if the inserted passwords are valid
+     * @returns {boolean} If inout is valid
+     */
     verify() {
         this.setWarning("");
         this.setSuccess("");

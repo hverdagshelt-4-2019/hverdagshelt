@@ -1,5 +1,7 @@
 //@flow
-
+/**
+ * Component for adding an event
+ */
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import eventService from '../../Services/eventService';
@@ -131,10 +133,16 @@ export default class AddEvent extends Component {
             console.error("Error: ", error);
         });
     }
-    
+
+    /**
+     * Creates the event when save button i fixed
+     * Uses the event object in state as the object sent in
+     * @returns {Promise<void>} void
+     */
     async save() {
         if(this.state.title !== '' && this.state.description !== '' && this.state.category !== '' && this.state.happening_time !== null && this.commune !== null){
             let eventId: Number;
+            // Handles timezon error due to javascript converting to GMT
             let sendingDate = new Date(this.state.happening_time);
             try {
                 sendingDate.setMinutes(sendingDate.getMinutes() - sendingDate.getTimezoneOffset());

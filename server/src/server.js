@@ -1,3 +1,7 @@
+/**
+ * This file contains all endpoints for the server, as well as methods for checking a commune and the vilidity of a token
+ */
+
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import UserDao from './dao/userDao'
@@ -48,8 +52,8 @@ export function create_app(pool) {
     const client_public = path.join(__dirname,'..','..','client','public');
 
 
-  /*
-    Get-functions
+    /**
+     * Method for checking what user level a user is given their token. Returns the user level
      */
 
     app.get('/level', verifyToken, (req, res) => {
@@ -94,6 +98,11 @@ export function create_app(pool) {
             res.json(data);
         });
     });
+
+    /**
+     * Gets relevant tickets for a person given what commune they are tied to in the database
+     * If they are not logged in they will get all tickets in the system
+     */
 
     app.get("/tickets", verifyToken2, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
@@ -147,6 +156,11 @@ export function create_app(pool) {
             }
         });
     });
+
+    /**
+     * Gets relevant tickets for a person given what commune they are tied to in the database
+     * If they are not logged in they will get the commune they are located in if location is shared
+     */
 
     app.get("/ticketsMap/:commune", verifyToken2, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
@@ -228,6 +242,11 @@ export function create_app(pool) {
         });
     });
 
+    /**
+     * Gets all events for the commune the person is following in the database, if not logged in
+     * it returns all events in the system
+     */
+
     app.get("/events", verifyToken2, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
             if (err) {
@@ -271,14 +290,6 @@ export function create_app(pool) {
                     });
                 }
             }
-        });
-    });
-
-    // TODO: Delete this?
-    app.get("/events/category", (req) =>{
-        eventdao.getAllCategoryFilter(req.body.communes, req.body.categories, (status, res) =>{
-            res.status(status);
-            res.json(data);
         });
     });
 
@@ -461,8 +472,9 @@ export function create_app(pool) {
         });
     });
 
-  /*
-    Post-functions
+    /**
+     * Methode for creating a user in the database given a user object
+     * When a user is created they get an email containing their user information
      */
 
 
@@ -486,6 +498,10 @@ export function create_app(pool) {
             }
         });
     });
+
+    /**
+     * Logs the user in and sets the correct user level in token
+     */
 
     app.post("/login", (req, res) => {
         userdao.login(req.body, (status, data) => {
@@ -517,6 +533,10 @@ export function create_app(pool) {
             }
         });
     });
+
+    /**
+     * Creates a ticket given a ticket object
+     */
 
     app.post("/ticket", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
@@ -553,6 +573,10 @@ export function create_app(pool) {
 
         });
       });
+
+    /**
+     * Create an even given an event object
+     */
 
     app.post("/event", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
@@ -594,6 +618,10 @@ export function create_app(pool) {
             }
         });
     });
+
+    /**
+     * Creates a comment given a comment object
+     */
 
     app.post("/comment/:id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
@@ -749,6 +777,10 @@ export function create_app(pool) {
         });
     });
 
+    /**
+     * Changes email of a user and sends an email to the previous mail to inform about tis
+     */
+
     app.put("/usermail/:email", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData: {user: User}) => {
             if(err) {
@@ -829,6 +861,11 @@ export function create_app(pool) {
             }
         });
     });
+
+    /**
+     * Changes the status of a ticket usign a set of predefined states. Send a mail to the user updating
+     * them on the status change
+     */
 
     app.put("/ticketstatus/:ticket_id", verifyToken, (req, res) =>{
         jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
@@ -990,6 +1027,10 @@ export function create_app(pool) {
     });
     
 // Verify token
+
+    /**
+     * Method verifies that a token is a bearer token and removed the bearer head if it is then returns the actual token
+     */
     function verifyToken(req, res, next) {
         const bearerHeader = req.headers['authorization'];
 
@@ -1015,28 +1056,11 @@ export function create_app(pool) {
         }
     }
 
+    /**
+     * Takes an image, generates a random prefix to avoid duplicate paths, saves it to the server and saves
+     * the path to the database in the ticket image was uploaded with
+     */
 
-    /* Upload image with the ticetkId for the ticket that the image
-    is connected to. This is to upload Image
-    app.put("/ticket_picture/:ticket_it", verifyToken, (req, res) =>{
-        jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
-            if(err) {
-                console.log(err);
-            } else {
-                userdao.getOne(authData.user.id, (userstatus, userdata) =>{
-                    if(req.body.email == userdata[0].email) {
-                        ticketdao.setPicture(req.params.ticket_id, req.body, (status, data) =>{
-                            res.status(status);
-                            res.json(data);
-                        });
-                    } else {
-                        res.sendStatus(403);
-                    }
-                });
-            }
-        });
-    });
-    */ 
     app.post("/image", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err) =>{
 
@@ -1069,8 +1093,9 @@ export function create_app(pool) {
         });
     });
 
-    //Upload image for an event/happening
-
+    /**
+     * Same as /image, just for events
+     */
     app.post("/imageEvent", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err, authData: {user: User}) =>{
 
@@ -1106,8 +1131,9 @@ export function create_app(pool) {
         });
     });
 
-    /* Upload image with the ticketkId for the ticket that the image
-    is connected to. This is to edit Image*/ 
+    /**
+     * Same as upload image
+     */
     app.put("/image", verifyToken, (req, res) => {
         jwt.verify(req.token, 'key', (err) => {
             if(err) res.sendStatus(401);
@@ -1180,6 +1206,10 @@ function sendEmail(transport, mailOptions) {
     });
 }
 
+/**
+ * Generates a random string to use as password
+ * @returns {string} A randomly generated string
+ */
 function genRandPass() {
     let validChars = 'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     let newPass = '';
@@ -1190,6 +1220,12 @@ function genRandPass() {
 
 }
 
+/**
+ * A method that checks what commune a given set of coordinates are
+ * @param latlng latitude and longitude of location to check
+ * Uses a google API to check commune of coordinates. Then check if commune is one of the communes with duplicate names,
+ * if duplicate adds the county behind
+ */
 function getCommuneByLatLng(latlng, callback) {
     fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng[0]},${latlng[1]}&key=${config.mapskey}`,
         {

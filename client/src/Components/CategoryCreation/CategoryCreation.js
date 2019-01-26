@@ -1,3 +1,6 @@
+/**
+ * Page where an admin can create a category for use in events and tickets
+ */
 //@flow
 
 import ReactDOM from 'react-dom';

@@ -1,5 +1,7 @@
 //@flow
-
+/**
+ * Component where public workers can assing a company to an exsisting user
+ */
 import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
@@ -73,6 +75,10 @@ export default class AddCompany extends Component<{history: string[]}>{
             })
     }
 
+    /**
+     * Validates input and registers the company
+     * @param event Data from form
+     */
     validation(event) {
         event.preventDefault();
         if(this.users.includes(this.email)){

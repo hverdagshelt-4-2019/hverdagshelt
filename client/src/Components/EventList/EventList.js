@@ -9,6 +9,9 @@ import css from './eventStyle.css';
 import $ from 'jquery';
 import PageNavigator from "../PageNavigator/PageNavigator";
 
+/**
+ * Component for displaying all events in a list
+ */
 export default class EventList extends Component{
     communes = [];
     communesArray = [];

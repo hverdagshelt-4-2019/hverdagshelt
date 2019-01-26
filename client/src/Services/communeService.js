@@ -6,6 +6,11 @@ class Commune{
     commune_name: string;
 }
 
+/**
+ * Function for getting the auth token from localstorage and returns it as a header
+ * @returns {{headers: {Authorization: string}}} Token for API authorization
+ */
+
 function config() {
     let token = localStorage.getItem('authToken');
     let Authorization = 'none';

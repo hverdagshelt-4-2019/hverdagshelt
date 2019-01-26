@@ -66,12 +66,10 @@ export default class FollowCommunes extends Component {
         }, () => {
             communeService.followCommune(value).then(res => {
                 if(res.status === 200){
-                    // TODO: Give feedback
                     this.removeItem(value);
                     this.sortArray();
                 }
                 else {
-                    // TODO: Give feedback
                 }
                 this.setState({
                     loadingIndex: -1

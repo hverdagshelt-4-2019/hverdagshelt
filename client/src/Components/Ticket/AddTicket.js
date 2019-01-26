@@ -1,5 +1,7 @@
 //@flow
-
+/**
+ * Component for adding ticket
+ */
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import ticketService from '../../Services/ticketService';
@@ -156,6 +158,11 @@ static propTypes = {
     );
   }
 
+    /**
+     * Take an image and send it to backend saving it and then updates the ticket in the db to contain link to the picture
+     * @param id id of ticket to save image to
+     */
+
   addImage(id: number){
         let token = localStorage.getItem('authToken');
         let Authorization = 'none';
@@ -188,6 +195,11 @@ static propTypes = {
             console.error("Error: ", error);
         });
     }
+
+    /**
+     * Saves a ticket to DB
+     * @returns {Promise<void>}
+     */
 
     async save() {
         if(this.state.title && this.state.description && this.state.category){

@@ -25,39 +25,5 @@ export default class Footer extends Component {
 
         )
     }
-/*
-    render() {
-        return (
-            <div className="aroundFoot">
-                <br/>
-                <footer className="footer mb-2 p-3 text-white">
-                    <div className="container h3">
-                        <ul className="list-inline text-center">
-                        <li className="list-inline-item">
-                        <a className="btn-floating" href="/some/valid/uri">
-                            <i className="fab fa-facebook-square"> </i>
-                        </a>
-                        </li>
-                        <li className="list-inline-item">
-                        <a className="btn-floating btn-tw mx-1" href="/some/valid/uri">
-                            <i className="fab fa-twitter-square"> </i>
-                        </a>
-                        </li>
-                        <li className="list-inline-item">
-                        <a className="btn-floating btn-gplus mx-1" href="/some/valid/uri">
-                            <i className="fab fa-google-plus-square"> </i>
-                        </a>
-                        </li>
-                        <li className="list-inline-item">
-                        <a className="btn-floating btn-li" href="/some/valid/uri">
-                            <i className="fab fa-linkedin"> </i>
-                        </a>
-                        </li>
-                        </ul>
-                    </div>
-                    <div className="text-center font-italic">©2019 Copyright: Team 4</div>
-                </footer>
-            </div>
-            );
-        }*/
+
 }

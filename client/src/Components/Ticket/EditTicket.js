@@ -1,5 +1,7 @@
 //@flow
-
+/**
+ * Page for editing ticket
+ */
 import * as React from 'react';
 import { Component,} from 'react-simplified';
 import ticketService from '../../Services/ticketService';
@@ -192,6 +194,10 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
         });
     }
 
+    /**
+     * Gets the ticket from state and sends it to backend using services to update the ticket
+     * @returns {Promise<void>}
+     */
     async save() {
         if (!this.state.title) this.state.title = this.ticket.title;
         if (!this.state.description) this.state.description = this.ticket.description;
@@ -227,6 +233,9 @@ export default class EditTicket extends Component<{ match: { params: { id: numbe
         picture.setAttribute("src", imageLink);
     }
 
+    /**
+     * Gets ticket from DB, sets it in state.
+     */
     mounted() {
 
         ticketService
