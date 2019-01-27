@@ -1,6 +1,5 @@
 # Hverdagshelt client and server application using react and express
-The application frontend will reload on changes, restart server on changes.
-
+The application will reload on changes.
 
 ## Server: start
 
