@@ -1,4 +1,3 @@
-[![Coverage Status](https://coveralls.io/repos/github/hverdagshelt-4-2019/hverdagshelt/badge.svg?branch=master)](https://coveralls.io/github/hverdagshelt-4-2019/hverdagshelt?branch=master)
 # Hverdagshelt client and server application using react and express
 The application frontend will reload on changes, restart server on changes.
 
@@ -31,6 +30,6 @@ npm test
 ```
 
 ## Tests: server
-This test is being run on travis. Go to CI/CD then Piplines to see test results
-
+This test is being run on Coverall. 
+[![Coverage Status](https://coveralls.io/repos/github/hverdagshelt-4-2019/hverdagshelt/badge.svg?branch=master)](https://coveralls.io/github/hverdagshelt-4-2019/hverdagshelt?branch=master)
 
